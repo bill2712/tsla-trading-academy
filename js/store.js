@@ -34,6 +34,9 @@
       replays: [],     // 每日 Replay 檢討
       replay: {},      // scenarioId -> { best, ts }
       toolState: {},   // 各計算器記住嘅輸入
+      wrong: {},       // 錯題本："quizId:題號" -> { box, due, miss, ts }（間隔重溫）
+      activity: {},    // 學習日曆："YYYY-MM-DD" -> { xp, sec, quiz, drill, note, replay, journal, review }
+      gym: {},         // 訓練場：drillId -> { best, plays, ts }
     };
   }
 
@@ -79,6 +82,7 @@
   const listeners = new Set();
   function emit(type) {
     save();
+    if (type === 'journal') logAct('journal');
     listeners.forEach((fn) => { try { fn(type); } catch (e) { console.error(e); } });
   }
 
@@ -128,12 +132,37 @@
     u.streak.last = t;
     save();
   }
+  function dayStr(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function addDays(n) { const d = new Date(); d.setDate(d.getDate() + n); return dayStr(d); }
+  /* 學習活動（每日任務、學習日曆） */
+  function logAct(kind, n) {
+    if (!activeProfile()) return;
+    const u = user(), t = today();
+    const a = u.activity[t] = u.activity[t] || {};
+    a[kind] = (a[kind] || 0) + (n == null ? 1 : n);
+    save();
+    window.dispatchEvent(new CustomEvent('ta:act', { detail: { kind } }));
+  }
+  /* 錯題本：Leitner 間隔重溫（答錯 → 今日再溫；答啱 → 1、3、7、14 日後再溫；連續答啱 4 次 = 掌握） */
+  const GAPS = [1, 3, 7, 14];
+  function recordAnswer(qid, i, ok) {
+    if (!activeProfile()) return;
+    const u = user(), k = qid + ':' + i, w = u.wrong[k];
+    if (!ok) u.wrong[k] = { box: 0, due: today(), miss: ((w && w.miss) || 0) + 1, ts: Date.now() };
+    else if (w) {
+      if (w.box >= GAPS.length - 1) { delete u.wrong[k]; awardXP('master:' + k + ':' + w.miss, 3); }
+      else { w.box++; w.due = addDays(GAPS[w.box]); w.ts = Date.now(); }
+    }
+    logAct('quiz');
+  }
+  function dueWrong() { const u = user(), t = today(); return Object.keys(u.wrong).filter((k) => u.wrong[k].due <= t); }
   function awardXP(eventKey, amount) {
     const u = user();
     if (!activeProfile()) return 0;
     if (u.xpLog[eventKey]) return 0;
     u.xpLog[eventKey] = Date.now();
     u.xp += amount;
+    { const t = today(); const a = u.activity[t] = u.activity[t] || {}; a.xp = (a.xp || 0) + amount; }
     emit('xp');
     window.dispatchEvent(new CustomEvent('ta:xp', { detail: { amount } }));
     return amount;
@@ -165,13 +194,13 @@
   function setNote(ch, sec, text) {
     const u = user();
     const k = ch + '#' + sec;
-    if (text && text.trim()) { u.notes[k] = { text, ts: Date.now() }; awardXP('note:' + k, 3); }
+    if (text && text.trim()) { u.notes[k] = { text, ts: Date.now() }; awardXP('note:' + k, 3); logAct('note'); }
     else delete u.notes[k];
     emit('notes');
   }
 
   /* ---------- 螢光筆 ---------- */
-  function addHighlight(h) { const u = user(); const x = Object.assign({ id: uid(), ts: Date.now() }, h); u.highlights.push(x); emit('highlights'); return x; }
+  function addHighlight(h) { const u = user(); const x = Object.assign({ id: uid(), ts: Date.now() }, h); u.highlights.push(x); logAct('note'); emit('highlights'); return x; }
   function updateHighlight(id, patch) { const h = user().highlights.find((x) => x.id === id); if (h) Object.assign(h, patch); emit('highlights'); }
   function removeHighlight(id) { const u = user(); u.highlights = u.highlights.filter((h) => h.id !== id); emit('highlights'); }
 
@@ -247,6 +276,11 @@
     out.xpLog = Object.assign({}, b.xpLog, a.xpLog);
     out.xp = Math.max(a.xp || 0, b.xp || 0);
     out.replay = Object.assign({}, b.replay, a.replay);
+    out.wrong = Object.assign({}, b.wrong, a.wrong);
+    out.activity = Object.assign({}, b.activity);
+    for (const d in a.activity || {}) { const x = Object.assign({}, out.activity[d]); for (const k in a.activity[d]) x[k] = Math.max(x[k] || 0, a.activity[d][k] || 0); out.activity[d] = x; }
+    out.gym = Object.assign({}, b.gym);
+    for (const k in a.gym || {}) if (!out.gym[k] || (a.gym[k].best || 0) >= (out.gym[k].best || 0)) out.gym[k] = Object.assign({}, a.gym[k], { plays: Math.max(a.gym[k].plays || 0, (out.gym[k] || {}).plays || 0) });
     const la = a.last ? a.last.ts : 0, lb = b.last ? b.last.ts : 0;
     out.last = la >= lb ? a.last : b.last;
     out.streak = (a.streak && b.streak && (b.streak.best || 0) > (a.streak.best || 0)) ? b.streak : (a.streak || b.streak);
@@ -281,7 +315,7 @@
   window.Store = {
     uid, today, get db() { return db; },
     profiles, activeProfile, addProfile, updateProfile, removeProfile, setActive, user,
-    awardXP, touchStreak, markVisited, setLast, setRead,
+    awardXP, logAct, recordAnswer, dueWrong, addDays, touchStreak, markVisited, setLast, setRead,
     isBookmarked, toggleBookmark, getNote, setNote,
     addHighlight, updateHighlight, removeHighlight,
     addComment, removeComment, comments, addVideo, removeVideo, videos,

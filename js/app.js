@@ -174,6 +174,7 @@
         else if (type === 'quiz') renderQuiz(el, arg);
         else if (type === 'check') renderChecklist(el, arg);
         else if (type === 'replay') { const sc = Replay.SCENARIOS[arg]; if (sc) { const best = (Store.user().replay[arg] || {}); el.innerHTML = `<div class="replay-card"><span class="rc-icon">${sc.icon}</span><div><b>🎮 互動 K 線重播：${esc(sc.title)}</b><p>${esc(sc.desc)}</p>${best.best != null ? `<small>最佳得分：${best.best} / ${best.total}</small>` : ''}</div><a class="btn primary" href="#/replay/${arg}">開始 ▶</a></div>`; } }
+        else if (type === 'widget') { if (WIDGETS[arg]) WIDGETS[arg](el); }
         else if (type === 'chart-funnel') WIDGETS.funnel(el, arg);
         else if (type === 'chart-equity') WIDGETS.equity(el, arg);
         else if (type === 'split') WIDGETS.split(el, arg);
@@ -206,6 +207,7 @@
     const showFb = (i) => {
       const q = qz.questions[i], box = el.querySelector(`[data-q="${i}"]`);
       const ok = ans[i] === q.answer;
+      Store.recordAnswer(id, i, ok);
       box.querySelectorAll('.qq-opt').forEach((b) => { b.disabled = true; const j = +b.dataset.j; if (j === q.answer) b.classList.add('right'); else if (j === ans[i]) b.classList.add('wrong'); });
       box.querySelector('.qq-fb').innerHTML = `<div class="verdict ${ok ? 'ok' : 'bad'}">${ok ? '✅ 正確' : '❌ 正確答案係 ' + String.fromCharCode(65 + q.answer)}：${esc(q.explain)}</div>`;
     };
@@ -285,24 +287,29 @@
         return `<div class="toc-level ${isOpen ? 'open' : ''}" data-lv="${lv.id}" style="--lv:${lv.color}">
           <button class="toc-lv-head" data-toggle="${lv.id}" aria-expanded="${isOpen}"><span class="lv-icon">${lv.icon}</span><span class="lv-text"><b>${esc(lv.code)}</b><small>${esc(lv.title)}</small></span><span class="lv-prog">${st.done}/${st.total}</span><span class="caret">▾</span></button>
           <div class="toc-bar"><div style="width:${st.pct * 100}%"></div></div>
-          <ol class="toc-chs">${lv.chapters.map((c) => {
+          <ol class="toc-chs"><li class="toc-lv-ov"><a href="#/level/${lv.id}" class="toc-ch"><span class="ch-num">ⓘ</span><span class="ch-t">Level 概覽・練習・測驗</span></a></li>${lv.chapters.map((c) => {
             const p = chapterPct(c); const on = activeCh && activeCh.id === c.id;
             return `<li class="${on ? 'on' : ''}"><a href="#/c/${c.id}" class="toc-ch"><span class="ch-dot ${p >= 1 ? 'done' : p > 0 ? 'part' : ''}" style="--p:${p * 360}deg"></span><span class="ch-num">${c.num}</span><span class="ch-t">${esc(c.title)}</span></a>
               ${on && c.sections.length ? `<ul class="toc-secs">${c.sections.map((s) => `<li><a href="#/c/${c.id}/${s.id}" data-sec-link="${s.id}" class="${seenMap()[c.id] && seenMap()[c.id][s.id] ? 'seen' : ''}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</li>`;
           }).join('')}</ol></div>`;
       }).join('')}
-      <div class="toc-sep">互動學習</div>
-      ${link('#/tools', '🧰', '工具箱（計算器）', activeRoute === 'tools')}
+      <div class="toc-sep">練習</div>
+      ${link('#/gym', '🏋️', '訓練場', activeRoute === 'gym')}
+      ${link('#/review', '📕', '錯題本・今日溫習' + (() => { const n = Store.dueWrong().length; return n ? ` <b class="pill">${n}</b>` : ''; })(), activeRoute === 'review')}
       ${link('#/replay', '🎮', 'K 線重播遊戲', activeRoute === 'replay')}
       ${link('#/quiz', '📝', '測驗中心', activeRoute === 'quiz')}
       ${link('#/cards', '🃏', '詞彙字卡', activeRoute === 'cards')}
       ${link('#/glossary', '📖', '詞彙表', activeRoute === 'glossary')}
-      <div class="toc-sep">我的</div>
+      <div class="toc-sep">工具</div>
+      ${link('#/tools', '🧰', '工具箱（計算器）', activeRoute === 'tools')}
+      ${link('#/tools/decision-coach', '🧠', '決策教練', false)}
       ${link('#/journal', '📒', '交易日誌・Playbook', activeRoute === 'journal')}
-      ${link('#/me', '⭐', '書籤・筆記・螢光筆', activeRoute === 'me')}
+      <div class="toc-sep">我的</div>
+      ${link('#/me', '⭐', '書籤・筆記・統計', activeRoute === 'me')}
       ${link('#/board', '💬', '家庭討論區', activeRoute === 'board')}
       ${link('#/family', '👨‍👩‍👧', '家庭進度', activeRoute === 'family')}
       ${link('#/settings', '⚙️', '設定・備份・同步', activeRoute === 'settings')}
+      ${link('#/guide', '🧭', '使用指南', activeRoute === 'guide')}
       <p class="toc-foot">教育用途，不構成投資建議。</p>`;
     $$('[data-toggle]', $('#toc')).forEach((b) => b.addEventListener('click', () => {
       const id = b.dataset.toggle; const box = b.closest('.toc-level');
@@ -350,6 +357,7 @@
           <div class="hero-actions">
             ${last ? `<a class="btn primary lg" href="#/c/${last.id}${u.last.section ? '/' + u.last.section : ''}">📍 繼續：${esc(last.level.code)} 第 ${last.num} 章</a>` : `<a class="btn primary lg" href="#/c/${(nextCh || CHAPTERS[0]).id}">🚀 開始學習</a>`}
             <a class="btn lg" href="#/toc">🗺️ 睇完整目錄</a>
+            ${!ov.done && !last ? '<a class="btn lg ghost" href="#/guide">🧭 使用指南</a>' : ''}
           </div>
         </div>
         <div class="hero-side">
@@ -365,7 +373,7 @@
       <section class="road">
         <h2 class="sec-h">學習路線</h2>
         <div class="road-grid">${LEVELS.map((lv, i) => { const st = levelStats(lv); const first = lv.chapters.find((c) => !u.read[c.id]) || lv.chapters[0]; return `
-          <a class="lv-card" href="#/c/${first.id}" style="--lv:${lv.color}">
+          <a class="lv-card" href="#/level/${lv.id}" style="--lv:${lv.color}">
             <div class="lv-card-top"><span class="lv-big">${lv.icon}</span><span class="lv-step">${i + 1}</span></div>
             <b>${esc(lv.code)}</b><h3>${esc(lv.title)}</h3>
             <p class="lv-q">「${esc(lv.question)}」</p>
@@ -373,10 +381,18 @@
           </a>`; }).join('')}</div>
       </section>
 
+      <section class="home-grid top">
+        ${p ? Learn.questCard() : ''}
+        <div class="card"><div class="card-h">🏋️ 練習</div><div class="quick-tools">
+          <a href="#/review"><span>📕</span>錯題本・今日溫習 ${(() => { const n = Store.dueWrong().length; return n ? `<b class="pill">${n} 題要溫</b>` : ''; })()}</a>
+          ${Object.entries(Learn.DRILLS).map(([k, d]) => `<a href="#/gym/${k}"><span>${d.icon}</span>${esc(d.title)}${u.gym[k] ? ` <small>（最佳 ${u.gym[k].best}）</small>` : ''}</a>`).join('')}
+        </div></div>
+        ${p ? `<div class="card"><div class="card-h">📅 學習日曆 <a href="#/me/stats">統計 →</a></div>${Learn.heatmap(null, true)}</div>` : ''}
+      </section>
       <section class="home-grid">
         <div class="card tip-card"><div class="card-h">💡 今日一句</div><p class="big-quote">「${esc(tip)}」</p></div>
         <div class="card word-card"><div class="card-h">📖 今日詞彙</div><p class="w-term">${esc(word.term)}</p><p class="w-zh">${esc(word.zh)}</p><p>${esc(word.def)}</p><a href="#/cards">玩字卡 →</a></div>
-        <div class="card"><div class="card-h">🧰 常用工具</div><div class="quick-tools">${['possize-pro', 'zone-builder', 'no-entry', 'expectancy-lab', 'daily-risk', 'monte-carlo'].map((id) => `<a href="#/tools/${id}"><span>${TOOLS[id].icon}</span>${esc(TOOLS[id].title)}</a>`).join('')}</div></div>
+        <div class="card"><div class="card-h">🧰 常用工具</div><div class="quick-tools">${['decision-coach', 'pa-journal', 'candle-builder', 'possize-pro', 'zone-builder', 'no-entry'].map((id) => `<a href="#/tools/${id}"><span>${TOOLS[id].icon}</span>${esc(TOOLS[id].title)}</a>`).join('')}</div></div>
         <div class="card"><div class="card-h">🎮 K 線重播遊戲</div><div class="quick-tools">${Object.entries(Replay.SCENARIOS).map(([id, s]) => `<a href="#/replay/${id}"><span>${s.icon}</span>${esc(s.title)}${u.replay[id] ? ` <small>（${u.replay[id].best}/${u.replay[id].total}）</small>` : ''}</a>`).join('')}</div></div>
         ${fam.length > 1 ? `<div class="card"><div class="card-h">👨‍👩‍👧 家庭進度</div>${fam.map((f) => { const o = overall(f.id); return `<div class="fam-row"><span class="av" style="--c:${f.color}">${f.emoji}</span><b>${esc(f.name)}</b><div class="bar"><div style="width:${o.pct * 100}%;background:${f.color}"></div></div><small>${Math.round(o.pct * 100)}%</small></div>`; }).join('')}<a href="#/family">詳細 →</a></div>` : ''}
         <div class="card"><div class="card-h">💬 最新討論</div>${recent.length ? recent.map((c) => `<a class="mini-c" href="#/c/${c.chapter}/${c.section || 'ch-end'}"><span class="av sm" style="--c:${c.color}">${c.emoji}</span><span><b>${esc(c.name)}</b>：${esc(c.text.slice(0, 60))}<small> · ${CH[c.chapter] ? esc(CH[c.chapter].level.code + ' 第' + CH[c.chapter].num + '章') : ''}</small></span></a>`).join('') : '<p class="muted">未有留言。喺任何章節底部或者揀選文字都可以留言，同屋企人討論。</p>'}<a href="#/board">討論區 →</a></div>
@@ -406,7 +422,7 @@
     Store.markVisited(c.id);
     const lv = c.level;
     view.innerHTML = `<article class="chapter" style="--lv:${lv.color}">
-      <nav class="crumbs"><a href="#/">主頁</a> › <a href="#/toc">${esc(lv.code)}</a> › 第 ${c.num} 章</nav>
+      <nav class="crumbs"><a href="#/">主頁</a> › <a href="#/level/${lv.id}">${esc(lv.code)}</a> › 第 ${c.num} 章</nav>
       <header class="ch-head">
         <div class="ch-badge">${lv.icon} ${esc(lv.code)}｜第 ${c.num} 章</div>
         <h1>${esc(c.title)}</h1>
@@ -438,6 +454,8 @@
     wrapSections(content, c);
     mountEmbeds(content);
     applyHighlights(content, c);
+    Learn.glossTips(content);
+    { const tb = Learn.ttsButton(content); if (tb) $('.ch-actions', view).insertBefore(tb, $('[data-print]', view)); }
     renderChapterNote(c);
     renderVideos(c);
     renderComments(c);
@@ -481,11 +499,11 @@
     const secs = $$('.sec', content);
     let current = null;
     const seen = seenMap(); seen[c.id] = seen[c.id] || {};
-    let changed = false;
+    let changed = false, newSeen = 0;
     secs.forEach((s) => {
       const r = s.getBoundingClientRect();
       if (r.top < 120) current = s.id;
-      if (s.id !== 'intro' && r.bottom < innerHeight - 40 && r.bottom > 60 && !seen[c.id][s.id]) { seen[c.id][s.id] = Date.now(); changed = true; }
+      if (s.id !== 'intro' && r.bottom < innerHeight - 40 && r.bottom > 60 && !seen[c.id][s.id]) { seen[c.id][s.id] = Date.now(); changed = true; newSeen++; }
     });
     const end = $('#ch-end'); const atEnd = end && end.getBoundingClientRect().top < innerHeight;
     if (atEnd) current = 'ch-end';
@@ -494,6 +512,7 @@
     $$('[data-sec-link]').forEach((a) => { a.classList.toggle('on', a.dataset.secLink === current); if (seen[c.id][a.dataset.secLink]) a.classList.add('seen'); });
     if (changed) {
       Store.save(); updatePctLabel(c);
+      if (newSeen) Store.logAct('sec', newSeen);
       const allSeen = c.sections.every((s) => seen[c.id][s.id]);
       if (allSeen && atEnd && !Store.user().read[c.id]) { Store.setRead(c.id, true); toast('🎉 已讀晒全章，自動標記完成'); const db = $('[data-done]', view); if (db) { db.textContent = '✓ 已完成本章（撳取消）'; db.classList.remove('primary'); db.parentElement.classList.add('is-done'); } renderTOC(c, 'chapter'); }
       const dot = $('.toc-chs li.on .ch-dot'); if (dot) { const p = chapterPct(c); dot.style.setProperty('--p', p * 360 + 'deg'); dot.classList.toggle('part', p > 0 && p < 1); }
@@ -824,8 +843,8 @@
     const nav = (d) => { if (!deck.length) return; i = (i + d + deck.length) % deck.length; flipped = false; show(); };
     $('[data-prev]', view).addEventListener('click', () => nav(-1));
     $('[data-next]', view).addEventListener('click', () => nav(1));
-    $('[data-know]', view).addEventListener('click', () => { if (!deck.length) return; S.known[deck[i].term] = true; Store.awardXP('card:' + deck[i].term, 1); Store.save(); if (S.onlyNew) { deck.splice(i, 1); if (i >= deck.length) i = 0; flipped = false; show(); } else nav(1); });
-    $('[data-again]', view).addEventListener('click', () => { if (!deck.length) return; delete S.known[deck[i].term]; Store.save(); nav(1); });
+    $('[data-know]', view).addEventListener('click', () => { if (!deck.length) return; S.known[deck[i].term] = true; Store.awardXP('card:' + deck[i].term, 1); Store.logAct('review'); Store.save(); if (S.onlyNew) { deck.splice(i, 1); if (i >= deck.length) i = 0; flipped = false; show(); } else nav(1); });
+    $('[data-again]', view).addEventListener('click', () => { if (!deck.length) return; delete S.known[deck[i].term]; Store.logAct('review'); Store.save(); nav(1); });
     $('[data-lv]', view).addEventListener('change', (e) => { S.lv = e.target.value; Store.save(); build(); show(); });
     $('[data-new]', view).addEventListener('change', (e) => { S.onlyNew = e.target.checked; Store.save(); build(); show(); });
     $('[data-shuffle]', view).addEventListener('click', () => { build(); show(); });
@@ -847,14 +866,16 @@
     const u = Store.user();
     const secTitle = (ch, sid) => { const c = CH[ch]; if (!c) return ''; if (sid === '_chapter') return '（整章）'; const s = c.sections.find((x) => x.id === sid); return s ? s.title : ''; };
     const chLabel = (ch) => { const c = CH[ch]; return c ? `${c.level.code} 第 ${c.num} 章 · ${c.title}` : ch; };
-    const tabs = [['bookmarks', '⭐ 書籤', u.bookmarks.length], ['notes', '📝 筆記', Object.keys(u.notes).length], ['highlights', '🖍️ 螢光筆', u.highlights.length], ['videos', '🎬 影片', Store.videos().length]];
+    const tabs = [['bookmarks', '⭐ 書籤', u.bookmarks.length], ['notes', '📝 筆記', Object.keys(u.notes).length], ['highlights', '🖍️ 螢光筆', u.highlights.length], ['videos', '🎬 影片', Store.videos().length], ['stats', '📊 學習統計', '']];
     let body = '';
     if (tab === 'bookmarks') body = u.bookmarks.length ? `<ul class="me-list">${u.bookmarks.map((b) => `<li><a href="#/c/${b.chapter}${b.section !== '_chapter' ? '/' + b.section : ''}"><b>${esc(secTitle(b.chapter, b.section) || b.title)}</b><small>${esc(chLabel(b.chapter))} · ${ago(b.ts)}</small></a><button data-unbm="${b.chapter}|${b.section}" title="移除">×</button></li>`).join('')}</ul>` : '<div class="empty">未有書籤。每個小節標題右邊有 ☆，撳一下就加書籤。</div>';
     if (tab === 'notes') { const ks = Object.keys(u.notes).sort((a, b) => u.notes[b].ts - u.notes[a].ts); body = ks.length ? `<ul class="me-list notes">${ks.map((k) => { const [ch, sid] = k.split('#'); return `<li><a href="#/c/${ch}${sid !== '_chapter' ? '/' + sid : '/ch-end'}"><b>${esc(secTitle(ch, sid))}</b><small>${esc(chLabel(ch))} · ${ago(u.notes[k].ts)}</small><p>${esc(u.notes[k].text).replace(/\n/g, '<br>')}</p></a></li>`; }).join('')}</ul>` : '<div class="empty">未有筆記。每個小節標題右邊有 📝；每章底部亦有「本章筆記」。</div>'; }
     if (tab === 'highlights') body = u.highlights.length ? `<ul class="me-list">${u.highlights.slice().reverse().map((h) => `<li><a href="#/c/${h.chapter}/${h.section}"><mark class="hl hl-${h.color}">${esc(h.text)}</mark>${h.note ? `<p>📝 ${esc(h.note)}</p>` : ''}<small>${esc(chLabel(h.chapter))} · ${ago(h.ts)}</small></a></li>`).join('')}</ul>` : '<div class="empty">未有螢光筆。喺課文入面用滑鼠（或者手指長按）揀選文字，就會彈出螢光筆工具。</div>';
+    if (tab === 'stats') body = Learn.statsHTML();
     if (tab === 'videos') { const vs = Store.videos().slice().reverse(); body = vs.length ? `<div class="video-list">${vs.map((v) => videoHTML(v, true)).join('')}</div>` : '<div class="empty">未有影片。每章底部可以加影片連結。</div>'; }
     view.innerHTML = `<div class="page-head"><h1>⭐ 我嘅書籤・筆記・螢光筆</h1><p class="muted">書籤、筆記同螢光筆屬於「${esc((Store.activeProfile() || {}).name || '')}」；影片係全家共用。</p></div>
-      <div class="tabs">${tabs.map(([k, l, n]) => `<a class="tab ${tab === k ? 'on' : ''}" href="#/me/${k}">${l}（${n}）</a>`).join('')}</div>${body}`;
+      <div class="tabs">${tabs.map(([k, l, n]) => `<a class="tab ${tab === k ? 'on' : ''}" href="#/me/${k}">${l}${n !== '' ? `（${n}）` : ''}</a>`).join('')}<button class="btn ghost sm me-export" data-export-md>⬇️ 匯出筆記（Markdown）</button></div>${body}`;
+    $('[data-export-md]', view).addEventListener('click', () => { Learn.exportNotes(); toast('已匯出筆記'); });
     $$('[data-unbm]', view).forEach((b) => b.addEventListener('click', () => { const [ch, s] = b.dataset.unbm.split('|'); Store.toggleBookmark(ch, s); renderMe('bookmarks'); }));
     bindVideoEvents(view, () => renderMe('videos'));
   }
@@ -876,6 +897,8 @@
           <div class="fam-top"><span class="av lg" style="--c:${p.color}">${p.emoji}</span><div><b>${esc(p.name)}</b><small>${rk.icon} ${rk.name} · ${u.xp} XP · 🔥${u.streak.count || 0}</small></div>${p.id !== Store.db.active ? `<button class="btn sm" data-switch="${p.id}">切換</button>` : '<em>使用中</em>'}</div>
           ${LEVELS.map((lv) => { const s = levelStats(lv, p.id); return `<div class="fam-lv"><span>${lv.icon} ${esc(lv.code)}</span><div class="bar"><div style="width:${s.pct * 100}%;background:${lv.color}"></div></div><small>${s.done}/${s.total}</small></div>`; }).join('')}
           <p class="fam-last">${last ? `📍 讀緊：${esc(last.level.code)} 第 ${last.num} 章 ${esc(last.title)}（${ago(u.last.ts)}）` : '未開始'}</p>
+          <div class="fam-heat">${Learn.heatmap(p.id, true)}</div>
+          <p class="fam-last">🎯 今日任務：${(() => { const q = Learn.quests(p.id); return q.list.filter((x) => x.have >= x.n).length + ' / ' + q.list.length + (q.done ? ' ✅' : ''); })()}${Object.keys(u.wrong || {}).length ? `・📕 錯題 ${Object.keys(u.wrong).length}` : ''}</p>
           <div class="badges">${bd.map((b) => `<span title="${esc(b[1])}">${b[0]} ${esc(b[1])}</span>`).join('') || '<span class="muted">未有徽章</span>'}</div>
         </div>`; }).join('')}</div>
       <h2 class="sec-h">逐章完成情況</h2>
@@ -934,18 +957,22 @@
       <div class="card"><div class="card-h">👤 使用者</div>${ps.map((p) => `<div class="prof-row"><span class="av" style="--c:${p.color}">${p.emoji}</span><b>${esc(p.name)}</b><button class="btn ghost sm" data-edit="${p.id}">編輯</button></div>`).join('')}<button class="btn sm" data-new>＋ 新增家庭成員</button></div>
       <div class="card"><div class="card-h">🎨 顯示</div>
         <div class="tool-foot"><span>主題：</span><button class="btn sm" data-theme="">跟系統</button><button class="btn sm" data-theme="light">☀️ 淺色</button><button class="btn sm" data-theme="dark">🌙 深色</button></div>
-        <div class="tool-foot"><span>字體大小：</span>${[0.9, 1, 1.1, 1.2, 1.35].map((f) => `<button class="btn sm" data-font="${f}">${Math.round(f * 100)}%</button>`).join('')}</div></div>
+        <div class="tool-foot"><span>字體大小：</span>${[0.9, 1, 1.1, 1.2, 1.35].map((f) => `<button class="btn sm" data-font="${f}">${Math.round(f * 100)}%</button>`).join('')}</div>
+        <div class="tool-foot"><label class="chk"><input type="checkbox" data-gloss ${Store.ui().glossTips === false ? '' : 'checked'}> 章節內顯示詞彙提示（英文詞彙加虛線，撳一下睇解釋）</label></div>
+        <div class="tool-foot"><span>朗讀速度：</span>${[0.8, 0.9, 1, 1.15, 1.3].map((r) => `<button class="btn sm ${(Store.ui().ttsRate || 1) === r ? 'primary' : ''}" data-rate="${r}">${r}×</button>`).join('')}</div></div>
       <div class="card"><div class="card-h">💾 備份同同步（唔同裝置之間）</div>
         <p>所有資料只儲存喺<b>呢部機嘅瀏覽器</b>（唔會上載去任何伺服器）。想喺爸爸部電腦同細路部 iPad 之間同步：</p>
         <ol><li>喺 A 機撳「⬇️ 匯出備份」，得到一個 .json 檔。</li><li>用 WhatsApp / AirDrop / Email 傳去 B 機。</li><li>喺 B 機撳「⬆️ 匯入（合併）」揀個檔 —— 進度、書籤、筆記、留言、影片會<b>合併</b>，唔會覆蓋 B 機原有資料。</li><li>B 機再匯出，傳返 A 機合併，兩邊就一致。</li></ol>
         <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份（全部使用者）</button><label class="btn">⬆️ 匯入（合併）<input type="file" accept=".json,application/json" hidden data-import="merge"></label><label class="btn ghost">⬆️ 匯入（完全取代）<input type="file" accept=".json,application/json" hidden data-import="replace"></label></div></div>
       <div class="card"><div class="card-h">🧹 重設</div><p class="muted">清除呢部機所有使用者同資料（建議先匯出備份）。</p><button class="btn ghost danger" data-reset>清除全部資料</button></div>
       <div class="card"><div class="card-h">📱 加到手機主畫面</div><p>iPhone / iPad：用 Safari 打開 → 分享 → 「加至主畫面」。Android：Chrome 選單 → 「安裝應用程式」。加咗之後可以好似 App 咁開，部分內容離線都睇到。</p></div>
-      <div class="card"><div class="card-h">ℹ️ 關於</div><p>內容整理自你用 ChatGPT 生成嘅 Level 3–5 課程筆記，加上 Level 1–2 基礎重溫、新手錯誤章節、互動計算器、K 線重播遊戲、測驗、字卡同交易日誌。所有 TSLA 數字均為教學模擬，不構成投資建議。部分平台規則（例如 PDT、T+1、IBKR 數據）會變，請以官方最新公布為準。</p></div>`;
+      <div class="card"><div class="card-h">ℹ️ 關於</div><p>內容整理自你用 ChatGPT 生成嘅 Level 1–5 課程筆記同實戰問答，加上補充章節、互動計算器、K 線重播遊戲、訓練場、測驗、錯題本、字卡同交易日誌。所有 TSLA 數字均為教學模擬，不構成投資建議。部分平台規則（例如 PDT、T+1、IBKR 數據）會變，請以官方最新公布為準。</p></div>`;
     $$('[data-edit]', view).forEach((b) => b.addEventListener('click', () => profileForm(ps.find((p) => p.id === b.dataset.edit))));
     $('[data-new]', view).addEventListener('click', () => profileForm());
     $$('[data-theme]', view).forEach((b) => b.addEventListener('click', () => setTheme(b.dataset.theme)));
     $$('[data-font]', view).forEach((b) => b.addEventListener('click', () => setFont(+b.dataset.font)));
+    $('[data-gloss]', view).addEventListener('change', (e) => { Store.setUI({ glossTips: e.target.checked }); toast(e.target.checked ? '已開啟詞彙提示' : '已關閉詞彙提示'); });
+    $$('[data-rate]', view).forEach((b) => b.addEventListener('click', () => { Store.setUI({ ttsRate: +b.dataset.rate }); $$('[data-rate]', view).forEach((x) => x.classList.toggle('primary', x === b)); }));
     $('[data-export]', view).addEventListener('click', () => { download(`trading-academy-backup-${Store.today()}.json`, Store.exportJSON(), 'application/json'); Journal.markBackup(); toast('已匯出'); });
     $$('[data-import]', view).forEach((inp) => inp.addEventListener('change', (e) => {
       const f = e.target.files[0]; if (!f) return;
@@ -1049,7 +1076,7 @@
       view.dataset.ch = '';
       renderRail(null);
       window.scrollTo(0, 0);
-      const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌' };
+      const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南' };
       document.title = (titles[r] ? titles[r] + '｜' : '') + 'TSLA Day Trading 學院';
       if (r === 'toc') renderFullTOC();
       else if (r === 'tools') renderTools(parts[1]);
@@ -1062,6 +1089,10 @@
       else if (r === 'family') renderFamily();
       else if (r === 'settings') renderSettings();
       else if (r === 'journal') Journal.render(view, parts[1]);
+      else if (r === 'gym') Learn.renderGym(view, parts[1]);
+      else if (r === 'review') Learn.renderReview(view);
+      else if (r === 'level') Learn.renderLevel(view, parts[1]);
+      else if (r === 'guide') Learn.renderGuide(view);
       else renderHome();
     }
     renderTOC(activeCh, r === 'c' ? 'chapter' : r);
@@ -1070,7 +1101,7 @@
   }
   window.addEventListener('hashchange', route);
 
-  window.App = { toast, modal, download, go, route, CH, CHAPTERS, LEVELS, renderQuiz, mountTool };
+  window.App = { toast, modal, download, go, route, CH, CHAPTERS, LEVELS, renderQuiz, mountTool, confetti, levelStats, chapterPct };
 
   /* ---------------- 啟動 ---------------- */
   Store.touchStreak();

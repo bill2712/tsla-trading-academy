@@ -1,6 +1,6 @@
 # 📈 TSLA Day Trading 學院
 
-由 Level 1 到 Level 5 嘅美股 Day Trading **互動學習平台**（廣東話）。內容整理自自己生成嘅 Level 3–5 課程筆記，再加上基礎重溫、補充章節、互動計算器、K 線重播遊戲、測驗同交易日誌。
+由 Level 1 到 Level 5 嘅美股 Day Trading **互動學習平台**（廣東話）。內容整理自自己生成嘅 Level 1–5 課程筆記同實戰問答，再加上補充章節、互動計算器、K 線重播、訓練場、測驗、錯題本同交易日誌。
 
 > ⚠️ 所有 TSLA 價格、成交量同交易例子都係**教學模擬**，唔係即時行情、唔係投資建議、亦唔係已驗證嘅盈利策略。
 
@@ -8,24 +8,22 @@
 
 | 類別 | 功能 |
 |---|---|
-| 📚 內容 | Level 1–2 基礎重溫（新增）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發、💡 實戰問答（AAPL S/R 畫法、Zone 闊度、Stop、Replay 搵唔到 Entry），共 56 章 |
-| 🗺️ 目錄 | 側欄完整目錄（Level → 章 → 小節）、完整課程目錄頁、右邊「本章目錄」，撳任何一節直接跳過去 |
-| 📍 閱讀進度 | 自動記錄讀到邊個小節、每章完成度圓圈、「繼續上次」、讀完自動標記完成 |
-| ⭐ 書籤 | 每個小節標題旁邊 ☆，整章亦可以加書籤 |
-| 📝 筆記 | 小節筆記、每章筆記；揀選文字可以加 **螢光筆**（4 種顏色）同備註 |
-| 🎬 影片 | 每章可以貼 YouTube / 其他連結，YouTube 會直接嵌入播放；仲有一鍵 YouTube 搜尋建議 |
-| 💬 留言 | 家庭討論區：每章留言、指定小節、引用選取文字、回覆 |
-| 👨‍👩‍👧 多使用者 | 爸爸、媽媽、細路各自有自己嘅進度／書籤／筆記／分數；留言同影片全家共用；家庭進度頁 |
-| 🧰 工具箱 | 36 個互動計算器：S/R Zone 畫法工具、「點解冇 Entry？」診斷器、Position Size、Risk Calculator、期望值實驗室、Monte Carlo、連敗機率、Order 跳價模擬器、Order Book、VWAP、RVOL、CLV、Net R、MFE/MAE、每日風險追蹤、CSV 數據檢查器… |
-| 🎮 K 線重播 | 5 個逐支 K 線決策情境（WAIT / PLAN / 入場 / 放棄），即時講解 |
-| 📝 測驗 | 54 份測驗（每章小測 + 三個期末測驗），全部有詳細解析 |
-| 🃏 字卡 | 80+ 個詞彙字卡（可反轉、記住已識） |
-| 📒 交易日誌 | 真實／Paper／Replay 三類交易分開統計；入場理由、判斷啱唔啱、跟唔跟規則、情緒、錯誤標籤、教訓同改善；「過程 × 結果」四格評估；按類型／Playbook／Setup／市況分析；Equity Curve；可匯出 CSV；可以睇家庭成員嘅紀錄 |
-| 📘 Playbook | 自訂策略規則卡，有範本（Level 3 A/B/C、TSLA-BR-LONG v1.0）、版本紀錄（改規則自動保存舊版本同原因），每個 Playbook 自動計表現 |
-| 🔁 Replay 日誌 | 每 Replay 一日就記：事前畫咗乜、7 項評分表、結果（冇 Breakout／冇 Retest／R:R 唔夠／錯過咗…），睇結果分佈 |
-| 🧠 檢討 | 最常犯錯誤排行、情緒 vs 結果、教訓時間線 |
-| 🎯 遊戲化 | XP、等級稱號、連續學習日數、徽章、完成章節慶祝 |
-| 🌓 其他 | 深色／淺色主題、字體大小、列印版面、手機版、可「加到主畫面」離線使用 |
+| 📚 內容 | **Level 1** 六樣工具（K 線、Volume、PDH/PDL、S/R、VWAP、LuxAlgo）、**Level 2** Price Action 實戰（結構、Bias、K 線深度、Volume、VWAP、六個 TSLA 情境、WAIT/PLAN/SKIP）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發、💡 實戰問答，共 77 章 |
+| 🗺️ 目錄 | 側欄完整目錄、每個 Level 概覽頁（章節、練習、工具、測驗）、完整課程目錄頁、右邊「本章目錄」 |
+| 📍 閱讀進度 | 自動記錄讀到邊個小節、每章完成度、「繼續上次」 |
+| 🏋️ 訓練場 | 隨機生成、可以無限重玩：K 線形態辨識、市場結構辨識（HH/HL vs LH/LL vs Range）、情境決策（WAIT / PLAN / SKIP）、60 秒風險速算 |
+| 📕 錯題本 | 測驗答錯自動收集，按間隔重溫（1、3、7、14 日）再考，答啱 4 次當掌握 |
+| 🎯 每日任務 | 每日 3 個小任務（讀小節、答題、訓練、溫習、筆記、重播、日誌），完成全部有額外 XP；📅 學習日曆熱圖 |
+| 📖 詞彙提示 | 章節內英文詞彙自動加虛線，撳一下睇中文解釋（可喺設定關閉） |
+| 🔊 朗讀 | 由你睇緊嘅位置開始讀出課文（瀏覽器內置語音，可調速度） |
+| ⭐ 書籤・📝 筆記 | 小節書籤、筆記、螢光筆（4 色）＋備註；可以一鍵匯出 Markdown |
+| 🎬 影片・💬 留言 | 每章貼 YouTube 連結；家庭討論區（每章、指定小節、引用文字、回覆） |
+| 👨‍👩‍👧 多使用者 | 每人獨立進度／筆記／XP／錯題本／日誌；家庭進度頁有每人學習日曆同今日任務 |
+| 🧰 工具箱 | 38 個互動工具，新增 🧠 決策教練（逐項輸入 → WAIT / PLAN / SKIP 同理由）、🗒️ Price Action 分析紀錄卡（可存入 Replay 日誌）、升級版 K 線砌圖器（Body Ratio、Close Position） |
+| 🎮 K 線重播 | 8 個逐支 K 線情境，新增 Level 2：阻力區 Shooting Star、升勢回調 + Higher Low、VWAP 附近反覆上落 |
+| 📝 測驗・🃏 字卡 | 74 份測驗（全部有解析）；100+ 詞彙字卡 |
+| 📒 交易日誌・📘 Playbook | 真實／Paper／Replay 交易、過程 × 結果四格、Playbook 版本紀錄、Replay 日誌、檢討 |
+| 🌓 其他 | 深淺色、字體大小、列印、手機版、加到主畫面離線使用 |
 
 ## 🚀 點樣用
 
@@ -57,7 +55,8 @@ python3 -m http.server 8000
 ```
 index.html              主頁面
 css/style.css           樣式（深淺色、手機、列印）
-content/level0.js       Level 1–2 基礎重溫
+content/level1.js       Level 1 六樣工具
+content/level2.js       Level 2 Price Action
 content/level3.js       Level 3 課程內容
 content/level4.js       Level 4 課程內容
 content/level5.js       Level 5 課程內容
@@ -68,6 +67,7 @@ js/tools.js             互動計算器
 js/charts.js            SVG K 線圖、折線圖、柱狀圖
 js/replay.js            K 線重播遊戲
 js/journal.js           交易日誌
+js/learn.js             訓練場、錯題本、每日任務、學習日曆、Level 概覽、詞彙提示、朗讀
 js/store.js             使用者資料、匯出匯入
 js/app.js               路由、目錄、章節頁、書籤筆記留言影片
 sw.js                   離線快取
@@ -88,6 +88,7 @@ sw.js                   離線快取
 | `[[chart:l3-breakout]]` | K 線示意圖（喺 `js/charts.js`） |
 | `[[rr:386.10,384.70,388.90]]` | Entry / Stop / Target 風險回報圖 |
 | `[[replay:l3-br-win]]` | K 線重播遊戲入口 |
+| `[[widget:res-outcomes]]` | 內文示意圖（名稱見 `js/tools.js` 嘅 `WIDGETS`） |
 
 改完 push 上 GitHub，Pages 會自動更新。
 

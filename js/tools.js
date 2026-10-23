@@ -890,7 +890,7 @@
 
   /* ---------------- 時區 ---------------- */
   TOOLS['timezone'] = {
-    title: '美股時間換算', icon: '🕰️', cat: '數據與指標', level: 'l0',
+    title: '美股時間換算', icon: '🕰️', cat: '數據與指標', level: 'l1',
     desc: '而家美東幾點？開市收市係你當地幾點？',
     render(el) {
       const zones = [['America/New_York', '紐約（ET）'], ['America/Toronto', '多倫多'], ['America/Vancouver', '溫哥華'], ['Asia/Hong_Kong', '香港'], ['Europe/London', '倫敦']];
@@ -937,19 +937,19 @@
     return { name: c >= o ? '普通綠燭' : '普通紅燭', why: c >= o ? '收市高過開市。' : '收市低過開市。' };
   }
   TOOLS['candle-builder'] = {
-    title: 'K 線砌圖器', icon: '🕯️', cat: '數據與指標', level: 'l0',
+    title: 'K 線砌圖器（OHLC 模擬器）', icon: '🕯️', cat: '數據與指標', level: 'l1',
     desc: '拉滑桿改 OHLC，即時睇 K 線形狀同形態名稱。',
     render(el, ctx) {
       const d = { o: 100.6, h: 101.0, l: 98.2, c: 100.9 };
       const s = ctx.load(Object.assign({}, d));
-      const r = (k, l) => `<label class="fld range"><span>${l}：<b data-show="${k}">${F(s[k])}</b></span><input type="range" min="97" max="104" step="0.05" data-k="${k}" value="${s[k]}"></label>`;
+      const r = (k, l) => `<label class="fld range"><span>${l}：<b data-show="${k}">${F(s[k])}</b></span><input type="range" min="95" max="106" step="0.05" data-k="${k}" value="${s[k]}"></label>`;
       el.innerHTML = `<div class="cb-wrap"><div class="cb-chart"></div><div class="cb-ctrl">${r('o', 'Open')}${r('h', 'High')}${r('l', 'Low')}${r('c', 'Close')}
-        <div class="chips">${[['Hammer', [100.6, 101, 98.2, 100.9]], ['Shooting Star', [100.5, 103.2, 100.2, 100.3]], ['Doji', [100.5, 101.8, 99.2, 100.52]], ['Marubozu', [99, 102.4, 98.98, 102.38]]].map(([n, v]) => `<button class="chip btn-chip" data-preset="${v.join(',')}">${n}</button>`).join('')}</div></div></div><div class="tool-out"></div>`;
+        <div class="chips">${[['Hammer', [100.6, 101, 98.2, 100.9]], ['Shooting Star', [100.5, 103.2, 100.2, 100.3]], ['Doji', [100.5, 101.8, 99.2, 100.52]], ['Marubozu', [99, 102.4, 98.98, 102.38]], ['① 收近高位', [100, 105, 98, 104.8]], ['② 細實體', [100, 105, 98, 100.2]], ['③ 收近低位', [100, 105, 98, 98.2]]].map(([n, v]) => `<button class="chip btn-chip" data-preset="${v.join(',')}">${n}</button>`).join('')}</div></div></div><div class="tool-out"></div>`;
       const out = el.querySelector('.tool-out');
       const update = () => {
         // 保持 OHLC 合理
         const h = Math.max(s.h, s.o, s.c), l = Math.min(s.l, s.o, s.c);
-        const Y = (v) => 12 + (104 - v) / 7 * 236, up = s.c >= s.o, col = up ? 'var(--up)' : 'var(--down)';
+        const Y = (v) => 12 + (106 - v) / 11 * 236, up = s.c >= s.o, col = up ? 'var(--up)' : 'var(--down)';
         const near = Math.abs(Y(s.o) - Y(s.c)) < 14, nud = (t, v) => (!near ? 0 : (t === 'O') === (s.o >= s.c) ? -7 : 7);
         const lab = (v, t, side) => `<text x="${side === 'l' ? 8 : 192}" y="${Y(v) + 4 + (side === 'r' ? nud(t, v) : 0)}" text-anchor="${side === 'l' ? 'start' : 'end'}">${t} ${F(v)}</text><line x1="${side === 'l' ? 58 : 122}" x2="${side === 'l' ? 78 : 142}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--border)" stroke-dasharray="3 3"/>`;
         el.querySelector('.cb-chart').innerHTML = `<svg class="cb-svg" viewBox="0 0 200 260" role="img" aria-label="K 線">
@@ -957,7 +957,8 @@
           <line x1="100" x2="100" y1="${Y(h)}" y2="${Y(l)}" stroke="${col}" stroke-width="3"/>
           <rect x="80" width="40" y="${Y(Math.max(s.o, s.c))}" height="${Math.max(2, Y(Math.min(s.o, s.c)) - Y(Math.max(s.o, s.c)))}" fill="${col}" rx="3"/></svg>`;
         const k = classify(s.o, h, l, s.c), range = h - l;
-        out.innerHTML = `${big('形態', k.name)}<p>${k.why}</p><div class="stats">${stat('實體佔全幅', pct(Math.abs(s.c - s.o) / range, 0))}${stat('上影線', F(h - Math.max(s.o, s.c)))}${stat('下影線', F(Math.min(s.o, s.c) - l))}${stat('CLV', range > 0 ? F((2 * s.c - h - l) / range) : '—')}</div><p class="tool-fine">提醒：形態要配合位置同後續確認先有意義。</p>`;
+        const cp = range > 0 ? (s.c - l) / range : null;
+        out.innerHTML = `${big('形態', k.name)}<p>${k.why}${cp != null ? `${s.c >= s.o ? '綠燭' : '紅燭'}：收市位於區間${cp >= 0.67 ? '上段（接近高位）' : cp <= 0.33 ? '下段（接近低位）' : '中段'}。` : ''}</p><div class="stats">${stat('Range', '$' + F(range))}${stat('Body Ratio', pct(Math.abs(s.c - s.o) / range, 1))}${stat('Close Position', cp != null ? pct(cp, 1) : '—')}${stat('上影線', '$' + F(h - Math.max(s.o, s.c)))}${stat('下影線', '$' + F(Math.min(s.o, s.c) - l))}${stat('CLV', range > 0 ? F((2 * s.c - h - l) / range) : '—')}</div><p class="tool-fine">提醒：形態要配合位置同後續確認先有意義。</p>`;
       };
       el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = parseFloat(i.value); el.querySelector(`[data-show="${i.dataset.k}"]`).textContent = F(s[i.dataset.k]); ctx.save(s); update(); }));
       el.querySelectorAll('[data-preset]').forEach((b) => b.addEventListener('click', () => { const [o, h, l, c] = b.dataset.preset.split(',').map(Number); Object.assign(s, { o, h, l, c }); ctx.save(s); TOOLS['candle-builder'].render(el, ctx); }));
@@ -1169,10 +1170,126 @@
     },
   };
 
+  /* ---------------- 決策教練 ---------------- */
+  TOOLS['decision-coach'] = {
+    title: '決策教練：WAIT、PLAN 定 SKIP？', icon: '🧠', cat: '計劃與規則', level: 'l2',
+    desc: '將你見到嘅結構、位置、K 線確認、Volume、VWAP 同風險逐項輸入，按 Level 2 優先次序得出建議。',
+    render(el, ctx) {
+      const d = { dir: 'long', bias: 'bull', loc: 'key', conf: 'single', vol: 'neutral', vwap: 'support', stopOk: 'yes', entry: 386.00, stop: 384.90, target: 388.50, minRR: 2 };
+      const s = ctx.load(Object.assign({}, d));
+      const sel = (k, label, opts) => `<label class="fld"><span>${label}</span><select data-k="${k}">${opts.map(([v, t]) => `<option value="${v}" ${s[k] === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>`;
+      const num = (k, label) => `<label class="fld"><span>${label}</span><input type="number" step="0.01" data-k="${k}" value="${s[k]}"></label>`;
+      el.innerHTML = `<p class="tool-note">按次序：① 市場環境 → ② 位置 → ③ 價格確認 → ④ Volume + VWAP → ⑤ 失效條件及風險。教學工具，唔係交易訊號。</p>
+        <div class="tool-grid">
+          ${sel('dir', '你研究緊嘅方向', [['long', 'Long（看漲）'], ['short', 'Short（看跌）']])}
+          ${sel('bias', '① 市場結構／Bias', [['bull', 'HH + HL（偏強）'], ['bear', 'LH + LL（偏弱）'], ['range', 'Range 橫行'], ['chop', '結構混亂／反覆穿 VWAP']])}
+          ${sel('loc', '② 位置', [['key', '喺預先畫好嘅重要區（S/R、PDH/PDL）'], ['edge', '喺區間邊界'], ['middle', '區間中間／冇重要位置']])}
+          ${sel('conf', '③ 價格確認（已完成 K 線）', [['confirmed', '已確認（例如突破後維持、升穿確認 K 高位）'], ['single', '只有單一訊號（例如一支 Hammer）'], ['unclosed', 'K 線未收市'], ['failed', '原本假設已被推翻']])}
+          ${sel('vol', '④ Volume', [['support', '支持呢個方向'], ['neutral', '中性／冇額外資訊'], ['against', '反對（例如突破量低）']])}
+          ${sel('vwap', '④ VWAP 背景', [['support', '支持呢個方向'], ['neutral', '橫行／中性'], ['against', '反對（例如 Long 但喺 VWAP 下方向下）']])}
+          ${sel('stopOk', '⑤ 可以清楚界定失效位？', [['yes', '可以'], ['no', '唔可以']])}
+          ${num('entry', 'Entry')}${num('stop', 'Stop')}${num('target', 'Target（下一障礙前）')}
+          <label class="fld"><span>最低 R:R</span><input type="number" step="0.1" data-k="minRR" value="${s.minRR}"></label>
+        </div><div class="tool-out"></div><div class="tool-foot"><button class="btn ghost sm" data-reset>↺ 示例</button></div>`;
+      const out = el.querySelector('.tool-out');
+      const update = () => {
+        const long = s.dir === 'long';
+        const risk = long ? s.entry - s.stop : s.stop - s.entry, rew = long ? s.target - s.entry : s.entry - s.target;
+        const rr = risk > 0 ? rew / risk : NaN;
+        const why = [], next = []; let dec = 'PLAN';
+        const withTrend = (long && s.bias === 'bull') || (!long && s.bias === 'bear');
+        const counter = (long && s.bias === 'bear') || (!long && s.bias === 'bull');
+        const worst = (x) => { const rank = { PLAN: 0, WAIT: 1, SKIP: 2 }; if (rank[x] > rank[dec]) dec = x; };
+        if (s.bias === 'chop') { worst('SKIP'); why.push('結構混亂、反覆穿 VWAP：容易 Overtrading，No Trade 係正常決定。'); next.push('等清晰 HH/HL 或 LH/LL，或者有效突破重要區域。'); }
+        if (s.loc === 'middle') { worst('SKIP'); why.push('唔喺重要位置：冇客觀依據界定失效位同目標。'); next.push('等價格去到預先畫好嘅 S/R、PDH / PDL 或區間邊界。'); }
+        if (s.conf === 'failed') { worst('SKIP'); why.push('原本假設已被推翻：最重要係更新判斷，唔係即刻反手。'); }
+        if (s.conf === 'unclosed') { worst('WAIT'); why.push('K 線未收市：形態可能喺最後一分鐘完全改變。'); next.push('等呢支 K 線收市再判斷。'); }
+        if (s.conf === 'single') { worst('WAIT'); why.push('只有單一訊號：要後續價格確認（三支連續觀察法）。'); next.push(long ? '等下一支升穿訊號 K 線高位，或者形成 HL。' : '等下一支跌穿訊號 K 線低位，或者形成 LH。'); }
+        if (counter) { worst('WAIT'); why.push('逆住主要結構：可能只係' + (long ? '跌勢中嘅反彈' : '升勢中嘅回調') + '，需要更多結構轉變證據。'); next.push(long ? '觀察有冇停止創 LL、升穿重要 LH、形成 HL。' : '觀察有冇跌穿重要 HL、形成 LH + LL。'); }
+        const against = [s.vol === 'against' && 'Volume', s.vwap === 'against' && 'VWAP'].filter(Boolean);
+        if (against.length === 2) { worst('WAIT'); why.push('Volume 同 VWAP 都唔支持：輔助證據同方向相反。'); }
+        else if (against.length === 1) why.push(`${against[0]} 唔支持：唔使即刻否定，但要更多價格確認先好行動。`);
+        if (s.stopOk === 'no') { worst('SKIP'); why.push('冇辦法清楚界定失效位：就算方向啱都唔可以建立計劃。'); }
+        if (!(risk > 0)) { worst('SKIP'); why.push('Entry / Stop 方向唔啱，計唔到風險。'); }
+        else if (rr < s.minRR) { worst('SKIP'); why.push(`R:R 只有 ${F(rr)}，低過你嘅最低要求 ${s.minRR}：方向判斷正確，唔代表交易值得做。`); next.push('等更好嘅入場位置（例如回測），或者放棄。'); }
+        if (dec === 'PLAN') { why.push(`${withTrend ? '順勢、' : ''}喺重要位置、價格已確認、可以界定失效位，R:R ${F(rr)} 符合要求。`); next.push('事前寫好 Trigger、Stop、Target 同股數，用 Paper Trading 或 Replay 執行。'); }
+        const cls = { PLAN: 'plan', WAIT: 'wait', SKIP: 'skip' }[dec];
+        out.innerHTML = `<div class="coach-dec"><b class="dec ${cls} big">${dec}</b><span>${{ PLAN: '建立模擬計劃', WAIT: '等待更多確認', SKIP: '放棄呢個情境' }[dec]}</span>${isFinite(rr) ? `<em>R:R ${F(rr)} : 1</em>` : ''}</div>
+          <h5>點解？</h5><ul>${why.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
+          ${next.length ? `<h5>下一步觀察</h5><ul>${next.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}
+          <p class="tool-fine">優先次序：位置、結構、價格確認最重要；Volume 同 VWAP 評估訊號質素；風險決定可唔可以建立計劃。</p>`;
+      };
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : parseFloat(i.value); ctx.save(s); update(); }));
+      el.querySelector('[data-reset]').addEventListener('click', () => { ctx.save(Object.assign({}, d)); TOOLS['decision-coach'].render(el, ctx); });
+      update();
+    },
+  };
+
+  /* ---------------- Price Action 分析紀錄卡 ---------------- */
+  TOOLS['pa-journal'] = {
+    title: 'Price Action 分析紀錄卡', icon: '🗒️', cat: '計劃與規則', level: 'l2',
+    desc: '每次 Replay 填一份：結構、位置、K 線、Volume、VWAP、下一步、失效條件、決定、之後發生乜。可以複製或存入 Replay 日誌。',
+    render(el, ctx) {
+      const d = { when: '', symbol: 'TSLA', structure: '', levels: '', candle: '', volume: '', vwap: '', watch: '', invalid: '', decision: '', after: '' };
+      const s = ctx.load(Object.assign({}, d));
+      const ta = (k, label, ph) => `<label class="fld wide"><span>${label}</span><textarea rows="2" data-k="${k}" placeholder="${esc(ph)}">${esc(s[k])}</textarea></label>`;
+      const radio = (k, label, opts) => `<div class="fld wide"><span>${label}</span><div class="tag-pick">${opts.map((o) => `<label><input type="radio" name="pa-${k}" value="${esc(o)}" data-r="${k}" ${s[k] === o ? 'checked' : ''}> ${esc(o)}</label>`).join('')}</div></div>`;
+      el.innerHTML = `<div class="tool-grid">
+          <label class="fld"><span>日期 / Replay 時間</span><input data-k="when" value="${esc(s.when)}" placeholder="例如：2026-09-24 10:15 ET"></label>
+          <label class="fld"><span>Symbol</span><input data-k="symbol" value="${esc(s.symbol)}"></label>
+          ${radio('structure', '1. Market Structure', ['Uptrend — HH + HL', 'Downtrend — LH + LL', 'Range / Neutral'])}
+          ${ta('levels', '2. 重要價格位置', '例如：Resistance $385–385.30')}
+          ${ta('candle', '3. Candlestick / Price Action', '例如：5m Shooting Star，收市接近低位')}
+          ${ta('volume', '4. Volume', '例如：1.6M，約為同時段平均 1.8x')}
+          ${ta('vwap', '5. VWAP', '例如：Price > VWAP，VWAP 向上')}
+          ${ta('watch', '6. 下一步要觀察乜？', '例如：等下一支 Candle 跌穿 Shooting Star Low')}
+          ${ta('invalid', '7. 乜嘢情況會令我嘅假設失效？', '例如：價格重新升穿阻力區並守穩')}
+          ${radio('decision', '8. 決定', ['WAIT — 觀察', 'PLAN — 制定模擬交易計劃', 'SKIP — 放棄'])}
+          ${ta('after', '9. 之後真實發生咗乜？（Replay 後填）', '例如：下一支回到區間內，突破假設失效')}
+        </div><div class="tool-foot"><button class="btn sm primary" data-copy>📋 複製分析紀錄</button><button class="btn sm" data-save>💾 存入 Replay 日誌</button><button class="btn ghost sm" data-clear>清空（開新一份）</button></div>`;
+      const text = () => `【Price Action Analysis Journal】${s.symbol} ${s.when}\n1. Market Structure：${s.structure}\n2. 重要價格位置：${s.levels}\n3. Candlestick：${s.candle}\n4. Volume：${s.volume}\n5. VWAP：${s.vwap}\n6. 下一步觀察：${s.watch}\n7. 失效條件：${s.invalid}\n8. 決定：${s.decision}\n9. 之後發生：${s.after}`;
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.value; ctx.save(s); }));
+      el.querySelectorAll('[data-r]').forEach((i) => i.addEventListener('change', () => { s[i.dataset.r] = i.value; ctx.save(s); }));
+      el.querySelector('[data-copy]').addEventListener('click', () => (navigator.clipboard ? navigator.clipboard.writeText(text()) : Promise.reject()).then(() => App.toast('已複製'), () => prompt('複製：', text())));
+      el.querySelector('[data-save]').addEventListener('click', () => {
+        const u = Store.user(); u.replays = u.replays || [];
+        const m = String(s.when).match(/\d{4}-\d{2}-\d{2}/);
+        u.replays.push({ id: Store.uid(), ts: Date.now(), date: m ? m[0] : Store.today(), symbol: s.symbol, tf: '5m', market: /Up/.test(s.structure) ? 'Trending' : /Range/.test(s.structure) ? 'Range' : 'Trending', checks: {}, outcome: /SKIP/.test(s.decision) ? '有 Confirmation，R:R 不合理' : '', levels: s.levels, notes: text(), lesson: s.after, cands: 0, trades: 0 });
+        Store.awardXP('pajournal:' + Date.now(), 3); Store.emit('journal'); App.toast('已存入 📒 交易日誌 → Replay 日誌');
+      });
+      el.querySelector('[data-clear]').addEventListener('click', () => { if (!confirm('清空呢份紀錄？（已複製或已儲存先清）')) return; ctx.save(Object.assign({}, d)); TOOLS['pa-journal'].render(el, ctx); });
+    },
+  };
+
   /* =========================================================
    * 內文小部件（唔係工具箱入面嘅工具）
    * ========================================================= */
   const WIDGETS = {
+    'red-contexts'(el) {
+      const C = Charts;
+      const a = C.genBars([382.6, 383.4, 384.2, 384.8, 384.3, 384.9], { seed: 301, open: 382.2 }); a.push({ t: '', o: 385.0, h: 385.3, l: 384.1, c: 384.3 });
+      const b = C.genBars([380.5, 381.8, 381.2, 382.9, 382.3, 384.1], { seed: 302, open: 380 }); b.push({ t: '', o: 384.1, h: 384.3, l: 383.2, c: 383.5 });
+      const c = C.genBars([389, 387.6, 388.3, 386.4, 387.1, 385.6], { seed: 303, open: 389.5 }); c.push({ t: '', o: 385.6, h: 385.8, l: 384.4, c: 384.6 });
+      el.innerHTML = '<div class="mini-grid"><div></div><div></div><div></div></div><p class="tool-fine">示意圖，並非真實 TSLA 行情。最右邊嗰支係「同一類」紅燭。</p>';
+      const g = el.querySelectorAll('.mini-grid > div');
+      C.candles(g[0], { bars: a, showVolume: false, height: 150, zones: [{ lo: 384.8, hi: 385.3, label: '阻力' }], highlight: 6, title: 'A：喺阻力附近' });
+      C.candles(g[1], { bars: b, showVolume: false, height: 150, highlight: 6, title: 'B：升勢途中（HH、HL）' });
+      C.candles(g[2], { bars: c, showVolume: false, height: 150, highlight: 6, title: 'C：跌勢中（LH、LL）' });
+    },
+    'ohlc-paths'(el) {
+      Charts.line(el, { series: [{ name: 'A', data: [100, 102.5, 105, 101, 98, 101, 103], color: 'var(--accent)', dots: true }, { name: 'B', data: [100, 98.8, 98, 101.5, 105, 104, 103], color: 'var(--warn)', dots: true }], labels: ['開', '', '', '', '', '', '收'], height: 220, format: (v) => '$' + v.toFixed(0), title: '同一組 OHLC（O 100／H 105／L 98／C 103），兩條唔同路徑', caption: '藍：先升、後跌、再反彈；橙：先跌、後升、再回落。兩條路徑砌出嚟嘅 K 線完全一樣。' });
+    },
+    'res-outcomes'(el) {
+      const C = Charts, z = [{ lo: 384.8, hi: 385.2, label: '' }];
+      const base = [382.8, 383.6, 384.4, 383.9, 384.6];
+      const mk = (tail, seed) => C.genBars(base.concat(tail), { seed, open: 382.4, wick: 0.3 });
+      el.innerHTML = '<div class="mini-grid four"><div></div><div></div><div></div><div></div></div>';
+      const g = el.querySelectorAll('.mini-grid > div');
+      C.candles(g[0], { bars: mk([385.8, 386.6, 387.3, 388.1], 311), showVolume: false, height: 140, zones: z, title: 'A. 真突破並延續', caption: '維持喺阻力區上方' });
+      C.candles(g[1], { bars: mk([384.7, 383.9, 383.2, 382.6], 312), showVolume: false, height: 140, zones: z, title: 'B. 遇阻回落', caption: '未能真正突破' });
+      C.candles(g[2], { bars: mk([385.7, 384.6, 383.8, 383.3], 313), showVolume: false, height: 140, zones: z, title: 'C. 假突破', caption: '一度升穿，之後跌返落去' });
+      C.candles(g[3], { bars: mk([385.9, 386.4, 385.4, 386.6, 387.4], 314), showVolume: false, height: 140, zones: z, title: 'D. 突破後回測', caption: '回調至舊阻力，再次向上' });
+    },
     funnel(el, arg) {
       const v = arg.split(',').map(Number);
       const names = ['Breakout Candidates', '出現 Retest', '完成 Confirmation', '觸發入場及模擬成交', '盈利交易'];

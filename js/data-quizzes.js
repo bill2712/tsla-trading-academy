@@ -3,30 +3,127 @@
  * answer = 正確選項 index（由 0 開始）
  * ========================================================= */
 window.QUIZZES = {
-/* ---------------- Level 1–2 ---------------- */
-'l0-c1': { title: '小測：時段與 R', questions: [
-  { q: '課程主要研究嘅美股正常交易時段（RTH）係美東時間幾點？', options: ['04:00–09:30', '09:30–16:00', '16:00–20:00'], answer: 1, explain: 'RTH 係 09:30–16:00 ET，共 390 分鐘，即 78 支 5 分鐘 K 線。' },
-  { q: '你計劃每筆最多輸 $25（1R = $25）。最後賺咗 $50，係幾多 R？', options: ['+0.5R', '+2R', '+25R'], answer: 1, explain: '$50 ÷ $25 = 2，所以係 +2R。R 令唔同股數、唔同本金嘅交易可以公平比較。' },
+/* ---------------- Level 1 ---------------- */
+'l1-c0': { title: '小測：時段與 R', questions: [
+  { q: '美股正常交易時段（RTH）係美東時間幾點？', options: ['04:00–09:30', '09:30–16:00', '16:00–20:00'], answer: 1, explain: 'RTH 係 09:30–16:00 ET，共 390 分鐘，即 78 支 5 分鐘 K 線。溫哥華通常係 6:30–13:00。' },
+  { q: '1R = $25。最後賺咗 $50，係幾多 R？', options: ['+0.5R', '+2R', '+25R'], answer: 1, explain: '$50 ÷ $25 = 2，所以係 +2R。' },
 ]},
-'l0-c2': { title: '小測：K 線', questions: [
-  { q: '一支 K 線有長下影線、細實體喺頂部，佢叫咩？', options: ['Shooting Star', 'Hammer', 'Marubozu'], answer: 1, explain: 'Hammer：價格曾經大跌但被買返上嚟。喺支持區出現先比較有研究價值。' },
-  { q: '以下邊句最啱？', options: ['見到 Hammer 就應該即刻買', '形態嘅位置同背景比形態本身更重要', 'Doji 一定代表反轉'], answer: 1, explain: '同一個形態喺唔同位置意義完全唔同，仲要等後續確認。' },
+'l1-c1': { title: '小測：六樣工具', questions: [
+  { q: '六樣工具最好點樣理解？', options: ['六個獨立買賣訊號', '六種閱讀同一張圖嘅方法', '愈多指標同方向愈好'], answer: 1, explain: '佢哋分工唔同：K 線描述價格行為、Volume 提供背景、前高前低同 S/R 提供位置、VWAP 提供日內參考。' },
+  { q: '建議嘅學習次序係？', options: ['VWAP → Volume → K 線', 'K 線、前高前低、支持阻力 → 成交量 → VWAP', '一次過全部學'], answer: 1, explain: '先學價格同位置，再加成交量，最後先加 VWAP，會容易理解好多。' },
 ]},
-'l0-c3': { title: '小測：Volume', questions: [
-  { q: '點解 RVOL 要用「同時段」比較？', options: ['因為開市同中午嘅正常成交量差好遠', '因為計算比較簡單', '因為 TradingView 只有呢個選項'], answer: 0, explain: '開市頭段成交量通常特別大，同時段比較先知道今日係咪真係異常。' },
-  { q: '今日 10:00 嘅 5m Volume 係 1.6M，過去十日同時段平均 0.8M，RVOL 係？', options: ['0.5', '1.6', '2.0'], answer: 2, explain: '1.6M ÷ 0.8M = 2.0，即係平時嘅兩倍。' },
+'l1-c2': { title: '小測：K 線', questions: [
+  { q: 'NVDA 5m K 線 Open $180、High $183、Low $179、Close $182。以下邊句啱？', options: ['係陰燭，因為曾經跌到 $179', '係陽燭，因為 Close 高過 Open', '一定會繼續升'], answer: 1, explain: 'Close $182 > Open $180 = 陽燭。但唔可以推論一定繼續升，仲要睇位置、成交量同後續反應。' },
+  { q: 'TradingView 顏色可以自訂，判斷陽燭陰燭應該睇？', options: ['顏色', 'Open 同 Close 嘅實際位置', 'Volume 柱顏色'], answer: 1, explain: '以 Open、Close 實際位置為準。' },
 ]},
-'l0-c4': { title: '小測：VWAP', questions: [
-  { q: '10:05 嘅 Session VWAP 應該用邊啲 K 線計？', options: ['當日全部 K 線', '當日 09:30 至 10:05 已完成嘅 K 線', '昨日全部 K 線'], answer: 1, explain: 'VWAP 只可以用當時同之前已完成嘅資料，用全日資料就係偷睇未來。' },
-  { q: '價格由 VWAP 下面向上升，而你準備做 Long，VWAP 對你嚟講可能係？', options: ['一定會突破嘅位置', '可能嘅障礙，要計入回報空間', '同交易無關'], answer: 1, explain: 'Level 3 第四章例子：VWAP 喺入場同目標之間，可能令價格受阻。' },
+'l1-c3': { title: '小測：Volume', questions: [
+  { q: '成交量大係咪代表價格一定升？', options: ['係', '唔係，每宗成交都有買方同賣方', '只有綠燭先係'], answer: 1, explain: 'Volume 只係成交總量，唔代表方向。' },
+  { q: '突破前高但成交量冇明顯增加，可能代表？', options: ['突破一定成功', '突破嘅支持力度可能較弱，留意會唔會跌返入區間', '應該加大注碼'], answer: 1, explain: '情況 C：值得留意假突破，但成交量亦只係參考。' },
 ]},
-'l0-c5': { title: '小測：支持阻力', questions: [
-  { q: '點解課程用「Zone」而唔係一條線？', options: ['因為市場唔會精準到一仙', '因為畫線太難', '因為 Zone 一定會守住'], answer: 0, explain: '價格反應通常喺一個範圍內發生，用區域更貼近現實。' },
-  { q: '幾時畫 Support / Resistance 最啱？', options: ['睇完全日走勢之後', '開市前，用當時已知資料', '入場之後先補畫'], answer: 1, explain: '事後先畫會用咗未來資訊，令回測結果過度樂觀。' },
+'l1-c4': { title: '小測：前高前低', questions: [
+  { q: 'PDH 係乜？', options: ['上一個交易日嘅最高價', '今日開市價', '最近一個細 Peak'], answer: 0, explain: 'Previous Day High。由日線上一支完整 K 線最高點拉水平線。' },
+  { q: '跌穿昨日低位 $178 後反彈，但升唔返 $178，可能代表？', options: ['假跌穿', '原本支持區可能變成阻力區', '一定會大升'], answer: 1, explain: '支持失守後升唔返上去，舊支持可能轉為阻力。' },
+  { q: '前高前低真正用途係？', options: ['每日畫十幾條線', '開市前知道上下方最近嘅重要參考位，同現價距離', '自動買入訊號'], answer: 1, explain: '前高係觀察位置，唔係自動買入訊號。' },
 ]},
-'l0-c6': { title: '小測：市場結構', questions: [
-  { q: 'LH + LL 代表乜嘢結構？', options: ['升勢', '跌勢', '一定係橫行'], answer: 1, explain: 'Lower High + Lower Low = 高位低過高位、低位低過低位，即跌勢。' },
-  { q: '一個「左右各 5 支」嘅 15m Pivot High，最快幾時先確認到？', options: ['即刻', '大約 75 分鐘後', '收市後'], answer: 1, explain: '要等右邊 5 支 15m K 線完成：5 × 15 = 75 分鐘。' },
+'l1-c5': { title: '小測：支持阻力', questions: [
+  { q: '一張圖應該優先保留幾多個主要區域？', options: ['愈多愈好', '最明顯嘅 2–4 個', '只畫一條'], answer: 1, explain: '避免整張圖都係線，否則好難判斷。' },
+  { q: '$105 多次受阻，之後升穿再回落到 $105 守住，$105 可能變成？', options: ['潛在支持區', '一定係阻力', '冇意義'], answer: 0, explain: '突破後角色互換（S/R Flip），但唔係每次都成功。' },
+]},
+'l1-c6': { title: '小測：VWAP', questions: [
+  { q: '價格喺 VWAP 上方代表？', options: ['一定繼續升', '可以作為偏強嘅觀察線索', '一定會跌返 VWAP'], answer: 1, explain: 'VWAP 會滯後，不能單獨預測未來。' },
+  { q: 'TradingView VWAP 入門設定，計算週期應該揀？', options: ['Session', 'Week', 'Year'], answer: 0, explain: 'Session = 按交易時段重新計算。' },
+]},
+'l1-c7': { title: '你會點樣解讀？', questions: [
+  { q: 'NVDA 接近昨日高位 $185，K 線收盤接近 $185，成交量比前幾支增加，VWAP 喺現價下方。你會點樣解讀？', options: ['現價接近前高，所以立即買入', '前高一定係阻力，所以立即做空', '觀察價格能否有效突破，以及突破後嘅反應'], answer: 2, explain: '等待更多價格反應，再按照事先訂好嘅入場條件及風險計劃決定。即使成交量增加、價格高於 VWAP，都唔代表突破一定成功。' },
+]},
+'l1-c8': { title: '小測：Indicator 畫線', questions: [
+  { q: 'LuxAlgo 設定 Left 15 / Right 15，喺 5m 圖確認一個 Pivot High 要等幾耐？', options: ['即刻', '約 75 分鐘', '收市後'], answer: 1, explain: '要等右邊 15 支 × 5 分鐘 = 75 分鐘，所以歷史圖睇落好準，但實戰有延遲。' },
+  { q: '以下邊句最啱？', options: ['見到每個 Peak 都畫', 'Peak 只係候選位置；有市場反應嘅 Peak 先值得當 S/R', '只用 Indicator 畫'], answer: 1, explain: '一張圖大約 3–6 個主要水平／區域已經夠。' },
+  { q: '邊類水平可以畫得比較精準？', options: ['PDH / PDL / 盤前高低', '所有阻力', '細 Peak'], answer: 0, explain: '佢哋本身係客觀價格；其他 S/R 應該當 Zone。' },
+]},
+'l1-c9': { title: '小測：三層次與 K 線', questions: [
+  { q: '分析次序最啱係？', options: ['K 線 → 即刻落單', '位置 → K 線反應 → Volume → VWAP → 風險 → 決定', 'VWAP → 決定'], answer: 1, explain: '先睇位置，再睇反應同確認，最後計風險。' },
+  { q: 'TSLA 喺 $388 阻力出現 Shooting Star、Volume 高，但價格高於 VWAP。應該？', options: ['立即 Short', '觀察下一支有冇跌穿 Shooting Star 低位', '加注 Long'], answer: 1, explain: 'Shooting Star 係警告，唔係已確認轉勢；價格仍高於 VWAP，日內可能仍然偏強。' },
+  { q: '高 Volume 代表？', options: ['多咗賣家', '成交活動增加，但唔能判斷邊一方主動', '一定升'], answer: 1, explain: '每宗成交都有買賣雙方。' },
+]},
+'l1-final': { title: 'Level 1 總結測驗', final: true, questions: [
+  { q: 'TSLA 喺 $380–$385 橫行，大綠燭突破 $385，成交量增加，高於 VWAP。初學者最合理做法？', options: ['即刻追入', '等收市及回測，避免追高', '即刻 Short'], answer: 1, explain: '有可能係 Fake Breakout；等 Breakout + Retest 先容易建立風險界線。' },
+  { q: '價格圍住 VWAP 上上落落、紅綠交替、Volume 普通、冇突破重要位。應該？', options: ['每次穿越都交易', '唔做交易', '加大倉位'], answer: 1, explain: '冇清晰優勢、冇合理止損位置，就唔應該勉強交易。' },
+  { q: '假突破之後，可唔可以立即 Short？', options: ['一定可以', '未必，要睇有冇形成更弱結構同下面有冇支持', '一定唔可以'], answer: 1, explain: '假突破唔一定會演變成持續下跌。' },
+  { q: 'Entry $385、Stop $384、Target $387，Risk / Reward 係？', options: ['1:1', '1:2', '2:1'], answer: 1, explain: '每股風險 $1、潛在利潤 $2 = 1:2；但唔代表策略一定賺錢。' },
+  { q: '用 Bar Replay 練習時，最初 20–30 個情境最重要記錄乜？', options: ['只記成功嘅', '判斷同之後結果，特別係判斷失敗嘅情況', '唔使記錄'], answer: 1, explain: '要知道自己套方法喺咩市場環境下最容易出錯。' },
+]},
+
+/* ---------------- Level 2 ---------------- */
+'l2-c1': { title: '小測：Price Action', questions: [
+  { q: 'TSLA 仍然形成 HH、HL，途中出現紅燭，最可能係？', options: ['跌勢開始', '健康回調', '一定要 Short'], answer: 1, explain: '同一支紅燭，位置同結構唔同，解讀就唔同。' },
+  { q: 'Price Action = ？', options: ['K 線名稱', '價格位置 + 價格結構 + 當前反應 + 後續確認', '指標數量'], answer: 1, explain: 'Volume 同 VWAP 用嚟補充判斷。' },
+]},
+'l2-c2': { title: '小測：市場結構', questions: [
+  { q: 'TSLA $390 → $385 → $388 → $382 → $385 → $379，係乜結構？', options: ['Uptrend', 'Downtrend（LH + LL）', 'Range'], answer: 1, explain: '高位 390→388→385、低位 385→382→379。' },
+  { q: '跌勢中 $379 出現 Hammer，研究轉勢最重要證據係？', options: ['Hammer 本身', '停止創 LL、升穿重要 LH、之後形成 HL', 'Volume 大'], answer: 1, explain: '單一 Hammer 可能只係短暫反彈。' },
+  { q: '15m HH + HL，但 5m LH + LL，代表？', options: ['兩個圖表矛盾', '5m 下跌可能只係 15m 嘅回調', '一定轉勢'], answer: 1, explain: '唔同時間尺度可以同時有唔同方向。' },
+]},
+'l2-c3': { title: '小測：K 線深度閱讀', questions: [
+  { q: '兩支綠燭 High $390、Low $385，Close 分別 $389.80 同 $386，邊支高位保持能力較強？', options: ['$389.80 嗰支', '$386 嗰支', '一樣'], answer: 0, explain: '收市接近最高位，Close Location 較強。' },
+  { q: '「突破後重新返回區間」屬於邊種反應？', options: ['Momentum', 'Failed Breakout', 'Indecision'], answer: 1, explain: '要重新評估原本突破假設。' },
+]},
+'l2-c3b': { title: '小測：OHLC 到買賣力量', questions: [
+  { q: 'O 100、H 105、L 98、C 103，你可唔可以知道價格先升定先跌？', options: ['可以', '唔可以，同一 OHLC 可以有唔同路徑', '睇顏色就知'], answer: 1, explain: 'OHLC 係概括結果，唔係逐秒記錄。' },
+  { q: 'O 380、H 385、L 379、C 384，Body Ratio 約係？', options: ['66.7%', '20%', '100%'], answer: 0, explain: 'Body 4 ÷ Range 6 ≈ 66.7%。' },
+  { q: 'H 390、L 380、C 389，Close Position 係？', options: ['10%', '50%', '90%'], answer: 2, explain: '(389 − 380) ÷ 10 = 0.9。' },
+  { q: '多次跌到 $380 都有大量成交但跌唔穿，可以點講？', options: ['已確認有機構吸貨', '只能懷疑有吸收行為，唔可以確認訂單流', '一定會跌穿'], answer: 1, explain: '普通 K 線同 Volume 冇辦法確認實際訂單流。' },
+]},
+'l2-c4': { title: '小測：Volume 深度', questions: [
+  { q: '高 Volume + 細 Body + 兩邊長影線，最合理係？', options: ['一定反轉', '激烈成交但方向未明，等突破 High 或 Low', '一定係大戶吸貨'], answer: 1, explain: '重點係觀察市場最後向邊一方發展。' },
+  { q: '回調期間 Volume 逐步減少，應該？', options: ['即刻買', '觀察支持能否守住、買方能否重新推高', '即刻 Short'], answer: 1, explain: '回調量縮唔代表一定反彈。' },
+  { q: 'RVOL 2.0 代表？', options: ['突破成功率翻倍', '同時段成交活動係平時兩倍', '交易訊號'], answer: 1, explain: 'RVOL 只係描述活躍程度。' },
+]},
+'l2-c5': { title: '小測：VWAP 深度', questions: [
+  { q: 'VWAP 同 MA20 / EMA20 係咪一樣？', options: ['一樣', '唔一樣，VWAP 係成交量加權、按 Session 重置', '只係名唔同'], answer: 1, explain: 'VWAP ≠ 普通 Average Price。' },
+  { q: 'VWAP Reclaim 嘅正確步驟係？', options: ['一升穿就買', '收市企上 → 回調唔跌返落去 → 再向上突破短線高位', '跌穿就買'], answer: 1, explain: 'Break Above → Hold / Retest → Continuation。' },
+  { q: '股價跌到 $384.80，VWAP $385，代表？', options: ['支持必定失效', '未必，要睇後續反應', '一定反彈'], answer: 1, explain: 'VWAP 係區域參考，唔係精準支持。' },
+]},
+'l2-c6': { title: '小測：S/R 配合 Price Action', questions: [
+  { q: 'Resistance Zone $384.80–$385.20，最高 $385.50 但收 $384.70，屬於？', options: ['Level A：試探', 'Level B：收市突破', 'Level C：突破後維持'], answer: 0, explain: '只係曾經升穿。' },
+  { q: '以前多次跌唔穿 $380，失守後反彈到 $380 又升唔返上去，係？', options: ['Resistance → Support', 'Support → Resistance', '冇意義'], answer: 1, explain: '對研究 Short 特別重要，可以提供較清晰失效位。' },
+]},
+'l2-c7': { title: '小測：矛盾處理', questions: [
+  { q: '所有指標都看漲，但現價 $387.80、阻力 $388.50、止損要 $1.20 以外。應該？', options: ['照做', '放棄呢個入場價，等下一個情境', '加大倉位'], answer: 1, explain: '方向判斷正確，唔代表交易值得做。' },
+  { q: '點解唔可以將 Shooting Star、High Volume、VWAP 下方當三張獨立選票？', options: ['因為佢哋好多時講緊同一段價格變動，彼此相關', '因為 VWAP 冇用', '因為 Volume 冇用'], answer: 0, explain: '要用優先次序分析：環境 → 位置 → 價格確認 → 輔助 → 風險。' },
+]},
+'l2-c8': { title: '小測：情境 1–3', questions: [
+  { q: '情境 1 Candle 2 出現紅燭但守住舊阻力上緣、量縮，應該？', options: ['放棄所有看漲判斷', '留意能否守住約 $385', '立即 Short'], answer: 1, explain: '紅燭唔代表放棄；守得住再向上就有研究機會。' },
+  { q: '情境 3 升勢中連續三支紅燭，但未跌穿最近 HL $383，應該？', options: ['Short', '先當作需要分析嘅回調，觀察會唔會形成新 HL', '全倉買'], answer: 1, explain: '升勢入面嘅紅燭，首先係回調而唔係跌勢。' },
+]},
+'l2-c8b': { title: '小測：情境 4–6', questions: [
+  { q: 'Long 計劃因為假突破失效，係咪等於 Short 計劃成立？', options: ['係', '唔係，要獨立評估結構、支持位同風險回報', '一定唔可以 Short'], answer: 1, explain: '最重要係願意更新判斷，而唔係即刻反手。' },
+  { q: 'Choppy Market 入面最好嘅決定通常係？', options: ['Overtrading', 'No Trade', '每次穿 VWAP 就反手'], answer: 1, explain: '唔交易應該係正常而且經常使用嘅決定。' },
+]},
+'l2-c9': { title: '小測：Decision System', questions: [
+  { q: '「有值得留意嘅訊號，但未得到足夠確認」應該係？', options: ['WAIT', 'PLAN', 'SKIP'], answer: 0, explain: 'WAIT 並唔等於冇能力判斷。' },
+  { q: '對初學者，最低確認框架入面邊三項尤其重要？', options: ['Volume、VWAP、RVOL', '位置、結構、價格確認', '新聞、情緒、直覺'], answer: 1, explain: 'Volume 同 VWAP 幫你評估質素；風險決定能否建立計劃。' },
+]},
+'l2-c10': { title: '小測：重新分析 TSLA 圖', questions: [
+  { q: '$388.55 Indicator 阻力位，價格未到，你應該？', options: ['預先 Short', '建立互相競爭嘅假設，等新 Candle 提供證據', '預先 Long'], answer: 1, explain: 'A 升勢延續、B 高位受阻、C 開始橫行 —— 睇邊個得到更多證據。' },
+]},
+'l2-c11': { title: '小測：進階陷阱', questions: [
+  { q: '10:01 見到一支「Shooting Star」（10:00–10:05 未收市），應該？', options: ['當形態已成立', '等收市先判斷', '即刻落單'], answer: 1, explain: '主要用已完成 K 線作判斷。' },
+  { q: '新高 $385.20 但即刻跌返 $384，係咪 Bullish Breakout？', options: ['係', '未必，要分「創新高」同「成功維持突破」', '一定係假突破'], answer: 1, explain: '兩個唔同概念。' },
+]},
+'l2-c13': { title: '小測：Replay 方法', questions: [
+  { q: 'Replay 估錯咗，應該？', options: ['改口話自己早知', '保留最初記錄，覆盤有冇跟規則', '刪除紀錄'], answer: 1, explain: '評估有冇按照規則分析，而唔係單憑賺蝕。' },
+  { q: '第一星期應該做模擬交易嗎？', options: ['要，愈多愈好', '唔需要，只練習每支 Candle 收市後知道下一步觀察乜', '要用真錢'], answer: 1, explain: 'Week 1 專心練閱讀市場。' },
+]},
+'l2-final': { title: 'Level 2 知識測試', final: true, questions: [
+  { q: '題目 1：TSLA 最近高位 $385 → $388 → $392，回調低位 $380 → $382 → $385。最新出現一支普通紅燭。應該點解讀？', options: ['正式進入 Downtrend，立即 Short', '仍然係 Uptrend，先觀察回調會否守住 HL', '紅燭代表一定跌到 VWAP'], answer: 1, explain: 'HH + HL 結構未被破壞。一支紅燭首先係需要分析嘅回調，觀察能否守住最近 HL（$385）。' },
+  { q: '題目 2：TSLA 升到 $390 Resistance，出現 Shooting Star，Volume 係同時段正常兩倍，但 VWAP 喺 $383。下一步？', options: ['高 Volume 已證實反轉，立即 Short', 'VWAP 下方先可以 Short，其他情況唔使睇', '先觀察下一支有冇跌破低位，以及價格結構會否轉弱'], answer: 2, explain: '價格仍遠高於 VWAP，日內背景偏強。Shooting Star 係警告，要等跌破低位、形成 LH / LL 等後續確認。' },
+  { q: '題目 3：Resistance $385。TSLA 一度升到 $386，但 5m 收市 $384.60。呢個最適合叫乜？', options: ['嘗試突破但未能維持高位', '完全確認突破', '正式形成 Higher Low'], answer: 0, explain: '屬於 Level A 試探 / Rejection：曾經升穿，但收市守唔住。' },
+  { q: '題目 4：TSLA 價格仍然高於 VWAP，但出現 Bearish Engulfing。以下邊項正確？', options: ['Bearish Engulfing 優先於所有訊號，必定 Short', '可能只係升勢回調，要睇位置、HL 同後續確認', '只要高於 VWAP 就永遠唔會跌'], answer: 1, explain: '矛盾 A：短線看跌反應，但較大日內背景仍偏強。觀察有冇跌穿近期 HL。' },
+  { q: '題目 5：TSLA 上升期間 Volume 高，回調時逐步減少，然後喺支持附近出現綠燭。點樣處理？', options: ['Volume 減少已證明一定反彈', '即刻全倉 Long', '觀察支持能否守住，反彈有冇突破短線高位並得到成交量支持'], answer: 2, explain: '回調量縮唔代表一定反彈；要等價格確認。' },
+  { q: '題目 6：TSLA 反覆穿越橫行 VWAP，K 線紅綠交替，冇明顯 HH/HL 或 LH/LL。你會點做？', options: ['每次穿越 VWAP 就反手', '暫時觀察，等待清晰市場結構', '提高交易頻率以捕捉每次波動'], answer: 1, explain: '情境 6 Choppy Market：No Trade 係正常決定，避免 Overtrading。' },
+  { q: '題目 7：假設 Long Entry $386、Stop $385、下一 Resistance $386.70。忽略成本，每股潛在風險 $1、回報 $0.70。你會點評估？', options: ['只要突破就可以買，風險回報不重要', '上方空間太近，應評估放棄或等待更合理位置', '因為 Risk / Reward 接近 1:1，交易必定成功'], answer: 1, explain: '方向正確都唔代表值得做；0.7R 唔吸引。' },
+  { q: '題目 8：一個 Pivot Indicator 要 15 支後續 5m K 線先確認高位。你做 Replay 時應該點用？', options: ['將 Pivot 畫回嘅位置當作當時已知', '因為係 Indicator，所以冇延遲', '只使用 Replay 當刻已經確認嘅水平，避免前視偏差'], answer: 2, explain: '要等約 75 分鐘先確認；當作早已知道就係 Look-ahead Bias。' },
 ]},
 
 /* ---------------- Level 3 ---------------- */
@@ -235,12 +332,49 @@ window.QUIZZES = {
  * 可剔清單：items 或 groups
  * ========================================================= */
 window.CHECKLISTS = {
-'l0-combo': { title: 'Level 2 綜合判斷五問', items: [
-  '訊號係咪出現喺事前畫好嘅 Key Level 附近？',
-  '15m 結構支持呢個方向嗎？',
-  '成交量（RVOL）有冇配合？',
-  '價格同 VWAP 嘅關係支持呢個方向嗎？',
-  '目標方向前面有冇太近嘅障礙？',
+'l1-5day': { title: '第一輪 5 日學習（每日約 30 分鐘）', items: [
+  '第 1 日｜K 線：Open、High、Low、Close',
+  '第 2 日｜Volume：比較升跌與成交量',
+  '第 3 日｜PDH、PDL：畫前高前低',
+  '第 4 日｜Support / Resistance：畫 2–4 個區域',
+  '第 5 日｜VWAP：比較價格喺線上、線下嘅表現',
+  '加碼｜用 30 分鐘將六樣嘢放喺同一張歷史圖上練習',
+]},
+'l1-6q': { title: '每支已完成 K 線問自己六條問題', resettable: true, items: [
+  'Location：價格係咪接近 PDH、PDL、Support 或 Resistance？',
+  'Candlestick：呢支 K 線顯示突破、受阻、反彈，定係冇明顯方向？',
+  'Volume：成交量有冇異常增加？相比同一交易時段正常水平又如何？',
+  'VWAP：價格喺上方定下方？VWAP 向上、向下，定橫行？',
+  'Confirmation：後續 K 線有冇支持原本嘅判斷？',
+  'Risk：Entry、Stop Loss 同 Target 應該喺邊？風險回報唔合理就放棄。',
+]},
+'l2-vol3': { title: '見到 Volume 增加，問三個問題', resettable: true, items: [
+  '位置：增加嘅 Volume 發生喺邊？阻力、支持、VWAP，定冇特別位置？',
+  '結果：價格真正向邊個方向移動？Close 有冇保持突破？',
+  '延續：下一至幾支已完成 K 線，有冇確認呢個方向？',
+]},
+'l2-6q': { title: '六條問題（Where → Decision）', resettable: true, items: [
+  'Where？呢支 Candle 出現喺咩位置？',
+  'Trend？市場原本係 Uptrend、Downtrend 定 Range？',
+  'Reaction？價格出現突破、拒絕突破、反彈，定猶豫？',
+  'Participation？Volume 告訴我成交活動有咩變化？VWAP 背景又如何？',
+  'Confirmation？下一步要發生乜先更支持我嘅判斷？咩情況會推翻判斷？',
+  'Decision？WAIT、PLAN，定 SKIP？',
+]},
+'l2-plan': { title: 'Level 2 十四日訓練', groups: [
+  { title: 'Week 1：專心練閱讀市場（唔需要做模擬交易）', items: ['Day 1｜Market Structure：找出 10 組 HH、HL、LH、LL', 'Day 2｜15m + 5m：對比兩個時間尺度嘅方向', 'Day 3｜Candlestick：找出 10 個上影線、下影線反應', 'Day 4｜Volume：分析 10 支明顯高 Volume Candle', 'Day 5｜VWAP：觀察價格高於、低於、反覆穿越 VWAP', 'Day 6｜Support / Resistance：練習辨認突破、受阻、假突破', 'Day 7｜綜合覆盤：用六項分析流程重新分析 5 個歷史情境'] },
+  { title: 'Week 2：由分析變成計劃', items: ['Day 8｜Breakout + Retest：找出 5 個成功或失敗例子', 'Day 9｜Breakdown + Retest：找出 5 個成功或失敗例子', 'Day 10｜Reversal：分析 5 個阻力或支持反轉情境', 'Day 11｜Fake Breakout：比較假突破與成功突破', 'Day 12｜Confirmation：練習等已完成 K 線確認', 'Day 13｜Risk / Reward：為 5 個歷史 Setup 訂模擬 Entry、Stop、Target', 'Day 14｜綜合測試：完整 Replay 一個交易日，寫交易日誌'] },
+]},
+'l2-grad': { title: 'Level 2 畢業自我檢查', items: [
+  '可以分辨 HH + HL、LH + LL 同 Range',
+  '識用 15m 定背景、5m 睇情境',
+  '見到 Candle 會問「邊一種市場反應」而唔係「叫咩名」',
+  '識用 Effort vs Result 分析 Volume',
+  '識分 VWAP 三種狀態同 VWAP Reclaim',
+  '識分突破三個層次（試探／收市突破／維持）',
+  '工具矛盾時識用優先次序處理',
+  '每支 K 線收市後都識決定 WAIT、PLAN 或 SKIP',
+  '已經用 Replay 記錄咗最少 20 個情境',
 ]},
 'l3-premarket': { title: '開市前清單', resettable: true, items: [
   '查咗今日有冇財報、CPI、非農、Fed 等重大事件',

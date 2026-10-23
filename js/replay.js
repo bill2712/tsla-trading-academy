@@ -31,6 +31,80 @@
   ];
 
   const SCENARIOS = {
+    'l2-shooting': {
+      title: '阻力區 Shooting Star（Level 2 情境 2）', level: 'l2', icon: '🌠',
+      desc: '升到阻力區，出現長上影線、量增加 —— 係反轉，定只係暫停？',
+      build() {
+        const pre = C.genBars([385.2, 385.9, 386.6, 386.2, 387.1, 387.8, 388.4, 388.1, 388.9], { seed: 21, open: 384.8, start: '09:35', wick: 0.25 });
+        pre.forEach((b, i) => { b.v = 0.9 + (i % 3) * 0.15; });
+        const key = [
+          { t: '10:20', o: 389.20, h: 390.45, l: 389.05, c: 389.50, v: 1.4 },
+          { t: '10:25', o: 389.50, h: 390.50, l: 389.20, c: 389.40, v: 2.0 },
+          { t: '10:30', o: 389.50, h: 389.60, l: 388.20, c: 388.70, v: 1.5 },
+          { t: '10:35', o: 388.70, h: 388.90, l: 387.60, c: 387.80, v: 1.3 },
+          { t: '10:40', o: 387.80, h: 388.10, l: 387.10, c: 387.30, v: 1.1 },
+        ];
+        return { bars: pre.concat(key), zones: [{ lo: 389.5, hi: 390.5, label: '阻力區 389.50–390.50' }], lines: [{ y: 386.5, label: 'VWAP ≈ 386.50', color: 'var(--vwap)' }], avgVol: 1.0 };
+      },
+      steps: [
+        { show: 9, text: 'TSLA 由 $385 一路升到 $388.90，結構係 HH + HL，價格喺 VWAP（約 $386.50）上方。你事前畫好阻力區 $389.50–$390.50。', q: '價格接近阻力區，第一件事係？', options: ['觀察阻力區反應，唔追高', '升勢 = 即刻追買', '預估會跌，即刻 Short'], answer: 0, explain: '位置最重要：升勢遇到阻力，就係要觀察反應嘅時候。' },
+        { show: 10, text: '10:20：一度升到 $390.45，收 $389.50，上影線開始變長。', q: '呢支 K 線你會點標記？', options: ['可能遇到賣壓，但未有結論 → WAIT', '已經反轉，Short', '突破成功，買入'], answer: 0, explain: '單一支 K 線只係線索。' },
+        { show: 11, text: '10:25：Open $389.50、High $390.50、Low $389.20、Close $389.40，成交量 2M（平均約 1M 嘅 2 倍）。長上影線、細實體、收近低位 —— Shooting Star。', q: '量大 + Shooting Star 喺阻力區，代表？', options: ['阻力區出現明顯賣壓，係潛在轉弱訊號（未確認）', '一定會大跌', '量大一定係好消息'], answer: 0, explain: '高成交量提升咗呢個位置嘅重要性，但唔代表一定反轉。' },
+        { show: 11, text: '升勢 + 價格喺 VWAP 上方 vs. 阻力區 + Shooting Star + 2M 量。兩組證據互相矛盾。', q: 'Level 2 嘅正確結論係？', options: ['WAIT：等下一支跌穿 Shooting Star 低位 $389.20', '即刻 Short，Shooting Star 係看跌', '即刻買，升勢未完'], answer: 0, explain: '上升結構仍然存在，但阻力區出現明顯賣壓。確認條件：跌穿 $389.20。失效條件：升穿並守穩 $390.50 上方。' },
+        { show: 12, text: '10:30：Open $389.50、High $389.60、Low $388.20、Close $388.70。跌穿咗 Shooting Star 低位 $389.20。', q: '而家點解讀？', options: ['看跌證據增加；但下方仲有 VWAP $386.50 作為潛在支持', '確定大跌市，全倉 Short', '冇變化'], answer: 0, explain: '轉弱訊號有後續確認，但升勢未正式改變，VWAP 可能有承接。' },
+        { show: 14, text: '之後兩支繼續回落到 $387.30（模擬），向 VWAP 靠近。', q: '如果你係新手，最好嘅學習方法係？', options: ['用 Replay 記錄分析、確認條件同失效條件，之後檢查結果', '直接用真錢做 Short', '只記住「Shooting Star = 跌」'], answer: 0, explain: '真正要學嘅係「點樣等確認」同「點樣界定失效」，唔係背形態。' },
+      ],
+      outro: '同一支 Shooting Star，喺阻力區 + 量大先有意義；仲要等跌穿低位確認。如果之後重新企穩 $390.50 上方，看跌假設就失效。',
+    },
+    'l2-pullback': {
+      title: '升勢回調 + Higher Low（Level 2 情境 3）', level: 'l2', icon: '🪜',
+      desc: '回調量逐步減少、守住 HL、Bullish Engulfing —— 練「等確認」。',
+      build() {
+        const bars = [
+          { t: '09:35', o: 380.00, h: 381.40, l: 379.80, c: 381.20, v: 1.0 },
+          { t: '09:40', o: 381.20, h: 383.30, l: 381.00, c: 383.00, v: 1.2 },
+          { t: '09:45', o: 383.00, h: 385.20, l: 382.80, c: 385.00, v: 1.3 },
+          { t: '09:50', o: 385.00, h: 385.10, l: 383.80, c: 384.00, v: 0.8 },
+          { t: '09:55', o: 384.00, h: 384.20, l: 383.00, c: 383.40, v: 0.7 },
+          { t: '10:00', o: 383.40, h: 386.20, l: 383.30, c: 386.00, v: 1.2 },
+          { t: '10:05', o: 386.00, h: 388.40, l: 385.80, c: 388.20, v: 1.3 },
+          { t: '10:10', o: 388.20, h: 390.20, l: 388.00, c: 390.00, v: 1.4 },
+          { t: '10:15', o: 390.00, h: 390.10, l: 387.80, c: 388.00, v: 0.8 },
+          { t: '10:20', o: 388.00, h: 388.20, l: 385.90, c: 386.10, v: 0.55 },
+          { t: '10:25', o: 386.10, h: 386.40, l: 385.40, c: 385.80, v: 0.35 },
+          { t: '10:30', o: 385.60, h: 387.40, l: 385.50, c: 387.20, v: 1.1 },
+          { t: '10:35', o: 387.20, h: 388.10, l: 387.00, c: 387.90, v: 1.0 },
+          { t: '10:40', o: 387.90, h: 389.30, l: 387.70, c: 389.10, v: 1.1 },
+        ];
+        return { bars, lines: [{ y: 384.5, label: 'VWAP ≈ 384.50', color: 'var(--vwap)' }, { y: 383, label: '前 HL 383', color: 'var(--muted)' }], avgVol: 1.0 };
+      },
+      steps: [
+        { show: 8, text: 'TSLA：$380 → $385 → 回調 $383 → $390。結構係 HH + HL，價格喺 VWAP（約 $384.50）上方。', q: '而家嘅市場 Bias 係？', options: ['偏強（Uptrend）', '偏弱', '冇方向'], answer: 0, explain: '高位愈來愈高、低位都愈來愈高。' },
+        { show: 11, text: '之後連續三支紅燭：$390 → $388 → $386，成交量 800K → 550K → 350K。', q: '回調中量逐步減少，最合理解讀？', options: ['賣壓未有持續擴大，可能只係正常回調', '大跌市開始', '量細 = 冇人理，冇意義'], answer: 0, explain: '回調量縮通常比回調量增健康，但仍然只係輔助證據。' },
+        { show: 11, text: '價格仍然高過前一個 HL $383，亦未失守 VWAP。', q: '而家可唔可以買？', options: ['WAIT：回調未完、未有反彈確認', '即刻買，量縮一定反彈', '即刻 Short'], answer: 0, explain: '有回調、有量縮，但仲未見到買盤重新取得控制。' },
+        { show: 12, text: '10:30：Bullish Engulfing，Open $385.60 → Close $387.20，成交量 1.1M（明顯回升）。', q: '呢支 K 線代表？', options: ['買盤重新進入，形成潛在 Higher Low', '升勢已經完', '冇意義'], answer: 0, explain: '可以考慮制定計劃：Entry 喺確認位附近，Stop 喺新 HL 下方。' },
+        { show: 12, lines: [{ y: 387.3, label: 'Entry 387.30', color: 'var(--accent)' }, { y: 385.3, label: 'Stop 385.30', color: 'var(--down)' }, { y: 390.2, label: 'Target 390.20', color: 'var(--up)' }], text: '模擬計劃：Entry $387.30（升穿 Engulfing 高位附近）、Stop $385.30（新 HL 下方）、Target $390.20（前高附近）。', q: 'R:R 大約係？', options: ['約 1.45R —— 唔夠 2R，要再考慮', '約 3R', '約 0.5R'], answer: 0, explain: '風險 $2.00、回報 $2.90 → 1.45R。方向判斷正確，唔代表交易值得做。' },
+        { show: 14, text: '之後價格升到 $389.10（模擬）。', q: '如果 R:R 唔夠你嘅規則，正確做法？', options: ['照規則 SKIP，喺日誌記「有確認但 R:R 唔夠」', '睇到升就後悔，下次唔理 R:R', '刪除紀錄'], answer: 0, explain: '錯過一筆合理放棄嘅交易唔係錯誤。長期跟規則先有可比較嘅數據。' },
+      ],
+      outro: '情境 3 嘅重點：回調量縮 + 守住 HL + 量回升嘅 Engulfing = 一組完整證據。之後仲要計 R:R 先決定 PLAN 定 SKIP。',
+    },
+    'l2-chop': {
+      title: 'VWAP 附近反覆上落（Level 2 情境 6）', level: 'l2', icon: '🌀',
+      desc: '冇明確 HH/HL、反覆穿 VWAP、量冇方向 —— 練習「No Trade」。',
+      build() {
+        const pts = [385.4, 384.6, 385.6, 384.4, 385.8, 384.9, 384.3, 385.7, 384.7, 385.9, 384.5, 385.2, 384.4, 385.6];
+        const bars = C.genBars(pts, { seed: 61, open: 385.0, start: '10:30', wick: 0.35 });
+        bars.forEach((b, i) => { b.v = [0.9, 1.1, 0.8, 1.0, 1.2, 0.85, 0.95, 1.05, 0.9, 1.0, 1.15, 0.8, 0.9, 1.0][i]; });
+        return { bars, zones: [{ lo: 384, hi: 386, label: '區間 384–386' }], lines: [{ y: 385, label: 'VWAP ≈ 385', color: 'var(--vwap)' }], avgVol: 1.0 };
+      },
+      steps: [
+        { show: 4, text: 'TSLA 喺 $384–$386 之間上落，VWAP 約 $385 而且接近橫行。', q: '第 4 支 K 線收喺 VWAP 下方，係唔係「跌穿 VWAP」訊號？', options: ['唔係：VWAP 橫行時穿上穿落好常見', '係，即刻 Short', '係，即刻買'], answer: 0, explain: 'VWAP 平坦時，價格反覆穿越代表市場未有明確方向。' },
+        { show: 7, text: '價格又升返 VWAP 上方，然後再跌落。成交量冇明顯放大。', q: '呢類市況最大嘅風險係？', options: ['Overtrading：成日以為突破，結果反覆止損', '錯過大升市', '冇風險'], answer: 0, explain: '反覆入場 = 反覆付出交易成本同止損。' },
+        { show: 10, text: '第 10 支升到 $385.9，好似要突破 $386。', q: '你應該？', options: ['WAIT：等有效突破 $386 並守穩，或者形成清晰結構', '即刻追 Long', '每次去到邊界都 Short'], answer: 0, explain: '有效突破要有收市確認、量配合、守穩。' },
+        { show: 14, text: '最後幾支仍然喺區間入面。', q: '今日嘅 Replay 日誌最好點寫？', options: ['「No Trade：結構混亂、反覆穿 VWAP、冇量確認」', '「今日冇做嘢，浪費時間」', '唔使記'], answer: 0, explain: 'No Trade 都係一個決定，值得記錄。日後你會發現呢啲日子幫你避開好多虧損。' },
+      ],
+      outro: '「唔交易」係專業交易者最常用嘅決定之一。分辨唔到方向嘅時候，等待本身就係策略。',
+    },
     'l3-br-win': {
       title: 'Breakout + Retest（版本 A）', level: 'l3', icon: '🚀',
       desc: '由橫行、突破、回測、確認到入場同管理，一步步做決定。',
@@ -158,7 +232,7 @@
       const u = Store.user();
       const prev = (u.replay[id] || {}).best || 0;
       u.replay[id] = { best: Math.max(prev, score), total, ts: Date.now() };
-      Store.save();
+      Store.save(); Store.logAct('replay');
       if (score === total) Store.awardXP('replay:' + id, 15); else Store.awardXP('replaytry:' + id, 5);
       const others = Object.keys(SCENARIOS).filter((k) => k !== id);
       panel.innerHTML = `<div class="rp-end"><div class="rp-trophy">${score === total ? '🏆' : score >= total * 0.7 ? '🎖️' : '📘'}</div>
