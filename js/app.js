@@ -98,7 +98,7 @@
     const done = CHAPTERS.filter((c) => u.read[c.id]).length;
     return { done, total: CHAPTERS.length, pct: CHAPTERS.reduce((a, c) => a + chapterPct(c, uid), 0) / CHAPTERS.length };
   }
-  const RANKS = [[0, '新手觀察員', '🌱'], [100, '圖表學徒', '🕯️'], [300, 'Setup 獵人', '🎯'], [600, '風險管理員', '🛡️'], [1000, '系統建構師', '🏗️'], [1500, '策略驗證師', '🔬'], [2200, '紀律大師', '🧘']];
+  const RANKS = [[0, '新手觀察員', '🌱'], [100, '圖表學徒', '🕯️'], [300, 'Setup 獵人', '🎯'], [600, '風險管理員', '🛡️'], [1000, '系統建構師', '🏗️'], [1500, '策略驗證師', '🔬'], [2200, '紀律大師', '🧘'], [3000, '市場解讀者', '🌐'], [4000, '交易管理師', '⚙️'], [5200, '系統交易者', '🏆']];
   function rank(xp) {
     let r = RANKS[0], next = null;
     for (let i = 0; i < RANKS.length; i++) { if (xp >= RANKS[i][0]) { r = RANKS[i]; next = RANKS[i + 1] || null; } }
@@ -116,6 +116,13 @@
     if (Object.keys(u.notes).length >= 10) list.push(['✍️', '寫咗 10 個筆記']);
     if (Object.keys(u.replay || {}).length >= 3) list.push(['🎮', '玩過 3 個重播']);
     if (u.highlights.length >= 10) list.push(['🖍️', '螢光筆達人']);
+    const certs = LEVELS.filter((lv) => Learn.certState(lv, uid).ok).length;
+    if (certs) list.push(['🎓', `證書 ×${certs}`]);
+    const gymPlays = Object.values(u.gym || {}).reduce((a, g) => a + (g.plays || 0), 0);
+    if (gymPlays >= 10) list.push(['🏋️', '訓練場 10 次']);
+    if (((u.toolState || {}).sim || {}).days >= 5) list.push(['🕹️', '模擬交易 5 日']);
+    if (Object.keys(u.xpLog || {}).filter((k) => k.startsWith('master:')).length >= 10) list.push(['🧠', '掌握 10 題錯題']);
+    if (Object.keys(u.xpLog || {}).filter((k) => k.startsWith('quest:')).length >= 7) list.push(['🎯', '完成 7 日任務']);
     return list;
   }
 
@@ -193,6 +200,7 @@
   }
 
   /* ---------------- 測驗 ---------------- */
+  const mix = (n) => { const a = Array.from({ length: n }, (_, i) => i); for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   function renderQuiz(el, id) {
     const qz = QUIZZES[id];
     if (!qz) { el.innerHTML = ''; return; }
@@ -201,7 +209,7 @@
     const prev = Store.user().quiz[id];
     el.innerHTML = `<div class="quiz ${final ? 'final' : 'mini'}">
       <div class="quiz-head"><span>${final ? '🏁' : '🧩'}</span><div><b>${esc(qz.title)}</b><small>${qz.questions.length} 題${final ? '｜每題只有一個最合適答案，答晒先睇解析' : '｜揀答案即刻有解釋'}</small></div><span class="quiz-score">${prev ? `最佳 ${prev.best}/${prev.total}` : ''}</span></div>
-      ${qz.questions.map((q, i) => `<div class="qq" data-q="${i}"><p class="qq-q"><b>${final ? '' : 'Q' + (i + 1) + '. '}</b>${esc(q.q)}</p><div class="qq-opts">${q.options.map((o, j) => `<button class="qq-opt" data-j="${j}">${String.fromCharCode(65 + j)}. ${esc(o)}</button>`).join('')}</div><div class="qq-fb"></div></div>`).join('')}
+      ${qz.questions.map((q, i) => `<div class="qq" data-q="${i}"><p class="qq-q"><b>${final ? '' : 'Q' + (i + 1) + '. '}</b>${esc(q.q)}</p><div class="qq-opts">${mix(q.options.length).map((j, k) => `<button class="qq-opt" data-j="${j}">${String.fromCharCode(65 + k)}. ${esc(q.options[j])}</button>`).join('')}</div><div class="qq-fb"></div></div>`).join('')}
       ${final ? '<div class="quiz-foot"><button class="btn primary" data-submit disabled>提交並查看詳細解析</button></div>' : ''}
       <div class="quiz-result"></div></div>`;
     const showFb = (i) => {
@@ -209,7 +217,8 @@
       const ok = ans[i] === q.answer;
       Store.recordAnswer(id, i, ok);
       box.querySelectorAll('.qq-opt').forEach((b) => { b.disabled = true; const j = +b.dataset.j; if (j === q.answer) b.classList.add('right'); else if (j === ans[i]) b.classList.add('wrong'); });
-      box.querySelector('.qq-fb').innerHTML = `<div class="verdict ${ok ? 'ok' : 'bad'}">${ok ? '✅ 正確' : '❌ 正確答案係 ' + String.fromCharCode(65 + q.answer)}：${esc(q.explain)}</div>`;
+      const pos = Array.from(box.querySelectorAll('.qq-opt')).findIndex((b) => +b.dataset.j === q.answer);
+      box.querySelector('.qq-fb').innerHTML = `<div class="verdict ${ok ? 'ok' : 'bad'}">${ok ? '✅ 正確' : '❌ 正確答案係 ' + String.fromCharCode(65 + pos)}：${esc(q.explain)}</div>`;
     };
     const finish = () => {
       const score = ans.filter((a, i) => a === qz.questions[i].answer).length;
@@ -279,7 +288,8 @@
     $('#toc').innerHTML = `
       ${last ? `<a class="toc-continue" href="#/c/${last.id}${u.last.section ? '/' + u.last.section : ''}"><small>📍 繼續上次</small><b>${esc(last.level.code)} · ${esc(last.title)}</b></a>` : ''}
       ${link('#/', '🏠', '主頁', activeRoute === 'home')}
-      ${link('#/toc', '🗺️', '完整課程目錄', activeRoute === 'toc')}
+      ${link('#/toc', '📚', '完整課程目錄', activeRoute === 'toc')}
+      ${link('#/map', '🗺️', '學習地圖・證書', activeRoute === 'map' || activeRoute === 'cert')}
       <div class="toc-sep">課程</div>
       ${LEVELS.map((lv) => {
         const st = levelStats(lv);
@@ -295,6 +305,7 @@
       }).join('')}
       <div class="toc-sep">練習</div>
       ${link('#/gym', '🏋️', '訓練場', activeRoute === 'gym')}
+      ${link('#/sim', '🕹️', '模擬交易練習場', activeRoute === 'sim')}
       ${link('#/review', '📕', '錯題本・今日溫習' + (() => { const n = Store.dueWrong().length; return n ? ` <b class="pill">${n}</b>` : ''; })(), activeRoute === 'review')}
       ${link('#/replay', '🎮', 'K 線重播遊戲', activeRoute === 'replay')}
       ${link('#/quiz', '📝', '測驗中心', activeRoute === 'quiz')}
@@ -357,6 +368,7 @@
           <div class="hero-actions">
             ${last ? `<a class="btn primary lg" href="#/c/${last.id}${u.last.section ? '/' + u.last.section : ''}">📍 繼續：${esc(last.level.code)} 第 ${last.num} 章</a>` : `<a class="btn primary lg" href="#/c/${(nextCh || CHAPTERS[0]).id}">🚀 開始學習</a>`}
             <a class="btn lg" href="#/toc">🗺️ 睇完整目錄</a>
+            <a class="btn lg ghost" href="#/map">🗺️ 學習地圖</a>
             ${!ov.done && !last ? '<a class="btn lg ghost" href="#/guide">🧭 使用指南</a>' : ''}
           </div>
         </div>
@@ -370,6 +382,16 @@
         </div>
       </section>
 
+      <section class="home-grid top">
+        ${p ? Learn.nextCard() : ''}
+        ${p ? Learn.questCard() : ''}
+        <div class="card"><div class="card-h">🏋️ 練習</div><div class="quick-tools">
+          <a href="#/sim"><span>🕹️</span>模擬交易練習場${(u.toolState.sim || {}).days ? ` <small>（${u.toolState.sim.days} 日）</small>` : ''}</a>
+          <a href="#/review"><span>📕</span>錯題本・今日溫習 ${(() => { const n = Store.dueWrong().length; return n ? `<b class="pill">${n} 題要溫</b>` : ''; })()}</a>
+          ${Object.entries(Learn.DRILLS).map(([k, d]) => `<a href="#/gym/${k}"><span>${d.icon}</span>${esc(d.title)}${u.gym[k] ? ` <small>（最佳 ${u.gym[k].best}）</small>` : ''}</a>`).join('')}
+        </div></div>
+        ${p ? `<div class="card"><div class="card-h">📅 學習日曆 <a href="#/me/stats">統計 →</a></div>${Learn.heatmap(null, true)}</div>` : ''}
+      </section>
       <section class="road">
         <h2 class="sec-h">學習路線</h2>
         <div class="road-grid">${LEVELS.map((lv, i) => { const st = levelStats(lv); const first = lv.chapters.find((c) => !u.read[c.id]) || lv.chapters[0]; return `
@@ -381,19 +403,11 @@
           </a>`; }).join('')}</div>
       </section>
 
-      <section class="home-grid top">
-        ${p ? Learn.questCard() : ''}
-        <div class="card"><div class="card-h">🏋️ 練習</div><div class="quick-tools">
-          <a href="#/review"><span>📕</span>錯題本・今日溫習 ${(() => { const n = Store.dueWrong().length; return n ? `<b class="pill">${n} 題要溫</b>` : ''; })()}</a>
-          ${Object.entries(Learn.DRILLS).map(([k, d]) => `<a href="#/gym/${k}"><span>${d.icon}</span>${esc(d.title)}${u.gym[k] ? ` <small>（最佳 ${u.gym[k].best}）</small>` : ''}</a>`).join('')}
-        </div></div>
-        ${p ? `<div class="card"><div class="card-h">📅 學習日曆 <a href="#/me/stats">統計 →</a></div>${Learn.heatmap(null, true)}</div>` : ''}
-      </section>
       <section class="home-grid">
         <div class="card tip-card"><div class="card-h">💡 今日一句</div><p class="big-quote">「${esc(tip)}」</p></div>
         <div class="card word-card"><div class="card-h">📖 今日詞彙</div><p class="w-term">${esc(word.term)}</p><p class="w-zh">${esc(word.zh)}</p><p>${esc(word.def)}</p><a href="#/cards">玩字卡 →</a></div>
         <div class="card"><div class="card-h">🧰 常用工具</div><div class="quick-tools">${['decision-coach', 'pa-journal', 'candle-builder', 'possize-pro', 'zone-builder', 'no-entry'].map((id) => `<a href="#/tools/${id}"><span>${TOOLS[id].icon}</span>${esc(TOOLS[id].title)}</a>`).join('')}</div></div>
-        <div class="card"><div class="card-h">🎮 K 線重播遊戲</div><div class="quick-tools">${Object.entries(Replay.SCENARIOS).map(([id, s]) => `<a href="#/replay/${id}"><span>${s.icon}</span>${esc(s.title)}${u.replay[id] ? ` <small>（${u.replay[id].best}/${u.replay[id].total}）</small>` : ''}</a>`).join('')}</div></div>
+        <div class="card"><div class="card-h">🎮 K 線重播遊戲</div><div class="quick-tools">${Object.entries(Replay.SCENARIOS).filter(([id]) => !u.replay[id]).concat(Object.entries(Replay.SCENARIOS).filter(([id]) => u.replay[id])).slice(0, 5).map(([id, s]) => `<a href="#/replay/${id}"><span>${s.icon}</span>${esc(s.title)}${u.replay[id] ? ` <small>（${u.replay[id].best}/${u.replay[id].total}）</small>` : ''}</a>`).join('')}</div><a href="#/replay">全部 ${Object.keys(Replay.SCENARIOS).length} 個情境 →</a></div>
         ${fam.length > 1 ? `<div class="card"><div class="card-h">👨‍👩‍👧 家庭進度</div>${fam.map((f) => { const o = overall(f.id); return `<div class="fam-row"><span class="av" style="--c:${f.color}">${f.emoji}</span><b>${esc(f.name)}</b><div class="bar"><div style="width:${o.pct * 100}%;background:${f.color}"></div></div><small>${Math.round(o.pct * 100)}%</small></div>`; }).join('')}<a href="#/family">詳細 →</a></div>` : ''}
         <div class="card"><div class="card-h">💬 最新討論</div>${recent.length ? recent.map((c) => `<a class="mini-c" href="#/c/${c.chapter}/${c.section || 'ch-end'}"><span class="av sm" style="--c:${c.color}">${c.emoji}</span><span><b>${esc(c.name)}</b>：${esc(c.text.slice(0, 60))}<small> · ${CH[c.chapter] ? esc(CH[c.chapter].level.code + ' 第' + CH[c.chapter].num + '章') : ''}</small></span></a>`).join('') : '<p class="muted">未有留言。喺任何章節底部或者揀選文字都可以留言，同屋企人討論。</p>'}<a href="#/board">討論區 →</a></div>
       </section>
@@ -432,11 +446,13 @@
           <button class="btn sm" data-bm-ch>${Store.isBookmarked(c.id, '_chapter') ? '★ 已加書籤' : '☆ 書籤本章'}</button>
           <a class="btn sm" href="#/c/${c.id}/ch-end">🎬 影片 (${Store.videos(c.id).length})</a>
           <a class="btn sm" href="#/c/${c.id}/ch-end">💬 討論 (${Store.comments(c.id).length})</a>
+          <button class="btn sm ghost" data-focus title="隱藏側欄，專心閱讀（F）">🎯 專注模式</button>
           <button class="btn sm ghost" data-print>🖨️ 列印</button>
         </div>
       </header>
       <div class="content" data-content>${renderMD(c.md)}</div>
       <section class="ch-end" id="ch-end">
+        <div class="panel recap-panel" data-recap></div>
         <div class="done-box ${u.read[c.id] ? 'is-done' : ''}">
           <button class="btn lg ${u.read[c.id] ? '' : 'primary'}" data-done>${u.read[c.id] ? '✓ 已完成本章（撳取消）' : '✓ 標記本章已完成（+20 XP）'}</button>
           ${c.next ? `<a class="btn lg ghost" href="#/c/${c.next.id}">下一章：${esc(c.next.title)} →</a>` : ''}
@@ -456,11 +472,14 @@
     applyHighlights(content, c);
     Learn.glossTips(content);
     { const tb = Learn.ttsButton(content); if (tb) $('.ch-actions', view).insertBefore(tb, $('[data-print]', view)); }
+    Learn.chapterRecap(c, $('[data-recap]', view));
     renderChapterNote(c);
     renderVideos(c);
     renderComments(c);
     $('[data-bm-ch]', view).addEventListener('click', (e) => { const on = Store.toggleBookmark(c.id, '_chapter', c.title); e.target.textContent = on ? '★ 已加書籤' : '☆ 書籤本章'; toast(on ? '已加入書籤' : '已移除書籤'); });
     $('[data-print]', view).addEventListener('click', () => window.print());
+    $('[data-focus]', view).addEventListener('click', toggleFocus);
+    if (Store.ui().focus) { document.body.classList.add('focus-mode'); $('[data-focus]', view).textContent = '↩ 離開專注'; }
     $('[data-done]', view).addEventListener('click', () => {
       const now = !Store.user().read[c.id];
       Store.setRead(c.id, now);
@@ -787,8 +806,20 @@
     }
     const cats = {};
     Object.entries(TOOLS).forEach(([k, t]) => (cats[t.cat] = cats[t.cat] || []).push([k, t]));
-    view.innerHTML = `<div class="page-head"><h1>🧰 工具箱</h1><p class="muted">${Object.keys(TOOLS).length} 個互動計算器同小工具。你輸入過嘅數字會自動記住（每個使用者分開）。全部係教學用途。</p></div>
-      ${Object.entries(cats).map(([cat, list]) => `<h2 class="sec-h">${esc(cat)}</h2><div class="tool-grid-cards">${list.map(([k, t]) => `<a class="tool-tile" href="#/tools/${k}"><span>${t.icon}</span><b>${esc(t.title)}</b><small>${esc(t.desc)}</small><em>${esc((LEVELS.find((l) => l.id === t.level) || {}).code || '')}</em></a>`).join('')}</div>`).join('')}`;
+    const tf = Store.ui().toolLv || 'all';
+    view.innerHTML = `<div class="page-head"><h1>🧰 工具箱</h1><p class="muted">${Object.keys(TOOLS).length} 個互動計算器同小工具。你輸入過嘅數字會自動記住（每個使用者分開）。全部係教學用途。</p>
+      <div class="tool-filter"><input type="search" class="filter" placeholder="搵工具…（例如 VWAP、Stop、Kelly）" data-tq><div class="chips">${[['all', '全部']].concat(LEVELS.map((l) => [l.id, l.code.replace('Level ', 'L')])).map(([k, t]) => `<button class="chip-btn ${tf === k ? 'on' : ''}" data-tl="${k}">${esc(t)}</button>`).join('')}</div></div></div>
+      ${Object.entries(cats).map(([cat, list]) => `<section class="tool-cat"><h2 class="sec-h">${esc(cat)}</h2><div class="tool-grid-cards">${list.map(([k, t]) => `<a class="tool-tile" href="#/tools/${k}" data-lv="${t.level}" data-q="${esc((t.title + ' ' + t.desc + ' ' + cat).toLowerCase())}"><span>${t.icon}</span><b>${esc(t.title)}</b><small>${esc(t.desc)}</small><em>${esc((LEVELS.find((l) => l.id === t.level) || {}).code || '')}</em></a>`).join('')}</div></section>`).join('')}
+      <div class="empty" data-none hidden>搵唔到符合嘅工具。</div>`;
+    const applyTF = () => {
+      const q = $('[data-tq]', view).value.trim().toLowerCase(), lv = Store.ui().toolLv || 'all';
+      let any = 0;
+      $$('.tool-cat', view).forEach((sec) => { let n = 0; $$('.tool-tile', sec).forEach((a) => { const ok = (lv === 'all' || a.dataset.lv === lv) && (!q || a.dataset.q.includes(q)); a.hidden = !ok; if (ok) n++; }); sec.hidden = !n; any += n; });
+      $('[data-none]', view).hidden = !!any;
+    };
+    $('[data-tq]', view).addEventListener('input', applyTF);
+    $$('[data-tl]', view).forEach((b) => b.addEventListener('click', () => { Store.setUI({ toolLv: b.dataset.tl }); $$('[data-tl]', view).forEach((x) => x.classList.toggle('on', x === b)); applyTF(); }));
+    applyTF();
   }
 
   /* ---------------- 重播列表 ---------------- */
@@ -966,7 +997,7 @@
         <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份（全部使用者）</button><label class="btn">⬆️ 匯入（合併）<input type="file" accept=".json,application/json" hidden data-import="merge"></label><label class="btn ghost">⬆️ 匯入（完全取代）<input type="file" accept=".json,application/json" hidden data-import="replace"></label></div></div>
       <div class="card"><div class="card-h">🧹 重設</div><p class="muted">清除呢部機所有使用者同資料（建議先匯出備份）。</p><button class="btn ghost danger" data-reset>清除全部資料</button></div>
       <div class="card"><div class="card-h">📱 加到手機主畫面</div><p>iPhone / iPad：用 Safari 打開 → 分享 → 「加至主畫面」。Android：Chrome 選單 → 「安裝應用程式」。加咗之後可以好似 App 咁開，部分內容離線都睇到。</p></div>
-      <div class="card"><div class="card-h">ℹ️ 關於</div><p>內容整理自你用 ChatGPT 生成嘅 Level 1–5 課程筆記同實戰問答，加上補充章節、互動計算器、K 線重播遊戲、訓練場、測驗、錯題本、字卡同交易日誌。所有 TSLA 數字均為教學模擬，不構成投資建議。部分平台規則（例如 PDT、T+1、IBKR 數據）會變，請以官方最新公布為準。</p></div>`;
+      <div class="card"><div class="card-h">ℹ️ 關於</div><p>內容整理自你用 ChatGPT 生成嘅 Level 1–5 課程筆記同實戰問答，加上進階 Level 6–8、補充章節、模擬交易練習場、互動計算器、K 線重播遊戲、訓練場、測驗、錯題本、字卡同交易日誌。所有 TSLA 數字均為教學模擬，不構成投資建議。部分平台規則（例如 PDT、T+1、IBKR 數據）會變，請以官方最新公布為準。</p></div>`;
     $$('[data-edit]', view).forEach((b) => b.addEventListener('click', () => profileForm(ps.find((p) => p.id === b.dataset.edit))));
     $('[data-new]', view).addEventListener('click', () => profileForm());
     $$('[data-theme]', view).forEach((b) => b.addEventListener('click', () => setTheme(b.dataset.theme)));
@@ -1076,7 +1107,7 @@
       view.dataset.ch = '';
       renderRail(null);
       window.scrollTo(0, 0);
-      const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南' };
+      const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南', sim: '模擬交易練習場', map: '學習地圖', cert: '證書' };
       document.title = (titles[r] ? titles[r] + '｜' : '') + 'TSLA Day Trading 學院';
       if (r === 'toc') renderFullTOC();
       else if (r === 'tools') renderTools(parts[1]);
@@ -1093,15 +1124,63 @@
       else if (r === 'review') Learn.renderReview(view);
       else if (r === 'level') Learn.renderLevel(view, parts[1]);
       else if (r === 'guide') Learn.renderGuide(view);
+      else if (r === 'sim') Sim.play(view);
+      else if (r === 'map') Learn.renderMap(view);
+      else if (r === 'cert') Learn.renderCert(view, parts[1]);
       else renderHome();
     }
     renderTOC(activeCh, r === 'c' ? 'chapter' : r);
     renderProfileChip();
+    markBottomNav(r);
+    if (r !== 'c' && document.body.classList.contains('focus-mode')) document.body.classList.remove('focus-mode');
     $('#main').focus({ preventScroll: true });
   }
   window.addEventListener('hashchange', route);
 
-  window.App = { toast, modal, download, go, route, CH, CHAPTERS, LEVELS, renderQuiz, mountTool, confetti, levelStats, chapterPct };
+  /* ---------------- 專注模式、快捷鍵、返回頂部、底部導航 ---------------- */
+  function toggleFocus(force) {
+    const on = typeof force === 'boolean' ? force : !document.body.classList.contains('focus-mode');
+    document.body.classList.toggle('focus-mode', on);
+    Store.setUI({ focus: on });
+    const b = $('[data-focus]'); if (b) b.textContent = on ? '↩ 離開專注' : '🎯 專注模式';
+    if (on) toast('專注模式：按 F 或 Esc 離開');
+  }
+  if (Store.ui().focus) document.body.classList.add('focus-mode');
+  function jumpSection(dir) {
+    const secs = $$('.content .sec', view).filter((x) => x.id !== 'intro');
+    if (!secs.length) return;
+    const i = secs.findIndex((x) => x.getBoundingClientRect().top > 90);
+    const cur = i < 0 ? secs.length : i;
+    const t = dir > 0 ? secs[cur] : secs[Math.max(0, cur - 2)];
+    if (t) { t.scrollIntoView({ block: 'start' }); window.scrollBy(0, -70); } else if (dir > 0) { const e = $('#ch-end'); if (e) e.scrollIntoView({ block: 'start' }); }
+  }
+  const SHORTCUTS = [['/', '搜尋'], ['J / K', '下一節／上一節（章節頁）'], ['N / P', '下一章／上一章'], ['F', '專注模式'], ['G 然後 H', '返主頁'], ['→', '模擬器／字卡下一支'], ['?', '顯示快捷鍵']];
+  let gPressed = 0;
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest('input,textarea,select,[contenteditable]') || e.metaKey || e.ctrlKey || e.altKey) return;
+    if ($('.modal-wrap')) return;
+    const k = e.key;
+    const ch = document.body.dataset.route === 'c' && CH[(location.hash.split('/')[2] || '')];
+    if (k === '?') { modal(`<h3>⌨️ 快捷鍵</h3><table class="mini-tbl wide">${SHORTCUTS.map(([a, b]) => `<tr><td><kbd>${a}</kbd></td><td>${b}</td></tr>`).join('')}</table>`); return; }
+    if (k === 'Escape' && document.body.classList.contains('focus-mode')) { toggleFocus(false); return; }
+    if ((k === 'f' || k === 'F') && ch) { toggleFocus(); return; }
+    if ((k === 'j' || k === 'J') && ch) { jumpSection(1); return; }
+    if ((k === 'k' || k === 'K') && ch) { jumpSection(-1); return; }
+    if ((k === 'n' || k === 'N') && ch && ch.next) { go('#/c/' + ch.next.id); return; }
+    if ((k === 'p' || k === 'P') && ch && ch.prev) { go('#/c/' + ch.prev.id); return; }
+    if (k === 'g' || k === 'G') { gPressed = Date.now(); return; }
+    if ((k === 'h' || k === 'H') && Date.now() - gPressed < 1000) { go('#/'); }
+  });
+  const toTop = document.createElement('button'); toTop.className = 'to-top'; toTop.textContent = '↑'; toTop.title = '返回頂部'; toTop.setAttribute('aria-label', '返回頂部'); toTop.hidden = true;
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', () => { toTop.hidden = scrollY < 900; }, { passive: true });
+  const bnav = document.createElement('nav'); bnav.className = 'bottom-nav'; bnav.setAttribute('aria-label', '主要導航');
+  bnav.innerHTML = [['#/', '🏠', '主頁', ['home']], ['#/map', '🗺️', '課程', ['map', 'toc', 'level', 'c', 'cert']], ['#/gym', '🏋️', '練習', ['gym', 'review', 'replay', 'quiz', 'cards', 'sim', 'glossary']], ['#/tools', '🧰', '工具', ['tools', 'journal']], ['#/me', '⭐', '我的', ['me', 'board', 'family', 'settings', 'guide']]].map(([h, i, t, rs]) => `<a href="${h}" data-r="${rs.join(' ')}"><span>${i}</span>${t}</a>`).join('');
+  document.body.appendChild(bnav);
+  function markBottomNav(r) { $$('.bottom-nav a').forEach((a) => a.classList.toggle('on', a.dataset.r.split(' ').includes(r))); }
+
+  window.App = { toast, modal, download, go, route, CH, CHAPTERS, LEVELS, renderQuiz, mountTool, confetti, levelStats, chapterPct, rank };
 
   /* ---------------- 啟動 ---------------- */
   Store.touchStreak();

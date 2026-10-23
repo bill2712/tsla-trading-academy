@@ -31,6 +31,55 @@
   ];
 
   const SCENARIOS = {
+    'l6-orb': {
+      title: '開市區間突破 + 相對強弱（Level 6）', level: 'l6', icon: '🌅',
+      desc: '畫 Opening Range、睇 TSLA vs QQQ、等突破同回測，再用 PDH 定目標。',
+      build() {
+        const k = (t, o, h, l, c, v) => ({ t, o, h, l, c, v });
+        const bars = [
+          k('09:30', 386.00, 387.60, 385.20, 387.10, 3.1), k('09:35', 387.10, 387.90, 385.80, 386.20, 2.4), k('09:40', 386.20, 386.90, 385.00, 386.60, 2.0),
+          k('09:45', 386.60, 387.50, 386.30, 387.30, 1.4), k('09:50', 387.30, 387.70, 386.80, 387.00, 1.1), k('09:55', 387.00, 388.60, 386.90, 388.40, 1.9),
+          k('10:00', 388.40, 388.70, 387.80, 388.00, 1.0), k('10:05', 388.00, 388.90, 387.90, 388.80, 1.4), k('10:10', 388.80, 389.60, 388.60, 389.40, 1.5),
+          k('10:15', 389.40, 390.10, 389.10, 389.90, 1.3), k('10:20', 389.90, 390.60, 389.50, 390.40, 1.2), k('10:25', 390.40, 391.20, 390.10, 391.00, 1.3), k('10:30', 391.00, 392.10, 390.80, 391.90, 1.4),
+        ];
+        return { bars, vwap: true, zones: [{ lo: 385.0, hi: 387.9, label: 'Opening Range 385.00–387.90' }], lines: [{ y: 392.0, label: 'PDH 392.00', color: 'var(--muted)' }], avgVol: 1.2 };
+      },
+      steps: [
+        { show: 3, text: '09:30–09:45：TSLA 開市後上上落落，最高 $387.90、最低 $385.00。PDH 喺 $392.00。', q: '開市頭 15 分鐘，你應該做乜？', options: ['記錄 ORH $387.90、ORL $385.00，觀察開市模式', '追第一支大綠燭', '喺 OR 中間買入'], answer: 0, explain: '頭 15 分鐘 Spread 闊、假動作多，先畫區域。呢個開市較似 Open-Auction（拉鋸）。' },
+        { show: 5, text: '09:50：QQQ 由開市計 +0.1%，TSLA +0.6%。價格喺 VWAP 上方。', q: 'TSLA 相對大市係？', options: ['相對強：Context 支持研究 Long', '相對弱', '冇得比較'], answer: 0, explain: '同一起點，TSLA 跑贏 QQQ。RS 係 Context，唔係入場訊號。' },
+        { show: 6, text: '09:55：收市 $388.40，企喺 ORH 上方；成交量 1.9M，高過同時段平均約 1.2M。', q: '你嘅決定？', options: ['WAIT：突破只係第一步，等回測', '即刻市價追入', 'Short，升太多'], answer: 0, explain: '你嘅 Playbook 係突破 + 回測，唔係追突破。' },
+        { show: 7, text: '10:00：回落到 $387.80（輕微入返 ORH 附近），收 $388.00，量減少到 1.0M。', q: '點解讀？', options: ['值得觀察嘅回測：未跌穿區域、量縮', '突破失敗，放棄', '已確認，即刻買'], answer: 0, explain: '回測守住，但仲要等反彈確認。' },
+        { show: 8, lines: [{ y: 388.95, label: 'Entry 388.95', color: 'var(--accent)' }, { y: 387.70, label: 'Stop 387.70', color: 'var(--down)' }, { y: 391.80, label: 'Target 391.80', color: 'var(--up)' }], text: '10:05：收 $388.80，高位 $388.90。計劃：Entry $388.95（確認 K 高位上方）、Stop $387.70（回測低位下方）、Target $391.80（PDH 之前）。', q: 'R:R 大約係？', options: ['約 2.28R', '約 1.2R', '約 3.5R'], answer: 0, explain: '風險 $1.25、回報 $2.85 → 2.28R，符合 2R 要求。' },
+        { show: 9, lines: [{ y: 388.95, label: 'Entry 388.95', color: 'var(--accent)' }, { y: 387.70, label: 'Stop 387.70', color: 'var(--down)' }, { y: 391.80, label: 'Target 391.80', color: 'var(--up)' }], text: '10:10：升穿 $388.95，觸發入場。風險預算 $25，每股預留 $0.05 滑價。', q: '股數係？', options: ['19 股', '25 股', '12 股'], answer: 0, explain: '⌊25 ÷ (1.25 + 0.05)⌋ = 19 股。' },
+        { show: 13, lines: [{ y: 388.95, label: 'Entry 388.95', color: 'var(--accent)' }, { y: 387.70, label: 'Stop 387.70', color: 'var(--down)' }, { y: 391.80, label: 'Target 391.80', color: 'var(--up)' }], text: '10:30：高位 $392.10，觸及 Target $391.80。按計劃止賺 ≈ +2.28R。', q: '日誌入面最值得記低嘅係？', options: ['OR 回測、RS 強、PDH 限制目標 —— 同埋有冇跟規則', '「今日好好彩」', '唔使記'], answer: 0, explain: '記錄 Context 先可以之後做數據切片（例如 RS 強 vs 弱嘅表現）。' },
+      ],
+      outro: 'Level 6 嘅重點：Opening Range 畀你第一個區域，RS 畀你方向，PDH 等大時間框架位置限制你嘅目標。',
+    },
+    'l7-manage': {
+      title: '持倉管理：+1R 減倉、移 Stop、Trailing（Level 7）', level: 'l7', icon: '🎛️',
+      desc: '入咗場之後先係真正考驗：跟管理規則 v2.0，逐支決定。',
+      build() {
+        const k = (t, o, h, l, c, v) => ({ t, o, h, l, c, v });
+        const pre = C.genBars([385.2, 385.6, 385.1, 385.5, 385.9, 386.2], { seed: 721, open: 384.9, wick: 0.3 });
+        const bars = pre.concat([
+          k('10:00', 386.20, 386.90, 386.10, 386.70, 1.3), k('10:05', 386.70, 387.30, 386.50, 387.10, 1.1), k('10:10', 387.10, 387.60, 386.90, 387.40, 1.0),
+          k('10:15', 387.40, 387.95, 387.20, 387.70, 1.2), k('10:20', 387.70, 387.80, 387.00, 387.10, 0.9), k('10:25', 387.10, 387.30, 386.85, 387.20, 0.8),
+          k('10:30', 387.20, 388.10, 387.10, 388.00, 1.3), k('10:35', 388.00, 388.70, 387.90, 388.60, 1.2), k('10:40', 388.60, 389.20, 388.40, 389.10, 1.2),
+          k('10:45', 389.10, 389.30, 388.90, 389.00, 0.9), k('10:50', 389.00, 389.60, 388.95, 389.50, 1.1), k('10:55', 389.50, 389.55, 388.50, 388.60, 1.6), k('11:00', 388.60, 388.90, 388.20, 388.40, 1.0),
+        ]);
+        return { bars, vwap: true, avgVol: 1.0 };
+      },
+      steps: [
+        { show: 7, lines: [{ y: 386.40, label: 'Entry 386.40', color: 'var(--accent)' }, { y: 385.00, label: 'Stop 385.00', color: 'var(--down)' }], text: '10:00：Long 20 股 @ $386.40，Stop $385.00（風險 $1.40 × 20 = $28）。管理規則 v2.0：+1R 平一半、Stop 移去成本、之後跟 5m HL Trailing、45 分鐘未到 +1R 就走。', q: '入場後第一件事？', options: ['確認 Stop 單已經生效', '即刻計今日賺幾多', '轉去 1 分鐘圖'], answer: 0, explain: '一入場就確認保護訂單。' },
+        { show: 10, lines: [{ y: 386.40, label: 'Entry 386.40', color: 'var(--accent)' }, { y: 385.00, label: 'Stop 385.00', color: 'var(--down)' }, { y: 387.80, label: '+1R 387.80', color: 'var(--up)' }], text: '10:15：高位 $387.95，觸及 +1R（$387.80）。', q: '按 v2.0 規則？', options: ['平 10 股 @ $387.80，餘下 10 股 Stop 移去 $386.40', '全部平倉', '唔郁，等 3R'], answer: 0, explain: '規則事前寫好，臨場照做。' },
+        { show: 12, lines: [{ y: 386.40, label: 'Stop（成本）386.40', color: 'var(--down)' }], text: '10:20–10:25：回調到 $386.85，好接近成本價。你開始驚「還返晒」。', q: '應該？', options: ['跟規則：Stop 喺成本，繼續持有', '即刻平晒，驚還返', '將 Stop 移低啲，畀多啲空間'], answer: 0, explain: '最壞情況已經係打和（餘下部分）。移遠 Stop 係違規。' },
+        { show: 13, lines: [{ y: 386.75, label: 'Trail 386.75', color: 'var(--down)' }], text: '10:30：升穿之前高位 $387.95，確認 $386.85 係新 HL。', q: '結構 Trailing 下，Stop 移去邊？', options: ['$386.75（HL 下方 $0.10）', '$388.00', '唔使移'], answer: 0, explain: 'Trailing 跟住最近已確認嘅 HL。' },
+        { show: 17, lines: [{ y: 388.80, label: 'Trail 388.80', color: 'var(--down)' }], text: '10:45 形成 HL $388.90，10:50 升穿 $389.20 創新高 $389.60。', q: '新嘅 Trailing Stop？', options: ['$388.80', '$386.75 唔使改', '$389.50'], answer: 0, explain: 'HL $388.90 − $0.10。' },
+        { show: 18, lines: [{ y: 388.80, label: 'Trail 388.80', color: 'var(--down)' }], text: '10:55：大紅燭跌穿 $388.80，餘下 10 股喺 $388.80 出場。', q: '成筆交易總結果係？（初始風險 $28）', options: ['約 +1.36R（$14 + $24 = $38）', '+2.0R', '+1.71R'], answer: 0, explain: '10 × 1.40 + 10 × 2.40 = $38；38 ÷ 28 ≈ 1.36R。' },
+        { show: 19, text: '如果用固定 2R 目標（$389.20），10:40 已經觸及：20 × 2.80 = $56 = +2R。', q: '咁係咪代表固定目標一定好啲？', options: ['唔係：一筆交易唔可以比較方法，要用大量樣本', '係，以後只用固定目標', '係，Trailing 冇用'], answer: 0, explain: '試吓工具「出場方法比較模擬」，同埋用你嘅日誌數據比較。' },
+      ],
+      outro: '管理規則最大價值係「一致」：唔理今次結果，照規則做，先有可比較嘅數據。',
+    },
     'l2-shooting': {
       title: '阻力區 Shooting Star（Level 2 情境 2）', level: 'l2', icon: '🌠',
       desc: '升到阻力區，出現長上影線、量增加 —— 係反轉，定只係暫停？',
@@ -185,6 +234,7 @@
   };
 
   /* ---------- 遊戲 UI ---------- */
+  const shuffled = (n) => { const a = Array.from({ length: n }, (_, i) => i); for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   function play(el, id) {
     const sc = SCENARIOS[id];
     if (!sc) { el.innerHTML = '<p>搵唔到呢個情境。</p>'; return; }
@@ -198,7 +248,7 @@
       <p class="tool-fine">⚠️ 全部數字係教學模擬，唔係真實 TSLA 行情。</p></div>`;
     const chartEl = el.querySelector('.rp-chart'), panel = el.querySelector('.rp-panel');
     const draw = (s) => {
-      const cfg = Object.assign({}, base, { visible: s.show, lines: (base.lines || []).concat(s.lines || []), marks: [], highlight: s.show - 1, slots: base.bars.length });
+      const cfg = Object.assign({}, base, { bars: base.bars.slice(0, s.show), vwap: base.vwap === true ? C.vwapOf(base.bars).slice(0, s.show) : base.vwap, lines: (base.lines || []).concat(s.lines || []), marks: [], highlight: s.show - 1, slots: base.bars.length });
       C.candles(chartEl, cfg);
       el.querySelector('.rp-progress-fill').style.width = ((step + 1) / sc.steps.length * 100) + '%';
     };
@@ -208,7 +258,7 @@
       draw(s);
       const last = step === sc.steps.length - 1;
       panel.innerHTML = `<div class="rp-step">第 ${step + 1} / ${sc.steps.length} 步</div><p class="rp-text">${s.text}</p>
-        ${s.q ? `<p class="rp-q"><b>${s.q}</b></p><div class="rp-opts">${s.options.map((o, i) => `<button class="rp-opt" data-i="${i}">${String.fromCharCode(65 + i)}. ${o}</button>`).join('')}</div><div class="rp-fb"></div>` : ''}
+        ${s.q ? `<p class="rp-q"><b>${s.q}</b></p><div class="rp-opts">${shuffled(s.options.length).map((i, k) => `<button class="rp-opt" data-i="${i}">${String.fromCharCode(65 + k)}. ${s.options[i]}</button>`).join('')}</div><div class="rp-fb"></div>` : ''}
         <div class="rp-nav"><button class="btn primary" data-next ${s.q ? 'disabled' : ''}>${last ? '完成 ✓' : '播放下一步 ▶'}</button></div>`;
       if (s.q) {
         panel.querySelectorAll('.rp-opt').forEach((b) => b.addEventListener('click', () => {
@@ -244,5 +294,6 @@
     render();
   }
 
+  { const ord = ['l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8', 'qa']; const keys = Object.keys(SCENARIOS).sort((a, b) => ord.indexOf(SCENARIOS[a].level) - ord.indexOf(SCENARIOS[b].level)); const sorted = {}; keys.forEach((k) => (sorted[k] = SCENARIOS[k])); Object.keys(SCENARIOS).forEach((k) => delete SCENARIOS[k]); Object.assign(SCENARIOS, sorted); }
   window.Replay = { SCENARIOS, play };
 })();

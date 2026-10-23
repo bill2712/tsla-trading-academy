@@ -37,6 +37,7 @@
       wrong: {},       // 錯題本："quizId:題號" -> { box, due, miss, ts }（間隔重溫）
       activity: {},    // 學習日曆："YYYY-MM-DD" -> { xp, sec, quiz, drill, note, replay, journal, review }
       gym: {},         // 訓練場：drillId -> { best, plays, ts }
+      conf: {},        // 每章自評：chapterId -> 1（未明）/ 2 / 3
     };
   }
 
@@ -277,6 +278,7 @@
     out.xp = Math.max(a.xp || 0, b.xp || 0);
     out.replay = Object.assign({}, b.replay, a.replay);
     out.wrong = Object.assign({}, b.wrong, a.wrong);
+    out.conf = Object.assign({}, b.conf, a.conf);
     out.activity = Object.assign({}, b.activity);
     for (const d in a.activity || {}) { const x = Object.assign({}, out.activity[d]); for (const k in a.activity[d]) x[k] = Math.max(x[k] || 0, a.activity[d][k] || 0); out.activity[d] = x; }
     out.gym = Object.assign({}, b.gym);

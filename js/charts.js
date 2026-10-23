@@ -64,7 +64,7 @@
     let lo = Infinity, hi = -Infinity;
     bars.forEach((b) => { lo = Math.min(lo, b.l); hi = Math.max(hi, b.h); });
     (cfg.zones || []).forEach((z) => { lo = Math.min(lo, z.lo); hi = Math.max(hi, z.hi); });
-    (cfg.lines || []).forEach((ln) => { lo = Math.min(lo, ln.y); hi = Math.max(hi, ln.y); });
+    (cfg.lines || []).forEach((ln) => { if (cfg.fitLines === false && !ln.fit) return; lo = Math.min(lo, ln.y); hi = Math.max(hi, ln.y); });
     if (cfg.yMin != null) lo = Math.min(lo, cfg.yMin);
     if (cfg.yMax != null) hi = Math.max(hi, cfg.yMax);
     const pad = (hi - lo) * 0.08 || 1;
@@ -95,6 +95,11 @@
 
     // lines
     (cfg.lines || []).forEach((ln) => {
+      if (ln.y > hi || ln.y < lo) {
+        const up = ln.y > hi, yy = up ? m.t + 4 : priceH - 10;
+        const t = el('text', { x: m.l + 4, y: yy, class: 'axis', style: `fill:${ln.color || 'var(--muted)'}` }, svg); t.textContent = (up ? '↑ ' : '↓ ') + (ln.label || fmt(ln.y));
+        return;
+      }
       el('line', { x1: m.l, x2: W - m.r, y1: y(ln.y), y2: y(ln.y), style: `stroke:${ln.color || 'var(--muted)'};stroke-width:1.6;stroke-dasharray:${ln.dash === false ? '' : '6 4'}` }, svg);
       const g = el('g', {}, svg);
       el('rect', { x: W - m.r + 1, y: y(ln.y) - 9, width: m.r - 2, height: 18, rx: 4, style: `fill:${ln.color || 'var(--muted)'}` }, g);

@@ -243,6 +243,28 @@
     return { q, ans, opts: shuffle(opts.slice(0, 4)), why: { shares: '股數 = ⌊風險預算 ÷ 每股風險⌋，每股風險 = Entry − Stop = $' + F(rps) + '。', rr: 'R:R = (Target − Entry) ÷ (Entry − Stop)。', r: 'R = (出場 − Entry) ÷ (Entry − Stop)，每股風險 $' + F(rps) + '。', loss: '虧損 = 股數 × 每股風險（$' + F(rps) + '）。' }[type] };
   }
 
+  const BIASES = {
+    '確認偏誤': ['你想 Long TSLA，搵咗三條睇好嘅片，但冇睇日線上面嘅阻力。', '5m 出現 Hammer，你話「你睇，要升喇」，但成交量同 VWAP 都唔支持，你選擇唔理。'],
+    '近因偏誤': ['Breakout 策略過去 80 筆期望值正數，但最近輸咗 3 筆，你決定以後唔再用。', '上星期 Gap & Go 連續成功，今日見到 Gap 你就覺得一定會延續。'],
+    '結果偏誤': ['冇設 Stop，最後價格彈返嚟賺咗錢，你覺得自己決定啱。', '完全跟足規則，但係止蝕，你覺得今日「做錯晒」。'],
+    '損失厭惡': ['浮盈 +0.5R 就急急平倉，但浮虧 −1R 嗰陣就唔肯止蝕。', 'Stop 就快到，你將 Stop 移低 $0.50「畀多啲空間」。'],
+    '沉沒成本': ['已經蝕咗 $200，你話「而家走就真係蝕咗」，繼續揸住。', '研究咗一個策略三個月，數據話佢冇 Edge，但你唔捨得放棄。'],
+    '過度自信': ['連贏 5 筆之後，你將每筆風險由 0.25% 加到 1%。', '你覺得自己已經「睇得穿」TSLA，唔再寫開市前報告。'],
+    'FOMO 怕錯過': ['TSLA 已經升咗 3%，你怕錯過，冇 Setup 都追入。', '見到群組人人都話賺錢，你即刻開倉。'],
+    '報復交易': ['啱啱止蝕，你即刻用雙倍股數再入場想追返。', '今日已經去到每日虧損上限，但你再做一筆「最後一筆」。'],
+  };
+  const BIAS_FIX = { '確認偏誤': '入場前寫低「乜嘢會證明我錯」。', '近因偏誤': '睇 50 筆以上嘅統計，唔好俾最近幾筆主導。', '結果偏誤': '用過程 × 結果四格評估。', '損失厭惡': '一入場就掛 Bracket，唔好臨場改。', '沉沒成本': '問自己：如果而家冇倉，我會唔會入？', '過度自信': '注碼只跟升級階梯。', 'FOMO 怕錯過': '錯過係正常，下一個 Setup 會再嚟。', '報復交易': '斷路器：連輸 2 筆停 30 分鐘。' };
+  const TAPE = [
+    { k: 'absorb-res', lvl: '阻力 $386.00', ans: '阻力有效：賣方喺度吸收買盤', ask0: 8200, ask1: 7900, prints: [['386.00', 1200, 'A'], ['386.00', 900, 'A'], ['386.00', 2500, 'A'], ['386.00', 1800, 'A'], ['385.99', 300, 'M'], ['385.97', 600, 'B']], why: '大量主動買盤打落 $386.00，但 Ask 大單只少咗少少，價格升唔上去 → 賣方吸收。' },
+    { k: 'break-res', lvl: '阻力 $386.00', ans: '突破較可信：阻力賣單被食晒', ask0: 8200, ask1: 0, prints: [['386.00', 2500, 'A'], ['386.00', 3100, 'A'], ['386.00', 2600, 'A'], ['386.02', 1400, 'A'], ['386.05', 1900, 'A'], ['386.08', 1200, 'A']], why: 'Ask $386.00 嘅大單被連續主動買盤食晒，成交價開始升上 $386.05 以上 → 突破證據。仍然要等 K 線收市確認。' },
+    { k: 'absorb-sup', lvl: '支持 $380.00', ans: '支持有效：買方喺度吸收賣盤', bid0: 9100, bid1: 8700, prints: [['380.00', 1500, 'B'], ['380.00', 2200, 'B'], ['380.00', 1700, 'B'], ['380.00', 2600, 'B'], ['380.01', 400, 'M'], ['380.03', 700, 'A']], why: '大量主動賣盤打落 $380.00，但 Bid 大單冇乜減少，價格跌唔落 → 買方吸收。' },
+    { k: 'break-sup', lvl: '支持 $380.00', ans: '跌穿較可信：支持買單被打晒', bid0: 9100, bid1: 0, prints: [['380.00', 2800, 'B'], ['380.00', 3300, 'B'], ['380.00', 3000, 'B'], ['379.98', 1600, 'B'], ['379.95', 2100, 'B'], ['379.91', 1300, 'B']], why: 'Bid $380.00 嘅大單被主動賣盤打晒，成交價跌穿 $380 → 跌穿證據。' },
+  ];
+  function tapeHTML(t) {
+    const top = t.ask0 != null ? `<p>Level 2：<b>Ask ${t.lvl.split(' ')[1]}</b> 掛單 ${t.ask0.toLocaleString()} 股 → 而家 <b>${t.ask1 ? t.ask1.toLocaleString() + ' 股' : '已經冇晒'}</b></p>` : `<p>Level 2：<b>Bid ${t.lvl.split(' ')[1]}</b> 掛單 ${t.bid0.toLocaleString()} 股 → 而家 <b>${t.bid1 ? t.bid1.toLocaleString() + ' 股' : '已經冇晒'}</b></p>`;
+    return `<p class="dr-dir">位置：<b>${t.lvl}</b>（預先畫好）</p>${top}<table class="mini-tbl"><tr><th>價</th><th>股數</th><th>喺邊成交</th></tr>${t.prints.map((p) => `<tr class="${p[2] === 'A' ? 'up' : p[2] === 'B' ? 'down' : ''}"><td>${p[0]}</td><td>${p[1].toLocaleString()}</td><td>${{ A: 'Ask（主動買）', B: 'Bid（主動賣）', M: '中間' }[p[2]]}</td></tr>`).join('')}</table>`;
+  }
+  const DAY_WHY = { trend: '價格一直喺 VWAP 同一邊、VWAP 有斜度、回調淺。', range: 'VWAP 平，價格反覆穿越，去到邊界就返轉頭。', reversal: '早段向一個方向，之後穿過 VWAP 去另一邊並受壓。' };
   const DRILLS = {
     candle: {
       title: 'K 線形態辨識', icon: '🕯️', level: 'l1', rounds: 10,
@@ -272,6 +294,35 @@
       gen() {
         const s = genDecision();
         return { html: decisionText(s), q: '你嘅決定係？', opts: ['WAIT — 等待更多確認', 'PLAN — 建立模擬計劃', 'SKIP — 放棄'], ans: { WAIT: 'WAIT — 等待更多確認', PLAN: 'PLAN — 建立模擬計劃', SKIP: 'SKIP — 放棄' }[s.dec], why: s.why.join(' ') + '（優先次序：SKIP 理由 > WAIT 理由 > PLAN）' };
+      },
+    },
+    daytype: {
+      title: '日類型辨識', icon: '🌗', level: 'l6', rounds: 6,
+      desc: '睇一個交易日由 09:30 到 13:30 嘅走勢同 VWAP，判斷係趨勢日、區間日定反轉日。對應 Level 6 第 8 章。',
+      gen() {
+        const type = pick(['trend', 'range', 'reversal']);
+        const d = Sim.makeDay(type, ri(1, 1e9));
+        const bars = d.bars.slice(0, 48);
+        const names = { trend: '趨勢日', range: '區間日', reversal: '反轉日' };
+        return { chart: { bars, vwap: true, showVolume: false, height: 220, labelEvery: 8 }, q: '呢日（到 13:30 為止）較似？', opts: Object.values(names), ans: names[type], why: DAY_WHY[type] };
+      },
+    },
+    tape: {
+      title: '讀 Tape（訂單流）', icon: '📜', level: 'l7', rounds: 6,
+      desc: '睇 Level 2 大單變化同 Time & Sales，判斷關鍵位置係守住定被突破。對應 Level 7 第 5 章。',
+      gen() {
+        const t = pick(TAPE);
+        const opts = t.lvl.startsWith('阻力') ? [TAPE[0].ans, TAPE[1].ans] : [TAPE[2].ans, TAPE[3].ans];
+        return { html: tapeHTML(t), q: '最合理嘅解讀係？', opts: opts.concat(['冇任何資訊，訂單流冇用']), ans: t.ans, why: t.why + '（訂單流只係確認工具，仍然要配合 K 線同計劃。）' };
+      },
+    },
+    bias: {
+      title: '認出認知偏誤', icon: '🧠', level: 'l8', rounds: 8,
+      desc: '每題一個交易情境，你要講出係邊種心理偏誤。對應 Level 8 第 5 章。',
+      gen() {
+        const name = pick(Object.keys(BIASES));
+        const opts = shuffle([name].concat(shuffle(Object.keys(BIASES).filter((x) => x !== name)).slice(0, 3)));
+        return { html: `<blockquote class="dr-quote">${esc(pick(BIASES[name]))}</blockquote>`, q: '呢個係邊種偏誤？', opts, ans: name, why: '對策：' + BIAS_FIX[name] };
       },
     },
     risk: {
@@ -343,6 +394,9 @@
     l3: '將判斷變成有規則嘅 Setup：Entry Trigger、Stop、Target、Position Size，全部事前寫低。',
     l4: '執行同風險控制：訂單類型、滑價、每日虧損上限、心理同紀律。',
     l5: '驗證你嘅系統：回測、Walk-forward、樣本數、期望值，唔好俾運氣呃到。',
+    l6: '學識揀日子：多時間框架、Gap、Opening Range、相對強弱、時段、事件同日類型，令你只做有利環境嘅 Setup。',
+    l7: '入場之後先係真正考驗：R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性同倉位模型。',
+    l8: '由學生變交易者：計劃書、每日流程、進階檢討、心理偏誤、升級階梯、策略衰退同可持續交易，最後完成畢業專題。',
     qa: '你曾經問過嘅實戰問題：S/R 點畫、Zone 幾闊、Stop 放邊、點解 Replay 搵唔到 Entry。',
   };
   function renderLevel(view, id) {
@@ -546,5 +600,123 @@
       <h3>🏋️ 訓練場最佳</h3><div class="quick-tools wide">${Object.entries(DRILLS).map(([k, d]) => `<a href="#/gym/${k}"><span>${d.icon}</span>${esc(d.title)} <small>${u.gym[k] ? '最佳 ' + u.gym[k].best : '未玩'}</small></a>`).join('')}</div>`;
   }
 
-  window.Learn = { questCard, quests, heatmap, renderReview, renderGym, renderLevel, renderGuide, glossTips, ttsButton, ttsStop, exportNotes, statsHTML, DRILLS, decide };
+
+  /* =========================================================
+   * 學習地圖、證書、建議下一步、學習進度預計、本章重點
+   * ========================================================= */
+  function finalOf(lv) { return Object.keys(QUIZZES).find((k) => k.startsWith(lv.id + '-') && QUIZZES[k].final); }
+  function certState(lv, uid) {
+    const A = App(), u = Store.user(uid), st = A.levelStats(lv, uid), fq = finalOf(lv);
+    const r = fq ? u.quiz[fq] : null;
+    const scoreOk = !fq || (r && r.best / r.total >= 0.8);
+    return { read: st.done === st.total, st, fq, r, scoreOk, ok: st.done === st.total && scoreOk };
+  }
+  const PACES = [10, 20, 30, 45, 60];
+  function paceInfo() {
+    const A = App(), u = Store.user();
+    const pace = (u.toolState.pace && u.toolState.pace.min) || 20;
+    const perLevel = []; let acc = 0;
+    A.LEVELS.forEach((lv) => {
+      const remain = lv.chapters.filter((c) => !u.read[c.id]).reduce((a, c) => a + (c.mins || 5) * 2, 0); // 讀 + 練習 ≈ 兩倍時間
+      acc += remain;
+      perLevel.push({ lv, remain, eta: Store.addDays(Math.ceil(acc / pace)) });
+    });
+    return { pace, total: acc, days: Math.ceil(acc / pace), eta: Store.addDays(Math.ceil(acc / pace)), perLevel };
+  }
+  function paceHTML() {
+    const p = paceInfo();
+    return `<div class="pace"><div class="tool-foot"><span>每日學習時間：</span>${PACES.map((m) => `<button class="btn sm ${m === p.pace ? 'primary' : ''}" data-pace="${m}">${m} 分鐘</button>`).join('')}</div>
+      <p>${p.total ? `仲有大約 <b>${Math.round(p.total / 60)}</b> 小時（閱讀 + 練習）。按每日 ${p.pace} 分鐘，預計 <b>${p.eta}</b> 完成全部課程。` : '🎉 全部章節已完成！'}</p></div>`;
+  }
+  function bindPace(root, after) {
+    $$('[data-pace]', root).forEach((b) => b.addEventListener('click', () => { const u = Store.user(); u.toolState.pace = { min: +b.dataset.pace }; Store.save(); after(); }));
+  }
+
+  function nextSteps() {
+    const A = App(), u = Store.user(), out = [];
+    const due = Store.dueWrong().length;
+    if (due) out.push({ icon: '📕', t: `溫習 ${due} 題到期錯題`, s: '間隔重溫，記得更牢', href: '#/review' });
+    const last = u.last && A.CH[u.last.chapter];
+    if (last && !u.read[last.id]) out.push({ icon: '📍', t: `繼續讀：${last.level.code} 第 ${last.num} 章`, s: last.title, href: `#/c/${last.id}${u.last.section ? '/' + u.last.section : ''}` });
+    const low = Object.keys(u.conf || {}).filter((k) => u.conf[k] === 1 && A.CH[k]);
+    if (low.length) { const c = A.CH[low[0]]; out.push({ icon: '😕', t: `重溫未明白嘅章節`, s: `${c.level.code} 第 ${c.num} 章 ${c.title}`, href: `#/c/${c.id}` }); }
+    const noQuiz = A.CHAPTERS.find((c) => u.read[c.id] && (c.md.match(/\[\[quiz:([\w-]+)\]\]/g) || []).some((m) => !u.quiz[m.slice(7, -2)]));
+    if (noQuiz) { const qid = noQuiz.md.match(/\[\[quiz:([\w-]+)\]\]/g).map((m) => m.slice(7, -2)).find((q) => !u.quiz[q]); out.push({ icon: '📝', t: '做未完成嘅測驗', s: QUIZZES[qid] ? QUIZZES[qid].title : qid, href: `#/quiz/${qid}` }); }
+    const cert = A.LEVELS.find((lv) => certState(lv).ok && !(u.toolState.certSeen || {})[lv.id]);
+    if (cert) out.push({ icon: '🎓', t: `${cert.code} 證書可以領取！`, s: '列印出嚟貼喺牆', href: `#/cert/${cert.id}` });
+    const readyFinal = A.LEVELS.find((lv) => { const c = certState(lv); return c.read && c.fq && !c.scoreOk; });
+    if (readyFinal) out.push({ icon: '🏁', t: `${readyFinal.code} 期末測驗`, s: '80% 或以上就可以攞證書', href: `#/quiz/${finalOf(readyFinal)}` });
+    const curLv = (last && last.level) || A.LEVELS[0];
+    const drill = Object.entries(DRILLS).find(([k, d]) => d.level === curLv.id && !u.gym[k]);
+    if (drill) out.push({ icon: drill[1].icon, t: `試吓訓練場：${drill[1].title}`, s: '配合你而家讀緊嘅 Level', href: `#/gym/${drill[0]}` });
+    const nxt = A.CHAPTERS.find((c) => !u.read[c.id] && (!last || c !== last));
+    if (nxt) out.push({ icon: '📖', t: `下一章：${nxt.level.code} 第 ${nxt.num} 章`, s: nxt.title, href: `#/c/${nxt.id}` });
+    if (!(u.toolState.sim && u.toolState.sim.days)) out.push({ icon: '🕹️', t: '玩一日模擬交易練習場', s: '隨機交易日，逐支 K 線落單', href: '#/sim' });
+    return out.slice(0, 3);
+  }
+  function nextCard() {
+    const n = nextSteps();
+    return `<div class="card next-card"><div class="card-h">🧭 建議下一步</div>${n.map((x, i) => `<a class="next-item ${i === 0 ? 'first' : ''}" href="${x.href}"><span class="ni-ic">${x.icon}</span><span><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span><span class="ni-go">›</span></a>`).join('') || '<p class="muted">全部完成！🎉</p>'}</div>`;
+  }
+
+  function renderMap(view) {
+    const A = App(), u = Store.user();
+    const p = Store.activeProfile() || { name: '' };
+    view.innerHTML = `<div class="page-head"><h1>🗺️ 學習地圖</h1><p class="muted">由 Level 1 到 Level 8，一步步上。讀晒一個 Level 嘅章節、期末測驗 80% 或以上，就可以攞證書。</p></div>
+      <div class="card">${paceHTML()}</div>
+      <ol class="map">${A.LEVELS.map((lv, idx) => {
+        const cs = certState(lv), pi = paceInfo().perLevel.find((x) => x.lv === lv);
+        const stateCls = cs.ok ? 'done' : cs.st.done ? 'doing' : 'todo';
+        return `<li class="map-node ${stateCls}" style="--lv:${lv.color}">
+          <div class="map-dot"><span>${cs.ok ? '🎓' : lv.icon}</span></div>
+          <div class="map-card">
+            <div class="map-top"><a href="#/level/${lv.id}"><b>${esc(lv.code)}</b>　${esc(lv.title)}</a><em>${cs.st.done}/${cs.st.total}</em></div>
+            <div class="map-chs">${lv.chapters.map((c) => { const pc = A.chapterPct(c); return `<a href="#/c/${c.id}" title="第 ${c.num} 章 ${esc(c.title)}" class="${pc >= 1 ? 'd' : pc > 0 ? 'p' : ''} ${u.conf && u.conf[c.id] === 1 ? 'low' : ''}"></a>`; }).join('')}</div>
+            <div class="map-foot">${cs.fq ? `<span>🏁 期末：${cs.r ? `${cs.r.best}/${cs.r.total}` : '未做'}</span>` : ''}${cs.ok ? `<a class="btn sm primary" href="#/cert/${lv.id}">🎓 睇證書</a>` : `<span class="muted">${pi && pi.remain ? '預計 ' + pi.eta + ' 完成' : ''}</span>`}</div>
+          </div></li>`;
+      }).join('')}</ol>
+      <p class="muted">小格：綠 = 讀完、半色 = 讀緊、紅框 = 你標記咗「未明」。</p>`;
+    bindPace(view, () => renderMap(view));
+  }
+
+  function renderCert(view, id) {
+    const A = App(), lv = A.LEVELS.find((l) => l.id === id);
+    if (!lv) { location.hash = '#/map'; return; }
+    const cs = certState(lv), p = Store.activeProfile() || { name: '學員' }, u = Store.user();
+    if (!cs.ok) {
+      view.innerHTML = `<div class="page-head"><h1>🎓 ${esc(lv.code)} 證書</h1></div><div class="card"><p>仲差少少就可以攞證書：</p><ul class="tool-list"><li>${cs.read ? '✅' : '⬜'} 讀完全部 ${cs.st.total} 章（而家 ${cs.st.done} 章）</li>${cs.fq ? `<li>${cs.scoreOk ? '✅' : '⬜'} 期末測驗 80% 或以上（${cs.r ? `最佳 ${cs.r.best}/${cs.r.total}` : '未做'}）</li>` : ''}</ul><div class="tool-foot"><a class="btn primary" href="#/level/${lv.id}">去 ${esc(lv.code)}</a>${cs.fq ? `<a class="btn" href="#/quiz/${cs.fq}">做期末測驗</a>` : ''}</div></div>`;
+      return;
+    }
+    u.toolState.certSeen = u.toolState.certSeen || {}; if (!u.toolState.certSeen[lv.id]) { u.toolState.certSeen[lv.id] = Store.today(); Store.save(); Store.awardXP('cert:' + lv.id, 30); }
+    const rk = A.rank(u.xp);
+    view.innerHTML = `<div class="cert-actions no-print"><a class="btn ghost" href="#/map">← 學習地圖</a><button class="btn primary" data-print>🖨️ 列印證書</button></div>
+      <div class="cert" style="--lv:${lv.color}"><div class="cert-in">
+        <div class="cert-icon">${lv.icon}</div><p class="cert-small">TSLA Day Trading 學院</p><h1>結業證書</h1><p class="cert-small">茲證明</p>
+        <p class="cert-name">${esc(p.emoji || '')} ${esc(p.name)}</p>
+        <p>已完成</p><h2>${esc(lv.code)}：${esc(lv.title)}</h2><p class="cert-sub">${esc(lv.subtitle)}</p>
+        <div class="cert-meta"><span>📚 ${cs.st.total} 章</span>${cs.r ? `<span>🏁 期末測驗 ${cs.r.best}/${cs.r.total}</span>` : ''}<span>${rk.icon} ${esc(rk.name)}・${u.xp} XP</span></div>
+        <p class="cert-date">${u.toolState.certSeen[lv.id]}</p>
+        <p class="cert-fine">教育用途，唔代表任何專業資格或投資能力認證。</p></div></div>`;
+    $('[data-print]', view).addEventListener('click', () => window.print());
+    document.body.classList.add('cert-page');
+    window.addEventListener('hashchange', function off() { document.body.classList.remove('cert-page'); window.removeEventListener('hashchange', off); });
+    if (!sessionStorage.getItem('ta:cert:' + lv.id)) { sessionStorage.setItem('ta:cert:' + lv.id, '1'); App().confetti(); }
+  }
+
+  function chapterRecap(c, host) {
+    const keys = [];
+    (c.md.match(/^:::key[^\n]*\n[\s\S]*?\n:::/gm) || []).forEach((blk) => {
+      const lines = blk.split('\n'); const title = lines[0].replace(/^:::key\s*/, '').trim();
+      const body = lines.slice(1, -1).join(' ').replace(/\*\*/g, '').replace(/\[\[.*?\]\]/g, '').trim();
+      keys.push(title || body.slice(0, 80));
+    });
+    if (!keys.length && c.summary) keys.push(c.summary);
+    const u = Store.user(); u.conf = u.conf || {};
+    const cur = u.conf[c.id];
+    host.innerHTML = `${keys.length ? `<div class="recap"><div class="card-h">🔑 本章重點</div><ul>${keys.slice(0, 6).map((k) => `<li>${esc(k)}</li>`).join('')}</ul></div>` : ''}
+      <div class="conf"><span>讀完呢章，你覺得自己：</span>${[[1, '😕 未明'], [2, '🙂 大致明'], [3, '😎 好清楚']].map(([v, t]) => `<button class="btn sm ${cur === v ? 'primary' : ''}" data-conf="${v}">${t}</button>`).join('')}<small class="muted">（標記「未明」會出現喺建議下一步同學習地圖）</small></div>`;
+    $$('[data-conf]', host).forEach((b) => b.addEventListener('click', () => { u.conf[c.id] = +b.dataset.conf; Store.save(); Store.awardXP('conf:' + c.id, 1); chapterRecap(c, host); App().toast(+b.dataset.conf === 1 ? '已標記，之後會提你重溫' : '已記錄 👍'); }));
+  }
+
+  window.Learn = { nextCard, nextSteps, renderMap, renderCert, chapterRecap, paceHTML, bindPace, certState, questCard, quests, heatmap, renderReview, renderGym, renderLevel, renderGuide, glossTips, ttsButton, ttsStop, exportNotes, statsHTML, DRILLS, decide };
 })();

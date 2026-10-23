@@ -1316,6 +1316,7 @@
   };
 
   window.TOOLS = TOOLS;
+  Object.assign(WIDGETS, window.WIDGETS_EXTRA || {});
   window.WIDGETS = WIDGETS;
-  window.ToolUtil = { F, money, pct, signR, esc, rStats, stat, big, verdict };
+  window.ToolUtil = { F, money, pct, signR, esc, rStats, stat, big, verdict, simpleTool };
 })();
