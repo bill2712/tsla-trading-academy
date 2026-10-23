@@ -86,4 +86,12 @@ window.GLOSSARY = [
   { term: 'Bootstrap', zh: '重抽樣', def: '重複抽樣估計不確定性；交易可按交易日分組抽。', lv: 'l5' },
   { term: 'Compliance', zh: '遵守率', def: '按規則完成嘅訊號 ÷ 全部有效訊號。', lv: 'l5' },
   { term: 'AMBIGUOUS', zh: '先後不明', def: '同一支 K 線同時觸及 Stop 同 Target，冇細數據時嘅標記。', lv: 'l5' },
+  // 實戰問答
+  { term: 'Core Zone', zh: '核心區', def: 'Body（開收市）密集嘅價格範圍，係 S/R Zone 嘅核心。', lv: 'qa' },
+  { term: 'Wick Probe', zh: '影線試探區', def: '多次影線到達但守唔住嘅範圍；用嚟判斷 Zone 嘅極端邊界。', lv: 'qa' },
+  { term: 'Major / Intermediate / Intraday', zh: '三類水平', def: '大時間尺度歷史阻力、較近價格反應區、即日新形成 Swing；用途各唔同。', lv: 'qa' },
+  { term: 'Next Resistance', zh: '下一個阻力', def: '向左睇歷史，現價上方最近一個重要受阻位置；Target 唔應該無視佢。', lv: 'qa' },
+  { term: 'Stop Buffer', zh: '止損緩衝', def: '結構失效位以外再加嘅距離；要結合波幅決定，唔係固定 $0.10。', lv: 'qa' },
+  { term: 'No Trade', zh: '唔交易', def: '冇符合規則嘅 Setup 或 R:R 唔合理時嘅正確決定。', lv: 'qa' },
+  { term: 'Failed Breakdown', zh: '假跌破', def: '跌穿支持後無法維持、重新收復；可研究 Long 反轉（Bear Trap）。', lv: 'qa' },
 ];

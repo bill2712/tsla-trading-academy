@@ -8,7 +8,7 @@
 
 | 類別 | 功能 |
 |---|---|
-| 📚 內容 | Level 1–2 基礎重溫（新增）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發，共 52 章 |
+| 📚 內容 | Level 1–2 基礎重溫（新增）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發、💡 實戰問答（AAPL S/R 畫法、Zone 闊度、Stop、Replay 搵唔到 Entry），共 56 章 |
 | 🗺️ 目錄 | 側欄完整目錄（Level → 章 → 小節）、完整課程目錄頁、右邊「本章目錄」，撳任何一節直接跳過去 |
 | 📍 閱讀進度 | 自動記錄讀到邊個小節、每章完成度圓圈、「繼續上次」、讀完自動標記完成 |
 | ⭐ 書籤 | 每個小節標題旁邊 ☆，整章亦可以加書籤 |
@@ -16,11 +16,14 @@
 | 🎬 影片 | 每章可以貼 YouTube / 其他連結，YouTube 會直接嵌入播放；仲有一鍵 YouTube 搜尋建議 |
 | 💬 留言 | 家庭討論區：每章留言、指定小節、引用選取文字、回覆 |
 | 👨‍👩‍👧 多使用者 | 爸爸、媽媽、細路各自有自己嘅進度／書籤／筆記／分數；留言同影片全家共用；家庭進度頁 |
-| 🧰 工具箱 | 34 個互動計算器：Position Size、Risk Calculator、期望值實驗室、Monte Carlo、連敗機率、Order 跳價模擬器、Order Book、VWAP、RVOL、CLV、Net R、MFE/MAE、每日風險追蹤、CSV 數據檢查器… |
+| 🧰 工具箱 | 36 個互動計算器：S/R Zone 畫法工具、「點解冇 Entry？」診斷器、Position Size、Risk Calculator、期望值實驗室、Monte Carlo、連敗機率、Order 跳價模擬器、Order Book、VWAP、RVOL、CLV、Net R、MFE/MAE、每日風險追蹤、CSV 數據檢查器… |
 | 🎮 K 線重播 | 5 個逐支 K 線決策情境（WAIT / PLAN / 入場 / 放棄），即時講解 |
-| 📝 測驗 | 50 份測驗（每章小測 + 三個期末測驗），全部有詳細解析 |
+| 📝 測驗 | 54 份測驗（每章小測 + 三個期末測驗），全部有詳細解析 |
 | 🃏 字卡 | 80+ 個詞彙字卡（可反轉、記住已識） |
-| 📒 交易日誌 | 候選紀錄 + 交易紀錄 + 自動統計（勝率、Expectancy、Profit Factor、Drawdown、按 Setup／市況分析、Equity Curve），可匯出 CSV |
+| 📒 交易日誌 | 真實／Paper／Replay 三類交易分開統計；入場理由、判斷啱唔啱、跟唔跟規則、情緒、錯誤標籤、教訓同改善；「過程 × 結果」四格評估；按類型／Playbook／Setup／市況分析；Equity Curve；可匯出 CSV；可以睇家庭成員嘅紀錄 |
+| 📘 Playbook | 自訂策略規則卡，有範本（Level 3 A/B/C、TSLA-BR-LONG v1.0）、版本紀錄（改規則自動保存舊版本同原因），每個 Playbook 自動計表現 |
+| 🔁 Replay 日誌 | 每 Replay 一日就記：事前畫咗乜、7 項評分表、結果（冇 Breakout／冇 Retest／R:R 唔夠／錯過咗…），睇結果分佈 |
+| 🧠 檢討 | 最常犯錯誤排行、情緒 vs 結果、教訓時間線 |
 | 🎯 遊戲化 | XP、等級稱號、連續學習日數、徽章、完成章節慶祝 |
 | 🌓 其他 | 深色／淺色主題、字體大小、列印版面、手機版、可「加到主畫面」離線使用 |
 
@@ -58,6 +61,7 @@ content/level0.js       Level 1–2 基礎重溫
 content/level3.js       Level 3 課程內容
 content/level4.js       Level 4 課程內容
 content/level5.js       Level 5 課程內容
+content/qa.js           實戰問答（你問過嘅問題同 AAPL 案例）
 js/data-quizzes.js      測驗題目、可剔清單、訓練計劃
 js/data-glossary.js     詞彙表／字卡
 js/tools.js             互動計算器

@@ -30,6 +30,8 @@
       streak: { last: null, count: 0, best: 0 },
       journal: [],     // 交易日誌（已執行交易）
       candidates: [],  // 候選 Setup 紀錄
+      playbooks: [],   // 自訂 Playbook（有版本紀錄）
+      replays: [],     // 每日 Replay 檢討
       replay: {},      // scenarioId -> { best, ts }
       toolState: {},   // 各計算器記住嘅輸入
     };
@@ -234,6 +236,8 @@
     out.highlights = mergeArrById(a.highlights, b.highlights);
     out.journal = mergeArrById(a.journal, b.journal);
     out.candidates = mergeArrById(a.candidates, b.candidates);
+    out.playbooks = mergeArrById(a.playbooks, b.playbooks);
+    out.replays = mergeArrById(a.replays, b.replays);
     out.toolState = Object.assign({}, b.toolState, a.toolState);
     out.notes = Object.assign({}, b.notes);
     for (const k in a.notes || {}) if (!out.notes[k] || (a.notes[k].ts || 0) >= (out.notes[k].ts || 0)) out.notes[k] = a.notes[k];

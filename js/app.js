@@ -298,7 +298,7 @@
       ${link('#/cards', '🃏', '詞彙字卡', activeRoute === 'cards')}
       ${link('#/glossary', '📖', '詞彙表', activeRoute === 'glossary')}
       <div class="toc-sep">我的</div>
-      ${link('#/journal', '📒', '交易日誌', activeRoute === 'journal')}
+      ${link('#/journal', '📒', '交易日誌・Playbook', activeRoute === 'journal')}
       ${link('#/me', '⭐', '書籤・筆記・螢光筆', activeRoute === 'me')}
       ${link('#/board', '💬', '家庭討論區', activeRoute === 'board')}
       ${link('#/family', '👨‍👩‍👧', '家庭進度', activeRoute === 'family')}
@@ -376,7 +376,7 @@
       <section class="home-grid">
         <div class="card tip-card"><div class="card-h">💡 今日一句</div><p class="big-quote">「${esc(tip)}」</p></div>
         <div class="card word-card"><div class="card-h">📖 今日詞彙</div><p class="w-term">${esc(word.term)}</p><p class="w-zh">${esc(word.zh)}</p><p>${esc(word.def)}</p><a href="#/cards">玩字卡 →</a></div>
-        <div class="card"><div class="card-h">🧰 常用工具</div><div class="quick-tools">${['possize-pro', 'expectancy-lab', 'daily-risk', 'monte-carlo', 'order-sim', 'csv-checker'].map((id) => `<a href="#/tools/${id}"><span>${TOOLS[id].icon}</span>${esc(TOOLS[id].title)}</a>`).join('')}</div></div>
+        <div class="card"><div class="card-h">🧰 常用工具</div><div class="quick-tools">${['possize-pro', 'zone-builder', 'no-entry', 'expectancy-lab', 'daily-risk', 'monte-carlo'].map((id) => `<a href="#/tools/${id}"><span>${TOOLS[id].icon}</span>${esc(TOOLS[id].title)}</a>`).join('')}</div></div>
         <div class="card"><div class="card-h">🎮 K 線重播遊戲</div><div class="quick-tools">${Object.entries(Replay.SCENARIOS).map(([id, s]) => `<a href="#/replay/${id}"><span>${s.icon}</span>${esc(s.title)}${u.replay[id] ? ` <small>（${u.replay[id].best}/${u.replay[id].total}）</small>` : ''}</a>`).join('')}</div></div>
         ${fam.length > 1 ? `<div class="card"><div class="card-h">👨‍👩‍👧 家庭進度</div>${fam.map((f) => { const o = overall(f.id); return `<div class="fam-row"><span class="av" style="--c:${f.color}">${f.emoji}</span><b>${esc(f.name)}</b><div class="bar"><div style="width:${o.pct * 100}%;background:${f.color}"></div></div><small>${Math.round(o.pct * 100)}%</small></div>`; }).join('')}<a href="#/family">詳細 →</a></div>` : ''}
         <div class="card"><div class="card-h">💬 最新討論</div>${recent.length ? recent.map((c) => `<a class="mini-c" href="#/c/${c.chapter}/${c.section || 'ch-end'}"><span class="av sm" style="--c:${c.color}">${c.emoji}</span><span><b>${esc(c.name)}</b>：${esc(c.text.slice(0, 60))}<small> · ${CH[c.chapter] ? esc(CH[c.chapter].level.code + ' 第' + CH[c.chapter].num + '章') : ''}</small></span></a>`).join('') : '<p class="muted">未有留言。喺任何章節底部或者揀選文字都可以留言，同屋企人討論。</p>'}<a href="#/board">討論區 →</a></div>
@@ -946,7 +946,7 @@
     $('[data-new]', view).addEventListener('click', () => profileForm());
     $$('[data-theme]', view).forEach((b) => b.addEventListener('click', () => setTheme(b.dataset.theme)));
     $$('[data-font]', view).forEach((b) => b.addEventListener('click', () => setFont(+b.dataset.font)));
-    $('[data-export]', view).addEventListener('click', () => { download(`trading-academy-backup-${Store.today()}.json`, Store.exportJSON(), 'application/json'); toast('已匯出'); });
+    $('[data-export]', view).addEventListener('click', () => { download(`trading-academy-backup-${Store.today()}.json`, Store.exportJSON(), 'application/json'); Journal.markBackup(); toast('已匯出'); });
     $$('[data-import]', view).forEach((inp) => inp.addEventListener('change', (e) => {
       const f = e.target.files[0]; if (!f) return;
       const mode = inp.dataset.import;

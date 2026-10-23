@@ -1,9 +1,9 @@
 /* 簡單離線快取：先用網絡，失敗先用快取（內容更新後即刻見到） */
-const CACHE = 'ta-v1';
+const CACHE = 'ta-v2';
 const CORE = [
   './', 'index.html', 'css/style.css', 'manifest.webmanifest', 'assets/icon.svg',
   'js/vendor/marked.min.js', 'js/store.js', 'js/charts.js', 'js/data-glossary.js', 'js/data-quizzes.js',
-  'content/level0.js', 'content/level3.js', 'content/level4.js', 'content/level5.js',
+  'content/level0.js', 'content/level3.js', 'content/level4.js', 'content/level5.js', 'content/qa.js',
   'js/tools.js', 'js/replay.js', 'js/journal.js', 'js/app.js',
 ];
 self.addEventListener('install', (e) => {

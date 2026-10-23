@@ -208,6 +208,27 @@ window.QUIZZES = {
   { q: '問題 7：你最初規定最多等六支 5m Candle 回測，但某次第九支先回測而且最後升好多。應該？', options: ['當成 v1.0 成功交易', '按 v1.0 記錄過期，另行研究九支版本', '直接修改舊有紀錄'], answer: 1, explain: '跟 v1.0 規則記錄；九支係另一個版本（v1.x），要獨立測試。' },
   { q: '問題 8：回測樣本正期望值 +0.10R，但加入較不利滑價後變成 −0.05R。最佳理解係？', options: ['證明策略一定有效', '只應用理想成本模型', '策略對成本敏感，需要進一步驗證實際可執行性'], answer: 2, explain: '對成本敏感嘅策略，實際執行好容易由正變負。' },
 ]},
+
+/* ---------------- 實戰問答 ---------------- */
+'qa-c1': { title: '小測：AAPL 畫線檢討', questions: [
+  { q: '$346.11 同 $347.75 兩個阻力，對即日交易最好點處理？', options: ['合併成一個 $346–348 大框', '分開畫：較近 $346.0–346.2、較高 $347.5–347.9', '只畫 $347.75，因為係最高'], answer: 1, explain: '兩組分得開嘅價格反應應該分開觀察，唔好為包晒所有 Wick 拉一個大框。' },
+  { q: '分析 19 號開市頭 15 分鐘，可唔可以用 19 號下午先出現嘅低位畫 Support？', options: ['可以，反正最後都會出現', '唔可以，咁係 Look-ahead Bias', '只可以用一半'], answer: 1, explain: '開市前只可以用截至 16 號收市已知嘅資料；即日結構要隨 K 線完成先加入。' },
+]},
+'qa-c2': { title: '小測：Wick vs Body', questions: [
+  { q: '上一交易日 High $346.65、Close $346.10，PDH 係？', options: ['$346.10', '$346.65', '$346.38（平均）'], answer: 1, explain: 'PDH / PDL 係客觀水平，用包含影線嘅真正最高最低價。' },
+  { q: '三次高位喺 $346.30–346.60，另外一次因突發消息衝到 $347.80。畫阻力 Zone 時？', options: ['一定要拉到 $347.80', '可以將 $347.80 當獨立極端參考，Zone 唔使拉咁闊', '刪除所有影線只睇 Body'], answer: 1, explain: 'Zone 要反映重複出現嘅反應，唔係無條件包晒全部 High / Low。' },
+  { q: '以下邊句啱？', options: ['Zone 下緣減 $0.10 就係 Stop', 'Zone 同 Stop 係兩樣嘢：Zone 係可能反應區，Stop 係假設失效位', 'Body 永遠比 Wick 重要'], answer: 1, explain: '三個原則之三：S/R Zone 同 Stop Loss 唔係同一樣嘢。' },
+]},
+'qa-c3': { title: '小測：Zone 闊度、目標、止損', questions: [
+  { q: 'Zone 應該畫幾闊？', options: ['一律 $0.40', '由價格反應分布、波幅同時間框架決定', '愈闊愈安全'], answer: 1, explain: '先搵真正嘅價格反應，再決定闊度。' },
+  { q: 'Entry $350.95、Stop $349.75、下一阻力前 Target $351.90。應該？', options: ['將 Stop 縮到 $350.80 湊夠 2R', '約 0.79R，唔符合 2R 要求 → Skip', '將 Target 拉到 $354'], answer: 1, explain: '唔可以為咗 R:R 好睇而亂移 Stop 或者無視中途阻力。' },
+  { q: '股價已經創歷史新高，上面冇歷史阻力。Target 點諗？', options: ['照畫一條「歷史阻力」', '可研究 ATR、整數位、Measured Move，但唔好假裝係歷史阻力；唔清楚可以唔交易', '冇目標就唔使止損'], answer: 1, explain: '計算出嚟嘅目標同經歷史測試嘅阻力性質唔同。' },
+]},
+'qa-c4': { title: '小測：搵唔到 Entry', questions: [
+  { q: 'Replay 一整日都冇符合條件嘅 Entry，最後 No Trade。呢個結果？', options: ['一定係分析錯', '可以係完全正確嘅結果', '應該降低標準搵一筆'], answer: 1, explain: '市場冇提供你練緊嘅 Setup，No Trade 就係正確執行。' },
+  { q: '16 號下午例子：Entry $342.20、Stop $340.50、Target $343.80，策略要求最少 2R。應該？', options: ['做，因為之後真係反彈', 'Skip，R:R 只有約 0.94', '將 Target 改 $346 再做'], answer: 1, explain: '方向分析對，都可能因為入場太遲、止損太遠、障礙太近而冇合適交易。' },
+  { q: '19 號 Session VWAP 應該點計？', options: ['沿用 16 號收市 VWAP', '由 19 號開市重新累積計算', '用 16 同 19 號平均'], answer: 1, explain: 'Session VWAP 每個交易時段重新計算。' },
+]},
 };
 
 /* =========================================================
@@ -319,6 +340,15 @@ window.CHECKLISTS = {
   { title: 'Week 2：正式回測', items: ['Day 8｜掃描 Breakout（冇事後補畫水平）', 'Day 9｜掃描 Retest（每個候選均有等待期限）', 'Day 10｜記錄 Confirmation（冇用未完成 K 線）', 'Day 11｜記錄 Entry Trigger（價格、時間及訂單模型清晰）', 'Day 12｜記錄 Stop / Target（有客觀失效依據）', 'Day 13｜處理 Slippage（計入不同成本情境）', 'Day 14｜覆盤（可以重現每個模擬決定）'] },
   { title: 'Week 3：統計與系統分析', items: ['Day 15｜Win Rate / Avg Win / Avg Loss（數據正確）', 'Day 16｜Expectancy / Profit Factor（使用 Net P&L）', 'Day 17｜Drawdown / Losing Streak（能量化回撤）', 'Day 18｜MFE / MAE（分辨有利及不利波幅）', 'Day 19｜Market Regime 分類（只使用當時已知資料）', 'Day 20｜Cost Stress Test（測試不同成交成本）', 'Day 21｜第一份回測報告（記錄限制及不確定性）'] },
   { title: 'Week 4：獨立驗證與 Forward Testing', items: ['Day 22｜固定 v1.0 參數，唔再事後修改', 'Day 23｜準備未參與優化嘅歷史資料', 'Day 24｜執行 Out-of-Sample 測試', 'Day 25｜比較樣本內外結果', 'Day 26｜檢查最大回撤及成本敏感度', 'Day 27｜建立 Paper Trading 流程', 'Day 28｜練習真正未知行情中識別 Setup', 'Day 29｜檢查訂單及風險執行能力', 'Day 30｜完成研究總結，決定需要繼續測試乜'] },
+]},
+'qa-replay-review': { title: 'Replay 完成後評分表', resettable: true, items: [
+  '有事前畫好 S/R',
+  '畫線只用咗當刻可得資訊（冇 Look-ahead Bias）',
+  '有出現指定 Setup（冇都可以係正確 No Trade）',
+  'Setup 有出現 Confirmation（冇就繼續等待係合理）',
+  '有觸發 Entry（冇成交就唔計交易）',
+  'Risk / Reward 合理（唔合理就 Skip）',
+  '全程按固定規則執行',
 ]},
 'l5-grad': { title: 'Level 5 畢業自我檢查', items: [
   '可以取得並整理真實 5m OHLCV 歷史資料',

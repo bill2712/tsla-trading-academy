@@ -1078,6 +1078,97 @@
     },
   };
 
+  /* ---------------- Zone 畫法工具 ---------------- */
+  TOOLS['zone-builder'] = {
+    title: 'S/R Zone 畫法工具（Body + Wick）', icon: '📐', cat: '數據與指標', level: 'qa',
+    desc: '輸入幾次測試嘅影線極值同實體邊緣，自動分出核心區、影線試探區同獨立極端位。',
+    render(el, ctx) {
+      const d = { type: 'res', tol: 0.40, rows: [[346.50, 346.05], [346.35, 346.10], [346.60, 346.00], [347.80, 346.20]] };
+      const s = ctx.load(JSON.parse(JSON.stringify(d)));
+      el.innerHTML = `<p class="tool-note">每一行係價格一次測試：Resistance 填「High（影線）」同「Body 上緣（開／收較高者）」；Support 填「Low（影線）」同「Body 下緣」。</p>
+        <div class="tool-grid"><label class="fld"><span>類型</span><select data-k="type"><option value="res" ${s.type === 'res' ? 'selected' : ''}>Resistance 阻力</option><option value="sup" ${s.type === 'sup' ? 'selected' : ''}>Support 支持</option></select></label>
+        <label class="fld"><span>影線聚集容差（$）</span><input type="number" step="0.05" data-k="tol" value="${s.tol}"></label></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th data-h1></th><th data-h2></th><th></th></tr></thead><tbody></tbody></table></div>
+        <div class="tool-foot"><button class="btn sm" data-add>＋ 加一次測試</button><button class="btn ghost sm" data-reset>↺ 示例</button></div><div class="tool-out"></div>`;
+      const tb = el.querySelector('tbody'), out = el.querySelector('.tool-out');
+      const update = () => {
+        const res = s.type === 'res';
+        el.querySelector('[data-h1]').textContent = res ? 'High（影線）' : 'Low（影線）';
+        el.querySelector('[data-h2]').textContent = res ? 'Body 上緣' : 'Body 下緣';
+        tb.innerHTML = s.rows.map((r, i) => `<tr><td>${i + 1}</td><td><input type="number" step="0.01" data-r="${i}" data-c="0" value="${r[0]}"></td><td><input type="number" step="0.01" data-r="${i}" data-c="1" value="${r[1]}"></td><td><button class="x" data-del="${i}">×</button></td></tr>`).join('');
+        const rows = s.rows.filter((r) => isFinite(r[0]) && isFinite(r[1]));
+        if (rows.length < 2) { out.innerHTML = verdict(null, '最少要兩次測試先可以講係「Zone」。'); bind(); return; }
+        const wicks = rows.map((r) => r[0]).sort((a, b) => a - b);
+        const med = wicks[Math.floor(wicks.length / 2)];
+        const inC = rows.filter((r) => Math.abs(r[0] - med) <= s.tol);
+        const outl = rows.filter((r) => Math.abs(r[0] - med) > s.tol);
+        const bodies = inC.map((r) => r[1]);
+        const coreLo = Math.min(...bodies), coreHi = Math.max(...bodies);
+        const cw = inC.map((r) => r[0]);
+        const zLo = res ? coreLo : Math.min(...cw), zHi = res ? Math.max(...cw) : coreHi;
+        const all = rows.flat().concat([zLo, zHi]);
+        const lo = Math.min(...all) - 0.15, hi = Math.max(...all) + 0.15;
+        const Y = (v) => 10 + (hi - v) / (hi - lo) * 200;
+        const svg = `<svg viewBox="0 0 600 220" class="chart-svg" role="img" aria-label="Zone 示意">
+          <rect x="0" y="${Y(zHi)}" width="600" height="${Math.max(2, Y(zLo) - Y(zHi))}" style="fill:var(--warn);opacity:.15"/>
+          <rect x="0" y="${Y(coreHi)}" width="600" height="${Math.max(3, Y(coreLo) - Y(coreHi))}" style="fill:var(--accent);opacity:.35"/>
+          ${rows.map((r, i) => { const x = 60 + i * (480 / Math.max(1, rows.length - 1)); const o = outl.includes(r); return `<line x1="${x}" x2="${x}" y1="${Y(r[0])}" y2="${Y(r[1])}" stroke="${o ? 'var(--down)' : 'var(--muted)'}" stroke-width="3"/><rect x="${x - 12}" y="${res ? Y(r[1]) : Y(r[1]) - 30}" width="24" height="30" rx="3" style="fill:${o ? 'var(--down)' : 'var(--up)'};opacity:.8"/><text x="${x + 16}" y="${Y(r[0]) + 4}" class="axis">${F(r[0])}${o ? ' 極端' : ''}</text>`; }).join('')}
+          <text x="6" y="${Y(coreHi) - 4}" class="axis">核心 ${F(coreLo)}–${F(coreHi)}</text></svg>`;
+        out.innerHTML = `${big(res ? '候選 Resistance Zone' : '候選 Support Zone', `$${F(zLo)}–${F(zHi)}`, `闊 $${F(zHi - zLo)}`)}
+          <div class="stats">${stat('Body 核心區', `$${F(coreLo)}–${F(coreHi)}`)}${stat('影線試探區', res ? `$${F(coreHi)}–${F(zHi)}` : `$${F(zLo)}–${F(coreLo)}`)}${stat('計入 Zone 嘅測試', inC.length + ' 次')}</div>
+          <figure class="chart">${svg}<figcaption>藍 = Body 核心；橙 = Wick 試探；紅 = 獨立極端位（唔包入 Zone）。</figcaption></figure>
+          ${outl.length ? verdict(null, `獨立極端參考：${outl.map((r) => '$' + F(r[0])).join('、')} —— 離其他試探太遠，當成另一個參考位，唔好硬將 Zone 拉闊。`) : ''}
+          ${inC.length < 2 ? verdict(false, '聚集嘅測試少過兩次，呢個 Zone 證據唔夠，等更多價格反應驗證。') : ''}
+          <p class="tool-fine">簡化工具：以影線中位數 ± 容差判斷聚集。真實畫線仲要考慮時間框架、波幅同反應強弱。PDH / PDL、Swing High / Low 就直接用影線極值。</p>`;
+        bind();
+      };
+      const bind = () => {
+        tb.querySelectorAll('input').forEach((i) => i.addEventListener('change', () => { s.rows[i.dataset.r][i.dataset.c] = parseFloat(i.value); ctx.save(s); update(); }));
+        tb.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => { s.rows.splice(+b.dataset.del, 1); ctx.save(s); update(); }));
+      };
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : parseFloat(i.value); ctx.save(s); update(); }));
+      el.querySelector('[data-add]').addEventListener('click', () => { const l = s.rows[s.rows.length - 1] || [100, 99.8]; s.rows.push([l[0], l[1]]); ctx.save(s); update(); });
+      el.querySelector('[data-reset]').addEventListener('click', () => { const n = JSON.parse(JSON.stringify(d)); Object.assign(s, n); ctx.save(s); TOOLS['zone-builder'].render(el, ctx); });
+      update();
+    },
+  };
+
+  /* ---------------- 冇 Entry 診斷器 ---------------- */
+  TOOLS['no-entry'] = {
+    title: '「點解冇 Entry？」診斷器', icon: '🩺', cat: '計劃與規則', level: 'qa',
+    desc: 'Replay 完一日搵唔到入場位？逐步答幾條問題，分清係冇 Setup、R:R 唔合理，定係錯過咗。',
+    render(el) {
+      const Q = [
+        ['開市前有冇用「當刻已知資料」畫好 S/R、PDH / PDL？', '先改善準備：冇事前畫好水平，就好難客觀判斷 Breakout。下次開市前先畫，並記低畫線時間。', 'prep'],
+        ['有冇一支「已完成」K 線收市突破你事前畫好嘅阻力？', '結果 1：完全冇 Breakout —— 市場冇提供你練緊嘅 Setup，No Trade 係正確結果。', 'r1'],
+        ['突破後，喺你規定嘅期限內有冇回測舊阻力區？', '結果 2：有 Breakout 但冇 Retest —— 強勢直接走咗，接受錯過；追突破係另一套策略。', 'r2'],
+        ['回測之後，有冇出現你規定嘅向上確認（例如收喺 Zone 上方 + 收近高位）？', '結果 3：有 Retest 但冇 Confirmation —— 繼續等待係合理。', 'r3'],
+        ['用「確認之後實際可得」嘅入場價計，到下一個阻力有冇達到你嘅最低 R:R？', '結果 4：有 Confirmation 但 R:R 不合理 —— Skip 係正確執行（例如 16 號例子只有 0.94R）。', 'r4'],
+        ['價格有冇真係觸發你預設嘅 Entry Trigger？', '結果 5：有完整 Setup 但冇觸發 —— 冇成交就唔計交易，照樣記入候選紀錄。', 'r5'],
+        ['你當時有冇按規則落單？', '❗ 錯過咗符合條件嘅機會：記錄原因（遲咗見到？猶豫？冇準備好訂單？），呢個先係需要改善嘅執行問題。', 'miss'],
+      ];
+      let i = 0; const path = [];
+      const draw = () => {
+        if (i >= Q.length) {
+          el.innerHTML = `${verdict(true, '✅ 有完整 Setup、有觸發、亦有跟規則入場 —— 呢筆應該已經喺交易日誌。記得填埋檢討。')}${trail()}<div class="tool-foot"><a class="btn sm primary" href="#/journal/trades">📒 去交易紀錄</a><button class="btn ghost sm" data-restart>↺ 再診斷</button></div>`;
+        } else {
+          el.innerHTML = `<p class="tool-note">第 ${i + 1} 步</p><p class="rp-q"><b>${Q[i][0]}</b></p><div class="rp-nav" style="justify-content:flex-start"><button class="btn primary" data-y>有 ✓</button><button class="btn" data-n>冇 ✗</button>${i ? '<button class="btn ghost sm" data-back>‹ 上一步</button>' : ''}</div>${trail()}`;
+          el.querySelector('[data-y]').addEventListener('click', () => { path.push([i, true]); i++; draw(); });
+          el.querySelector('[data-n]').addEventListener('click', () => {
+            path.push([i, false]);
+            const [, msg, code] = Q[i];
+            el.innerHTML = `${verdict(code === 'miss' || code === 'prep' ? false : null, msg)}${trail()}<div class="tool-foot"><a class="btn sm primary" href="#/journal/replays">🔁 記錄落 Replay 日誌</a><button class="btn ghost sm" data-restart>↺ 再診斷</button></div>`;
+            el.querySelector('[data-restart]').addEventListener('click', () => { i = 0; path.length = 0; draw(); });
+          });
+          const bk = el.querySelector('[data-back]'); if (bk) bk.addEventListener('click', () => { path.pop(); i--; draw(); });
+        }
+        const rs = el.querySelector('[data-restart]'); if (rs) rs.addEventListener('click', () => { i = 0; path.length = 0; draw(); });
+      };
+      const trail = () => (path.length ? `<ol class="trail">${path.map(([k, v]) => `<li>${esc(Q[k][0])} <b class="${v ? 'pos' : 'neg'}">${v ? '有' : '冇'}</b></li>`).join('')}</ol>` : '');
+      draw();
+    },
+  };
+
   /* =========================================================
    * 內文小部件（唔係工具箱入面嘅工具）
    * ========================================================= */
