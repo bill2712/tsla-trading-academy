@@ -72,7 +72,28 @@
   const metaKey = () => 'ta:sync:' + uid;
   const loadMeta = () => { try { return Object.assign({ ts: {}, hash: {}, shared: { comments: {}, videos: {} }, prof: '' }, JSON.parse(localStorage.getItem(metaKey()) || '{}')); } catch (e) { return { ts: {}, hash: {}, shared: { comments: {}, videos: {} }, prof: '' }; } };
   const saveMeta = () => { try { localStorage.setItem(metaKey(), JSON.stringify(meta)); } catch (e) {} };
-  const report = (e) => { console.error(e); setStatus('error'); if (window.App) App.toast(e && e.code === 'permission-denied' ? '⚠️ 同步被拒：請檢查 Firestore 規則' : '⚠️ 同步失敗，會自動再試'); };
+  let lastToast = 0;
+  const report = (e) => {
+    console.error(e);
+    const quota = e && (e.code === 'resource-exhausted' || /quota/i.test(e.message || ''));
+    setStatus(quota ? 'quota' : 'error');
+    if (window.App && Date.now() - lastToast > 60000) {
+      lastToast = Date.now();
+      App.toast(e && e.code === 'permission-denied' ? '⚠️ 同步被拒：請檢查 Firestore 規則' : quota ? '⚠️ Firebase 今日免費讀取額度用完咗（同 nursing-tracker 共用）。本機照用得，額度重置後會自動同步。' : '⚠️ 同步失敗，會自動再試', 6000);
+    }
+  };
+  // 監聽出錯（例如額度用完、斷線太耐）：一分鐘後自動重新連線
+  let retryTimer = null;
+  const listenErr = (e) => {
+    report(e);
+    if (retryTimer || !uid) return;
+    retryTimer = setTimeout(() => {
+      retryTimer = null;
+      const u = auth.currentUser || lastUser, m = u && memberDefaults(u.email);
+      if (!u || !m || !uid) return;
+      stop(); start(u, m);
+    }, window.__CLOUD_RETRY_MS || 60000);
+  };
   function remoteChanged(kind) {
     remoteFlags[kind] = true;
     clearTimeout(remoteTimer);
@@ -93,7 +114,9 @@
     d.active = user.uid;
   }
 
+  let lastUser = null;
   function start(user, member) {
+    lastUser = user;
     uid = user.uid; Cloud.user = { uid, email: user.email, name: user.displayName };
     meta = loadMeta();
     prepareCache(user, member);
@@ -121,10 +144,10 @@
       if (mineNow) meta.prof = hash(JSON.stringify({ name: mineNow.name, emoji: mineNow.emoji, color: mineNow.color }));
       membersLoaded = true;
       remoteChanged('profiles');
-    }, report));
+    }, listenErr));
     listenParts(uid);
-    unsubs.push(fs.collection('academyComments').onSnapshot((qs) => applyShared('comments', qs), report));
-    unsubs.push(fs.collection('academyVideos').onSnapshot((qs) => applyShared('videos', qs), report));
+    unsubs.push(fs.collection('academyComments').onSnapshot((qs) => applyShared('comments', qs), listenErr));
+    unsubs.push(fs.collection('academyVideos').onSnapshot((qs) => applyShared('videos', qs), listenErr));
   }
 
   function listenParts(pid) {
@@ -153,7 +176,7 @@
         }
       }
       if (changed) remoteChanged(own ? 'own' : 'others');
-    }, report);
+    }, listenErr);
   }
 
   function applyShared(kind, qs) {
