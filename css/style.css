@@ -1040,3 +1040,41 @@ body.focus-mode .topbar .search-wrap { opacity: .4; }
   .hero-stats > div { padding: 2px 0; }
   .hero-stats small { display: none; }
 }
+
+/* =========================================================
+ * 登入、雲端同步、家人標記
+ * ========================================================= */
+body.gated { overflow: hidden; }
+.auth-gate { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px; background: radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--accent) 22%, var(--bg)), var(--bg) 60%); }
+.auth-card { width: min(420px, 100%); background: var(--card); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); padding: 30px 26px; text-align: center; }
+.auth-card h1 { font-size: 1.6em; margin: 4px 0 10px; }
+.auth-logo { width: 76px; height: 76px; margin: 0 auto 10px; border-radius: 22px; display: grid; place-items: center; font-size: 2.4em; background: var(--accent-soft); transform: rotate(-4deg); }
+.auth-eyebrow { color: var(--accent); font-weight: 800; letter-spacing: .08em; margin: 0; font-size: .85em; }
+.auth-google { width: 100%; justify-content: center; gap: 10px; margin-top: 14px; background: var(--card); border: 1px solid var(--border); font-weight: 800; min-height: 52px; display: flex; align-items: center; }
+.auth-google:hover { border-color: var(--accent); }
+.auth-err { color: var(--down); font-size: .9em; margin-top: 10px; }
+.auth-fine { color: var(--muted); font-size: .8em; margin-top: 14px; }
+.pc-sync { margin-left: 4px; font-size: .85em; }
+
+.who-tag { display: inline-block; margin-left: 6px; padding: 0 8px; border-radius: 999px; font-size: .75em; font-weight: 700; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); vertical-align: middle; }
+.who-bar { margin: 0 0 14px; }
+
+.feed { list-style: none; padding: 0; margin: 0; }
+.feed li a { display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center; padding: 7px 4px; border-bottom: 1px dashed var(--border); color: var(--text); font-size: .9em; line-height: 1.45; }
+.feed li:last-child a { border-bottom: 0; }
+.feed li a:hover { text-decoration: none; background: var(--bg-soft); border-radius: 8px; }
+.feed-main { min-width: 0; overflow-wrap: anywhere; }
+.feed-main small, .feed-ago { color: var(--muted); }
+.feed-ago { white-space: nowrap; font-size: .78em; }
+
+.fam-hl { text-decoration: underline; text-decoration-color: var(--c); text-decoration-thickness: 3px; text-underline-offset: 3px; text-decoration-style: wavy; cursor: help; }
+.fam-badges { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 8px; vertical-align: middle; }
+.fam-badge { font-size: .55em; font-weight: 700; padding: 1px 8px; border-radius: 999px; color: var(--c); background: color-mix(in srgb, var(--c) 14%, var(--card)); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); white-space: nowrap; }
+h1 .fam-badges .fam-badge { font-size: .4em; }
+.fam-note { margin: 6px 0 10px; border-left: 4px solid var(--c); background: color-mix(in srgb, var(--c) 7%, var(--card)); border-radius: 0 10px 10px 0; padding: 6px 12px; font-size: .92em; }
+.fam-note summary { cursor: pointer; font-weight: 700; color: var(--c); }
+.fam-note summary small { color: var(--muted); font-weight: 400; }
+.fam-note > div { margin-top: 6px; }
+.rail-fam { margin-left: 4px; font-size: .8em; }
+[data-famt].on { border-color: var(--accent); color: var(--accent); }
+@media print { .fam-badges, .fam-note { display: none !important; } .fam-hl { text-decoration: none; } }

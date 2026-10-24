@@ -1,0 +1,56 @@
+// Firestore 安全規則（nursing-declan 專案：nursing-tracker + TSLA Day Trading 學院）
+// 用法：Firebase Console → Firestore Database → 規則（Rules）→ 成段貼上 → 發佈（Publish）
+//
+// ⚠️ 規則係「任何一條允許就允許」。如果你原本有類似
+//    match /{document=**} { allow read, write: if request.auth != null; }
+//    嘅「全開」規則，請刪走佢，否則任何 Google 帳號都讀到學院資料。
+// ⚠️ 下面 nursing-tracker 部分按佢程式用到嘅 logs、system 兩個 collection 寫；
+//    如果你原本規則仲有其他 collection，記得一齊保留。
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- nursing-tracker ----------
+    function nursingFamily() {
+      return request.auth != null
+        && request.auth.token.email in ['bill27122002@gmail.com', 'suet0806@gmail.com'];
+    }
+    match /logs/{id} {
+      allow read, write: if nursingFamily();
+    }
+    match /system/{id} {
+      allow read, write: if nursingFamily();
+    }
+
+    // ---------- TSLA Day Trading 學院 ----------
+    // 加／減家庭成員：改呢個清單，同時改 js/cloud-config.js 入面嘅 members
+    function academyFamily() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['bill27122002@gmail.com', 'ivantsang24@gmail.com'];
+    }
+    // 成員資料（名稱、頭像、顏色）：全家睇到，只可以改自己
+    match /academyMembers/{uid} {
+      allow read: if academyFamily();
+      allow write: if academyFamily() && request.auth.uid == uid;
+    }
+    // 每人嘅學習資料（進度、書籤、筆記、螢光筆、交易日誌）：全家睇到，只可以改自己
+    match /academyUsers/{uid}/parts/{part} {
+      allow read: if academyFamily();
+      allow write: if academyFamily() && request.auth.uid == uid
+        && request.resource.data.uid == uid;
+    }
+    // 留言同影片：全家睇到；只可以新增自己名下、改／刪自己嘅
+    match /academyComments/{id} {
+      allow read: if academyFamily();
+      allow create: if academyFamily() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if academyFamily() && resource.data.uid == request.auth.uid;
+    }
+    match /academyVideos/{id} {
+      allow read: if academyFamily();
+      allow create: if academyFamily() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if academyFamily() && resource.data.uid == request.auth.uid;
+    }
+  }
+}

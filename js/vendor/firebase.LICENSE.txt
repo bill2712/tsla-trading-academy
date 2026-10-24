@@ -1,0 +1,4 @@
+firebase-app-compat.js, firebase-auth-compat.js, firebase-firestore-compat.js
+Firebase JavaScript SDK v12.9.0 — Copyright Google LLC
+Licensed under the Apache License, Version 2.0: https://www.apache.org/licenses/LICENSE-2.0
+Source: https://github.com/firebase/firebase-js-sdk

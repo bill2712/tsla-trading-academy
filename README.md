@@ -22,7 +22,7 @@
 | 🔊 朗讀 | 由你睇緊嘅位置開始讀出課文（瀏覽器內置語音，可調速度） |
 | ⭐ 書籤・📝 筆記 | 小節書籤、筆記、螢光筆（4 色）＋備註；可以一鍵匯出 Markdown |
 | 🎬 影片・💬 留言 | 每章貼 YouTube 連結；家庭討論區（每章、指定小節、引用文字、回覆） |
-| 👨‍👩‍👧 多使用者 | 每人獨立進度／筆記／XP／錯題本／日誌；家庭進度頁有每人學習日曆同今日任務 |
+| 👨‍👩‍👧 家庭登入 | Google 登入（只限授權 email），雲端即時同步；全家睇到對方嘅標記同進度，每人只可以改自己嘅；家人動態 |
 | 🧰 工具箱 | 49 個互動工具（可搜尋、按 Level 篩選）。Level 6–8 新增：多時間框架對齊、Gap 分類器、相對強弱、事件日風險、出場方法比較模擬、多倉位相關性、Kelly 與破產風險、交易計劃書產生器、自動週／月檢討、Tilt 自我檢查、升級階梯評估；另外有 🧠 決策教練（逐項輸入 → WAIT / PLAN / SKIP 同理由）、🗒️ Price Action 分析紀錄卡（可存入 Replay 日誌）、升級版 K 線砌圖器（Body Ratio、Close Position） |
 | 🎮 K 線重播 | 10 個逐支 K 線情境（Level 2、3、4、6、7），選項次序每次打亂 |
 | 📝 測驗・🃏 字卡 | 102 份測驗（全部有解析，選項次序每次打亂）；180+ 詞彙字卡 |
@@ -50,11 +50,30 @@ python3 -m http.server 8000
 
 然後打開 <http://localhost:8000>。（直接雙擊 `index.html` 大部分功能都用得，但離線快取需要用 http 開。）
 
-## 💾 資料儲存同同步
+## 🔐 登入同家庭同步（Firebase）
 
-- 所有進度、筆記、留言都儲存喺**瀏覽器 localStorage**，唔會上載去任何伺服器。
-- 唔同裝置之間同步：**設定 → 匯出備份**，將 `.json` 檔傳去另一部機，再 **匯入（合併）**。合併唔會覆蓋原有資料。
-- 清除瀏覽器資料會刪除紀錄，記得定期匯出備份。
+同 nursing-tracker 一樣，用 **Google 帳號登入**，資料儲存喺 Firebase Firestore（`nursing-declan` 專案），即時同步：
+
+- 只有 `js/cloud-config.js` 入面 `members` 嘅 email 可以登入（而家係爸爸同 Ivan），其他帳號會見到「冇權限」。
+- 每人嘅進度、書籤、筆記、螢光筆、測驗、交易日誌**分開儲存**；**全家睇到，但每人只可以改自己嘅**。
+- 章節入面會見到家人嘅螢光筆（佢顏色嘅波浪底線，標明邊個）、書籤、筆記同「讀到呢度」；主頁同家庭進度有「家人動態」；「我的」頁可以揀睇我／家人／全家。
+- 同一個人用幾部機都會自動同步；離線都用得，連線後再上載。
+- 第一次登入時，如果部機有舊嘅本機紀錄，會問你要唔要合併入你嘅帳號。
+
+### 一次性設定：Firestore 規則
+
+Firebase Console → nursing-declan → **Firestore Database → 規則（Rules）**，貼上 [`firestore.rules`](firestore.rules) 嘅內容再發佈。規則保證只有授權 email 可以讀寫，而且每人只可以改自己嘅資料。
+
+> 規則係「任何一條允許就允許」：如果原本有 `match /{document=**}` 全開規則，要刪走。
+
+### 加／減家庭成員
+
+1. 改 `js/cloud-config.js` 嘅 `members`（email、名稱、頭像、顏色）。
+2. 改 `firestore.rules` 入面 `academyFamily()` 嘅 email 清單，再喺 Console 發佈。
+
+### 備份
+
+設定頁仍然可以匯出 `.json` 備份，亦可以將舊備份入面某個使用者合併入你嘅帳號。
 
 ## 🗂️ 檔案結構
 
@@ -80,7 +99,11 @@ js/learn.js             訓練場、錯題本、每日任務、學習日曆、�
 js/tools2.js            Level 6–8 工具
 js/sim.js               模擬交易練習場
 js/store.js             使用者資料、匯出匯入
-js/app.js               路由、目錄、章節頁、書籤筆記留言影片
+js/app.js               路由、目錄、章節頁、書籤筆記留言影片、家人標記
+js/cloud.js             Google 登入、Firestore 同步
+js/cloud-config.js      Firebase 設定同可以登入嘅家庭成員
+js/vendor/firebase-*    Firebase SDK v12.9.0（Apache-2.0）
+firestore.rules         Firestore 安全規則（貼去 Firebase Console）
 sw.js                   離線快取
 ```
 

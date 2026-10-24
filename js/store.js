@@ -77,6 +77,7 @@
       console.warn('儲存失敗', e);
       window.dispatchEvent(new CustomEvent('ta:save-error'));
     }
+    window.dispatchEvent(new CustomEvent('ta:saved'));
   }
   window.addEventListener('beforeunload', saveNow);
 
@@ -90,7 +91,13 @@
   /* ---------- 使用者 ---------- */
   function profiles() { return db.profiles; }
   function activeProfile() { return db.profiles.find((p) => p.id === db.active) || null; }
+  /* ---------- 雲端模式（登入後：每個 Google 帳號 = 一個使用者） ---------- */
+  let cloud = null;
+  function setCloudMode(info) { cloud = info; }
+  function isCloud() { return !!cloud; }
+  function loadDB(obj) { clearTimeout(saveTimer); db = Object.assign(emptyDB(), obj); saveNow(); }
   function addProfile(name, emoji, color) {
+    if (cloud) return null;
     const p = { id: uid(), name: name || '學員', emoji: emoji || '🙂', color: color || '#3b82f6', createdAt: Date.now() };
     db.profiles.push(p);
     db.users[p.id] = emptyUser();
@@ -104,12 +111,13 @@
     emit('profiles');
   }
   function removeProfile(id) {
+    if (cloud) return;
     db.profiles = db.profiles.filter((p) => p.id !== id);
     delete db.users[id];
     if (db.active === id) db.active = db.profiles[0] ? db.profiles[0].id : null;
     emit('profiles');
   }
-  function setActive(id) { db.active = id; emit('profiles'); }
+  function setActive(id) { if (cloud && id !== cloud.uid) return; db.active = id; emit('profiles'); }
   function user(id) {
     const pid = id || db.active;
     if (!pid) return emptyUser();
@@ -223,7 +231,7 @@
   /* ---------- 影片（共用） ---------- */
   function addVideo(v) {
     const p = activeProfile();
-    const x = Object.assign({ id: uid(), ts: Date.now(), by: p ? p.name : '' }, v);
+    const x = Object.assign({ id: uid(), ts: Date.now(), by: p ? p.name : '', author: p ? p.id : null }, v);
     db.shared.videos.push(x);
     emit('videos');
     return x;
@@ -322,6 +330,7 @@
     addHighlight, updateHighlight, removeHighlight,
     addComment, removeComment, comments, addVideo, removeVideo, videos,
     saveQuiz, toggleCheck, exportJSON, importJSON, resetAll,
+    setCloudMode, isCloud, loadDB, emptyUser, mergeUser, saveNow, get cloud() { return cloud; },
     ui, setUI, save, emit,
     on(fn) { listeners.add(fn); return () => listeners.delete(fn); },
   };

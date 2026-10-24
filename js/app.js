@@ -390,6 +390,7 @@
           <a href="#/review"><span>📕</span>錯題本・今日溫習 ${(() => { const n = Store.dueWrong().length; return n ? `<b class="pill">${n} 題要溫</b>` : ''; })()}</a>
           ${Object.entries(Learn.DRILLS).map(([k, d]) => `<a href="#/gym/${k}"><span>${d.icon}</span>${esc(d.title)}${u.gym[k] ? ` <small>（最佳 ${u.gym[k].best}）</small>` : ''}</a>`).join('')}
         </div></div>
+        ${Store.profiles().length > 1 ? `<div class="card"><div class="card-h">🔔 家人動態 <a href="#/family">全部 →</a></div>${feedHTML(false, 6)}</div>` : ''}
         ${p ? `<div class="card"><div class="card-h">📅 學習日曆 <a href="#/me/stats">統計 →</a></div>${Learn.heatmap(null, true)}</div>` : ''}
       </section>
       <section class="road">
@@ -446,6 +447,7 @@
           <button class="btn sm" data-bm-ch>${Store.isBookmarked(c.id, '_chapter') ? '★ 已加書籤' : '☆ 書籤本章'}</button>
           <a class="btn sm" href="#/c/${c.id}/ch-end">🎬 影片 (${Store.videos(c.id).length})</a>
           <a class="btn sm" href="#/c/${c.id}/ch-end">💬 討論 (${Store.comments(c.id).length})</a>
+          ${Store.profiles().length > 1 ? `<button class="btn sm ghost ${famOn() ? 'on' : ''}" data-famt title="顯示／隱藏家人嘅標記">👀 家人標記${famOn() ? '：開' : '：關'}</button>` : ''}
           <button class="btn sm ghost" data-focus title="隱藏側欄，專心閱讀（F）">🎯 專注模式</button>
           <button class="btn sm ghost" data-print>🖨️ 列印</button>
         </div>
@@ -470,6 +472,7 @@
     wrapSections(content, c);
     mountEmbeds(content);
     applyHighlights(content, c);
+    applyFamilyMarks(content, c);
     Learn.glossTips(content);
     { const tb = Learn.ttsButton(content); if (tb) $('.ch-actions', view).insertBefore(tb, $('[data-print]', view)); }
     Learn.chapterRecap(c, $('[data-recap]', view));
@@ -479,6 +482,7 @@
     $('[data-bm-ch]', view).addEventListener('click', (e) => { const on = Store.toggleBookmark(c.id, '_chapter', c.title); e.target.textContent = on ? '★ 已加書籤' : '☆ 書籤本章'; toast(on ? '已加入書籤' : '已移除書籤'); });
     $('[data-print]', view).addEventListener('click', () => window.print());
     $('[data-focus]', view).addEventListener('click', toggleFocus);
+    { const ft = $('[data-famt]', view); if (ft) ft.addEventListener('click', () => { Store.setUI({ famMarks: !famOn() }); ft.textContent = '👀 家人標記' + (famOn() ? '：開' : '：關'); applyFamilyMarks(content, c); }); }
     if (Store.ui().focus) { document.body.classList.add('focus-mode'); $('[data-focus]', view).textContent = '↩ 離開專注'; }
     $('[data-done]', view).addEventListener('click', () => {
       const now = !Store.user().read[c.id];
@@ -704,7 +708,7 @@
       <div class="video-meta"><b>${esc(v.title || v.url)}</b>
       <small>${withChapter && ch ? `<a href="#/c/${ch.id}">${esc(ch.level.code)} 第 ${ch.num} 章</a> · ` : ''}${v.section && ch ? `📍 ${esc((ch.sections.find((s) => s.id === v.section) || {}).title || '')} · ` : ''}${v.by ? esc(v.by) + ' 加入 · ' : ''}${ago(v.ts)}</small>
       ${v.note ? `<p>${esc(v.note)}</p>` : ''}
-      <div class="video-acts"><a href="${esc(v.url)}" target="_blank" rel="noopener noreferrer">喺新視窗打開</a><button data-delv="${v.id}">刪除</button></div></div></div>`;
+      <div class="video-acts"><a href="${esc(v.url)}" target="_blank" rel="noopener noreferrer">喺新視窗打開</a>${!Store.isCloud() || v.author === Store.db.active ? `<button data-delv="${v.id}">刪除</button>` : ''}</div></div></div>`;
   }
   function bindVideoEvents(root, after) {
     $$('[data-yt]', root).forEach((b) => b.addEventListener('click', () => {
@@ -894,21 +898,87 @@
   /* ---------------- 我的 ---------------- */
   function renderMe(tab) {
     tab = tab || 'bookmarks';
-    const u = Store.user();
+    const me = Store.db.active;
+    const ps = Store.profiles();
+    let who = Store.ui().meWho || me;
+    if (who !== 'all' && !ps.some((p) => p.id === who)) who = me;
+    const people = who === 'all' ? ps : ps.filter((p) => p.id === who);
+    const tag = (p) => (ps.length > 1 ? `<span class="who-tag" style="--c:${p.color}">${p.emoji} ${esc(p.name)}</span>` : '');
     const secTitle = (ch, sid) => { const c = CH[ch]; if (!c) return ''; if (sid === '_chapter') return '（整章）'; const s = c.sections.find((x) => x.id === sid); return s ? s.title : ''; };
     const chLabel = (ch) => { const c = CH[ch]; return c ? `${c.level.code} 第 ${c.num} 章 · ${c.title}` : ch; };
-    const tabs = [['bookmarks', '⭐ 書籤', u.bookmarks.length], ['notes', '📝 筆記', Object.keys(u.notes).length], ['highlights', '🖍️ 螢光筆', u.highlights.length], ['videos', '🎬 影片', Store.videos().length], ['stats', '📊 學習統計', '']];
+    const bms = [], notes = [], hls = [];
+    people.forEach((p) => { const u = Store.user(p.id); u.bookmarks.forEach((x) => bms.push([p, x])); Object.keys(u.notes).forEach((k) => notes.push([p, k, u.notes[k]])); u.highlights.forEach((x) => hls.push([p, x])); });
+    bms.sort((a, b2) => (b2[1].ts || 0) - (a[1].ts || 0)); notes.sort((a, b2) => (b2[2].ts || 0) - (a[2].ts || 0)); hls.sort((a, b2) => (b2[1].ts || 0) - (a[1].ts || 0));
+    const tabs = [['bookmarks', '⭐ 書籤', bms.length], ['notes', '📝 筆記', notes.length], ['highlights', '🖍️ 螢光筆', hls.length], ['videos', '🎬 影片', Store.videos().length], ['stats', '📊 學習統計', '']];
+    const nm = who === 'all' ? '全家' : who === me ? '我' : (ps.find((p) => p.id === who) || {}).name;
     let body = '';
-    if (tab === 'bookmarks') body = u.bookmarks.length ? `<ul class="me-list">${u.bookmarks.map((b) => `<li><a href="#/c/${b.chapter}${b.section !== '_chapter' ? '/' + b.section : ''}"><b>${esc(secTitle(b.chapter, b.section) || b.title)}</b><small>${esc(chLabel(b.chapter))} · ${ago(b.ts)}</small></a><button data-unbm="${b.chapter}|${b.section}" title="移除">×</button></li>`).join('')}</ul>` : '<div class="empty">未有書籤。每個小節標題右邊有 ☆，撳一下就加書籤。</div>';
-    if (tab === 'notes') { const ks = Object.keys(u.notes).sort((a, b) => u.notes[b].ts - u.notes[a].ts); body = ks.length ? `<ul class="me-list notes">${ks.map((k) => { const [ch, sid] = k.split('#'); return `<li><a href="#/c/${ch}${sid !== '_chapter' ? '/' + sid : '/ch-end'}"><b>${esc(secTitle(ch, sid))}</b><small>${esc(chLabel(ch))} · ${ago(u.notes[k].ts)}</small><p>${esc(u.notes[k].text).replace(/\n/g, '<br>')}</p></a></li>`; }).join('')}</ul>` : '<div class="empty">未有筆記。每個小節標題右邊有 📝；每章底部亦有「本章筆記」。</div>'; }
-    if (tab === 'highlights') body = u.highlights.length ? `<ul class="me-list">${u.highlights.slice().reverse().map((h) => `<li><a href="#/c/${h.chapter}/${h.section}"><mark class="hl hl-${h.color}">${esc(h.text)}</mark>${h.note ? `<p>📝 ${esc(h.note)}</p>` : ''}<small>${esc(chLabel(h.chapter))} · ${ago(h.ts)}</small></a></li>`).join('')}</ul>` : '<div class="empty">未有螢光筆。喺課文入面用滑鼠（或者手指長按）揀選文字，就會彈出螢光筆工具。</div>';
+    if (tab === 'bookmarks') body = bms.length ? `<ul class="me-list">${bms.map(([p, b2]) => `<li><a href="#/c/${b2.chapter}${b2.section !== '_chapter' ? '/' + b2.section : ''}"><b>${esc(secTitle(b2.chapter, b2.section) || b2.title)}</b>${tag(p)}<small>${esc(chLabel(b2.chapter))} · ${ago(b2.ts)}</small></a>${p.id === me ? `<button data-unbm="${b2.chapter}|${b2.section}" title="移除">×</button>` : ''}</li>`).join('')}</ul>` : `<div class="empty">${who === me ? '未有書籤。每個小節標題右邊有 ☆，撳一下就加書籤。' : esc(nm) + ' 未有書籤。'}</div>`;
+    if (tab === 'notes') body = notes.length ? `<ul class="me-list notes">${notes.map(([p, k, n]) => { const [ch, sid] = k.split('#'); return `<li><a href="#/c/${ch}${sid !== '_chapter' ? '/' + sid : '/ch-end'}"><b>${esc(secTitle(ch, sid))}</b>${tag(p)}<small>${esc(chLabel(ch))} · ${ago(n.ts)}</small><p>${esc(n.text).replace(/\n/g, '<br>')}</p></a></li>`; }).join('')}</ul>` : `<div class="empty">${who === me ? '未有筆記。每個小節標題右邊有 📝；每章底部亦有「本章筆記」。' : esc(nm) + ' 未有筆記。'}</div>`;
+    if (tab === 'highlights') body = hls.length ? `<ul class="me-list">${hls.map(([p, h]) => `<li><a href="#/c/${h.chapter}/${h.section}"><mark class="hl hl-${h.color}">${esc(h.text)}</mark>${tag(p)}${h.note ? `<p>📝 ${esc(h.note)}</p>` : ''}<small>${esc(chLabel(h.chapter))} · ${ago(h.ts)}</small></a></li>`).join('')}</ul>` : `<div class="empty">${who === me ? '未有螢光筆。喺課文入面用滑鼠（或者手指長按）揀選文字，就會彈出螢光筆工具。' : esc(nm) + ' 未有螢光筆。'}</div>`;
     if (tab === 'stats') body = Learn.statsHTML();
     if (tab === 'videos') { const vs = Store.videos().slice().reverse(); body = vs.length ? `<div class="video-list">${vs.map((v) => videoHTML(v, true)).join('')}</div>` : '<div class="empty">未有影片。每章底部可以加影片連結。</div>'; }
-    view.innerHTML = `<div class="page-head"><h1>⭐ 我嘅書籤・筆記・螢光筆</h1><p class="muted">書籤、筆記同螢光筆屬於「${esc((Store.activeProfile() || {}).name || '')}」；影片係全家共用。</p></div>
-      <div class="tabs">${tabs.map(([k, l, n]) => `<a class="tab ${tab === k ? 'on' : ''}" href="#/me/${k}">${l}${n !== '' ? `（${n}）` : ''}</a>`).join('')}<button class="btn ghost sm me-export" data-export-md>⬇️ 匯出筆記（Markdown）</button></div>${body}`;
+    const whoBar = ps.length > 1 && ['bookmarks', 'notes', 'highlights'].includes(tab) ? `<div class="chips who-bar">${[[me, '🙋 我']].concat(ps.filter((p) => p.id !== me).map((p) => [p.id, p.emoji + ' ' + p.name])).concat([['all', '👨‍👩‍👦 全家']]).map(([k, t]) => `<button class="chip-btn ${who === k ? 'on' : ''}" data-who="${k}">${esc(t)}</button>`).join('')}</div>` : '';
+    view.innerHTML = `<div class="page-head"><h1>⭐ 書籤・筆記・螢光筆</h1><p class="muted">${ps.length > 1 ? '可以睇自己、家人或者全家嘅標記；只可以改自己嘅。' : ''}影片係全家共用。</p></div>
+      <div class="tabs">${tabs.map(([k, l, n]) => `<a class="tab ${tab === k ? 'on' : ''}" href="#/me/${k}">${l}${n !== '' ? `（${n}）` : ''}</a>`).join('')}<button class="btn ghost sm me-export" data-export-md>⬇️ 匯出我嘅筆記</button></div>${whoBar}${body}`;
     $('[data-export-md]', view).addEventListener('click', () => { Learn.exportNotes(); toast('已匯出筆記'); });
-    $$('[data-unbm]', view).forEach((b) => b.addEventListener('click', () => { const [ch, s] = b.dataset.unbm.split('|'); Store.toggleBookmark(ch, s); renderMe('bookmarks'); }));
+    $$('[data-who]', view).forEach((b2) => b2.addEventListener('click', () => { Store.setUI({ meWho: b2.dataset.who }); renderMe(tab); }));
+    $$('[data-unbm]', view).forEach((b2) => b2.addEventListener('click', () => { const [ch, s2] = b2.dataset.unbm.split('|'); Store.toggleBookmark(ch, s2); renderMe('bookmarks'); }));
     bindVideoEvents(view, () => renderMe('videos'));
+  }
+
+  /* ---------------- 家人動態 ---------------- */
+  function feedItems(includeMe) {
+    const me = Store.db.active, out = [];
+    const secT = (ch, sid) => { const c = CH[ch]; if (!c || !sid || sid === '_chapter') return ''; const s2 = c.sections.find((x) => x.id === sid); return s2 ? s2.title : ''; };
+    Store.profiles().forEach((p) => {
+      if (!includeMe && p.id === me) return;
+      const u = Store.user(p.id);
+      u.bookmarks.forEach((b2) => out.push({ p, ts: b2.ts, icon: '⭐', text: '加咗書籤' + (secT(b2.chapter, b2.section) ? '：' + secT(b2.chapter, b2.section) : ''), ch: b2.chapter, sec: b2.section }));
+      Object.keys(u.notes).forEach((k) => { const [ch, sid] = k.split('#'); out.push({ p, ts: u.notes[k].ts, icon: '📝', text: '寫咗筆記：' + u.notes[k].text.slice(0, 50), ch, sec: sid }); });
+      u.highlights.forEach((h) => out.push({ p, ts: h.ts, icon: '🖍️', text: `螢光筆「${h.text.slice(0, 40)}${h.text.length > 40 ? '…' : ''}」` + (h.note ? '：' + h.note.slice(0, 30) : ''), ch: h.chapter, sec: h.section }));
+      Object.keys(u.read).forEach((ch) => out.push({ p, ts: u.read[ch], icon: '✅', text: '讀完一章', ch }));
+      Object.keys(u.quiz).forEach((q) => { const r = u.quiz[q]; if (r && r.ts && QUIZZES[q]) out.push({ p, ts: r.ts, icon: '🧩', text: `${QUIZZES[q].title}：${r.last != null ? r.last : r.best}/${r.total}`, href: '#/quiz/' + q }); });
+      (u.journal || []).forEach((t) => out.push({ p, ts: t.ts, icon: '📒', text: `記錄咗一筆${{ replay: 'Replay', paper: 'Paper', live: '真實' }[t.kind || 'live'] || ''}交易（${t.symbol || ''} ${t.side === 'short' ? 'Short' : 'Long'}）`, href: '#/journal/trades' }));
+    });
+    return out.filter((x) => x.ts).sort((a, b2) => b2.ts - a.ts);
+  }
+  function feedHTML(includeMe, n) {
+    const items = feedItems(includeMe).slice(0, n || 8);
+    if (!items.length) return `<p class="muted">${Store.profiles().length > 1 ? '家人未有新動態。' : '登入咗嘅家人標記咗乜，會喺度出現。'}</p>`;
+    return `<ul class="feed">${items.map((x) => { const c = x.ch && CH[x.ch]; const href = x.href || (c ? `#/c/${c.id}${x.sec && x.sec !== '_chapter' ? '/' + x.sec : ''}` : '#/family'); return `<li><a href="${href}"><span class="av sm" style="--c:${x.p.color}">${x.p.emoji}</span><span class="feed-main"><b>${esc(x.p.name)}</b> ${x.icon} ${esc(x.text)}${c ? `<small> · ${esc(c.level.code)} 第 ${c.num} 章</small>` : ''}</span><small class="feed-ago">${ago(x.ts)}</small></a></li>`; }).join('')}</ul>`;
+  }
+
+  /* ---------------- 章節內：家人標記 ---------------- */
+  const famOn = () => Store.ui().famMarks !== false;
+  function others() { return Store.profiles().filter((p) => p.id !== Store.db.active); }
+  function applyFamilyMarks(content, c) {
+    $$('.fam-hl', content).forEach((m) => { const par = m.parentNode; while (m.firstChild) par.insertBefore(m.firstChild, m); par.removeChild(m); par.normalize(); });
+    $$('.fam-badges, .fam-note', view).forEach((x) => x.remove());
+    $$('.rail-fam', $('#rightrail')).forEach((x) => x.remove());
+    if (!famOn()) return;
+    others().forEach((p) => {
+      const u = Store.user(p.id);
+      u.highlights.filter((h) => h.chapter === c.id).forEach((h) => {
+        const scope = content.querySelector(`[data-sec="${h.section}"]`) || content;
+        wrapText(scope, h.text, () => { const m = document.createElement('span'); m.className = 'fam-hl'; m.style.setProperty('--c', p.color); m.title = `${p.emoji} ${p.name} 標記${h.note ? '：' + h.note : ''}`; m.dataset.who = p.name; return m; });
+      });
+      const badge = (host, html, title) => { let b2 = host.querySelector(':scope > .fam-badges'); if (!b2) { b2 = document.createElement('span'); b2.className = 'fam-badges hl-skip'; host.appendChild(b2); } b2.insertAdjacentHTML('beforeend', `<span class="fam-badge" style="--c:${p.color}" title="${esc(title)}">${html}</span>`); };
+      $$('.sec', content).forEach((s2) => {
+        const h2 = s2.querySelector(':scope > h2'); if (!h2) return;
+        const sid = s2.id;
+        if (u.bookmarks.some((b2) => b2.chapter === c.id && b2.section === sid)) badge(h2, `${p.emoji}★`, `${p.name} 加咗書籤`);
+        if (u.last && u.last.chapter === c.id && u.last.section === sid) badge(h2, `${p.emoji} 讀到呢度`, `${p.name} 上次讀到呢度（${ago(u.last.ts)}）`);
+        const note = u.notes[`${c.id}#${sid}`];
+        if (note && note.text) { const d = document.createElement('details'); d.className = 'fam-note hl-skip'; d.style.setProperty('--c', p.color); d.innerHTML = `<summary>${p.emoji} ${esc(p.name)} 嘅筆記 <small>${ago(note.ts)}</small></summary><div>${esc(note.text).replace(/\n/g, '<br>')}</div>`; (s2.querySelector(':scope > .my-note') || h2).after(d); }
+      });
+      const head = $('.ch-head h1', view);
+      if (head && u.bookmarks.some((b2) => b2.chapter === c.id && b2.section === '_chapter')) badge(head, `${p.emoji}★`, `${p.name} 書籤咗呢章`);
+      if (head && u.read[c.id]) badge(head, `${p.emoji}✅`, `${p.name} 讀完咗呢章`);
+      const cn = u.notes[`${c.id}#_chapter`];
+      if (cn && cn.text) { const d = document.createElement('details'); d.className = 'fam-note hl-skip'; d.style.setProperty('--c', p.color); d.innerHTML = `<summary>${p.emoji} ${esc(p.name)} 嘅本章筆記 <small>${ago(cn.ts)}</small></summary><div>${esc(cn.text).replace(/\n/g, '<br>')}</div>`; const host = $('[data-chnote]', view); if (host) host.after(d); }
+      const seen = (u.seen || {})[c.id] || {};
+      $$('#rightrail [data-rail]').forEach((a) => { if (seen[a.dataset.rail]) a.insertAdjacentHTML('beforeend', `<span class="rail-fam" style="--c:${p.color}" title="${esc(p.name)} 讀過">${p.emoji}</span>`); });
+    });
   }
 
   function renderBoard() {
@@ -922,10 +992,11 @@
   /* ---------------- 家庭進度 ---------------- */
   function renderFamily() {
     const ps = Store.profiles();
-    view.innerHTML = `<div class="page-head"><h1>👨‍👩‍👧 家庭進度</h1><p class="muted">同一部機（或者匯入咗備份）嘅所有使用者。可以睇吓邊個讀到邊、互相鼓勵！</p><button class="btn primary sm" data-add>＋ 加家庭成員</button></div>
+    view.innerHTML = `<div class="page-head"><h1>👨‍👩‍👧 家庭進度</h1><p class="muted">${Store.isCloud() ? '全家登入咗嘅帳號，即時同步。可以睇吓邊個讀到邊、標記咗乜、互相鼓勵！' : '同一部機（或者匯入咗備份）嘅所有使用者。可以睇吓邊個讀到邊、互相鼓勵！'}</p>${Store.isCloud() ? '' : '<button class="btn primary sm" data-add>＋ 加家庭成員</button>'}</div>
+      <div class="card"><div class="card-h">🔔 家人最新動態</div>${feedHTML(true, 15)}</div>
       <div class="fam-cards">${ps.map((p) => { const u = Store.user(p.id); const o = overall(p.id); const rk = rank(u.xp); const bd = badges(p.id); const last = u.last && CH[u.last.chapter]; return `
         <div class="fam-card ${p.id === Store.db.active ? 'me' : ''}" style="--c:${p.color}">
-          <div class="fam-top"><span class="av lg" style="--c:${p.color}">${p.emoji}</span><div><b>${esc(p.name)}</b><small>${rk.icon} ${rk.name} · ${u.xp} XP · 🔥${u.streak.count || 0}</small></div>${p.id !== Store.db.active ? `<button class="btn sm" data-switch="${p.id}">切換</button>` : '<em>使用中</em>'}</div>
+          <div class="fam-top"><span class="av lg" style="--c:${p.color}">${p.emoji}</span><div><b>${esc(p.name)}</b><small>${rk.icon} ${rk.name} · ${u.xp} XP · 🔥${u.streak.count || 0}</small></div>${p.id !== Store.db.active ? (Store.isCloud() ? `<a class="btn sm" href="#/me/bookmarks" data-who="${p.id}">睇佢嘅標記</a>` : `<button class="btn sm" data-switch="${p.id}">切換</button>`) : '<em>' + (Store.isCloud() ? '我' : '使用中') + '</em>'}</div>
           ${LEVELS.map((lv) => { const s = levelStats(lv, p.id); return `<div class="fam-lv"><span>${lv.icon} ${esc(lv.code)}</span><div class="bar"><div style="width:${s.pct * 100}%;background:${lv.color}"></div></div><small>${s.done}/${s.total}</small></div>`; }).join('')}
           <p class="fam-last">${last ? `📍 讀緊：${esc(last.level.code)} 第 ${last.num} 章 ${esc(last.title)}（${ago(u.last.ts)}）` : '未開始'}</p>
           <div class="fam-heat">${Learn.heatmap(p.id, true)}</div>
@@ -937,7 +1008,8 @@
       ${CHAPTERS.map((c) => `<tr><td><a href="#/c/${c.id}">${esc(c.level.code)} · ${c.num}. ${esc(c.title)}</a></td>${ps.map((p) => { const v = chapterPct(c, p.id); return `<td class="c">${v >= 1 ? '✅' : v > 0 ? `<span class="pc">${Math.round(v * 100)}%</span>` : '·'}</td>`; }).join('')}</tr>`).join('')}
       </tbody></table></div>`;
     $$('[data-switch]', view).forEach((b) => b.addEventListener('click', () => { Store.setActive(b.dataset.switch); toast('已切換使用者'); route(); }));
-    $('[data-add]', view).addEventListener('click', () => profileForm());
+    { const ab = $('[data-add]', view); if (ab) ab.addEventListener('click', () => profileForm()); }
+    $$('[data-who]', view).forEach((a) => a.addEventListener('click', () => Store.setUI({ meWho: a.dataset.who })));
   }
 
   /* ---------------- 使用者 ---------------- */
@@ -951,12 +1023,12 @@
       <label class="fld wide"><span>名稱</span><input data-name maxlength="20" value="${esc(p ? p.name : first ? '' : '')}" placeholder="例如：爸爸、媽媽、阿仔"></label>
       <div class="pick"><span>頭像</span><div class="emoji-pick">${EMOJIS.map((e) => `<button type="button" data-e="${e}" class="${e === emoji ? 'on' : ''}">${e}</button>`).join('')}</div></div>
       <div class="pick"><span>顏色</span><div class="color-pick">${COLORS.map((c) => `<button type="button" data-col="${c}" style="background:${c}" class="${c === color ? 'on' : ''}" aria-label="${c}"></button>`).join('')}</div></div>
-      <div class="modal-actions">${p && Store.profiles().length > 1 ? '<button class="btn ghost danger" data-del>刪除呢個使用者</button>' : ''}<button class="btn primary" data-save>${first ? '開始學習 🚀' : '儲存'}</button></div>`, (box, close) => {
+      <div class="modal-actions">${p && Store.profiles().length > 1 && !Store.isCloud() ? '<button class="btn ghost danger" data-del>刪除呢個使用者</button>' : ''}<button class="btn primary" data-save>${first ? '開始學習 🚀' : '儲存'}</button></div>`, (box, close) => {
       $$('[data-e]', box).forEach((b) => b.addEventListener('click', () => { emoji = b.dataset.e; $$('[data-e]', box).forEach((x) => x.classList.toggle('on', x === b)); }));
       $$('[data-col]', box).forEach((b) => b.addEventListener('click', () => { color = b.dataset.col; $$('[data-col]', box).forEach((x) => x.classList.toggle('on', x === b)); }));
       box.querySelector('[data-save]').addEventListener('click', () => {
         const name = box.querySelector('[data-name]').value.trim() || '學員';
-        if (p) Store.updateProfile(p.id, { name, emoji, color });
+        if (p) { Store.updateProfile(p.id, { name, emoji, color }); if (Store.isCloud()) setTimeout(() => Cloud.flush(), 50); }
         else { const np = Store.addProfile(name, emoji, color); Store.setActive(np.id); }
         close(); renderProfileChip(); route();
         if (first) toast(`歡迎你，${esc(name)}！`);
@@ -969,9 +1041,11 @@
   function renderProfileChip() {
     const p = Store.activeProfile();
     const btn = $('#btn-profile');
-    btn.innerHTML = p ? `<span class="av sm" style="--c:${p.color}">${p.emoji}</span><span class="pc-name">${esc(p.name)}</span><span class="pc-xp">${Store.user().xp} XP</span>` : '<span class="av sm">🙂</span><span class="pc-name">建立使用者</span>';
+    const sync = Store.isCloud() ? `<span class="pc-sync" title="${{ synced: '已同步', syncing: '同步中…', error: '同步出錯', offline: '離線（稍後同步）' }[Cloud.status] || ''}">${{ synced: '☁️', syncing: '⏳', error: '⚠️', offline: '📴' }[Cloud.status] || ''}</span>` : '';
+    btn.innerHTML = p ? `<span class="av sm" style="--c:${p.color}">${p.emoji}</span><span class="pc-name">${esc(p.name)}</span><span class="pc-xp">${Store.user().xp} XP</span>${sync}` : '<span class="av sm">🙂</span><span class="pc-name">建立使用者</span>';
   }
   $('#btn-profile').addEventListener('click', () => {
+    if (Store.isCloud()) { accountModal(); return; }
     if (!Store.profiles().length) { profileForm(null, true); return; }
     modal(`<h3>👤 切換使用者</h3><div class="prof-list">${Store.profiles().map((p) => `<div class="prof-row ${p.id === Store.db.active ? 'on' : ''}"><button class="prof-pick" data-pick="${p.id}"><span class="av" style="--c:${p.color}">${p.emoji}</span><b>${esc(p.name)}</b><small>${Store.user(p.id).xp} XP · ${Math.round(overall(p.id).pct * 100)}%</small></button><button class="btn ghost sm" data-edit="${p.id}">編輯</button></div>`).join('')}</div>
       <div class="modal-actions"><a class="btn ghost" href="#/family" data-close>家庭進度</a><button class="btn primary" data-new>＋ 新增家庭成員</button></div>`, (box, close) => {
@@ -981,25 +1055,50 @@
     }, { noFocus: true });
   });
 
+  function accountModal() {
+    const me = Store.activeProfile();
+    const st = { synced: '☁️ 已同步', syncing: '⏳ 同步中…', error: '⚠️ 同步出錯（會自動再試）', offline: '📴 離線，連線後會自動同步' }[Cloud.status] || '';
+    modal(`<h3>👤 我嘅帳號</h3>
+      <div class="prof-row on"><span class="av" style="--c:${me.color}">${me.emoji}</span><div><b>${esc(me.name)}</b><small class="muted"> ${esc(Cloud.user ? Cloud.user.email : '')}</small><br><small>${st}</small></div><button class="btn ghost sm" data-editme>編輯</button></div>
+      <h4>👨‍👩‍👦 家人</h4><div class="prof-list">${Store.profiles().filter((p) => p.id !== me.id).map((p) => `<div class="prof-row"><span class="av" style="--c:${p.color}">${p.emoji}</span><b>${esc(p.name)}</b><small>${Store.user(p.id).xp} XP · ${Math.round(overall(p.id).pct * 100)}%</small></div>`).join('') || '<p class="muted">家人登入之後會出現喺度。</p>'}</div>
+      <p class="muted">你哋會即時見到對方嘅書籤、筆記、螢光筆同閱讀進度；每人只可以改自己嘅資料。</p>
+      <div class="modal-actions"><a class="btn ghost" href="#/family" data-close>家庭進度</a><button class="btn" data-out>登出</button></div>`, (box, close) => {
+      box.querySelector('[data-editme]').addEventListener('click', () => { close(); profileForm(me); });
+      box.querySelector('[data-out]').addEventListener('click', () => { close(); Cloud.signOut(); });
+    }, { noFocus: true });
+  }
+  window.addEventListener('ta:sync', () => renderProfileChip());
+
   /* ---------------- 設定 ---------------- */
   function renderSettings() {
     const ps = Store.profiles();
     view.innerHTML = `<div class="page-head"><h1>⚙️ 設定・備份・同步</h1></div>
-      <div class="card"><div class="card-h">👤 使用者</div>${ps.map((p) => `<div class="prof-row"><span class="av" style="--c:${p.color}">${p.emoji}</span><b>${esc(p.name)}</b><button class="btn ghost sm" data-edit="${p.id}">編輯</button></div>`).join('')}<button class="btn sm" data-new>＋ 新增家庭成員</button></div>
+      ${Store.isCloud() ? `<div class="card"><div class="card-h">☁️ 雲端帳號</div>
+        <p>已用 <b>${esc(Cloud.user ? Cloud.user.email : '')}</b> 登入。所有進度、書籤、筆記、螢光筆、交易日誌會自動同步去你所有裝置，家人亦睇到（但改唔到）。</p>
+        ${ps.map((p) => `<div class="prof-row"><span class="av" style="--c:${p.color}">${p.emoji}</span><b>${esc(p.name)}</b><small class="muted">${esc(p.email || '')}</small>${p.id === Store.db.active ? '<button class="btn ghost sm" data-edit="' + p.id + '">編輯</button>' : ''}</div>`).join('')}
+        <div class="tool-foot"><label class="chk"><input type="checkbox" data-fam ${Store.ui().famMarks === false ? '' : 'checked'}> 喺章節入面顯示家人嘅螢光筆、書籤、筆記同閱讀位置</label></div>
+        <div class="tool-foot"><button class="btn" data-out>登出</button><button class="btn ghost danger" data-outclear>登出並清除呢部機嘅快取</button></div></div>`
+      : `<div class="card"><div class="card-h">👤 使用者</div>${ps.map((p) => `<div class="prof-row"><span class="av" style="--c:${p.color}">${p.emoji}</span><b>${esc(p.name)}</b><button class="btn ghost sm" data-edit="${p.id}">編輯</button></div>`).join('')}<button class="btn sm" data-new>＋ 新增家庭成員</button></div>`}
       <div class="card"><div class="card-h">🎨 顯示</div>
         <div class="tool-foot"><span>主題：</span><button class="btn sm" data-theme="">跟系統</button><button class="btn sm" data-theme="light">☀️ 淺色</button><button class="btn sm" data-theme="dark">🌙 深色</button></div>
         <div class="tool-foot"><span>字體大小：</span>${[0.9, 1, 1.1, 1.2, 1.35].map((f) => `<button class="btn sm" data-font="${f}">${Math.round(f * 100)}%</button>`).join('')}</div>
         <div class="tool-foot"><label class="chk"><input type="checkbox" data-gloss ${Store.ui().glossTips === false ? '' : 'checked'}> 章節內顯示詞彙提示（英文詞彙加虛線，撳一下睇解釋）</label></div>
         <div class="tool-foot"><span>朗讀速度：</span>${[0.8, 0.9, 1, 1.15, 1.3].map((r) => `<button class="btn sm ${(Store.ui().ttsRate || 1) === r ? 'primary' : ''}" data-rate="${r}">${r}×</button>`).join('')}</div></div>
-      <div class="card"><div class="card-h">💾 備份同同步（唔同裝置之間）</div>
+      ${Store.isCloud() ? `<div class="card"><div class="card-h">💾 備份</div><p>資料已經自動儲存喺雲端。你仍然可以匯出一份 .json 備份；亦可以匯入以前嘅備份檔，揀其中一個使用者合併入你嘅帳號。</p>
+        <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份</button><label class="btn">⬆️ 匯入舊備份（合併入我嘅帳號）<input type="file" accept=".json,application/json" hidden data-import="cloud"></label></div></div>` : `<div class="card"><div class="card-h">💾 備份同同步（唔同裝置之間）</div>
         <p>所有資料只儲存喺<b>呢部機嘅瀏覽器</b>（唔會上載去任何伺服器）。想喺爸爸部電腦同細路部 iPad 之間同步：</p>
         <ol><li>喺 A 機撳「⬇️ 匯出備份」，得到一個 .json 檔。</li><li>用 WhatsApp / AirDrop / Email 傳去 B 機。</li><li>喺 B 機撳「⬆️ 匯入（合併）」揀個檔 —— 進度、書籤、筆記、留言、影片會<b>合併</b>，唔會覆蓋 B 機原有資料。</li><li>B 機再匯出，傳返 A 機合併，兩邊就一致。</li></ol>
         <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份（全部使用者）</button><label class="btn">⬆️ 匯入（合併）<input type="file" accept=".json,application/json" hidden data-import="merge"></label><label class="btn ghost">⬆️ 匯入（完全取代）<input type="file" accept=".json,application/json" hidden data-import="replace"></label></div></div>
-      <div class="card"><div class="card-h">🧹 重設</div><p class="muted">清除呢部機所有使用者同資料（建議先匯出備份）。</p><button class="btn ghost danger" data-reset>清除全部資料</button></div>
+      <div class="card"><div class="card-h">🧹 重設</div><p class="muted">清除呢部機所有使用者同資料（建議先匯出備份）。</p><button class="btn ghost danger" data-reset>清除全部資料</button></div>`}
       <div class="card"><div class="card-h">📱 加到手機主畫面</div><p>iPhone / iPad：用 Safari 打開 → 分享 → 「加至主畫面」。Android：Chrome 選單 → 「安裝應用程式」。加咗之後可以好似 App 咁開，部分內容離線都睇到。</p></div>
       <div class="card"><div class="card-h">ℹ️ 關於</div><p>內容整理自你用 ChatGPT 生成嘅 Level 1–5 課程筆記同實戰問答，加上進階 Level 6–8、補充章節、模擬交易練習場、互動計算器、K 線重播遊戲、訓練場、測驗、錯題本、字卡同交易日誌。所有 TSLA 數字均為教學模擬，不構成投資建議。部分平台規則（例如 PDT、T+1、IBKR 數據）會變，請以官方最新公布為準。</p></div>`;
     $$('[data-edit]', view).forEach((b) => b.addEventListener('click', () => profileForm(ps.find((p) => p.id === b.dataset.edit))));
-    $('[data-new]', view).addEventListener('click', () => profileForm());
+    { const nb = $('[data-new]', view); if (nb) nb.addEventListener('click', () => profileForm()); }
+    if (Store.isCloud()) {
+      $('[data-out]', view).addEventListener('click', () => Cloud.signOut());
+      $('[data-outclear]', view).addEventListener('click', () => { if (confirm('登出並清除呢部機嘅快取？（雲端資料唔會受影響）')) Cloud.signOut(true); });
+      $('[data-fam]', view).addEventListener('change', (e) => { Store.setUI({ famMarks: e.target.checked }); toast(e.target.checked ? '會顯示家人標記' : '已隱藏家人標記'); });
+    }
     $$('[data-theme]', view).forEach((b) => b.addEventListener('click', () => setTheme(b.dataset.theme)));
     $$('[data-font]', view).forEach((b) => b.addEventListener('click', () => setFont(+b.dataset.font)));
     $('[data-gloss]', view).addEventListener('change', (e) => { Store.setUI({ glossTips: e.target.checked }); toast(e.target.checked ? '已開啟詞彙提示' : '已關閉詞彙提示'); });
@@ -1010,10 +1109,10 @@
       const mode = inp.dataset.import;
       if (mode === 'replace' && !confirm('完全取代會清除呢部機現有資料，確定？')) return;
       const r = new FileReader();
-      r.onload = () => { try { Store.importJSON(r.result, mode); toast('匯入成功'); renderProfileChip(); route(); } catch (err) { alert('匯入失敗：' + err.message); } };
+      r.onload = () => { try { if (mode === 'cloud') { Cloud.importInto(r.result); return; } Store.importJSON(r.result, mode); toast('匯入成功'); renderProfileChip(); route(); } catch (err) { alert('匯入失敗：' + err.message); } };
       r.readAsText(f);
     }));
-    $('[data-reset]', view).addEventListener('click', () => { if (confirm('真係要清除全部資料？呢個動作冇得還原。')) { Store.resetAll(); renderProfileChip(); go('#/'); setTimeout(askProfile, 300); } });
+    if (!Store.isCloud()) $('[data-reset]', view).addEventListener('click', () => { if (confirm('真係要清除全部資料？呢個動作冇得還原。')) { Store.resetAll(); renderProfileChip(); go('#/'); setTimeout(askProfile, 300); } });
   }
 
   /* ---------------- 主題 / 字體 ---------------- */
@@ -1102,6 +1201,7 @@
       view.dataset.ch = activeCh.id;
       renderChapter(activeCh, parts[2]);
       renderRail(activeCh);
+      if (famOn()) { const ct = $('[data-content]', view); if (ct) applyFamilyMarks(ct, activeCh); }
       document.title = `${activeCh.title}｜${activeCh.level.code}｜TSLA Day Trading 學院`;
     } else {
       view.dataset.ch = '';
@@ -1136,6 +1236,25 @@
     $('#main').focus({ preventScroll: true });
   }
   window.addEventListener('hashchange', route);
+  window.addEventListener('ta:remote', (e) => {
+    const d = e.detail || {};
+    renderProfileChip();
+    const r = document.body.dataset.route;
+    const busy = document.activeElement && document.activeElement.closest('input,textarea,select,[contenteditable]') || $('.modal-wrap');
+    if (r === 'c') {
+      const c = CH[(location.hash.split('/')[2] || '')]; if (!c) return;
+      const ct = $('[data-content]', view);
+      if ((d.others || d.profiles) && ct) applyFamilyMarks(ct, c);
+      if (d.shared && !busy) { renderComments(c); renderVideos(c); }
+      if (d.own && !busy) renderTOC(c, 'chapter');
+      return;
+    }
+    if (busy || !['home', 'family', 'me', 'map', 'board', 'settings', 'journal', 'level', 'toc'].includes(r)) return;
+    if (r === 'journal' && !d.own) return;
+    clearTimeout(remoteRerender);
+    remoteRerender = setTimeout(() => { const y = scrollY; route(); window.scrollTo(0, y); }, d.own || d.shared ? 200 : 3000);
+  });
+  let remoteRerender = null;
 
   /* ---------------- 專注模式、快捷鍵、返回頂部、底部導航 ---------------- */
   function toggleFocus(force) {
@@ -1185,7 +1304,7 @@
   /* ---------------- 啟動 ---------------- */
   Store.touchStreak();
   route();
-  if (!Store.profiles().length) setTimeout(() => profileForm(null, true), 400);
+  if (!Store.profiles().length && !(window.Cloud && Cloud.enabled)) setTimeout(() => profileForm(null, true), 400);
   window.addEventListener('ta:save-error', () => toast('⚠️ 儲存失敗：瀏覽器可能封鎖咗本機儲存（例如私密瀏覽）'));
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
