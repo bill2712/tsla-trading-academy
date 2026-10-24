@@ -276,7 +276,7 @@
     for (let i = 0; i < 40; i++) { const s = document.createElement('i'); s.style.left = Math.random() * 100 + '%'; s.style.animationDelay = Math.random() * 0.5 + 's'; s.style.background = ['#22c55e', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6'][i % 5]; c.appendChild(s); }
     document.body.appendChild(c); setTimeout(() => c.remove(), 2200);
   }
-  window.addEventListener('ta:xp', (e) => toast(`<b>+${e.detail.amount} XP</b> ⭐`, 1400));
+  window.addEventListener('ta:xp', (e) => { toast(`<b>+${e.detail.amount} XP</b> ⭐`, 1400); setTimeout(renderProfileChip, 0); });
 
   /* ---------------- 目錄（側欄） ---------------- */
   function renderTOC(activeCh, activeRoute) {
@@ -752,7 +752,7 @@
     return `<div class="cm" data-cm="${cm.id}">
       <span class="av" style="--c:${cm.color}">${cm.emoji}</span>
       <div class="cm-body">
-        <div class="cm-head"><b>${esc(cm.name)}</b><small>${ago(cm.ts)}</small>${withChapter && ch ? `<a class="cm-sec" href="#/c/${ch.id}${sec ? '/' + sec.id : ''}">${esc(ch.level.code)} 第 ${ch.num} 章${sec ? ' · ' + esc(sec.title) : ''}</a>` : sec ? `<a class="cm-sec" href="#/c/${ch.id}/${sec.id}">📍 ${esc(sec.title)}</a>` : ''}</div>
+        <div class="cm-head"><b>${esc(cm.name)}</b><small>${ago(cm.ts)}</small>${withChapter && ch ? `<a class="cm-sec" href="#/c/${ch.id}${sec ? '/' + sec.id : ''}">${esc(ch.level.code)} 第 ${ch.num} 章${sec ? ' · ' + esc(sec.title) : ''}</a>` : withChapter && !cm.parent ? '<span class="cm-sec gen">💬 一般討論</span>' : sec ? `<a class="cm-sec" href="#/c/${ch.id}/${sec.id}">📍 ${esc(sec.title)}</a>` : ''}</div>
         ${cm.quote ? `<blockquote class="quote sm">${esc(cm.quote)}</blockquote>` : ''}
         <div class="cm-text">${esc(cm.text).replace(/\n/g, '<br>')}</div>
         <div class="cm-acts"><button data-reply="${cm.id}">↩︎ 回覆</button>${me && me.id === cm.author ? `<button data-delc="${cm.id}">刪除</button>` : ''}</div>
@@ -785,14 +785,14 @@
   }
   function commentModal(c, section, quote, parent, after) {
     if (!Store.activeProfile()) { askProfile(); return; }
-    const sec = c.sections.find((s) => s.id === section);
+    const sec = c ? c.sections.find((s) => s.id === section) : null;
     modal(`<h3>💬 ${parent ? '回覆 ' + esc(parent.name) : '留言'}${sec ? `<small> · ${esc(sec.title)}</small>` : ''}</h3>
       ${parent ? `<blockquote class="quote sm">${esc(parent.text)}</blockquote>` : ''}${quote ? `<blockquote class="quote">${esc(quote)}</blockquote>` : ''}
       <textarea rows="4" data-t placeholder="寫低你嘅問題或者想法…"></textarea>
       <div class="modal-actions"><button class="btn primary" data-send>發佈</button></div>`, (box, close) => {
       box.querySelector('[data-send]').addEventListener('click', () => {
         const t = box.querySelector('[data-t]').value.trim(); if (!t) return;
-        Store.addComment({ chapter: c.id, section: section && section !== 'intro' ? section : null, text: t, quote: quote || null, parent: parent ? parent.id : null });
+        Store.addComment({ chapter: c ? c.id : (parent ? parent.chapter : '_general'), section: c && section && section !== 'intro' ? section : null, text: t, quote: quote || null, parent: parent ? parent.id : null });
         close(); toast('已發佈'); if (after) after(); else if (location.hash.startsWith('#/c/')) { renderComments(c); }
       });
     });
@@ -913,13 +913,16 @@
     const nm = who === 'all' ? '全家' : who === me ? '我' : (ps.find((p) => p.id === who) || {}).name;
     let body = '';
     if (tab === 'bookmarks') body = bms.length ? `<ul class="me-list">${bms.map(([p, b2]) => `<li><a href="#/c/${b2.chapter}${b2.section !== '_chapter' ? '/' + b2.section : ''}"><b>${esc(secTitle(b2.chapter, b2.section) || b2.title)}</b>${tag(p)}<small>${esc(chLabel(b2.chapter))} · ${ago(b2.ts)}</small></a>${p.id === me ? `<button data-unbm="${b2.chapter}|${b2.section}" title="移除">×</button>` : ''}</li>`).join('')}</ul>` : `<div class="empty">${who === me ? '未有書籤。每個小節標題右邊有 ☆，撳一下就加書籤。' : esc(nm) + ' 未有書籤。'}</div>`;
-    if (tab === 'notes') body = notes.length ? `<ul class="me-list notes">${notes.map(([p, k, n]) => { const [ch, sid] = k.split('#'); return `<li><a href="#/c/${ch}${sid !== '_chapter' ? '/' + sid : '/ch-end'}"><b>${esc(secTitle(ch, sid))}</b>${tag(p)}<small>${esc(chLabel(ch))} · ${ago(n.ts)}</small><p>${esc(n.text).replace(/\n/g, '<br>')}</p></a></li>`; }).join('')}</ul>` : `<div class="empty">${who === me ? '未有筆記。每個小節標題右邊有 📝；每章底部亦有「本章筆記」。' : esc(nm) + ' 未有筆記。'}</div>`;
+    if (tab === 'notes') body = notes.length ? `<ul class="me-list notes">${notes.map(([p, k, n]) => { const [ch, sid] = k.split('#'); if (ch === '_free') return `<li class="free-note"><div class="fn-main"><b>📝 ${esc(n.title || '筆記')}</b>${tag(p)}<small>自由筆記 · ${ago(n.ts)}</small><p>${esc(n.text).replace(/\n/g, '<br>')}</p></div>${p.id === me ? `<button data-fn="${sid}" title="編輯">✏️</button>` : ''}</li>`; return `<li><a href="#/c/${ch}${sid !== '_chapter' ? '/' + sid : '/ch-end'}"><b>${esc(secTitle(ch, sid))}</b>${tag(p)}<small>${esc(chLabel(ch))} · ${ago(n.ts)}</small><p>${esc(n.text).replace(/\n/g, '<br>')}</p></a></li>`; }).join('')}</ul>` : `<div class="empty">${who === me ? '未有筆記。每個小節標題右邊有 📝；每章底部亦有「本章筆記」。' : esc(nm) + ' 未有筆記。'}</div>`;
     if (tab === 'highlights') body = hls.length ? `<ul class="me-list">${hls.map(([p, h]) => `<li><a href="#/c/${h.chapter}/${h.section}"><mark class="hl hl-${h.color}">${esc(h.text)}</mark>${tag(p)}${h.note ? `<p>📝 ${esc(h.note)}</p>` : ''}<small>${esc(chLabel(h.chapter))} · ${ago(h.ts)}</small></a></li>`).join('')}</ul>` : `<div class="empty">${who === me ? '未有螢光筆。喺課文入面用滑鼠（或者手指長按）揀選文字，就會彈出螢光筆工具。' : esc(nm) + ' 未有螢光筆。'}</div>`;
     if (tab === 'stats') body = Learn.statsHTML();
     if (tab === 'videos') { const vs = Store.videos().slice().reverse(); body = vs.length ? `<div class="video-list">${vs.map((v) => videoHTML(v, true)).join('')}</div>` : '<div class="empty">未有影片。每章底部可以加影片連結。</div>'; }
     const whoBar = ps.length > 1 && ['bookmarks', 'notes', 'highlights'].includes(tab) ? `<div class="chips who-bar">${[[me, '🙋 我']].concat(ps.filter((p) => p.id !== me).map((p) => [p.id, p.emoji + ' ' + p.name])).concat([['all', '👨‍👩‍👦 全家']]).map(([k, t]) => `<button class="chip-btn ${who === k ? 'on' : ''}" data-who="${k}">${esc(t)}</button>`).join('')}</div>` : '';
     view.innerHTML = `<div class="page-head"><h1>⭐ 書籤・筆記・螢光筆</h1><p class="muted">${ps.length > 1 ? '可以睇自己、家人或者全家嘅標記；只可以改自己嘅。' : ''}影片係全家共用。</p></div>
-      <div class="tabs">${tabs.map(([k, l, n]) => `<a class="tab ${tab === k ? 'on' : ''}" href="#/me/${k}">${l}${n !== '' ? `（${n}）` : ''}</a>`).join('')}<button class="btn ghost sm me-export" data-export-md>⬇️ 匯出我嘅筆記</button></div>${whoBar}${body}`;
+      <div class="tabs">${tabs.map(([k, l, n]) => `<a class="tab ${tab === k ? 'on' : ''}" href="#/me/${k}">${l}${n !== '' ? `（${n}）` : ''}</a>`).join('')}<button class="btn ghost sm me-export" data-export-md>⬇️ 匯出我嘅筆記</button></div>
+      ${tab === 'notes' ? '<div class="me-add"><button class="btn primary sm" data-qa="note">＋ 寫筆記</button><span class="muted">可以唔關聯任何章節</span></div>' : tab === 'videos' ? '<div class="me-add"><button class="btn primary sm" data-qa="video">＋ 加影片連結</button><span class="muted">全家共用，可以唔關聯章節</span></div>' : ''}${whoBar}${body}`;
+    $$('[data-qa]', view).forEach((b2) => b2.addEventListener('click', () => quickAdd(b2.dataset.qa, () => renderMe(tab))));
+    $$('[data-fn]', view).forEach((b2) => b2.addEventListener('click', () => freeNoteModal(b2.dataset.fn, () => renderMe('notes'))));
     $('[data-export-md]', view).addEventListener('click', () => { Learn.exportNotes(); toast('已匯出筆記'); });
     $$('[data-who]', view).forEach((b2) => b2.addEventListener('click', () => { Store.setUI({ meWho: b2.dataset.who }); renderMe(tab); }));
     $$('[data-unbm]', view).forEach((b2) => b2.addEventListener('click', () => { const [ch, s2] = b2.dataset.unbm.split('|'); Store.toggleBookmark(ch, s2); renderMe('bookmarks'); }));
@@ -934,10 +937,12 @@
       if (!includeMe && p.id === me) return;
       const u = Store.user(p.id);
       u.bookmarks.forEach((b2) => out.push({ p, ts: b2.ts, icon: '⭐', text: '加咗書籤' + (secT(b2.chapter, b2.section) ? '：' + secT(b2.chapter, b2.section) : ''), ch: b2.chapter, sec: b2.section }));
-      Object.keys(u.notes).forEach((k) => { const [ch, sid] = k.split('#'); out.push({ p, ts: u.notes[k].ts, icon: '📝', text: '寫咗筆記：' + u.notes[k].text.slice(0, 50), ch, sec: sid }); });
+      Object.keys(u.notes).forEach((k) => { const [ch, sid] = k.split('#'); const n = u.notes[k]; out.push(ch === '_free' ? { p, ts: n.ts, icon: '📝', text: '寫咗筆記：' + (n.title ? '【' + n.title + '】' : '') + n.text.slice(0, 40), href: '#/me/notes' } : { p, ts: n.ts, icon: '📝', text: '寫咗筆記：' + n.text.slice(0, 50), ch, sec: sid }); });
       u.highlights.forEach((h) => out.push({ p, ts: h.ts, icon: '🖍️', text: `螢光筆「${h.text.slice(0, 40)}${h.text.length > 40 ? '…' : ''}」` + (h.note ? '：' + h.note.slice(0, 30) : ''), ch: h.chapter, sec: h.section }));
       Object.keys(u.read).forEach((ch) => out.push({ p, ts: u.read[ch], icon: '✅', text: '讀完一章', ch }));
       Object.keys(u.quiz).forEach((q) => { const r = u.quiz[q]; if (r && r.ts && QUIZZES[q]) out.push({ p, ts: r.ts, icon: '🧩', text: `${QUIZZES[q].title}：${r.last != null ? r.last : r.best}/${r.total}`, href: '#/quiz/' + q }); });
+      Store.comments().filter((c) => c.author === p.id).forEach((c) => out.push({ p, ts: c.ts, icon: '💬', text: (c.parent ? '回覆：' : '留言：') + c.text.slice(0, 50), href: CH[c.chapter] ? `#/c/${c.chapter}/ch-end` : '#/board' }));
+      Store.videos().filter((v) => v.author === p.id).forEach((v) => out.push({ p, ts: v.ts, icon: '🎬', text: '分享影片：' + (v.title || v.url).slice(0, 50), href: CH[v.chapter] ? `#/c/${v.chapter}/ch-end` : '#/board' }));
       (u.journal || []).forEach((t) => out.push({ p, ts: t.ts, icon: '📒', text: `記錄咗一筆${{ replay: 'Replay', paper: 'Paper', live: '真實' }[t.kind || 'live'] || ''}交易（${t.symbol || ''} ${t.side === 'short' ? 'Short' : 'Long'}）`, href: '#/journal/trades' }));
     });
     return out.filter((x) => x.ts).sort((a, b2) => b2.ts - a.ts);
@@ -981,12 +986,86 @@
     });
   }
 
-  function renderBoard() {
+  /* ---------------- 隨時新增：討論／影片／筆記 ---------------- */
+  function chapterSelect(sel, emptyLabel) {
+    return `<select data-ch><option value="">${esc(emptyLabel || '（唔關聯章節）')}</option>${LEVELS.map((lv) => `<optgroup label="${esc(lv.code + '：' + lv.title)}">${lv.chapters.map((c) => `<option value="${c.id}" ${sel === c.id ? 'selected' : ''}>${esc(lv.code.replace('Level ', 'L'))} 第 ${c.num} 章 ${esc(c.title)}</option>`).join('')}</optgroup>`).join('')}</select>`;
+  }
+  const normUrl = (u) => (/^https?:\/\//.test(u) ? u : 'https://' + u);
+  function composerHTML(mode) {
+    const tabs = [['talk', '💬 發起討論'], ['video', '🎬 加影片連結'], ['note', '📝 寫筆記']];
+    const body = {
+      talk: `<textarea rows="3" data-t placeholder="想問乜、想分享乜？例如：今日 Replay 見到一個假突破，大家點睇？"></textarea>
+        <div class="cmp-row">${chapterSelect('', '💬 一般討論（唔關聯章節）')}<button class="btn primary" data-go>發佈</button></div>`,
+      video: `<input type="url" data-url placeholder="貼上影片連結（YouTube 或其他網址）">
+        <input type="text" data-title placeholder="標題（可選）"><textarea rows="2" data-note placeholder="點解推介？重點喺第幾分鐘？（可選）"></textarea>
+        <div class="cmp-row">${chapterSelect('', '🎬 唔關聯章節')}<button class="btn primary" data-go>＋ 加入影片</button></div>`,
+      note: `<input type="text" data-title placeholder="筆記標題（例如：Gap & Go 心得）">
+        <textarea rows="4" data-t placeholder="寫低你嘅想法、心得、要記住嘅規則…（${Store.isCloud() ? '家人睇到，但改唔到' : '只有你自己改到'}）"></textarea>
+        <div class="cmp-row">${chapterSelect('', '📝 自由筆記（唔關聯章節）')}<button class="btn primary" data-go>儲存筆記</button></div>`,
+    }[mode];
+    return `<div class="card composer" data-mode="${mode}"><div class="seg3">${tabs.map(([k, t]) => `<button data-cmode="${k}" class="${k === mode ? 'on' : ''}">${t}</button>`).join('')}</div>${body}</div>`;
+  }
+  function bindComposer(root, mode, after) {
+    $$('[data-cmode]', root).forEach((b) => b.addEventListener('click', () => { Store.setUI({ cmpMode: b.dataset.cmode }); after(b.dataset.cmode); }));
+    const box = $('.composer', root);
+    $('[data-go]', box).addEventListener('click', () => {
+      if (!Store.activeProfile()) { askProfile(); return; }
+      const ch = $('[data-ch]', box).value;
+      if (mode === 'talk') {
+        const t = $('[data-t]', box).value.trim(); if (!t) { toast('寫低內容先'); return; }
+        Store.addComment({ chapter: ch || '_general', section: null, text: t });
+        toast('已發佈');
+      } else if (mode === 'video') {
+        const u = $('[data-url]', box).value.trim(); if (!u) { toast('貼上連結先'); return; }
+        const url = normUrl(u);
+        Store.addVideo({ chapter: ch || '_general', url, title: $('[data-title]', box).value.trim(), note: $('[data-note]', box).value.trim(), section: null });
+        Store.awardXP('video:' + url, 2); toast('已加入影片');
+      } else {
+        const t = $('[data-t]', box).value.trim(); if (!t) { toast('寫低內容先'); return; }
+        const title = $('[data-title]', box).value.trim();
+        if (ch) { const old = Store.getNote(ch, '_chapter'); Store.setNote(ch, '_chapter', (old ? old + '\n\n' : '') + (title ? '【' + title + '】\n' : '') + t); }
+        else Store.saveFreeNote(null, title, t);
+        toast('已儲存筆記');
+      }
+      after(mode);
+    });
+  }
+  function quickAdd(mode, after) {
+    modal(`<h3>${{ talk: '💬 發起討論', video: '🎬 加影片連結', note: '📝 寫筆記' }[mode]}</h3><div data-qa></div>`, (box, close) => {
+      const host = $('[data-qa]', box);
+      const draw = (m) => { host.innerHTML = composerHTML(m); bindComposer(host, m, (m2) => { if (m2 !== m) draw(m2); else { close(); if (after) after(); } }); };
+      draw(mode);
+    });
+  }
+  function freeNoteModal(id, after) {
+    const n = id ? Store.user().notes['_free#' + id] : null;
+    modal(`<h3>📝 ${n ? '編輯筆記' : '寫筆記'}</h3><input type="text" class="note-title" data-title value="${esc(n ? n.title : '')}" placeholder="標題"><textarea rows="8" class="note-ta" data-t>${esc(n ? n.text : '')}</textarea>
+      <div class="modal-actions">${n ? '<button class="btn ghost danger" data-del>刪除</button>' : ''}<button class="btn primary" data-save>儲存</button></div>`, (box, close) => {
+      box.querySelector('[data-save]').addEventListener('click', () => { Store.saveFreeNote(id, box.querySelector('[data-title]').value, box.querySelector('[data-t]').value); close(); toast('已儲存'); if (after) after(); });
+      const d = box.querySelector('[data-del]'); if (d) d.addEventListener('click', () => { if (confirm('刪除呢個筆記？')) { Store.saveFreeNote(id, '', ''); close(); if (after) after(); } });
+    });
+  }
+
+  function renderBoard(mode) {
+    mode = mode || Store.ui().cmpMode || 'talk';
+    const filter = Store.ui().boardFilter || 'all';
     const all = Store.comments();
-    const roots = all.filter((x) => !x.parent).sort((a, b) => b.ts - a.ts);
-    view.innerHTML = `<div class="page-head"><h1>💬 家庭討論區</h1><p class="muted">全部章節嘅留言集中喺度。想發問：去相關章節底部，或者揀選課文文字撳「💬 留言」。</p></div>
-      <div class="cm-list">${roots.map((r) => commentHTML(r, all, true)).join('') || '<div class="empty">未有留言。</div>'}</div>`;
-    bindComments(view, renderBoard);
+    const roots = all.filter((x) => !x.parent);
+    const vids = Store.videos();
+    let items = [];
+    if (filter === 'all' || filter === 'general') items = items.concat(roots.filter((x) => filter === 'all' || !CH[x.chapter]).map((x) => ({ ts: x.ts, html: commentHTML(x, all, true) })));
+    if (filter === 'chapters') items = items.concat(roots.filter((x) => CH[x.chapter]).map((x) => ({ ts: x.ts, html: commentHTML(x, all, true) })));
+    if (filter === 'all' || filter === 'videos') items = items.concat(vids.map((v) => ({ ts: v.ts, html: `<div class="board-video">${videoHTML(v, true)}</div>` })));
+    items.sort((a, b2) => b2.ts - a.ts);
+    const chips = [['all', '全部'], ['general', '💬 一般討論'], ['chapters', '📚 章節留言'], ['videos', '🎬 影片']];
+    view.innerHTML = `<div class="page-head"><h1>💬 家庭討論區</h1><p class="muted">隨時發起討論、分享影片或者寫筆記；可以揀關聯某一章，亦可以唔關聯。章節入面嘅留言都會集中喺度。</p></div>
+      ${composerHTML(mode)}
+      <div class="chips board-chips">${chips.map(([k, t]) => `<button class="chip-btn ${filter === k ? 'on' : ''}" data-bf="${k}">${t}</button>`).join('')}</div>
+      <div class="cm-list">${items.map((x) => x.html).join('') || '<div class="empty">未有內容。用上面嘅框發起第一個討論吧！</div>'}</div>`;
+    bindComposer(view, mode, (m) => renderBoard(m));
+    $$('[data-bf]', view).forEach((b2) => b2.addEventListener('click', () => { Store.setUI({ boardFilter: b2.dataset.bf }); renderBoard(mode); }));
+    bindComments(view, () => renderBoard(mode));
+    bindVideoEvents(view, () => renderBoard(mode));
   }
 
   /* ---------------- 家庭進度 ---------------- */

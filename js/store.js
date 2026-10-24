@@ -199,6 +199,14 @@
   }
 
   /* ---------- 筆記 ---------- */
+  /* 自由筆記：唔關聯章節，key = "_free#id"，有標題 */
+  function saveFreeNote(id, title, text) {
+    const u = user(); id = id || uid(); const k = '_free#' + id;
+    if (text && text.trim()) { const old = u.notes[k]; u.notes[k] = { title: (title || '').trim(), text, ts: old ? old.ts : Date.now(), edited: old ? Date.now() : undefined }; if (!old) { awardXP('note:' + k, 3); logAct('note'); } }
+    else delete u.notes[k];
+    emit('notes');
+    return id;
+  }
   function getNote(ch, sec) { const n = user().notes[ch + '#' + sec]; return n ? n.text : ''; }
   function setNote(ch, sec, text) {
     const u = user();
@@ -326,7 +334,7 @@
     uid, today, get db() { return db; },
     profiles, activeProfile, addProfile, updateProfile, removeProfile, setActive, user,
     awardXP, logAct, recordAnswer, dueWrong, addDays, touchStreak, markVisited, setLast, setRead,
-    isBookmarked, toggleBookmark, getNote, setNote,
+    isBookmarked, toggleBookmark, getNote, setNote, saveFreeNote,
     addHighlight, updateHighlight, removeHighlight,
     addComment, removeComment, comments, addVideo, removeVideo, videos,
     saveQuiz, toggleCheck, exportJSON, importJSON, resetAll,

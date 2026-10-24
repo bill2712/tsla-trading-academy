@@ -577,6 +577,8 @@
         md += `\n### ${sid === '_chapter' ? '（整章）' : s ? s.title : sid}\n\n` + secs[sid].map((l) => '- ' + l).join('\n') + '\n';
       });
     });
+    const free = Object.keys(u.notes).filter((k) => k.startsWith('_free#')).map((k) => u.notes[k]).sort((x, y) => (x.ts || 0) - (y.ts || 0));
+    if (free.length) { md += '\n## 自由筆記\n'; free.forEach((n) => { md += `\n### ${n.title || '筆記'}\n\n${n.text}\n`; }); }
     if (!Object.keys(byCh).length) md += '\n（未有書籤、筆記或螢光筆）\n';
     A.download(`my-notes-${Store.today()}.md`, md, 'text/markdown');
   }

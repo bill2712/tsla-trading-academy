@@ -1078,3 +1078,25 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .rail-fam { margin-left: 4px; font-size: .8em; }
 [data-famt].on { border-color: var(--accent); color: var(--accent); }
 @media print { .fam-badges, .fam-note { display: none !important; } .fam-hl { text-decoration: none; } }
+
+/* 隨時新增：討論／影片／筆記 */
+.composer { margin-bottom: 14px; display: grid; gap: 8px; }
+.composer input, .composer textarea, .composer select { width: 100%; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-soft); padding: 8px 10px; font-size: 1rem; min-width: 0; }
+.composer textarea { resize: vertical; }
+.seg3 { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.seg3 button { border: 0; background: var(--bg-soft); padding: 9px 4px; cursor: pointer; font-weight: 700; font-size: .9em; }
+.seg3 button + button { border-left: 1px solid var(--border); }
+.seg3 button.on { background: var(--accent-strong); color: #fff; }
+.cmp-row { display: flex; gap: 8px; align-items: center; }
+.cmp-row select { flex: 1; height: 40px; }
+.cmp-row .btn { flex-shrink: 0; }
+.board-chips { margin: 4px 0 12px; }
+.board-video { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; }
+.cm-sec.gen { color: var(--muted); }
+.me-add { display: flex; gap: 10px; align-items: center; margin: 0 0 12px; flex-wrap: wrap; }
+.me-list li.free-note { display: flex; gap: 8px; align-items: flex-start; }
+.free-note .fn-main { flex: 1; min-width: 0; }
+.free-note .fn-main small { display: block; color: var(--muted); }
+.free-note .fn-main p { margin: 6px 0 0; }
+.note-title { width: 100%; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-soft); padding: 8px 10px; font-size: 1rem; margin-bottom: 8px; }
+@media (max-width: 560px) { .cmp-row { flex-direction: column; align-items: stretch; } .seg3 button { font-size: .8em; } }
