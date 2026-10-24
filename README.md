@@ -52,19 +52,17 @@ python3 -m http.server 8000
 
 ## 🔐 登入同家庭同步（Firebase）
 
-同 nursing-tracker 一樣，用 **Google 帳號登入**，資料儲存喺 Firebase Firestore（`nursing-declan` 專案），即時同步：
+同 nursing-tracker 一樣，用 **Google 帳號登入**，資料儲存喺學院專用嘅 Firebase 專案 **`tsla-academy`**（Firestore，香港 asia-east2），即時同步。用自己嘅專案，免費額度同 nursing-tracker 分開，互不影響：
 
 - 只有 `js/cloud-config.js` 入面 `members` 嘅 email 可以登入（而家係爸爸同 Ivan），其他帳號會見到「冇權限」。
 - 每人嘅進度、書籤、筆記、螢光筆、測驗、交易日誌**分開儲存**；**全家睇到，但每人只可以改自己嘅**。
 - 章節入面會見到家人嘅螢光筆（佢顏色嘅波浪底線，標明邊個）、書籤、筆記同「讀到呢度」；主頁同家庭進度有「家人動態」；「我的」頁可以揀睇我／家人／全家。
 - 同一個人用幾部機都會自動同步；離線都用得，連線後再上載。
-- 第一次登入時，如果部機有舊嘅本機紀錄，會問你要唔要合併入你嘅帳號。
+- 第一次登入時，如果部機有舊紀錄（本機模式，或者之前喺 nursing-declan 專案嘅雲端快取），會問你要唔要合併入你嘅帳號。
 
 ### 一次性設定：Firestore 規則
 
-Firebase Console → nursing-declan → **Firestore Database → 規則（Rules）**，貼上 [`firestore.rules`](firestore.rules) 嘅內容再發佈。規則保證只有授權 email 可以讀寫，而且每人只可以改自己嘅資料。
-
-> 規則係「任何一條允許就允許」：如果原本有 `match /{document=**}` 全開規則，要刪走。
+Firebase Console → tsla-academy → **Firestore Database → 規則（Rules）**，貼上 [`firestore.rules`](firestore.rules) 嘅內容再發佈（已經設定好）。規則保證只有授權 email 可以讀寫，而且每人只可以改自己嘅資料。
 
 ### 加／減家庭成員
 
@@ -101,7 +99,7 @@ js/sim.js               模擬交易練習場
 js/store.js             使用者資料、匯出匯入
 js/app.js               路由、目錄、章節頁、書籤筆記留言影片、家人標記
 js/cloud.js             Google 登入、Firestore 同步
-js/cloud-config.js      Firebase 設定同可以登入嘅家庭成員
+js/cloud-config.js      Firebase 設定（tsla-academy）同可以登入嘅家庭成員
 js/vendor/firebase-*    Firebase SDK v12.9.0（Apache-2.0）
 firestore.rules         Firestore 安全規則（貼去 Firebase Console）
 sw.js                   離線快取

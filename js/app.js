@@ -1057,7 +1057,7 @@
 
   function accountModal() {
     const me = Store.activeProfile();
-    const st = { synced: '☁️ 已同步', syncing: '⏳ 同步中…', error: '⚠️ 同步出錯（會自動再試）', offline: '📴 離線，連線後會自動同步', quota: '⏸️ Firebase 今日免費讀取額度用完（同 nursing-tracker 共用），重置後會自動同步' }[Cloud.status] || '';
+    const st = { synced: '☁️ 已同步', syncing: '⏳ 同步中…', error: '⚠️ 同步出錯（會自動再試）', offline: '📴 離線，連線後會自動同步', quota: '⏸️ Firebase 今日免費讀取額度用完，重置後會自動同步' }[Cloud.status] || '';
     modal(`<h3>👤 我嘅帳號</h3>
       <div class="prof-row on"><span class="av" style="--c:${me.color}">${me.emoji}</span><div><b>${esc(me.name)}</b><small class="muted"> ${esc(Cloud.user ? Cloud.user.email : '')}</small><br><small>${st}</small></div><button class="btn ghost sm" data-editme>編輯</button></div>
       <h4>👨‍👩‍👦 家人</h4><div class="prof-list">${Store.profiles().filter((p) => p.id !== me.id).map((p) => `<div class="prof-row"><span class="av" style="--c:${p.color}">${p.emoji}</span><b>${esc(p.name)}</b><small>${Store.user(p.id).xp} XP · ${Math.round(overall(p.id).pct * 100)}%</small></div>`).join('') || '<p class="muted">家人登入之後會出現喺度。</p>'}</div>

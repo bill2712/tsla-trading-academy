@@ -1,6 +1,7 @@
 /* =========================================================
  * 雲端同步：Google 登入（只限 CLOUD_CONFIG.members）+ Firestore
  *
+ * Firebase 專案：見 js/cloud-config.js（tsla-academy）
  * Firestore 結構：
  *   academyMembers/{uid}              { email, name, emoji, color, updatedAt }
  *   academyUsers/{uid}/parts/{part}   { json, updatedAt, uid }   ← 每人自己嘅資料（分幾份）
@@ -79,7 +80,7 @@
     setStatus(quota ? 'quota' : 'error');
     if (window.App && Date.now() - lastToast > 60000) {
       lastToast = Date.now();
-      App.toast(e && e.code === 'permission-denied' ? '⚠️ 同步被拒：請檢查 Firestore 規則' : quota ? '⚠️ Firebase 今日免費讀取額度用完咗（同 nursing-tracker 共用）。本機照用得，額度重置後會自動同步。' : '⚠️ 同步失敗，會自動再試', 6000);
+      App.toast(e && e.code === 'permission-denied' ? '⚠️ 同步被拒：請檢查 Firestore 規則' : quota ? '⚠️ Firebase 今日免費讀取額度用完咗。本機照用得，額度重置後會自動同步。' : '⚠️ 同步失敗，會自動再試', 6000);
     }
   };
   // 監聽出錯（例如額度用完、斷線太耐）：一分鐘後自動重新連線
@@ -104,9 +105,11 @@
 
   function prepareCache(user, member) {
     const db = Store.db;
-    if (!db.cloudCache) {
-      if ((db.profiles || []).length) { try { localStorage.setItem('ta:v1:local-backup', JSON.stringify(db)); } catch (e) {} }
-      Store.loadDB({ cloudCache: true });
+    const project = CFG.firebase.projectId;
+    if (!db.cloudCache || db.cloudProject !== project) {
+      // 舊資料保留做「可合併」嘅來源：本機模式 → local-backup；之前另一個 Firebase 專案嘅快取 → old-cloud
+      if ((db.profiles || []).length) { try { localStorage.setItem(db.cloudCache ? 'ta:v1:old-cloud' : 'ta:v1:local-backup', JSON.stringify(db)); } catch (e) {} }
+      Store.loadDB({ cloudCache: true, cloudProject: project });
     }
     const d = Store.db;
     if (!d.users[user.uid]) d.users[user.uid] = Store.emptyUser();
@@ -244,7 +247,7 @@
     (sh.comments || []).filter((c) => c.author === pid && !have.has(c.id)).forEach((c) => Store.db.shared.comments.push(Object.assign({}, c, { author: uid, name: myP ? myP.name : c.name, emoji: myP ? myP.emoji : c.emoji, color: myP ? myP.color : c.color })));
     const haveV = new Set((Store.db.shared.videos || []).map((v) => v.id));
     (sh.videos || []).filter((v) => !haveV.has(v.id)).forEach((v) => Store.db.shared.videos.push(Object.assign({}, v, { author: uid })));
-    if (lp && myP && !meta.renamed) { myP.emoji = lp.emoji || myP.emoji; myP.color = lp.color || myP.color; }
+    if (lp && myP && !meta.renamed && !/（之前雲端）$/.test(lp.name || '')) { myP.emoji = lp.emoji || myP.emoji; myP.color = lp.color || myP.color; }
     Store.saveNow(); flush(); if (window.App) App.route();
   }
   function askMerge(data, title) {
@@ -261,8 +264,16 @@
   function maybeMigrate() {
     if (migrationAsked || meta.migrated) return;
     migrationAsked = true; meta.migrated = true; saveMeta();
-    let data = null; try { data = JSON.parse(localStorage.getItem('ta:v1:local-backup') || 'null'); } catch (e) {}
-    if (data) setTimeout(() => askMerge(data, '☁️ 搬本機資料入你嘅帳號？'), 600);
+    // 合併所有可用來源（本機模式紀錄 + 之前 Firebase 專案嘅快取）
+    const data = { profiles: [], users: {}, shared: { comments: [], videos: [] } };
+    [['ta:v1:local-backup', ''], ['ta:v1:old-cloud', '（之前雲端）']].forEach(([key, tag]) => {
+      let src = null; try { src = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+      if (!src || !Array.isArray(src.profiles)) return;
+      src.profiles.forEach((p) => { if (data.profiles.some((x) => x.id === p.id)) return; data.profiles.push(Object.assign({}, p, { name: (p.name || '') + tag })); data.users[p.id] = (src.users || {})[p.id]; });
+      const sh = src.shared || {};
+      ['comments', 'videos'].forEach((k) => (sh[k] || []).forEach((x) => { if (!data.shared[k].some((y) => y.id === x.id)) data.shared[k].push(x); }));
+    });
+    if (data.profiles.length) setTimeout(() => askMerge(data, '☁️ 搬之前嘅學習紀錄入你嘅帳號？'), 600);
   }
   Cloud.flush = () => flush();
   Cloud.importInto = (text) => { const data = JSON.parse(text); if (!data || !Array.isArray(data.profiles)) throw new Error('檔案格式唔啱'); if (!askMerge(data, '⬆️ 匯入備份')) throw new Error('備份入面冇學習紀錄'); };
