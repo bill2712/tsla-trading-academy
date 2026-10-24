@@ -71,7 +71,8 @@
   let ownFirstServer = false, membersLoaded = false, migrationAsked = false;
   const setStatus = (s) => { Cloud.status = s; window.dispatchEvent(new CustomEvent('ta:sync', { detail: s })); };
   const metaKey = () => 'ta:sync:' + uid;
-  const loadMeta = () => { try { return Object.assign({ ts: {}, hash: {}, shared: { comments: {}, videos: {} }, prof: '' }, JSON.parse(localStorage.getItem(metaKey()) || '{}')); } catch (e) { return { ts: {}, hash: {}, shared: { comments: {}, videos: {} }, prof: '' }; } };
+  const SHARED = { comments: 'academyComments', videos: 'academyVideos', research: 'academyResearch' };
+  const loadMeta = () => { let m; try { m = Object.assign({ ts: {}, hash: {}, shared: {}, prof: '' }, JSON.parse(localStorage.getItem(metaKey()) || '{}')); } catch (e) { m = { ts: {}, hash: {}, shared: {}, prof: '' }; } Object.keys(SHARED).forEach((k) => { m.shared[k] = m.shared[k] || {}; }); return m; };
   const saveMeta = () => { try { localStorage.setItem(metaKey(), JSON.stringify(meta)); } catch (e) {} };
   let lastToast = 0;
   const report = (e) => {
@@ -154,8 +155,7 @@
       remoteChanged('profiles');
     }, listenErr));
     listenParts(uid);
-    unsubs.push(fs.collection('academyComments').onSnapshot((qs) => applyShared('comments', qs), listenErr));
-    unsubs.push(fs.collection('academyVideos').onSnapshot((qs) => applyShared('videos', qs), listenErr));
+    Object.keys(SHARED).forEach((kind) => unsubs.push(fs.collection(SHARED[kind]).onSnapshot((qs) => applyShared(kind, qs), listenErr)));
   }
 
   function listenParts(pid) {
@@ -217,8 +217,8 @@
       meta.hash[part] = h; meta.ts[part] = ts; n++;
       fs.collection('academyUsers').doc(uid).collection('parts').doc(part).set({ json, updatedAt: ts, uid }).catch(report);
     });
-    ['comments', 'videos'].forEach((kind) => {
-      const col = fs.collection(kind === 'comments' ? 'academyComments' : 'academyVideos');
+    Object.keys(SHARED).forEach((kind) => {
+      const col = fs.collection(SHARED[kind]);
       const mine = meta.shared[kind];
       const local = (Store.db.shared[kind] || []).filter((x) => x.author === uid);
       const ids = new Set(local.map((x) => x.id));
@@ -281,6 +281,9 @@
     if (data.profiles.length) setTimeout(() => askMerge(data, '☁️ 搬之前嘅學習紀錄入你嘅帳號？'), 600);
   }
   Cloud.flush = () => flush();
+  // 共用設定（例如 Alpaca 金鑰）：只有成員讀到，見 firestore.rules
+  Cloud.getConfig = async (name) => { if (!uid) return null; const d = await fs.collection('academyConfig').doc(name).get(); return d.exists ? d.data() : null; };
+  Cloud.setConfig = async (name, data) => { if (!uid) throw new Error('未登入'); await fs.collection('academyConfig').doc(name).set(Object.assign({}, data, { updatedBy: uid, updatedAt: Date.now() })); };
   Cloud.importInto = (text) => { const data = JSON.parse(text); if (!data || !Array.isArray(data.profiles)) throw new Error('檔案格式唔啱'); if (!askMerge(data, '⬆️ 匯入備份')) throw new Error('備份入面冇學習紀錄'); };
 
   /* ---------------- 登入狀態 ---------------- */

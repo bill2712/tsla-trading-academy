@@ -29,6 +29,17 @@ service cloud.firestore {
       allow create: if academyFamily() && request.resource.data.uid == request.auth.uid;
       allow update, delete: if academyFamily() && resource.data.uid == request.auth.uid;
     }
+    // 研究板（預先登記嘅假設同結果）：全家睇到；只可以新增自己名下、改／刪自己嘅
+    match /academyResearch/{id} {
+      allow read: if academyFamily();
+      allow create: if academyFamily() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if academyFamily() && resource.data.uid == request.auth.uid;
+    }
+    // 共用設定（例如 Alpaca 數據金鑰）：成員讀到；只有 Bill 可以改
+    match /academyConfig/{name} {
+      allow read: if academyFamily();
+      allow write: if academyFamily() && request.auth.token.email == 'bill27122002@gmail.com';
+    }
     match /academyVideos/{id} {
       allow read: if academyFamily();
       allow create: if academyFamily() && request.resource.data.uid == request.auth.uid;

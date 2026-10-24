@@ -47,7 +47,7 @@
       profiles: [],
       active: null,
       users: {},
-      shared: { comments: [], videos: [] },
+      shared: { comments: [], videos: [], research: [] },
     };
   }
 
@@ -247,6 +247,16 @@
   function removeVideo(id) { db.shared.videos = db.shared.videos.filter((v) => v.id !== id); emit('videos'); }
   function videos(ch) { return db.shared.videos.filter((v) => !ch || v.chapter === ch); }
 
+  /* ---------- 研究板（共用）：預先登記嘅假設 + 結果 ---------- */
+  function research() { db.shared.research = db.shared.research || []; return db.shared.research; }
+  function addResearch(r) {
+    const p = activeProfile();
+    const x = Object.assign({ id: uid(), ts: Date.now(), author: p ? p.id : null, name: p ? p.name : '', emoji: p ? p.emoji : '🙂', color: p ? p.color : '#888', results: [] }, r);
+    research().push(x); awardXP('research:' + x.id, 10); emit('research'); return x;
+  }
+  function updateResearch(id, patch) { const x = research().find((r) => r.id === id); if (x) { Object.assign(x, patch); emit('research'); } return x; }
+  function removeResearch(id) { db.shared.research = research().filter((r) => r.id !== id); emit('research'); }
+
   /* ---------- 測驗 / 清單 ---------- */
   function saveQuiz(id, score, total, answers) {
     const u = user();
@@ -319,6 +329,7 @@
       const sh = incoming.shared || {};
       db.shared.comments = mergeArrById(db.shared.comments, sh.comments);
       db.shared.videos = mergeArrById(db.shared.videos, sh.videos);
+      db.shared.research = mergeArrById(db.shared.research, sh.research);
       if (!db.active && db.profiles[0]) db.active = db.profiles[0].id;
     }
     saveNow();
@@ -337,6 +348,7 @@
     isBookmarked, toggleBookmark, getNote, setNote, saveFreeNote,
     addHighlight, updateHighlight, removeHighlight,
     addComment, removeComment, comments, addVideo, removeVideo, videos,
+    research, addResearch, updateResearch, removeResearch,
     saveQuiz, toggleCheck, exportJSON, importJSON, resetAll,
     setCloudMode, isCloud, loadDB, emptyUser, mergeUser, saveNow, get cloud() { return cloud; },
     ui, setUI, save, emit,

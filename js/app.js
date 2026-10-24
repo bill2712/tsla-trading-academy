@@ -311,6 +311,10 @@
       ${link('#/quiz', '📝', '測驗中心', activeRoute === 'quiz')}
       ${link('#/cards', '🃏', '詞彙字卡', activeRoute === 'cards')}
       ${link('#/glossary', '📖', '詞彙表', activeRoute === 'glossary')}
+      <div class="toc-sep">真實數據研究</div>
+      ${link('#/lab', '🔬', '回測實驗室', activeRoute === 'lab')}
+      ${link('#/research', '🧪', '研究板', activeRoute === 'research')}
+      ${link('#/edge', '📊', '我有冇 Edge？', activeRoute === 'edge')}
       <div class="toc-sep">工具</div>
       ${link('#/tools', '🧰', '工具箱（計算器）', activeRoute === 'tools')}
       ${link('#/tools/decision-coach', '🧠', '決策教練', false)}
@@ -386,6 +390,7 @@
         ${p ? Learn.nextCard() : ''}
         ${p ? Learn.questCard() : ''}
         <div class="card"><div class="card-h">🏋️ 練習</div><div class="quick-tools">
+          <a href="#/lab"><span>🔬</span>真實數據回測實驗室</a>
           <a href="#/sim"><span>🕹️</span>模擬交易練習場${(u.toolState.sim || {}).days ? ` <small>（${u.toolState.sim.days} 日）</small>` : ''}</a>
           <a href="#/review"><span>📕</span>錯題本・今日溫習 ${(() => { const n = Store.dueWrong().length; return n ? `<b class="pill">${n} 題要溫</b>` : ''; })()}</a>
           ${Object.entries(Learn.DRILLS).map(([k, d]) => `<a href="#/gym/${k}"><span>${d.icon}</span>${esc(d.title)}${u.gym[k] ? ` <small>（最佳 ${u.gym[k].best}）</small>` : ''}</a>`).join('')}
@@ -752,7 +757,7 @@
     return `<div class="cm" data-cm="${cm.id}">
       <span class="av" style="--c:${cm.color}">${cm.emoji}</span>
       <div class="cm-body">
-        <div class="cm-head"><b>${esc(cm.name)}</b><small>${ago(cm.ts)}</small>${withChapter && ch ? `<a class="cm-sec" href="#/c/${ch.id}${sec ? '/' + sec.id : ''}">${esc(ch.level.code)} 第 ${ch.num} 章${sec ? ' · ' + esc(sec.title) : ''}</a>` : withChapter && !cm.parent ? '<span class="cm-sec gen">💬 一般討論</span>' : sec ? `<a class="cm-sec" href="#/c/${ch.id}/${sec.id}">📍 ${esc(sec.title)}</a>` : ''}</div>
+        <div class="cm-head"><b>${esc(cm.name)}</b><small>${ago(cm.ts)}</small>${withChapter && ch ? `<a class="cm-sec" href="#/c/${ch.id}${sec ? '/' + sec.id : ''}">${esc(ch.level.code)} 第 ${ch.num} 章${sec ? ' · ' + esc(sec.title) : ''}</a>` : withChapter && !cm.parent && /^_research:/.test(cm.chapter || '') ? `<a class="cm-sec" href="#/research/${esc(cm.chapter.slice(10))}">🔬 研究討論</a>` : withChapter && !cm.parent ? '<span class="cm-sec gen">💬 一般討論</span>' : sec ? `<a class="cm-sec" href="#/c/${ch.id}/${sec.id}">📍 ${esc(sec.title)}</a>` : ''}</div>
         ${cm.quote ? `<blockquote class="quote sm">${esc(cm.quote)}</blockquote>` : ''}
         <div class="cm-text">${esc(cm.text).replace(/\n/g, '<br>')}</div>
         <div class="cm-acts"><button data-reply="${cm.id}">↩︎ 回覆</button>${me && me.id === cm.author ? `<button data-delc="${cm.id}">刪除</button>` : ''}</div>
@@ -1163,6 +1168,12 @@
         <div class="tool-foot"><span>字體大小：</span>${[0.9, 1, 1.1, 1.2, 1.35].map((f) => `<button class="btn sm" data-font="${f}">${Math.round(f * 100)}%</button>`).join('')}</div>
         <div class="tool-foot"><label class="chk"><input type="checkbox" data-gloss ${Store.ui().glossTips === false ? '' : 'checked'}> 章節內顯示詞彙提示（英文詞彙加虛線，撳一下睇解釋）</label></div>
         <div class="tool-foot"><span>朗讀速度：</span>${[0.8, 0.9, 1, 1.15, 1.3].map((r) => `<button class="btn sm ${(Store.ui().ttsRate || 1) === r ? 'primary' : ''}" data-rate="${r}">${r}×</button>`).join('')}</div></div>
+      <div class="card" data-mdcard><div class="card-h">📈 市場數據（Alpaca）</div>
+        <p>回測實驗室同模擬器嘅「真實歷史」模式會用 Alpaca 下載美股／ETF 5 分鐘 K 線（2016 年至今）；加密貨幣（例如 BTC-USD）自動用 Binance，唔使金鑰。</p>
+        <p class="muted">${Store.isCloud() ? '金鑰會儲存喺你哋嘅 Firebase（只有已授權成員讀到），唔會放入公開嘅 GitHub。輸入一次，全部成員都用得。' : '金鑰只會儲存喺呢部機嘅瀏覽器。'}建議用 Alpaca <b>Paper</b> 帳戶嘅金鑰（一樣攞到數據，但唔可以落真錢單）。</p>
+        <div class="tool-grid"><label class="fld"><span>API Key ID</span><input data-akid autocomplete="off" placeholder="例如 PK..."></label><label class="fld"><span>Secret Key</span><input data-asec type="password" autocomplete="new-password" placeholder="••••••••"></label>
+        <label class="fld"><span>數據源</span><select data-afeed><option value="sip">SIP（全市場，建議）</option><option value="iex">IEX（只限 IEX 交易所）</option></select></label></div>
+        <div class="tool-foot"><button class="btn primary" data-asave>儲存金鑰</button><button class="btn" data-atest>測試連線</button><button class="btn ghost" data-aclear>清除已下載嘅數據</button><span class="muted" data-astat></span></div></div>
       ${Store.isCloud() ? `<div class="card"><div class="card-h">💾 備份</div><p>資料已經自動儲存喺雲端。你仍然可以匯出一份 .json 備份；亦可以匯入以前嘅備份檔，揀其中一個使用者合併入你嘅帳號。</p>
         <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份</button><label class="btn">⬆️ 匯入舊備份（合併入我嘅帳號）<input type="file" accept=".json,application/json" hidden data-import="cloud"></label></div></div>` : `<div class="card"><div class="card-h">💾 備份同同步（唔同裝置之間）</div>
         <p>所有資料只儲存喺<b>呢部機嘅瀏覽器</b>（唔會上載去任何伺服器）。想喺 Bill 部電腦同 Ivan 部 iPad 之間同步：</p>
@@ -1191,6 +1202,22 @@
       r.onload = () => { try { if (mode === 'cloud') { Cloud.importInto(r.result); return; } Store.importJSON(r.result, mode); toast('匯入成功'); renderProfileChip(); route(); } catch (err) { alert('匯入失敗：' + err.message); } };
       r.readAsText(f);
     }));
+    { const st = $('[data-astat]', view);
+      MarketData.getKeys().then((k) => { if (k) { st.textContent = `✅ 已設定（Key ID ${String(k.keyId).slice(0, 4)}…${String(k.keyId).slice(-4)}）`; $('[data-afeed]', view).value = k.feed || 'sip'; } else st.textContent = '未設定'; });
+      $('[data-asave]', view).addEventListener('click', async () => {
+        const keyId = $('[data-akid]', view).value.trim(), secret = $('[data-asec]', view).value.trim();
+        if (!keyId || !secret) { toast('Key ID 同 Secret 都要填'); return; }
+        try { await MarketData.setKeys({ keyId, secret, feed: $('[data-afeed]', view).value }); $('[data-akid]', view).value = ''; $('[data-asec]', view).value = ''; st.textContent = '✅ 已儲存'; toast('已儲存 Alpaca 金鑰'); }
+        catch (e) { st.textContent = '⚠️ 儲存失敗：' + (e.code === 'permission-denied' ? '只有 Bill 可以改金鑰（見 Firestore 規則）' : e.message); }
+      });
+      $('[data-atest]', view).addEventListener('click', async () => {
+        st.textContent = '測試緊…';
+        const end = new Date(Date.now() - 86400000).toISOString().slice(0, 10), start = new Date(Date.now() - 10 * 86400000).toISOString().slice(0, 10);
+        try { const m = await MarketData.load('SPY', start, end); st.textContent = `✅ 連線成功：SPY 最近 ${m.sessions.length} 個交易日（${(m.feed || '').toUpperCase()}）`; }
+        catch (e) { st.textContent = '⚠️ ' + e.message; }
+      });
+      $('[data-aclear]', view).addEventListener('click', async () => { await MarketData.clearCache(); MarketData.last = null; toast('已清除呢部機嘅市場數據快取'); });
+    }
     if (!Store.isCloud()) $('[data-reset]', view).addEventListener('click', () => { if (confirm('真係要清除全部資料？呢個動作冇得還原。')) { Store.resetAll(); renderProfileChip(); go('#/'); setTimeout(askProfile, 300); } });
   }
 
@@ -1286,7 +1313,7 @@
       view.dataset.ch = '';
       renderRail(null);
       window.scrollTo(0, 0);
-      const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南', sim: '模擬交易練習場', map: '學習地圖', cert: '證書' };
+      const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南', sim: '模擬交易練習場', map: '學習地圖', cert: '證書', lab: '回測實驗室', edge: '我有冇 Edge？', research: '研究板' };
       document.title = (titles[r] ? titles[r] + '｜' : '') + 'TSLA Day Trading 學院';
       if (r === 'toc') renderFullTOC();
       else if (r === 'tools') renderTools(parts[1]);
@@ -1303,7 +1330,10 @@
       else if (r === 'review') Learn.renderReview(view);
       else if (r === 'level') Learn.renderLevel(view, parts[1]);
       else if (r === 'guide') Learn.renderGuide(view);
-      else if (r === 'sim') Sim.play(view);
+      else if (r === 'sim') Sim.play(view, parts[1] === 'real' && parts[3] ? { sym: decodeURIComponent(parts[2] || ''), date: parts[3] } : null);
+      else if (r === 'lab') Lab.render(view, parts[1] === 'r' ? parts[2] : null);
+      else if (r === 'edge') Edge.renderEdge(view);
+      else if (r === 'research') Edge.renderResearch(view, parts[1]);
       else if (r === 'map') Learn.renderMap(view);
       else if (r === 'cert') Learn.renderCert(view, parts[1]);
       else renderHome();
@@ -1374,11 +1404,11 @@
   document.body.appendChild(toTop);
   window.addEventListener('scroll', () => { toTop.hidden = scrollY < 900; }, { passive: true });
   const bnav = document.createElement('nav'); bnav.className = 'bottom-nav'; bnav.setAttribute('aria-label', '主要導航');
-  bnav.innerHTML = [['#/', '🏠', '主頁', ['home']], ['#/map', '🗺️', '課程', ['map', 'toc', 'level', 'c', 'cert']], ['#/gym', '🏋️', '練習', ['gym', 'review', 'replay', 'quiz', 'cards', 'sim', 'glossary']], ['#/tools', '🧰', '工具', ['tools', 'journal']], ['#/me', '⭐', '我的', ['me', 'board', 'family', 'settings', 'guide']]].map(([h, i, t, rs]) => `<a href="${h}" data-r="${rs.join(' ')}"><span>${i}</span>${t}</a>`).join('');
+  bnav.innerHTML = [['#/', '🏠', '主頁', ['home']], ['#/map', '🗺️', '課程', ['map', 'toc', 'level', 'c', 'cert']], ['#/gym', '🏋️', '練習', ['gym', 'review', 'replay', 'quiz', 'cards', 'sim', 'glossary']], ['#/tools', '🧰', '工具', ['tools', 'journal', 'lab', 'edge', 'research']], ['#/me', '⭐', '我的', ['me', 'board', 'family', 'settings', 'guide']]].map(([h, i, t, rs]) => `<a href="${h}" data-r="${rs.join(' ')}"><span>${i}</span>${t}</a>`).join('');
   document.body.appendChild(bnav);
   function markBottomNav(r) { $$('.bottom-nav a').forEach((a) => a.classList.toggle('on', a.dataset.r.split(' ').includes(r))); }
 
-  window.App = { toast, modal, download, go, route, CH, CHAPTERS, LEVELS, renderQuiz, mountTool, confetti, levelStats, chapterPct, rank };
+  window.App = { toast, modal, download, go, route, CH, CHAPTERS, LEVELS, renderQuiz, mountTool, confetti, levelStats, chapterPct, rank, commentHTML, bindComments };
 
   /* ---------------- 啟動 ---------------- */
   Store.touchStreak();

@@ -1100,3 +1100,26 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .free-note .fn-main p { margin: 6px 0 0; }
 .note-title { width: 100%; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-soft); padding: 8px 10px; font-size: 1rem; margin-bottom: 8px; }
 @media (max-width: 560px) { .cmp-row { flex-direction: column; align-items: stretch; } .seg3 button { font-size: .8em; } }
+
+/* 真實數據研究：回測實驗室、Edge 報告卡、研究板 */
+.lab-locked { border-left: 4px solid var(--warn); background: var(--warn-soft); }
+.lab-locked a { margin-left: 8px; }
+.lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 10px; }
+.lab-grid h4 { margin: 8px 0 4px; }
+.verdict.mid { background: var(--warn-soft); color: var(--text); border-left: 4px solid var(--warn); }
+.edge-ctl select { height: 36px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); padding: 0 8px; }
+.edge-ladder { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 10px 0 14px; }
+.edge-ladder .el { border: 1px solid var(--border); border-radius: 12px; padding: 8px; text-align: center; opacity: .45; line-height: 1.35; }
+.edge-ladder .el span { font-size: 1.4em; display: block; }
+.edge-ladder .el b { display: block; font-size: .85em; }
+.edge-ladder .el small { color: var(--muted); font-size: .72em; }
+.edge-ladder .el.on { opacity: 1; border-color: var(--accent); background: var(--accent-soft); box-shadow: var(--shadow); }
+.edge-ladder .el.on.warn { border-color: var(--down); background: var(--down-soft); }
+.rs-card { margin-bottom: 12px; }
+.rs-head { display: flex; gap: 10px; align-items: center; }
+.rs-head > div { flex: 1; min-width: 0; }
+.rs-head a { color: var(--text); }
+.rs-st { font-size: .75em; padding: 2px 10px; border-radius: 999px; background: var(--bg-soft); color: var(--muted); white-space: nowrap; }
+.rs-st.tested { background: var(--up-soft); color: var(--up); }
+.rs-res { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .9em; padding: 8px 10px; background: var(--bg-soft); border-radius: 10px; }
+@media (max-width: 640px) { .edge-ladder { grid-template-columns: repeat(2, 1fr); } }

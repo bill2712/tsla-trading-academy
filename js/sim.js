@@ -47,16 +47,46 @@
   }
 
   let keyHandler = null, autoTimer = null;
-  function play(view) {
+  /* 真實歷史交易日（由 MarketData 載入） */
+  async function realDay(opts, ui) {
+    const sym = ((opts && opts.sym) || ui.realSym || 'TSLA').toUpperCase();
+    const date = opts && opts.date;
+    let md = MarketData.last;
+    const fits = md && md.sym === sym && (!date || md.sessions.some((x) => x.date === date));
+    if (!fits) {
+      const end = date || new Date().toISOString().slice(0, 10);
+      const start = date ? new Date(Date.parse(date) - 40 * 86400000).toISOString().slice(0, 10) : new Date(Date.now() - 365 * 86400000).toISOString().slice(0, 10);
+      md = await MarketData.load(sym, start, end);
+    }
+    const pool = md.sessions.filter((x) => x.pdh != null && x.bars.length >= 30);
+    if (!pool.length) throw new Error('呢段時間冇足夠數據');
+    const sess = date ? pool.find((x) => x.date === date) : pool[Math.floor(Math.random() * pool.length)];
+    if (!sess) throw new Error('搵唔到 ' + date + ' 嘅數據（可能唔係交易日）');
+    return { type: 'real', sym, date: sess.date, blind: !date, seed: sym + sess.date, pc: sess.pc, pdh: sess.pdh, pdl: sess.pdl, open: sess.bars[0].o, atr20: sess.atr20, bars: sess.bars.map((b) => ({ t: b.t, o: b.o, h: b.h, l: b.l, c: b.c, v: +b.v.toFixed(3) })) };
+  }
+  async function play(view, opts) {
     clearInterval(autoTimer);
-    const ui = Store.ui().sim || { type: 'random', risk: 0.25, cap: 10000, zoom: 'win' };
+    const ui = Object.assign({ type: 'random', risk: 0.25, cap: 10000, zoom: 'win', src: 'random', realSym: 'TSLA' }, Store.ui().sim || {});
+    if (opts && opts.date) { ui.src = 'real'; ui.realSym = opts.sym || ui.realSym; Store.setUI({ sim: ui }); }
+    if (ui.src !== 'real') return playDay(view, makeDay(ui.type, Math.floor(Math.random() * 1e9)), ui);
+    view.innerHTML = '<div class="page-head"><h1>🕹️ 模擬交易練習場</h1><p class="muted">載入緊真實歷史數據…</p></div>';
+    try { playDay(view, await realDay(opts, ui), ui); }
+    catch (e) {
+      view.innerHTML = `<div class="page-head"><h1>🕹️ 模擬交易練習場</h1></div><div class="card"><p class="neg">${String(e.message || e).replace(/</g, '&lt;')}</p>${/金鑰/.test(e.message) ? '<p><a class="btn primary" href="#/settings">去設定 Alpaca 金鑰</a></p>' : ''}<p><button class="btn" data-rand>改用隨機模擬</button></p></div>`;
+      view.querySelector('[data-rand]').addEventListener('click', () => { ui.src = 'random'; Store.setUI({ sim: ui }); play(view); });
+    }
+  }
+  function playDay(view, day, ui) {
     const saveUI = () => Store.setUI({ sim: ui });
-    let day = makeDay(ui.type, Math.floor(Math.random() * 1e9));
+    const N = day.bars.length;
+    const real = day.type === 'real';
     let i = 5, pos = null, pend = null, trades = [], auto = null, done = false;
 
-    view.innerHTML = `<div class="page-head"><h1>🕹️ 模擬交易練習場</h1><p class="muted">隨機生成一個交易日（5 分鐘 K 線，09:30–16:00）。你逐支播放，自己決定幾時入場、Stop 同 Target 放邊。收市自動平倉，最後先話你知今日係咩日類型。全部係隨機模擬，唔係真實行情。</p></div>
+    view.innerHTML = `<div class="page-head"><h1>🕹️ 模擬交易練習場</h1><p class="muted">${real ? `真實歷史交易日（${day.blind ? '盲測：日期收市先揭曉' : day.sym + ' ' + day.date}）。5 分鐘 K 線逐支播放，自己決定入場、Stop 同 Target，收市自動平倉。` : '隨機生成一個交易日（5 分鐘 K 線，09:30–16:00）。你逐支播放，自己決定幾時入場、Stop 同 Target 放邊。收市自動平倉，最後先話你知今日係咩日類型。呢個模式係隨機模擬，唔係真實行情。'}</p></div>
       <div class="sim-bar">
-        <label>日類型 <select data-set="type"><option value="random">🎲 隨機（唔話你知）</option><option value="trend">趨勢日</option><option value="range">區間日</option><option value="reversal">反轉日</option></select></label>
+        <label>數據 <select data-set="src"><option value="random">🎲 隨機模擬</option><option value="real">📈 真實歷史</option></select></label>
+        ${real ? `<label>代號 <input data-sym value="${day.sym}" size="7"></label>` : ''}
+        <label ${real ? 'hidden' : ''}>日類型 <select data-set="type"><option value="random">🎲 隨機（唔話你知）</option><option value="trend">趨勢日</option><option value="range">區間日</option><option value="reversal">反轉日</option></select></label>
         <label>每筆風險 <select data-set="risk"><option value="0.25">0.25%</option><option value="0.5">0.5%</option><option value="1">1%</option></select></label>
         <label>顯示 <select data-set="zoom"><option value="win">最近一段</option><option value="all">全日</option></select></label>
         <button class="btn sm ghost" data-new>🔄 新一日</button>
@@ -66,6 +96,7 @@
           <div class="sim-ctrl"><button class="btn primary" data-next>▶ 下一支 <kbd>→</kbd></button><button class="btn" data-n5>⏩ 5 支</button><button class="btn" data-auto>⏯ 自動</button><button class="btn ghost" data-eod>⏭ 播到收市</button></div></div>
         <aside class="sim-side"><div data-order></div><div data-log></div></aside>
       </div>`;
+    view.querySelector('[data-set=src]').value = real ? 'real' : 'random';
     view.querySelector('[data-set=type]').value = ui.type; view.querySelector('[data-set=risk]').value = String(ui.risk); view.querySelector('[data-set=zoom]').value = ui.zoom;
 
     const risk$ = () => ui.cap * ui.risk / 100;
@@ -88,7 +119,7 @@
       const b = cur(), vwNow = vwapAll()[i];
       const ch = (b.c - day.pc) / day.pc * 100;
       const hi = Math.max(...all.map((x) => x.h)), lo = Math.min(...all.map((x) => x.l));
-      $('[data-info]', view).innerHTML = `<span><b>${b.t}</b> ET</span><span>收 <b>$${F(b.c)}</b> <em class="${ch >= 0 ? 'pos' : 'neg'}">${ch >= 0 ? '+' : ''}${F(ch)}%</em></span><span>VWAP <b>$${F(vwNow)}</b></span><span>今日高 $${F(hi)}／低 $${F(lo)}</span><span>開市 $${F(day.open)}</span><span>第 ${i + 1}/${N} 支</span>`;
+      $('[data-info]', view).innerHTML = `<span><b>${b.t}</b> ET</span><span>收 <b>$${F(b.c)}</b> <em class="${ch >= 0 ? 'pos' : 'neg'}">${ch >= 0 ? '+' : ''}${F(ch)}%</em></span><span>VWAP <b>$${F(vwNow)}</b></span><span>今日高 $${F(hi)}／低 $${F(lo)}</span><span>開市 $${F(day.open)}</span><span>第 ${i + 1}/${N} 支</span>${real ? `<span>${day.sym}・${day.blind ? '日期：收市揭曉' : day.date}</span>` : ''}`;
       renderOrder(); renderLog();
     }
 
@@ -215,7 +246,10 @@
       const u = Store.user(); const st = u.toolState.sim = u.toolState.sim || { days: 0, trades: 0, r: 0, guess: 0 };
       st.days++; st.trades += trades.length; st.r = +(st.r + tot).toFixed(2); Store.save();
       Store.logAct('drill'); Store.awardXP('sim:' + day.seed, 5);
-      App.modal(`<h3>🔔 收市！</h3><p>今日其實係：<b>${TYPES[day.type]}</b>（開市 $${F(day.open)}，收市 $${F(day.bars[N - 1].c)}）</p>
+      const dH = Math.max(...day.bars.map((b) => b.h)), dL = Math.min(...day.bars.map((b) => b.l)), dC = day.bars[N - 1].c;
+      const trendy = Math.abs(dC - day.open) > 0.55 * (dH - dL);
+      const reveal = real ? `呢日係：<b>${day.sym}　${day.date}</b>（開市 $${F(day.open)}，收市 $${F(dC)}，${dC >= day.open ? '+' : ''}${F((dC - day.open) / day.open * 100)}%；全日波幅 $${F(dH - dL)}${day.atr20 ? '，約 ' + F((dH - dL) / day.atr20, 1) + ' 倍 ATR20' : ''}；較似${trendy ? '趨勢日' : '區間／反覆日'}）` : `今日其實係：<b>${TYPES[day.type]}</b>（開市 $${F(day.open)}，收市 $${F(dC)}）`;
+      App.modal(`<h3>🔔 收市！</h3><p>${reveal}</p>
         <div class="stats">${stat('交易筆數', trades.length)}${stat('總 R', signR(tot), tot >= 0 ? 'pos' : 'neg')}${stat('模擬盈虧', money(pnl), pnl >= 0 ? 'pos' : 'neg')}</div>
         <p class="muted">累積：${st.days} 日、${st.trades} 筆、${signR(st.r)}</p>
         ${trades.length ? `<label class="fld"><span>你有冇跟足自己嘅規則？</span><select data-fol><option value="yes">✅ 有</option><option value="no">❌ 冇</option></select></label><label class="fld"><span>一句教訓</span><input data-lesson placeholder="例如：區間日唔應該追突破"></label>` : '<p>今日冇交易 —— 如果係因為冇 Setup，呢個係好決定 👍</p>'}
@@ -224,10 +258,10 @@
         if (sv) sv.addEventListener('click', () => {
           const fol = box.querySelector('[data-fol]').value, lesson = box.querySelector('[data-lesson]').value;
           u.journal = u.journal || [];
-          trades.forEach((t) => u.journal.push({ id: Store.uid(), ts: Date.now(), kind: 'replay', date: Store.today(), time: t.time, symbol: 'SIM', setup: '模擬器練習', market: MARKET[day.type], side: t.side, plannedEntry: t.entry, entry: t.entry, stop: t.origStop != null ? t.origStop : t.stop, target: t.target, shares: t.shares, exit: t.exit, fees: 0, hi: t.hi, lo: t.lo, followed: fol, analysis: t.r > 0 ? 'correct' : 'wrong', mistakes: t.widened ? ['移遠 Stop'] : [], reason: t.why, lesson, notes: `模擬器：${TYPES[day.type]}；出場：${t.outWhy}` }));
+          trades.forEach((t) => u.journal.push({ id: Store.uid(), ts: Date.now(), kind: 'replay', date: Store.today(), time: t.time, symbol: real ? day.sym : 'SIM', setup: real ? '模擬器（真實歷史）' : '模擬器練習', market: real ? (trendy ? 'Trending' : 'Range') : MARKET[day.type], side: t.side, plannedEntry: t.entry, entry: t.entry, stop: t.origStop != null ? t.origStop : t.stop, target: t.target, shares: t.shares, exit: t.exit, fees: 0, hi: t.hi, lo: t.lo, followed: fol, analysis: t.r > 0 ? 'correct' : 'wrong', mistakes: t.widened ? ['移遠 Stop'] : [], reason: t.why, lesson, notes: real ? `真實歷史 ${day.sym} ${day.date}；出場：${t.outWhy}` : `模擬器：${TYPES[day.type]}；出場：${t.outWhy}` }));
           Store.emit('journal'); App.toast('已存入 📒 交易日誌'); sv.disabled = true;
         });
-        box.querySelector('[data-again]').addEventListener('click', () => { close(); play(view); });
+        box.querySelector('[data-again]').addEventListener('click', () => { close(); if (location.hash.startsWith('#/sim/real/')) location.hash = '#/sim'; else play(view); });
       });
     }
 
@@ -240,7 +274,9 @@
       auto = autoTimer = setInterval(() => { if (!location.hash.startsWith('#/sim') || done) { clearInterval(auto); auto = null; return; } step(); }, 900);
     });
     view.querySelector('[data-new]').addEventListener('click', () => { if (trades.length && !done && !confirm('放棄今日？')) return; clearInterval(auto); play(view); });
-    view.querySelectorAll('[data-set]').forEach((s) => s.addEventListener('change', () => { ui[s.dataset.set] = s.dataset.set === 'risk' ? +s.value : s.value; saveUI(); if (s.dataset.set === 'zoom') draw(); else if (s.dataset.set === 'type' && !trades.length && !pos) play(view); }));
+    view.querySelectorAll('[data-set]').forEach((s) => s.addEventListener('change', () => { ui[s.dataset.set] = s.dataset.set === 'risk' ? +s.value : s.value; saveUI(); if (s.dataset.set === 'zoom') draw(); else if ((s.dataset.set === 'type' || s.dataset.set === 'src') && !trades.length && !pos) { if (location.hash !== '#/sim') location.hash = '#/sim'; else play(view); } }));
+    const symIn = view.querySelector('[data-sym]');
+    if (symIn) symIn.addEventListener('change', () => { ui.realSym = symIn.value.trim().toUpperCase() || 'TSLA'; saveUI(); if (location.hash !== '#/sim') location.hash = '#/sim'; else play(view); });
     if (keyHandler) document.removeEventListener('keydown', keyHandler);
     keyHandler = (e) => { if (!location.hash.startsWith('#/sim')) { document.removeEventListener('keydown', keyHandler); keyHandler = null; return; } if (e.target.closest('input,textarea,select,.modal')) return; if (e.key === 'ArrowRight') { e.preventDefault(); step(); } };
     document.addEventListener('keydown', keyHandler);
