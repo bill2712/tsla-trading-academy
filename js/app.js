@@ -351,6 +351,26 @@
     'Daily Loss Limit 係界線，唔係額度。', '入場價唔係細節，佢直接決定成筆交易嘅風險。', '一日零筆交易，都可以係一個完整而正確嘅測試結果。',
     'Reversal 唔係預測頂底，而係等市場出現轉向嘅證據。', 'Paper Trading 有 Edge，唔保證真實交易有 Edge。',
   ];
+  // 主頁 Hero 背景嘅裝飾 K 線（固定圖案，純裝飾）
+  let heroArtSVG = '';
+  function heroArt() {
+    if (heroArtSVG) return heroArtSVG;
+    let seed = 7, price = 120; const W = 600, H = 260, n = 30, w = W / n, bars = [];
+    const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+    for (let i = 0; i < n; i++) {
+      const o = price, c = o + (rnd() - 0.42) * 14, hi = Math.max(o, c) + rnd() * 6, lo = Math.min(o, c) - rnd() * 6;
+      bars.push({ o, c, hi, lo }); price = c;
+    }
+    const all = bars.flatMap((b) => [b.hi, b.lo]), mx = Math.max(...all), mn = Math.min(...all);
+    const y = (v) => 14 + (mx - v) / (mx - mn) * (H - 28);
+    const ma = bars.map((_, i) => { const s = bars.slice(Math.max(0, i - 4), i + 1); return s.reduce((a, b) => a + b.c, 0) / s.length; });
+    heroArtSVG = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="ha-g" x1="0" x2="1"><stop offset="0" stop-color="#818cf8"/><stop offset="1" stop-color="#f0abfc"/></linearGradient><linearGradient id="ha-f" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#818cf8" stop-opacity=".35"/><stop offset="1" stop-color="#818cf8" stop-opacity="0"/></linearGradient></defs>
+      <path d="M${ma.map((v, i) => `${(i + 0.5) * w},${y(v)}`).join(' L')} L${(n - 0.5) * w},${H} L${0.5 * w},${H}Z" fill="url(#ha-f)"/>
+      ${bars.map((b, i) => { const up = b.c >= b.o, col = up ? '#34d399' : '#fb7185', x = i * w; return `<line x1="${x + w / 2}" x2="${x + w / 2}" y1="${y(b.hi)}" y2="${y(b.lo)}" stroke="${col}" stroke-width="1.5"/><rect x="${x + w * 0.22}" width="${w * 0.56}" y="${y(Math.max(b.o, b.c))}" height="${Math.max(2, Math.abs(y(b.o) - y(b.c)))}" rx="1.5" fill="${col}"/>`; }).join('')}
+      <polyline points="${ma.map((v, i) => `${(i + 0.5) * w},${y(v)}`).join(' ')}" fill="none" stroke="url(#ha-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    return heroArtSVG;
+  }
+
   function renderHome() {
     const p = Store.activeProfile();
     const u = Store.user();
@@ -365,9 +385,10 @@
     const recent = Store.comments().slice(-4).reverse();
     view.innerHTML = `
       <section class="hero">
+        <div class="hero-art" aria-hidden="true">${heroArt()}</div>
         <div class="hero-main">
           <p class="hero-hi">${p ? `${p.emoji} 你好，${esc(p.name)}！` : '👋 歡迎！'}</p>
-          <h1>TSLA Day Trading 學院</h1>
+          <h1>TSLA <em>Day Trading</em> 學院</h1>
           <p class="hero-sub">由 K 線基礎到策略驗證，一步步建立<b>可執行、可回測</b>嘅交易系統。所有例子都係教學模擬。</p>
           <div class="hero-actions">
             ${last ? `<a class="btn primary lg" href="#/c/${last.id}${u.last.section ? '/' + u.last.section : ''}">📍 繼續：${esc(last.level.code)} 第 ${last.num} 章</a>` : `<a class="btn primary lg" href="#/c/${(nextCh || CHAPTERS[0]).id}">🚀 開始學習</a>`}
