@@ -16,5 +16,7 @@ window.CLOUD_CONFIG = {
   members: [
     { email: 'bill27122002@gmail.com', name: 'Bill', emoji: '🧑', color: '#2563eb', legacy: { name: '爸爸', emoji: '👨' } },
     { email: 'ivantsang24@gmail.com', name: 'Ivan', emoji: '👦', color: '#059669' },
+    { email: 'tsangtszman2008@gmail.com', name: 'Man', emoji: '😎', color: '#ea580c' },
+    { email: 'patrickfan94@gmail.com', name: '志強', emoji: '🐼', color: '#7c3aed' },
   ],
 };
