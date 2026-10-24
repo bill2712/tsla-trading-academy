@@ -1020,7 +1020,7 @@
     let color = p ? p.color : COLORS[Store.profiles().length % COLORS.length];
     modal(`<h3>${first ? '👋 歡迎嚟到 TSLA Day Trading 學院！' : p ? '編輯使用者' : '＋ 新增家庭成員'}</h3>
       ${first ? '<p>每個家庭成員可以有自己嘅檔案：<b>閱讀進度、書籤、筆記、螢光筆、測驗分數</b>各自分開；<b>留言同影片</b>就全家共用，方便討論。</p>' : ''}
-      <label class="fld wide"><span>名稱</span><input data-name maxlength="20" value="${esc(p ? p.name : first ? '' : '')}" placeholder="例如：爸爸、媽媽、阿仔"></label>
+      <label class="fld wide"><span>名稱</span><input data-name maxlength="20" value="${esc(p ? p.name : first ? '' : '')}" placeholder="例如：Bill、Ivan"></label>
       <div class="pick"><span>頭像</span><div class="emoji-pick">${EMOJIS.map((e) => `<button type="button" data-e="${e}" class="${e === emoji ? 'on' : ''}">${e}</button>`).join('')}</div></div>
       <div class="pick"><span>顏色</span><div class="color-pick">${COLORS.map((c) => `<button type="button" data-col="${c}" style="background:${c}" class="${c === color ? 'on' : ''}" aria-label="${c}"></button>`).join('')}</div></div>
       <div class="modal-actions">${p && Store.profiles().length > 1 && !Store.isCloud() ? '<button class="btn ghost danger" data-del>刪除呢個使用者</button>' : ''}<button class="btn primary" data-save>${first ? '開始學習 🚀' : '儲存'}</button></div>`, (box, close) => {
@@ -1086,7 +1086,7 @@
         <div class="tool-foot"><span>朗讀速度：</span>${[0.8, 0.9, 1, 1.15, 1.3].map((r) => `<button class="btn sm ${(Store.ui().ttsRate || 1) === r ? 'primary' : ''}" data-rate="${r}">${r}×</button>`).join('')}</div></div>
       ${Store.isCloud() ? `<div class="card"><div class="card-h">💾 備份</div><p>資料已經自動儲存喺雲端。你仍然可以匯出一份 .json 備份；亦可以匯入以前嘅備份檔，揀其中一個使用者合併入你嘅帳號。</p>
         <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份</button><label class="btn">⬆️ 匯入舊備份（合併入我嘅帳號）<input type="file" accept=".json,application/json" hidden data-import="cloud"></label></div></div>` : `<div class="card"><div class="card-h">💾 備份同同步（唔同裝置之間）</div>
-        <p>所有資料只儲存喺<b>呢部機嘅瀏覽器</b>（唔會上載去任何伺服器）。想喺爸爸部電腦同細路部 iPad 之間同步：</p>
+        <p>所有資料只儲存喺<b>呢部機嘅瀏覽器</b>（唔會上載去任何伺服器）。想喺 Bill 部電腦同 Ivan 部 iPad 之間同步：</p>
         <ol><li>喺 A 機撳「⬇️ 匯出備份」，得到一個 .json 檔。</li><li>用 WhatsApp / AirDrop / Email 傳去 B 機。</li><li>喺 B 機撳「⬆️ 匯入（合併）」揀個檔 —— 進度、書籤、筆記、留言、影片會<b>合併</b>，唔會覆蓋 B 機原有資料。</li><li>B 機再匯出，傳返 A 機合併，兩邊就一致。</li></ol>
         <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份（全部使用者）</button><label class="btn">⬆️ 匯入（合併）<input type="file" accept=".json,application/json" hidden data-import="merge"></label><label class="btn ghost">⬆️ 匯入（完全取代）<input type="file" accept=".json,application/json" hidden data-import="replace"></label></div></div>
       <div class="card"><div class="card-h">🧹 重設</div><p class="muted">清除呢部機所有使用者同資料（建議先匯出備份）。</p><button class="btn ghost danger" data-reset>清除全部資料</button></div>`}

@@ -54,7 +54,7 @@ python3 -m http.server 8000
 
 同 nursing-tracker 一樣，用 **Google 帳號登入**，資料儲存喺學院專用嘅 Firebase 專案 **`tsla-academy`**（Firestore，香港 asia-east2），即時同步。用自己嘅專案，免費額度同 nursing-tracker 分開，互不影響：
 
-- 只有 `js/cloud-config.js` 入面 `members` 嘅 email 可以登入（而家係爸爸同 Ivan），其他帳號會見到「冇權限」。
+- 只有 `js/cloud-config.js` 入面 `members` 嘅 email 可以登入（而家係 Bill 同 Ivan），其他帳號會見到「冇權限」。
 - 每人嘅進度、書籤、筆記、螢光筆、測驗、交易日誌**分開儲存**；**全家睇到，但每人只可以改自己嘅**。
 - 章節入面會見到家人嘅螢光筆（佢顏色嘅波浪底線，標明邊個）、書籤、筆記同「讀到呢度」；主頁同家庭進度有「家人動態」；「我的」頁可以揀睇我／家人／全家。
 - 同一個人用幾部機都會自動同步；離線都用得，連線後再上載。

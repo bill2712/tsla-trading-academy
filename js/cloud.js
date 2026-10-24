@@ -144,7 +144,12 @@
       Store.db.profiles = merged;
       merged.forEach((p) => { if (!Store.db.users[p.id]) Store.db.users[p.id] = Store.emptyUser(); if (!partSubs[p.id]) listenParts(p.id); });
       const mineNow = merged.find((p) => p.id === uid);
-      if (mineNow) meta.prof = hash(JSON.stringify({ name: mineNow.name, emoji: mineNow.emoji, color: mineNow.color }));
+      if (mineNow) {
+        meta.prof = hash(JSON.stringify({ name: mineNow.name, emoji: mineNow.emoji, color: mineNow.color }));
+        // 之前預設名稱改咗（例如「爸爸」→「Bill」）：自動更新，唔使自己改
+        const lg = member.legacy;
+        if (lg && mineNow.name === lg.name) { mineNow.name = member.name; if (lg.emoji && mineNow.emoji === lg.emoji) mineNow.emoji = member.emoji; setTimeout(() => flush(), 50); }
+      }
       membersLoaded = true;
       remoteChanged('profiles');
     }, listenErr));

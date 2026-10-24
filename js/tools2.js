@@ -267,7 +267,7 @@
     desc: '填十個部分，自動整理成一份可以列印、複製或者下載嘅交易計劃書。',
     render(el, ctx) {
       const s = ctx.load({ name: '', version: '1.0' });
-      el.innerHTML = `<div class="tool-grid"><label class="fld"><span>名稱</span><input data-k="name" value="${esc(s.name)}" placeholder="例如：爸爸嘅 TSLA 交易計劃"></label><label class="fld"><span>版本</span><input data-k="version" value="${esc(s.version)}"></label>
+      el.innerHTML = `<div class="tool-grid"><label class="fld"><span>名稱</span><input data-k="name" value="${esc(s.name)}" placeholder="例如：Bill 嘅 TSLA 交易計劃"></label><label class="fld"><span>版本</span><input data-k="version" value="${esc(s.version)}"></label>
         ${PLAN.map(([k, t, ph]) => `<label class="fld wide"><span>${t}</span><textarea rows="2" data-k="${k}" placeholder="${esc(ph)}">${esc(s[k] || '')}</textarea></label>`).join('')}</div>
         <div class="tool-foot"><button class="btn sm primary" data-print>🖨️ 預覽／列印</button><button class="btn sm" data-copy>📋 複製</button><button class="btn sm" data-dl>⬇️ 下載 .md</button><button class="btn ghost sm" data-ex>填入示例</button></div>`;
       const md = () => `# ${s.name || '我嘅交易計劃書'}（v${s.version || '1.0'}）\n\n更新日期：${Store.today()}\n\n` + PLAN.map(([k, t]) => `## ${t}\n\n${(s[k] || '（未填）').trim()}\n`).join('\n') + '\n---\n教學用途，唔構成投資建議。';
