@@ -46,7 +46,17 @@
   }
 
   /* ---------------- 回測引擎 ---------------- */
+  function clean(S) {
+    const o = Object.assign({}, S);
+    Object.keys(DEFAULTS).forEach((k) => { if (typeof DEFAULTS[k] === 'number' && !isFinite(+o[k])) o[k] = DEFAULTS[k]; });
+    o.maxPerDay = Math.max(1, Math.min(10, Math.round(o.maxPerDay)));
+    o.split = Math.min(0.95, Math.max(0.05, o.split));
+    o.rMult = Math.max(0.1, o.rMult); o.atrStop = Math.max(0.005, o.atrStop); o.atrTgt = Math.max(0.005, o.atrTgt);
+    o.slip = Math.max(0, o.slip); o.comm = Math.max(0, o.comm); o.buffer = Math.max(0, o.buffer); o.orMins = Math.max(5, o.orMins);
+    return o;
+  }
   function run(sessions, S) {
+    S = clean(S);
     const trades = [];
     const tS = S.tStart, tE = S.tEnd, orN = Math.max(1, Math.round(S.orMins / 5));
     sessions.forEach((s, si) => {
@@ -140,6 +150,7 @@
     return trades;
   }
   function analyse(sessions, S) {
+    S = clean(S);
     const trades = run(sessions, S);
     const cut = Math.floor(sessions.length * S.split);
     const isT = trades.filter((t) => t.si < cut), oosT = trades.filter((t) => t.si >= cut);
@@ -205,7 +216,9 @@
     const showExit = () => $$('[data-show]', form).forEach((x) => (x.hidden = x.dataset.show !== S.exit));
     showExit();
     $$('[data-k]', form).forEach((i) => i.addEventListener('input', () => {
-      const k = i.dataset.k; S[k] = typeof DEFAULTS[k] === 'number' ? parseFloat(i.value) : i.value;
+      const k = i.dataset.k;
+      if (typeof DEFAULTS[k] === 'number') { const v = parseFloat(i.value); i.classList.toggle('bad', !isFinite(v)); if (!isFinite(v)) return; S[k] = v; }
+      else { if ((k === 'start' || k === 'end') && !/^\d{4}-\d{2}-\d{2}$/.test(i.value)) return; S[k] = i.value; }
       if (k === 'sym') S.sym = i.value.trim().toUpperCase();
       if (k === 'exit') showExit();
       if (k === 'strat') $('[data-sdesc]', form).textContent = STRATS[S.strat].desc;

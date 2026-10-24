@@ -369,7 +369,7 @@ QQQ 創新高，但 TSLA 升唔過早上高位。就算大市好，TSLA 嘅 Long
 | 15:00–16:00 | 03:00–04:00 | 04:00–05:00 | Power Hour：收市前大量交易 |
 
 :::info 夏令時間
-美國夏令時間一般由三月第二個星期日到十一月第一個星期日。香港冇夏令時間，所以兩地時差會由 12 小時變 13 小時。可以用 [[link:tools/timezone|🕐 美股時間換算]] 工具。
+美國夏令時間一般由三月第二個星期日到十一月第一個星期日。香港冇夏令時間，所以兩地時差會由 12 小時變 13 小時。可以用 [🕐 美股時間換算](#/tools/timezone) 工具。
 :::
 
 ## 6.2 U 形成交量
@@ -618,7 +618,6 @@ window.GLOSSARY.push(
   { term: 'Gap & Go', zh: '缺口延續', def: '跳空之後繼續向同一方向走。', lv: 'l6' },
   { term: 'Gap Fill', zh: '回補缺口', def: '跳空之後價格返回昨日收市價附近。', lv: 'l6' },
   { term: 'Pre-market High / Low', zh: '盤前高位／低位（PMH / PML）', def: '開市前交易嘅最高同最低位，量少時參考價值較低。', lv: 'l6' },
-  { term: 'Opening Range', zh: '開市區間', def: '開市後固定時間（例如 15 分鐘）嘅最高位（ORH）同最低位（ORL）。', lv: 'l6' },
   { term: 'ORB', zh: '開市區間突破', def: 'Opening Range Breakout：價格突破 ORH / ORL 嘅策略。', lv: 'l6' },
   { term: 'Open-Drive', zh: '開市直衝', def: '開市後一面倒向一個方向，幾乎冇回頭。', lv: 'l6' },
   { term: 'Relative Strength', zh: '相對強弱', def: '個股升跌幅減大市升跌幅（同一起點）。', lv: 'l6' },

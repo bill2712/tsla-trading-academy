@@ -5,6 +5,8 @@
  * 全部係教學用途，唔係投資建議
  * ========================================================= */
 (function () {
+  // 數字輸入：空白或者唔係數字 → 保留上一個有效值（避免 NaN）
+  const num = (v, prev) => { const x = parseFloat(v); return isFinite(x) ? x : prev; };
   const F = (n, d = 2) => (n == null || !isFinite(n) ? '—' : Number(n).toFixed(d));
   const money = (n, d = 2) => {
     if (n == null || !isFinite(n)) return '—';
@@ -44,7 +46,7 @@
       el.querySelectorAll('[data-k]').forEach((inp) => {
         inp.addEventListener('input', () => {
           const f = spec.fields.find((x) => x.k === inp.dataset.k);
-          s[inp.dataset.k] = f && f.type === 'select' ? inp.value : parseFloat(inp.value);
+          s[inp.dataset.k] = f && f.type === 'select' ? inp.value : num(inp.value, s[inp.dataset.k]);
           const show = el.querySelector(`[data-show="${inp.dataset.k}"]`);
           if (show) show.textContent = f.fmt ? f.fmt(s[f.k]) : s[f.k];
           ctx.save(s); update();
@@ -316,7 +318,7 @@
         const x = summary();
         out.innerHTML = x.r > 0 ? `<div class="stats">${stat('每股風險', money(x.r))}${stat('R:R', F(x.rr) + ' : 1', x.rr >= 1.5 ? 'pos' : 'neg')}${stat('股數（未計成本）', x.sh + ' 股')}${stat('所需資金', money(x.sh * s.trigger))}</div>` : verdict(false, 'Stop 要低過 Entry（Long）。');
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.type === 'number' ? parseFloat(i.value) : i.value; ctx.save(s); update(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.type === 'number' ? num(i.value, s[i.dataset.k]) : i.value; ctx.save(s); update(); }));
       el.querySelector('[data-copy]').addEventListener('click', () => { navigator.clipboard && navigator.clipboard.writeText(summary().text).then(() => window.App && App.toast('已複製')); });
       el.querySelector('[data-reset]').addEventListener('click', () => { ctx.save(Object.assign({}, d)); TOOLS['trade-plan'].render(el, ctx); });
       update();
@@ -375,7 +377,7 @@
         const avg = filled ? cost / filled : NaN;
         out.innerHTML = `<div class="stats">${stat('平均成交價', money(avg))}${stat('比最佳 Ask 差', money(avg - s.levels[0][0]), 'neg')}${stat('額外成本', money(-(avg - s.levels[0][0]) * filled), 'neg')}</div>${left > 0 ? verdict(false, `仲有 ${left} 股未成交（掛單唔夠）。`) : ''}`;
         tb.querySelectorAll('input').forEach((i) => i.addEventListener('change', () => {
-          if (i.dataset.p != null) s.levels[i.dataset.p][0] = parseFloat(i.value); else s.levels[i.dataset.q][1] = parseFloat(i.value);
+          if (i.dataset.p != null) s.levels[i.dataset.p][0] = num(i.value, s.levels[i.dataset.p][0]); else s.levels[i.dataset.q][1] = num(i.value, s.levels[i.dataset.q][1]);
           ctx.save(s); update();
         }));
       };
@@ -421,7 +423,7 @@
           <table class="tbl"><tbody><tr><th>Stop Market</th><td class="${mktCls}">${mkt}</td></tr><tr><th>Stop-Limit</th><td class="${slCls}">${sl}</td></tr></tbody></table>
           <p class="tool-fine">記住：唔存在一種 Order 能夠同時保證即時成交及理想價格。</p>`;
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : parseFloat(i.value); ctx.save(s); update(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : num(i.value, s[i.dataset.k]); ctx.save(s); update(); }));
       update();
     },
   };
@@ -523,16 +525,16 @@
     desc: '勝率 40% 嘅策略，做 100 筆會唔會遇到 5 連敗？（假設每筆獨立）',
     render: simpleTool({
       defaults: { wr: 40, n: 100, k: 5 },
-      fields: [{ k: 'wr', label: '勝率', type: 'range', min: 10, max: 90, step: 1, fmt: (v) => v + '%' }, { k: 'n', label: '總交易數', step: 10 }, { k: 'k', label: '連敗次數（≥）', step: 1 }],
+      fields: [{ k: 'wr', label: '勝率', type: 'range', min: 10, max: 90, step: 1, fmt: (v) => v + '%' }, { k: 'n', label: '總交易數（最多 100,000）', step: 10 }, { k: 'k', label: '連敗次數（≥，最多 100）', step: 1 }],
       compute: (s) => {
-        const q = 1 - s.wr / 100, k = Math.max(1, Math.round(s.k)), n = Math.max(1, Math.round(s.n));
+        const q = 1 - s.wr / 100, k = Math.min(100, Math.max(1, Math.round(s.k))), n = Math.min(100000, Math.max(1, Math.round(s.n)));
         const once = Math.pow(q, k), any = probRun(n, q, k);
         return `<div class="stats">${stat(`由某一筆開始連輸 ${k} 次`, pct(once, 2))}${stat(`${n} 筆內最少出現一次 ${k} 連敗`, pct(any, 1), any > 0.5 ? 'neg' : '')}</div>
           <div data-chart></div>
           <p class="tool-fine">真實交易結果經常唔獨立（例如連續喺 Choppy 市況落單），實際連敗可能更常見。</p>`;
       },
       after: (out, s) => {
-        const q = 1 - s.wr / 100, n = Math.max(1, Math.round(s.n));
+        const q = 1 - s.wr / 100, n = Math.min(100000, Math.max(1, Math.round(s.n)));
         const ks = [3, 4, 5, 6, 7, 8, 10, 12];
         Charts.bars(out.querySelector('[data-chart]'), { labels: ks.map((k) => k + ' 連敗'), values: ks.map((k) => +(probRun(n, q, k) * 100).toFixed(1)), format: (v) => v + '%', title: `${n} 筆內出現各種連敗嘅機率` });
       },
@@ -636,7 +638,7 @@
         const avg = xs.reduce((a, b) => a + b, 0) / xs.length, rv = s.today / avg;
         out.innerHTML = `${big('RVOL at Time', F(rv), '×', rv >= 1.5 ? 'pos' : '')}<div class="stats">${stat('過去 ' + xs.length + ' 日平均', Math.round(avg).toLocaleString())}${stat('v1.0 門檻 1.5', rv >= 1.5 ? '✅ 通過' : '❌ 未達')}</div>`;
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.dataset.k === 'today' ? parseFloat(i.value) : i.value; ctx.save(s); update(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.dataset.k === 'today' ? num(i.value, s.today) : i.value; ctx.save(s); update(); }));
       update();
     },
   };
@@ -709,7 +711,7 @@
       const update = () => {
         out.innerHTML = `<pre class="rules-card">${esc(card())}</pre>${s.history.length ? `<details><summary>版本紀錄（${s.history.length}）</summary><table class="tbl"><thead><tr><th>版本</th><th>改動</th><th>日期</th></tr></thead><tbody>${s.history.map((h) => `<tr><td>v${esc(h.ver)}</td><td>${esc(h.note)}</td><td>${new Date(h.ts).toLocaleDateString()}</td></tr>`).join('')}</tbody></table></details>` : ''}`;
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.type === 'number' ? parseFloat(i.value) : i.value; ctx.save(s); update(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.type === 'number' ? num(i.value, s[i.dataset.k]) : i.value; ctx.save(s); update(); }));
       el.querySelector('[data-copy]').addEventListener('click', () => navigator.clipboard && navigator.clipboard.writeText(card()).then(() => App.toast('已複製規則卡')));
       el.querySelector('[data-bump]').addEventListener('click', () => {
         const note = prompt('今次改咗乜？點解？（會記入版本紀錄）', '');
@@ -816,7 +818,7 @@
           <p class="tool-fine">每條線係同一套策略嘅一種可能結果。理論正期望值，都可以有好長時間喺水底。</p>`;
         Charts.line(out.querySelector('[data-chart]'), { series: show.map((c) => ({ data: c, color: 'var(--accent)', width: 1.2, opacity: 0.35 })), ref: 0, height: 260, format: (v) => v.toFixed(0) + 'R', title: `${show.length} 條隨機路徑（每條 ${n} 筆）` });
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('change', () => { s[i.dataset.k] = parseFloat(i.value); ctx.save(s); run(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('change', () => { s[i.dataset.k] = num(i.value, s[i.dataset.k]); ctx.save(s); run(); }));
       el.querySelector('[data-run]').addEventListener('click', run);
       run();
     },
@@ -960,7 +962,7 @@
         const cp = range > 0 ? (s.c - l) / range : null;
         out.innerHTML = `${big('形態', k.name)}<p>${k.why}${cp != null ? `${s.c >= s.o ? '綠燭' : '紅燭'}：收市位於區間${cp >= 0.67 ? '上段（接近高位）' : cp <= 0.33 ? '下段（接近低位）' : '中段'}。` : ''}</p><div class="stats">${stat('Range', '$' + F(range))}${stat('Body Ratio', pct(Math.abs(s.c - s.o) / range, 1))}${stat('Close Position', cp != null ? pct(cp, 1) : '—')}${stat('上影線', '$' + F(h - Math.max(s.o, s.c)))}${stat('下影線', '$' + F(Math.min(s.o, s.c) - l))}${stat('CLV', range > 0 ? F((2 * s.c - h - l) / range) : '—')}</div><p class="tool-fine">提醒：形態要配合位置同後續確認先有意義。</p>`;
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = parseFloat(i.value); el.querySelector(`[data-show="${i.dataset.k}"]`).textContent = F(s[i.dataset.k]); ctx.save(s); update(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = num(i.value, s[i.dataset.k]); el.querySelector(`[data-show="${i.dataset.k}"]`).textContent = F(s[i.dataset.k]); ctx.save(s); update(); }));
       el.querySelectorAll('[data-preset]').forEach((b) => b.addEventListener('click', () => { const [o, h, l, c] = b.dataset.preset.split(',').map(Number); Object.assign(s, { o, h, l, c }); ctx.save(s); TOOLS['candle-builder'].render(el, ctx); }));
       update();
     },
@@ -1101,8 +1103,9 @@
         if (rows.length < 2) { out.innerHTML = verdict(null, '最少要兩次測試先可以講係「Zone」。'); bind(); return; }
         const wicks = rows.map((r) => r[0]).sort((a, b) => a - b);
         const med = wicks[Math.floor(wicks.length / 2)];
-        const inC = rows.filter((r) => Math.abs(r[0] - med) <= s.tol);
-        const outl = rows.filter((r) => Math.abs(r[0] - med) > s.tol);
+        const tol = Math.max(0, +s.tol || 0);
+        const inC = rows.filter((r) => Math.abs(r[0] - med) <= tol);
+        const outl = rows.filter((r) => Math.abs(r[0] - med) > tol);
         const bodies = inC.map((r) => r[1]);
         const coreLo = Math.min(...bodies), coreHi = Math.max(...bodies);
         const cw = inC.map((r) => r[0]);
@@ -1124,10 +1127,10 @@
         bind();
       };
       const bind = () => {
-        tb.querySelectorAll('input').forEach((i) => i.addEventListener('change', () => { s.rows[i.dataset.r][i.dataset.c] = parseFloat(i.value); ctx.save(s); update(); }));
+        tb.querySelectorAll('input').forEach((i) => i.addEventListener('change', () => { s.rows[i.dataset.r][i.dataset.c] = num(i.value, s.rows[i.dataset.r][i.dataset.c]); ctx.save(s); update(); }));
         tb.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => { s.rows.splice(+b.dataset.del, 1); ctx.save(s); update(); }));
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : parseFloat(i.value); ctx.save(s); update(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : num(i.value, s[i.dataset.k]); ctx.save(s); update(); }));
       el.querySelector('[data-add]').addEventListener('click', () => { const l = s.rows[s.rows.length - 1] || [100, 99.8]; s.rows.push([l[0], l[1]]); ctx.save(s); update(); });
       el.querySelector('[data-reset]').addEventListener('click', () => { const n = JSON.parse(JSON.stringify(d)); Object.assign(s, n); ctx.save(s); TOOLS['zone-builder'].render(el, ctx); });
       update();
@@ -1219,7 +1222,7 @@
           ${next.length ? `<h5>下一步觀察</h5><ul>${next.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}
           <p class="tool-fine">優先次序：位置、結構、價格確認最重要；Volume 同 VWAP 評估訊號質素；風險決定可唔可以建立計劃。</p>`;
       };
-      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : parseFloat(i.value); ctx.save(s); update(); }));
+      el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { s[i.dataset.k] = i.tagName === 'SELECT' ? i.value : num(i.value, s[i.dataset.k]); ctx.save(s); update(); }));
       el.querySelector('[data-reset]').addEventListener('click', () => { ctx.save(Object.assign({}, d)); TOOLS['decision-coach'].render(el, ctx); });
       update();
     },
@@ -1315,8 +1318,9 @@
     },
   };
 
+  document.addEventListener('input', (e) => { const t = e.target; if (t && t.matches && t.matches('.tool-body input[type=number], .tool-card input[type=number]')) t.classList.toggle('bad', t.value === '' || !isFinite(parseFloat(t.value))); });
   window.TOOLS = TOOLS;
   Object.assign(WIDGETS, window.WIDGETS_EXTRA || {});
   window.WIDGETS = WIDGETS;
-  window.ToolUtil = { F, money, pct, signR, esc, rStats, stat, big, verdict, simpleTool };
+  window.ToolUtil = { F, money, pct, signR, esc, rStats, stat, big, verdict, simpleTool, num };
 })();

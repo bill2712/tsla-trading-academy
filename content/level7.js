@@ -177,7 +177,7 @@ $$ 股數 = 風險金額 ÷ 每股風險（Entry − Stop） $$
 :::
 
 :::warn 混合方法都要測試
-「平一半 + 移 Stop 去成本」聽落好安全，但會令平均贏減少、打和交易增加。可以用 [[link:tools/partial-tp|分批止賺比較工具]] 睇吓影響。
+「平一半 + 移 Stop 去成本」聽落好安全，但會令平均贏減少、打和交易增加。可以用 [分批止賺比較工具](#/tools/partial-tp) 睇吓影響。
 :::
 
 [[replay:l7-manage]]
@@ -424,7 +424,7 @@ $$ Kelly % = 勝率 − (1 − 勝率) ÷ 平均 R 倍數 $$
 [[tool:kelly-ror]]
 
 :::key 生存第一
-每筆風險 1% 同 5%，長期期望值一樣，但係 5% 嗰個好容易遇上無法恢復嘅回撤。[[link:tools/recovery|📉 回撤恢復計算]]：跌 50% 要升 100% 先打和。
+每筆風險 1% 同 5%，長期期望值一樣，但係 5% 嗰個好容易遇上無法恢復嘅回撤。[📉 回撤恢復計算](#/tools/recovery)：跌 50% 要升 100% 先打和。
 :::
 
 [[tool:monte-carlo]]
@@ -549,10 +549,8 @@ Object.assign(window.CHECKLISTS, {
 });
 window.GLOSSARY.push(
   { term: 'R Distribution', zh: 'R 分佈', def: '所有交易結果（以 R 計）嘅分佈；少數大贏交易往往好重要。', lv: 'l7' },
-  { term: 'ATR', zh: '平均真實波幅', def: 'Average True Range：最近 N 支 K 線 True Range 嘅平均，量度波幅。', lv: 'l7' },
   { term: 'True Range', zh: '真實波幅', def: '高低差、或同上一支收市價嘅最大差距（包括跳空）。', lv: 'l7' },
   { term: 'Trailing Stop', zh: '移動止蝕', def: '價格向有利方向走時，Stop 跟住移動，鎖定利潤。', lv: 'l7' },
-  { term: 'Time Stop', zh: '時間止損', def: '一段時間內未去到預期進展就出場。', lv: 'l7' },
   { term: 'Pyramiding', zh: '向上加倉', def: '只喺贏緊、有新確認時加注，並上移 Stop。', lv: 'l7' },
   { term: 'Averaging Down', zh: '向下攤平', def: '蝕緊錢時加注拉低成本 —— 高風險習慣。', lv: 'l7' },
   { term: 'Order Flow', zh: '訂單流', def: '透過 Level 2 同 Time & Sales 觀察買賣盤同成交。', lv: 'l7' },

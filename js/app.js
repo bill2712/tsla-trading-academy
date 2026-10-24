@@ -733,7 +733,7 @@
       <form class="video-form">
         <input type="url" required placeholder="貼上影片連結（YouTube 或其他網址）" data-url>
         <input type="text" placeholder="標題（可選）" data-title>
-        <select data-sec><option value="">（整章）</option>${c.sections.map((s) => `<option value="${s.id}">${esc(s.title)}</option>`).join('')}</select>
+        <select data-sec aria-label="關聯小節"><option value="">（整章）</option>${c.sections.map((s) => `<option value="${s.id}">${esc(s.title)}</option>`).join('')}</select>
         <button class="btn primary">＋ 加入影片</button>
       </form>
       <div class="yt-suggest"><span class="muted">🔍 去 YouTube 搵：</span>${kws.map((k) => `<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/results?search_query=${encodeURIComponent(k + ' day trading')}">${esc(k)}</a>`).join('')}<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c.title + ' 交易 教學')}">${esc(c.title)}</a></div>`;
@@ -778,7 +778,7 @@
     const p = Store.activeProfile();
     el.innerHTML = `<h3>💬 家庭討論 <small>（全家共用）</small></h3>
       <form class="cm-form"><span class="av" style="--c:${p ? p.color : '#888'}">${p ? p.emoji : '🙂'}</span><div><textarea rows="2" placeholder="${p ? `以「${esc(p.name)}」身份留言：問題、心得、考吓屋企人…` : '請先建立使用者'}" data-t></textarea>
-      <div class="cm-form-foot"><select data-sec><option value="">（整章）</option>${c.sections.map((s) => `<option value="${s.id}">${esc(s.title)}</option>`).join('')}</select><button class="btn primary sm">發佈</button></div></div></form>
+      <div class="cm-form-foot"><select data-sec aria-label="關聯小節"><option value="">（整章）</option>${c.sections.map((s) => `<option value="${s.id}">${esc(s.title)}</option>`).join('')}</select><button class="btn primary sm">發佈</button></div></div></form>
       <div class="cm-list">${roots.map((r) => commentHTML(r, list)).join('') || '<p class="muted">未有討論。第一個發問啦！</p>'}</div>`;
     $('form', el).addEventListener('submit', (e) => {
       e.preventDefault(); if (!p) { askProfile(); return; }
@@ -993,7 +993,7 @@
 
   /* ---------------- 隨時新增：討論／影片／筆記 ---------------- */
   function chapterSelect(sel, emptyLabel) {
-    return `<select data-ch><option value="">${esc(emptyLabel || '（唔關聯章節）')}</option>${LEVELS.map((lv) => `<optgroup label="${esc(lv.code + '：' + lv.title)}">${lv.chapters.map((c) => `<option value="${c.id}" ${sel === c.id ? 'selected' : ''}>${esc(lv.code.replace('Level ', 'L'))} 第 ${c.num} 章 ${esc(c.title)}</option>`).join('')}</optgroup>`).join('')}</select>`;
+    return `<select data-ch aria-label="關聯章節"><option value="">${esc(emptyLabel || '（唔關聯章節）')}</option>${LEVELS.map((lv) => `<optgroup label="${esc(lv.code + '：' + lv.title)}">${lv.chapters.map((c) => `<option value="${c.id}" ${sel === c.id ? 'selected' : ''}>${esc(lv.code.replace('Level ', 'L'))} 第 ${c.num} 章 ${esc(c.title)}</option>`).join('')}</optgroup>`).join('')}</select>`;
   }
   const normUrl = (u) => (/^https?:\/\//.test(u) ? u : 'https://' + u);
   function composerHTML(mode) {

@@ -226,19 +226,21 @@
         <div class="tool-out"></div><div data-chart></div><div class="tool-foot"><button class="btn sm" data-re>🎲 重新模擬</button><button class="btn ghost sm" data-reset>↺ 重設</button></div>`;
       const out = el.querySelector('.tool-out');
       const upd = () => {
-        const W = s.wr / 100, R = s.avgW, f0 = s.risk / 100, N = Math.min(1000, Math.max(10, s.n | 0));
+        const clamp = (x, a, b) => Math.min(b, Math.max(a, isFinite(x) ? x : a));
+        const W = clamp(s.wr, 0, 100) / 100, R = clamp(s.avgW, 0.05, 50), f0 = clamp(s.risk, 0, 100) / 100, N = Math.min(1000, Math.max(10, s.n | 0));
+        const ddLim = clamp(s.dd, 1, 100);
         const kelly = W - (1 - W) / R, exp = W * R - (1 - W);
         const r = rng(s.seed), sims = 1000, ends = [], paths = []; let ruined = 0;
         const step = Math.max(1, Math.floor(N / 20));
         for (let k = 0; k < sims; k++) {
           let eq = 1, pk = 1, hit = false; const pth = [1];
-          for (let i = 0; i < N; i++) { eq *= r() < W ? 1 + f0 * R : 1 - f0; pk = Math.max(pk, eq); if (!hit && (pk - eq) / pk >= s.dd / 100) hit = true; if ((i + 1) % step === 0) pth.push(eq); }
+          for (let i = 0; i < N; i++) { eq = Math.max(0, eq * (r() < W ? 1 + f0 * R : 1 - f0)); if (!isFinite(eq)) eq = 1e12; pk = Math.max(pk, eq); if (!hit && (pk - eq) / pk >= ddLim / 100) hit = true; if ((i + 1) % step === 0) pth.push(eq); }
           if (hit) ruined++; ends.push(eq); paths.push(pth);
         }
         ends.sort((a, b) => a - b);
         const q = (p) => ends[Math.floor(p * (ends.length - 1))];
         const pctl = (pp) => paths[0].map((_, i) => { const col = paths.map((x) => x[i]).sort((a, b) => a - b); return (col[Math.floor(pp * (col.length - 1))] - 1) * 100; });
-        out.innerHTML = `<div class="stats">${stat('每筆期望值', signR(exp), exp >= 0 ? 'pos' : 'neg')}${stat('Kelly %', kelly > 0 ? F(kelly * 100, 1) + '%' : '≤ 0（冇 Edge）')}${stat('½ Kelly', kelly > 0 ? F(kelly * 50, 1) + '%' : '—')}${stat('你嘅風險 / Kelly', kelly > 0 ? F(f0 / kelly, 2) + '×' : '—')}${stat(`回撤 ≥ ${s.dd}% 機率`, pct(ruined / sims, 1), ruined / sims > 0.1 ? 'neg' : '')}${stat('權益中位數', pct(q(0.5) - 1, 1), q(0.5) >= 1 ? 'pos' : 'neg')}${stat('最差 5%', pct(q(0.05) - 1, 1), 'neg')}</div>
+        out.innerHTML = `<div class="stats">${stat('每筆期望值', signR(exp), exp >= 0 ? 'pos' : 'neg')}${stat('Kelly %', kelly > 0 ? F(kelly * 100, 1) + '%' : '≤ 0（冇 Edge）')}${stat('½ Kelly', kelly > 0 ? F(kelly * 50, 1) + '%' : '—')}${stat('你嘅風險 / Kelly', kelly > 0 ? F(f0 / kelly, 2) + '×' : '—')}${stat(`回撤 ≥ ${ddLim}% 機率`, pct(ruined / sims, 1), ruined / sims > 0.1 ? 'neg' : '')}${stat('權益中位數', pct(q(0.5) - 1, 1), q(0.5) >= 1 ? 'pos' : 'neg')}${stat('最差 5%', pct(q(0.05) - 1, 1), 'neg')}</div>
           ${verdict(ruined / sims < 0.05 ? true : ruined / sims > 0.2 ? false : null, kelly <= 0 ? '期望值 ≤ 0：任何注碼方法都唔會長期賺錢，注碼愈大輸得愈快。' : f0 > kelly / 2 ? '每筆風險超過半個 Kelly：回撤會非常大。真實勝率同 R 只係估計，建議大幅降低。' : `每筆 ${s.risk}% 喺呢組假設下回撤風險${ruined / sims < 0.05 ? '較低' : '仍然唔細'}。記住真實勝率同 R 會變。`)}`;
         window.Charts.line(el.querySelector('[data-chart]'), { series: [{ name: '90%', data: pctl(0.9), color: 'var(--up)' }, { name: '中位數', data: pctl(0.5), color: 'var(--accent)', dots: true }, { name: '10%', data: pctl(0.1), color: 'var(--down)' }], labels: paths[0].map((_, i) => (i === 0 ? '0' : String(i * step))), height: 220, format: (x) => (x >= 0 ? '+' : '') + x.toFixed(0) + '%', title: '權益變化分佈（第 10／50／90 百分位）', caption: '綠：好運嘅 10%；藍：中位數；紅：差運嘅 10%。同一套策略，運氣可以令結果相差好遠。' });
       };

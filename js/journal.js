@@ -238,7 +238,7 @@
     const f = Store.ui().jFilter || {};
     const pbs = arr('playbooks');
     return `<div class="jfilter"><span class="muted">篩選：</span>${[['all', '全部'], ['live', '💵 真實'], ['sim', '🧪 全部模擬'], ['paper', '📄 Paper'], ['replay', '🔁 Replay']].map(([k, l]) => `<button class="chip btn-chip ${(f.kind || 'all') === k ? 'on' : ''}" data-fk="${k}">${l}</button>`).join('')}
-      <select data-fpb><option value="">所有 Playbook</option>${pbs.map((p) => `<option value="${esc(p.id)}" ${f.pb === p.id ? 'selected' : ''}>${esc(p.name)}${p.version ? ' v' + esc(p.version) : ''}</option>`).join('')}</select></div>`;
+      <select data-fpb aria-label="篩選"><option value="">所有 Playbook</option>${pbs.map((p) => `<option value="${esc(p.id)}" ${f.pb === p.id ? 'selected' : ''}>${esc(p.name)}${p.version ? ' v' + esc(p.version) : ''}</option>`).join('')}</select></div>`;
   }
   function bindFilter(el, tab) {
     el.querySelectorAll('[data-fk]').forEach((b) => b.addEventListener('click', () => { const f = Store.ui().jFilter || {}; f.kind = b.dataset.fk; Store.setUI({ jFilter: f }); render(el, tab); }));

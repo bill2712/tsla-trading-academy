@@ -501,8 +501,6 @@ window.GLOSSARY.push(
   { term: 'Deliberate Practice', zh: '刻意練習', def: '一次練一樣、有即時回饋、專注弱點嘅練習方法。', lv: 'l8' },
   { term: 'Cost of Mistakes', zh: '錯誤成本', def: '違反規則嘅交易合共損失（以 R 計）。', lv: 'l8' },
   { term: 'Tilt', zh: '情緒失控', def: '因為輸錢、煩躁等情緒令判斷變差、唔理規則嘅狀態。', lv: 'l8' },
-  { term: 'Revenge Trading', zh: '報復交易', def: '輸錢後想即刻追返而做嘅衝動交易。', lv: 'l8' },
-  { term: 'FOMO', zh: '怕錯過', def: 'Fear of Missing Out：怕錯過行情而追高。', lv: 'l8' },
   { term: 'Confirmation Bias', zh: '確認偏誤', def: '只留意支持自己想法嘅證據。', lv: 'l8' },
   { term: 'Recency Bias', zh: '近因偏誤', def: '過份重視最近幾次結果。', lv: 'l8' },
   { term: 'Outcome Bias', zh: '結果偏誤', def: '用結果好壞判斷決定好壞。', lv: 'l8' },

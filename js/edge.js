@@ -54,9 +54,9 @@
     if (rs.length >= 20) for (let i = 20; i <= rs.length; i++) roll.push(+(rs.slice(i - 20, i).reduce((a, b) => a + b, 0) / 20).toFixed(3));
     view.innerHTML = `<div class="page-head"><h1>📊 我有冇 Edge？</h1><p class="muted">用統計老實咁答：你嘅方法計埋成本之後，係咪真係有優勢？定只係好彩／唔好彩？</p>
       <div class="tool-foot edge-ctl">
-        <select data-src><option value="journal">來源：交易日誌</option><option value="lab">來源：最近一次回測</option></select>
-        ${ui.src === 'journal' ? `<select data-who>${ps.map((p) => `<option value="${p.id}" ${p.id === ui.who ? 'selected' : ''}>${esc(p.emoji + ' ' + p.name)}</option>`).join('')}</select>
-        <select data-kind>${[['all', '全部類型'], ['replay', 'Replay'], ['paper', 'Paper'], ['live', '真實']].map(([k, t]) => `<option value="${k}" ${ui.kind === k ? 'selected' : ''}>${t}</option>`).join('')}</select>` : ''}
+        <select data-src aria-label="資料來源"><option value="journal">來源：交易日誌</option><option value="lab">來源：最近一次回測</option></select>
+        ${ui.src === 'journal' ? `<select data-who aria-label="邊個嘅紀錄">${ps.map((p) => `<option value="${p.id}" ${p.id === ui.who ? 'selected' : ''}>${esc(p.emoji + ' ' + p.name)}</option>`).join('')}</select>
+        <select data-kind aria-label="交易類型">${[['all', '全部類型'], ['replay', 'Replay'], ['paper', 'Paper'], ['live', '真實']].map(([k, t]) => `<option value="${k}" ${ui.kind === k ? 'selected' : ''}>${t}</option>`).join('')}</select>` : ''}
       </div></div>
       <div class="card"><p class="muted">${esc(label)}</p>
         <div class="edge-ladder">${LADDER.map((x, i) => `<div class="el ${i === lvl ? 'on' : ''} ${i === 2 ? 'warn' : ''}"><span>${x[0]}</span><b>${x[1]}</b><small>${x[2]}</small></div>`).join('')}</div>
