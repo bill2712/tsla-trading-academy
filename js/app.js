@@ -288,6 +288,7 @@
     $('#toc').innerHTML = `
       ${last ? `<a class="toc-continue" href="#/c/${last.id}${u.last.section ? '/' + u.last.section : ''}"><small>📍 繼續上次</small><b>${esc(last.level.code)} · ${esc(last.title)}</b></a>` : ''}
       ${link('#/', '🏠', '主頁', activeRoute === 'home')}
+      ${link('#/picks', '📋', '每日選股', activeRoute === 'picks')}
       ${link('#/toc', '📚', '完整課程目錄', activeRoute === 'toc')}
       ${link('#/map', '🗺️', '學習地圖・證書', activeRoute === 'map' || activeRoute === 'cert')}
       <div class="toc-sep">課程</div>
@@ -408,6 +409,7 @@
       </section>
 
       <section class="home-grid top">
+        <div class="card pk-home" data-pkhome hidden></div>
         ${p ? Learn.nextCard() : ''}
         ${p ? Learn.questCard() : ''}
         <div class="card"><div class="card-h">🏋️ 練習</div><div class="quick-tools">
@@ -439,6 +441,7 @@
         <div class="card"><div class="card-h">💬 最新討論</div>${recent.length ? recent.map((c) => `<a class="mini-c" href="#/c/${c.chapter}/${c.section || 'ch-end'}"><span class="av sm" style="--c:${c.color}">${c.emoji}</span><span><b>${esc(c.name)}</b>：${esc(c.text.slice(0, 60))}<small> · ${CH[c.chapter] ? esc(CH[c.chapter].level.code + ' 第' + CH[c.chapter].num + '章') : ''}</small></span></a>`).join('') : '<p class="muted">未有留言。喺任何章節底部或者揀選文字都可以留言，同屋企人討論。</p>'}<a href="#/board">討論區 →</a></div>
       </section>
       <p class="disclaimer">本平台內容整理自你自己生成嘅課程筆記，並加入補充內容同互動工具。所有 TSLA 價格、成交量同交易例子均為教學模擬，<b>唔係即時行情、唔係投資建議、亦唔係已驗證嘅盈利策略</b>。真實交易可能出現跳空、滑價、訂單未成交，以及超出預計止損嘅損失。</p>`;
+    const pkh = $('[data-pkhome]', view); if (pkh && window.Picks) Picks.homeCard(pkh);
   }
 
   /* ---------------- 完整目錄頁 ---------------- */
@@ -1352,6 +1355,7 @@
       else if (r === 'level') Learn.renderLevel(view, parts[1]);
       else if (r === 'guide') Learn.renderGuide(view);
       else if (r === 'sim') Sim.play(view, parts[1] === 'real' && parts[3] ? { sym: decodeURIComponent(parts[2] || ''), date: parts[3] } : null);
+      else if (r === 'picks') Picks.render(view, parts[1]);
       else if (r === 'lab') Lab.render(view, parts[1] === 'r' ? parts[2] : null);
       else if (r === 'edge') Edge.renderEdge(view);
       else if (r === 'research') Edge.renderResearch(view, parts[1]);
@@ -1425,7 +1429,7 @@
   document.body.appendChild(toTop);
   window.addEventListener('scroll', () => { toTop.hidden = scrollY < 900; }, { passive: true });
   const bnav = document.createElement('nav'); bnav.className = 'bottom-nav'; bnav.setAttribute('aria-label', '主要導航');
-  bnav.innerHTML = [['#/', '🏠', '主頁', ['home']], ['#/map', '🗺️', '課程', ['map', 'toc', 'level', 'c', 'cert']], ['#/gym', '🏋️', '練習', ['gym', 'review', 'replay', 'quiz', 'cards', 'sim', 'glossary']], ['#/tools', '🧰', '工具', ['tools', 'journal', 'lab', 'edge', 'research']], ['#/me', '⭐', '我的', ['me', 'board', 'family', 'settings', 'guide']]].map(([h, i, t, rs]) => `<a href="${h}" data-r="${rs.join(' ')}"><span>${i}</span>${t}</a>`).join('');
+  bnav.innerHTML = [['#/', '🏠', '主頁', ['home', 'picks']], ['#/map', '🗺️', '課程', ['map', 'toc', 'level', 'c', 'cert']], ['#/gym', '🏋️', '練習', ['gym', 'review', 'replay', 'quiz', 'cards', 'sim', 'glossary']], ['#/tools', '🧰', '工具', ['tools', 'journal', 'lab', 'edge', 'research']], ['#/me', '⭐', '我的', ['me', 'board', 'family', 'settings', 'guide']]].map(([h, i, t, rs]) => `<a href="${h}" data-r="${rs.join(' ')}"><span>${i}</span>${t}</a>`).join('');
   document.body.appendChild(bnav);
   function markBottomNav(r) { $$('.bottom-nav a').forEach((a) => a.classList.toggle('on', a.dataset.r.split(' ').includes(r))); }
 
