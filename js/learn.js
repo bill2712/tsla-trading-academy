@@ -331,6 +331,7 @@
       gen() { const r = genRisk(); return { html: '', q: r.q, opts: r.opts, ans: r.ans, why: r.why }; },
     },
   };
+  Object.assign(DRILLS, window.DRILLS_EXTRA || {});
 
   function renderGym(view, id) {
     const u = Store.user();
@@ -397,6 +398,7 @@
     l6: '學識揀日子：多時間框架、Gap、Opening Range、相對強弱、時段、事件同日類型，令你只做有利環境嘅 Setup。',
     l7: '入場之後先係真正考驗：R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性同倉位模型。',
     l8: '由學生變交易者：計劃書、每日流程、進階檢討、心理偏誤、升級階梯、策略衰退同可持續交易，最後完成畢業專題。',
+    l9: '進修專題：Mark Minervini 嘅 VCP。睇突破之前嘅收縮 —— T1/T2/T3、量縮、Pivot、Stage 2，再分開研究日線同 5 分鐘版本，最後用真實數據回測。',
     qa: '你曾經問過嘅實戰問題：S/R 點畫、Zone 幾闊、Stop 放邊、點解 Replay 搵唔到 Entry。',
   };
   function renderLevel(view, id) {

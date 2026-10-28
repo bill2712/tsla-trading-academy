@@ -6,7 +6,7 @@
 (function () {
   const U = () => window.ToolUtil;
   const has = (x) => typeof x === 'number' && isFinite(x);
-  const SETUPS = ['A：Breakout + Retest', 'B：Range Reversal', 'C：Failed Breakdown Reclaim', '其他'];
+  const SETUPS = ['A：Breakout + Retest', 'B：Range Reversal', 'C：Failed Breakdown Reclaim', 'D：VCP Pivot Breakout', '其他'];
   const MARKETS = ['Trending', 'Range', 'Choppy', 'News'];
   const STAGES = ['Breakout', 'Retest', 'Confirmation', 'Order Pending', 'Filled'];
   const OUTCOMES = ['已成交（Traded）', '冇回測／過期', '回測失敗', 'R:R 不足放棄', '未觸發（No Fill）', '消息／時間取消', '其他'];
@@ -26,6 +26,7 @@
     { name: 'A：Breakout + Retest Long', direction: 'Long', tf: '5m（15m 判斷背景）', market: '15m 偏強，或者由 Range 開始向上突破', levels: '事前標記 Resistance', signal: '已完成 5m Candle 收喺 Resistance Zone 上方；記錄突破時 RVOL；價格喺 VWAP 上方', confirm: '價格返回舊 Resistance Zone 後出現向上反彈，形成較高低位或重新突破短線高位', trigger: '突破指定確認 K 線 High', stop: '回測低位或整個 Zone 下方（按結構同波幅決定緩衝）', target: '下一重要阻力位之前', minRR: '2', sizing: '每筆 0.25% 本金', manage: '固定 Stop / Target；收市前平倉', skip: '跌穿區域、回測失敗、回報空間不足、Choppy、消息時段' },
     { name: 'B：Range Support Reversal Long', direction: 'Long', tf: '5m', market: '明顯橫行區間', levels: 'Range 下邊界 Support', signal: 'Hammer、下影線 Rejection 或類似價格反應；記錄支持區成交量', confirm: '後續反彈，停止創新低，可能形成 HL', trigger: '突破指定確認 Candle High', stop: '造成反彈嘅重要低位下方', target: '區間中部障礙（VWAP）或上方阻力', minRR: '2', sizing: '每筆 0.25% 本金', manage: '事前定 VWAP 附近處理規則', skip: '支持失守、跌勢明顯加速、VWAP 障礙太近、風險回報不足' },
     { name: 'C：Failed Breakdown Reclaim Long', direction: 'Long', tf: '5m', market: '原本有明顯 Support', levels: 'Support Zone', signal: '價格向下跌穿 Support，隨後重新收復 Support Zone', confirm: '回測守住舊 Support，形成 HL', trigger: '突破確認 Candle High', stop: '重新收復失敗或相關結構低位下方', target: '下一阻力區', minRR: '2', sizing: '每筆 0.25% 本金', manage: '固定 Stop / Target', skip: '再次失守、沒有後續反彈、風險回報不足' },
+    { name: 'VCP-INTRADAY-5M', version: '1.0', direction: 'Long', tf: '5m（15m 結構、Daily 背景）', market: 'RTH；15m 偏強；價格喺上升 Session VWAP 上方；避開重大消息', levels: '開市前畫好 PDH、PMH、15m 阻力；記錄初始動力段高位', signal: '初始動力之後出現 2–4 次回調，幅度逐段縮細（例如 0.6% → 0.3% → 0.15%），低位逐步抬高；最後收縮成交量低過同時段平均', confirm: '事前畫出 Pivot（最後收縮高位）；Pivot 到下一阻力至少 2R 空間', trigger: 'Pivot + 緩衝（Buy Stop-Limit，設最高成交價；用實際 Fill 記錄）', stop: 'Final Contraction Low − 緩衝（按波幅）', target: '下一重要阻力之前，成交後 R:R ≥ 最低要求', minRR: '2', sizing: '本金 $10,000，每筆 0.25%；股數取風險同資金限制較細者', manage: '固定 Stop / Target；收市前平倉；唔移 Stop', skip: 'Lower Low、普通 Range、Choppy VWAP、量冇縮、上方阻力太近、成交價令 R:R 不足、午市冇量' },
     { name: 'TSLA-BR-LONG', version: '1.0', direction: 'Long', tf: '5m', market: 'RTH；15m 已確認 HH+HL；避開預定重大消息', levels: '開市前畫好 PDH/PDL、PMH/PML、15m Zone', signal: '5m Close > Zone Upper + $0.05；RVOL(time, Regular) ≥ 1.5；價格 > Session VWAP', confirm: '突破後 6 支 K 線內回測 Zone；Close > Zone Upper 且 CLV ≥ 0', trigger: '確認 K 線 High + $0.05（Buy Stop，用實際 Fill 記錄）', stop: 'Retest Low − 緩衝（按波幅）', target: '下一重要阻力之前，R:R ≥ 最低要求', minRR: '2', sizing: '本金 $10,000，每筆 0.25%', manage: '固定 Stop / Target；15:30 後唔開新倉；收市前平倉', skip: '回測跌穿失效位、未觸發已到下一阻力、R:R 不足、重大消息、超時、每日虧損上限' },
   ];
 

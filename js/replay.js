@@ -248,7 +248,7 @@
       <p class="tool-fine">⚠️ 全部數字係教學模擬，唔係真實 TSLA 行情。</p></div>`;
     const chartEl = el.querySelector('.rp-chart'), panel = el.querySelector('.rp-panel');
     const draw = (s) => {
-      const cfg = Object.assign({}, base, { bars: base.bars.slice(0, s.show), vwap: base.vwap === true ? C.vwapOf(base.bars).slice(0, s.show) : base.vwap, lines: (base.lines || []).concat(s.lines || []), marks: [], highlight: s.show - 1, slots: base.bars.length });
+      const cfg = Object.assign({}, base, { bars: base.bars.slice(0, s.show), vwap: base.vwap === true ? C.vwapOf(base.bars).slice(0, s.show) : base.vwap, lines: (base.lines || []).concat(s.lines || []), marks: s.marks || [], highlight: s.show - 1, slots: base.bars.length });
       C.candles(chartEl, cfg);
       el.querySelector('.rp-progress-fill').style.width = ((step + 1) / sc.steps.length * 100) + '%';
     };
@@ -294,6 +294,7 @@
     render();
   }
 
-  { const ord = ['l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8', 'qa']; const keys = Object.keys(SCENARIOS).sort((a, b) => ord.indexOf(SCENARIOS[a].level) - ord.indexOf(SCENARIOS[b].level)); const sorted = {}; keys.forEach((k) => (sorted[k] = SCENARIOS[k])); Object.keys(SCENARIOS).forEach((k) => delete SCENARIOS[k]); Object.assign(SCENARIOS, sorted); }
+  Object.assign(SCENARIOS, window.REPLAY_EXTRA || {});
+  { const ord = ['l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8', 'l9', 'qa']; const keys = Object.keys(SCENARIOS).sort((a, b) => ord.indexOf(SCENARIOS[a].level) - ord.indexOf(SCENARIOS[b].level)); const sorted = {}; keys.forEach((k) => (sorted[k] = SCENARIOS[k])); Object.keys(SCENARIOS).forEach((k) => delete SCENARIOS[k]); Object.assign(SCENARIOS, sorted); }
   window.Replay = { SCENARIOS, play };
 })();

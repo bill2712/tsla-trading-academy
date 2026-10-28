@@ -1124,3 +1124,25 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .rs-res { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .9em; padding: 8px 10px; background: var(--bg-soft); border-radius: 10px; }
 @media (max-width: 640px) { .edge-ladder { grid-template-columns: repeat(2, 1fr); } }
 .fld input.bad, .tool-body input.bad { border-color: var(--down); box-shadow: 0 0 0 2px var(--down-soft); }
+
+/* ---------- Level 9 VCP ---------- */
+.vcp-anat .tool-foot { justify-content: center; align-items: center; }
+.vcp-step { font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 7em; text-align: center; }
+.vcp-cap { margin: 8px 0 0; padding: 10px 14px; border-radius: 12px; background: var(--bg-soft); border-left: 4px solid var(--lv, var(--accent)); min-height: 3.2em; }
+.vcp-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.vcp-g { border: 1px solid var(--border); border-radius: 14px; padding: 8px 10px 10px; background: var(--card); }
+.vcp-g .chart { margin: 0; }
+.vcp-g p { margin: 4px 0 0; line-height: 1.45; font-size: .88em; }
+.vcp-g p b { display: block; }
+.vcp-g p small { color: var(--muted); display: block; margin-top: 2px; }
+.vcp-g[data-t="vcp"] { border-color: color-mix(in srgb, var(--up) 55%, var(--border)); }
+.vcp-bars { display: grid; gap: 6px; margin: 4px 0 12px; }
+.vcp-bar { display: grid; grid-template-columns: 34px 1fr 76px; gap: 10px; align-items: center; }
+.vcp-bar span { font-weight: 800; color: var(--warn); }
+.vcp-bar div { height: 14px; border-radius: 7px; background: var(--bg-soft); overflow: hidden; }
+.vcp-bar i { display: block; height: 100%; border-radius: 7px; background: linear-gradient(90deg, var(--warn), #f97316); }
+.vcp-bar b { text-align: right; font-variant-numeric: tabular-nums; }
+.tt-list { list-style: none; padding: 0; margin: 8px 0 12px; display: grid; gap: 4px; }
+.tt-list li { padding: 6px 10px; border-radius: 10px; background: var(--bg-soft); font-size: .92em; }
+.tt-list li.ok { background: var(--up-soft); }
+.tt-list li.no { background: var(--down-soft); }

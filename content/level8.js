@@ -398,6 +398,8 @@ Paper Trading 冇真錢壓力，亦未必模擬到真實滑價同成交。Micro 
 [[check:l8-grad]]
 
 [[link:map|🗺️ 睇你嘅學習地圖同證書]]
+
+[[link:level/l9|➡️ 進修專題：Level 9 VCP 波幅收縮形態]]
 `},
   ],
 });

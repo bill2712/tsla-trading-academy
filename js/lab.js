@@ -16,9 +16,10 @@
   const STRATS = {
     orb: { name: '開市區間突破（ORB）', desc: '頭 15 分鐘高低位；收市突破後，升穿／跌穿訊號 K 線入場。Stop：區間中位。' },
     pdh: { name: '昨日高位突破 + 回測', desc: 'Long：收市突破 PDH → 回測 PDH 守住 → 升穿回測 K 高位入場。Short：PDL 相反。Stop：回測低位下方。' },
+    vcp: { name: '日內 VCP 突破（只做 Long）', desc: '回望最近 3 段（每段 N 支 5 分鐘 K）：波幅逐段收縮（每段 ≤ 上一段 × 收縮比例）、低位唔低過上一段、最後一段平均量 ≤ 第一段 × 量縮比例、價格喺上升 VWAP 上方、整理喺今日高位附近。升穿最後一段高位（Pivot）入場；Stop：最後一段低位下方。' },
     vwap: { name: 'VWAP 順勢回調', desc: 'Long：連續 6 支收喺上升 VWAP 上方，回調掂 VWAP 守住 → 升穿嗰支高位入場。Stop：回調低位下方。' },
   };
-  const DEFAULTS = { sym: 'TSLA', start: daysAgo(365), end: today(), strat: 'pdh', dir: 'long', orMins: 15, trend20: 'off', rvolMin: 0, tStart: '09:45', tEnd: '11:30', maxPerDay: 1, exit: 'R', rMult: 2, atrStop: 0.1, atrTgt: 0.2, buffer: 0.05, slip: 0.02, comm: 0.005, split: 0.7 };
+  const DEFAULTS = { sym: 'TSLA', start: daysAgo(365), end: today(), strat: 'pdh', dir: 'long', orMins: 15, trend20: 'off', rvolMin: 0, tStart: '09:45', tEnd: '11:30', maxPerDay: 1, exit: 'R', rMult: 2, atrStop: 0.1, atrTgt: 0.2, buffer: 0.05, slip: 0.02, comm: 0.005, split: 0.7, vcpSeg: 4, vcpRatio: 0.75, vcpVol: 0.8 };
 
   /* ---------------- 統計 ---------------- */
   function stats(rs) {
@@ -53,6 +54,7 @@
     o.split = Math.min(0.95, Math.max(0.05, o.split));
     o.rMult = Math.max(0.1, o.rMult); o.atrStop = Math.max(0.005, o.atrStop); o.atrTgt = Math.max(0.005, o.atrTgt);
     o.slip = Math.max(0, o.slip); o.comm = Math.max(0, o.comm); o.buffer = Math.max(0, o.buffer); o.orMins = Math.max(5, o.orMins);
+    o.vcpSeg = Math.max(2, Math.min(12, Math.round(o.vcpSeg))); o.vcpRatio = Math.min(1, Math.max(0.1, o.vcpRatio)); o.vcpVol = Math.min(2, Math.max(0.1, o.vcpVol));
     return o;
   }
   function run(sessions, S) {
@@ -72,7 +74,7 @@
       if (S.exit === 'atr' && !s.atr20) return;
       let pv = 0, vv = 0; const vw = [];
       let orH = -Infinity, orL = Infinity;
-      let brokeUp = -1, brokeDn = -1, pend = null, pos = null, count = 0;
+      let brokeUp = -1, brokeDn = -1, pend = null, pos = null, count = 0, dayHi = -Infinity;
       const lastIdx = bars.length - 1;
       for (let i = 0; i < bars.length; i++) {
         const b = bars[i];
@@ -105,6 +107,7 @@
         // 3) 收市平倉
         if (pos && i === lastIdx) closePos(pos, pos.side === 'long' ? b.c - S.slip : b.c + S.slip, i, '收市');
         // 4) 收市後計訊號（只用已完成 K 線）
+        dayHi = Math.max(dayHi, b.h);
         if (s.pdh != null && brokeUp < 0 && b.c > s.pdh) brokeUp = i;
         if (s.pdl != null && brokeDn < 0 && b.c < s.pdl) brokeDn = i;
         if (i < orN) { orH = Math.max(orH, b.h); orL = Math.min(orL, b.l); continue; }
@@ -123,6 +126,17 @@
           const tol = b.c * 0.001;
           if (brokeUp >= 0 && i > brokeUp && i - brokeUp <= 8 && b.l <= s.pdh + tol && b.c > s.pdh && allow('long')) sig = { side: 'long', trig: b.h + 0.01, stop: Math.min(b.l, s.pdh) - S.buffer };
           else if (brokeDn >= 0 && i > brokeDn && i - brokeDn <= 8 && b.h >= s.pdl - tol && b.c < s.pdl && allow('short')) sig = { side: 'short', trig: b.l - 0.01, stop: Math.max(b.h, s.pdl) + S.buffer };
+        } else if (S.strat === 'vcp') {
+          const n = S.vcpSeg, a0 = i - 3 * n + 1;
+          if (a0 < 0) continue;
+          // r = 呢段入面由最高位回落嘅最大幅度（回調深度），唔係成段高低差，咁先唔會將上升段當成收縮
+          const seg = (k) => { let h = -Infinity, l = Infinity, v = 0, r = 0; for (let j = a0 + k * n; j < a0 + (k + 1) * n; j++) { h = Math.max(h, bars[j].h); l = Math.min(l, bars[j].l); r = Math.max(r, h - bars[j].l); v += bars[j].v || 0; } return { h, l, r, v: v / n }; };
+          const s1 = seg(0), s2 = seg(1), s3 = seg(2);
+          const top = Math.max(s1.h, s2.h, s3.h);
+          const ok = s1.r > 0 && s2.r <= S.vcpRatio * s1.r && s3.r <= S.vcpRatio * s2.r && s2.l >= s1.l && s3.l >= s2.l
+            && s1.v > 0 && s3.v <= S.vcpVol * s1.v && b.c > vw[i] && vw[i] >= vw[Math.max(0, i - n)]
+            && top >= dayHi - 1e-9 && s3.h >= top - 0.5 * s1.r;
+          if (ok && allow('long')) sig = { side: 'long', trig: s3.h + 0.01, stop: s3.l - S.buffer, until: i + n };
         } else if (S.strat === 'vwap') {
           if (i < 7) continue;
           let above = true, below = true;
@@ -130,7 +144,7 @@
           if (above && vw[i] > vw[i - 6] && b.l <= vw[i] * 1.0005 && b.c > vw[i] && allow('long')) sig = { side: 'long', trig: b.h + 0.01, stop: Math.min(b.l, vw[i]) - S.buffer };
           else if (below && vw[i] < vw[i - 6] && b.h >= vw[i] * 0.9995 && b.c < vw[i] && allow('short')) sig = { side: 'short', trig: b.l - 0.01, stop: Math.max(b.h, vw[i]) + S.buffer };
         }
-        if (sig) pend = Object.assign(sig, { until: i + 2, rvol, sig: b.t });
+        if (sig) pend = Object.assign({ until: i + 2 }, sig, { rvol, sig: b.t });
       }
       function exitCheck(p, b, i, first) {
         const L = p.side === 'long';
@@ -156,13 +170,13 @@
     const isT = trades.filter((t) => t.si < cut), oosT = trades.filter((t) => t.si >= cut);
     return { trades, cutDate: sessions[cut] ? sessions[cut].date : null, all: stats(trades.map((t) => t.r)), is: stats(isT.map((t) => t.r)), oos: stats(oosT.map((t) => t.r)) };
   }
-  const settingsHash = (S) => { const k = Object.keys(DEFAULTS).sort(); const str = JSON.stringify(k.map((x) => [x, S[x]])); let h = 5381; for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
+  const settingsHash = (S) => { const k = Object.keys(DEFAULTS).filter((x) => !x.startsWith('vcp') || S.strat === 'vcp').sort(); const str = JSON.stringify(k.map((x) => [x, S[x]])); let h = 5381; for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
   function describe(S) {
     const st = STRATS[S.strat] ? STRATS[S.strat].name : S.strat;
     const dir = { long: '只做 Long', short: '只做 Short', both: 'Long + Short' }[S.dir];
     const tr = { off: '唔用 20 日線', with: '只順 20 日線方向', against: '只逆 20 日線方向（對照組）' }[S.trend20];
     const ex = S.exit === 'atr' ? `Stop ${S.atrStop}×ATR20、Target ${S.atrTgt}×ATR20` : `Stop 結構位、Target ${S.rMult}R`;
-    return `${S.sym}｜${S.start} 至 ${S.end}｜${st}｜${dir}｜${tr}｜${S.tStart}–${S.tEnd}${S.rvolMin ? '｜RVOL ≥ ' + S.rvolMin : ''}｜${ex}｜每日最多 ${S.maxPerDay} 筆｜滑價 $${S.slip}、佣金 $${S.comm}／股／邊`;
+    return `${S.sym}｜${S.start} 至 ${S.end}｜${st}｜${dir}｜${tr}｜${S.tStart}–${S.tEnd}${S.rvolMin ? '｜RVOL ≥ ' + S.rvolMin : ''}｜${ex}｜每日最多 ${S.maxPerDay} 筆${S.strat === 'vcp' ? `｜VCP：每段 ${S.vcpSeg} 支、收縮 ≤ ${S.vcpRatio}、量縮 ≤ ${S.vcpVol}` : ''}｜滑價 $${S.slip}、佣金 $${S.comm}／股／邊`;
   }
 
   /* ---------------- 頁面 ---------------- */
@@ -204,6 +218,9 @@
           <label class="fld" data-show="R"><span>目標（R 倍數）</span>${num('rMult', 0.5)}</label>
           <label class="fld" data-show="atr"><span>Stop（ATR20 嘅幾多倍）</span>${num('atrStop', 0.01)}</label>
           <label class="fld" data-show="atr"><span>Target（ATR20 嘅幾多倍）</span>${num('atrTgt', 0.01)}</label>
+          <label class="fld" data-sv><span>VCP：每段幾多支 5 分鐘 K</span>${num('vcpSeg', 1)}</label>
+          <label class="fld" data-sv><span>VCP：收縮比例上限（0.75 = 每段 ≤ 上一段 75%）</span>${num('vcpRatio', 0.05)}</label>
+          <label class="fld" data-sv><span>VCP：量縮比例上限（最後段量 ÷ 第一段量）</span>${num('vcpVol', 0.05)}</label>
           <label class="fld"><span>Stop 緩衝（$）</span>${num('buffer', 0.01)}</label>
           <label class="fld"><span>滑價（$／股／每邊）</span>${num('slip', 0.01)}</label>
           <label class="fld"><span>佣金（$／股／每邊）</span>${num('comm', 0.001)}</label>
@@ -215,13 +232,15 @@
     const form = view;
     const showExit = () => $$('[data-show]', form).forEach((x) => (x.hidden = x.dataset.show !== S.exit));
     showExit();
+    const showStrat = () => $$('[data-sv]', form).forEach((x) => (x.hidden = S.strat !== 'vcp'));
+    showStrat();
     $$('[data-k]', form).forEach((i) => i.addEventListener('input', () => {
       const k = i.dataset.k;
       if (typeof DEFAULTS[k] === 'number') { const v = parseFloat(i.value); i.classList.toggle('bad', !isFinite(v)); if (!isFinite(v)) return; S[k] = v; }
       else { if ((k === 'start' || k === 'end') && !/^\d{4}-\d{2}-\d{2}$/.test(i.value)) return; S[k] = i.value; }
       if (k === 'sym') S.sym = i.value.trim().toUpperCase();
       if (k === 'exit') showExit();
-      if (k === 'strat') $('[data-sdesc]', form).textContent = STRATS[S.strat].desc;
+      if (k === 'strat') { $('[data-sdesc]', form).textContent = STRATS[S.strat].desc; showStrat(); }
       if (!locked) { u.toolState.lab = Object.assign({}, S); Store.save(); }
     }));
     const out = $('[data-out]', view);
