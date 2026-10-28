@@ -1,231 +1,196 @@
-# 每日開市前選股：排程任務操作手冊
+# 每日開市前選股：排程任務操作手冊（v2）
 
-This file is the playbook for the scheduled task that publishes the daily pre-market
-day-trading watchlist into the app (`#/picks`). The reader is a beginner day trader
-(Hong Kong, studies this academy's Level 1–9 course). Everything the user sees must be
-written in **Traditional Chinese, Cantonese style** (same tone as the course: 「係、嘅、唔、冇」).
+This is the playbook for the scheduled task that publishes the daily pre-market day-trading
+watchlist into the app (`#/picks`). The reader is a day trader in Hong Kong who **uses this
+report to make real trading decisions**. Treat every number as if money depends on it:
+verify, cross-check, and never fill gaps with guesses.
 
-The output is educational research, not investment advice. Never present a pick as a
-recommendation to buy or sell. Never invent numbers, news, or URLs.
+All user-facing text: **Traditional Chinese, Cantonese style** (係、嘅、唔、冇), concise and specific.
 
 ---
 
-## 0. Hard safety rules
+## 0. Hard rules
 
-- **IBKR is read-only.** You may call only: `search_contracts`, `search_futures`,
-  `get_price_snapshot`, `get_price_history`, `get_screener_asset_classes`,
-  `get_screener_capabilities`, `get_screener_templates`, `get_screener_industries`,
-  `get_screener_themes`, `preview_screener`, `search_earnings_insights`,
-  `get_earnings_insight`, `get_company_themes`, `get_company_connections`.
-- **Never** call any tool that creates, edits, or deletes anything at IBKR (orders, order
-  instructions, alerts, watchlists, saved screeners), and never read account balances,
-  positions, orders or trades. They are not needed.
-- Only change files under `data/picks/` (and add new IDs to `scripts/picks/contracts.json`). Do not touch app code.
-- If a number is unavailable, write `null` and set `"dataQuality": "partial"`. Never guess.
-- Only cite news URLs that actually appeared in your search results or fetched pages.
+1. **RVOL ≥ 2 to enter `picks`.** RVOL = pre-market relative volume at time: cumulative volume
+   from 04:00 ET to the last completed bar today ÷ the average for the same window over the
+   previous ~10 sessions (computed by `gather.mjs` / `calc.mjs`). No RVOL number → not a pick
+   (put it in `watch` with the reason).
+2. **Aim for 5–7 picks** (max 8). Widen the search (more scans, more movers, more sectors)
+   before giving up. If fewer than 5 pass RVOL ≥ 2, publish what passes and write
+   `fewPicksReason` (e.g. 「今日只有 4 隻盤前 RVOL ≥ 2，其餘放觀察名單」). Never lower the bar.
+3. **Every pick needs** price, change from close (gapPct), pre-market volume, average volume,
+   RVOL, ATR, spread, PMH/PML/PDH/PDL/PDC, catalyst + at least one news link (or `newsNote`
+   saying you searched and found none), the five-pillar analysis, and a numeric trade plan.
+   `node scripts/picks/build.mjs` enforces this.
+4. **Multiple sources.** Don't rely on one feed. Cross-check price/gap between at least two
+   sources when possible (e.g. IBKR snapshot vs Yahoo). If they disagree by > 0.5%, say so and
+   use the more recent quote. Record every source you tried in `sources` (ok true/false).
+5. **IBKR is read-only.** Allowed: `search_contracts`, `search_futures`, `get_price_snapshot`,
+   `get_price_history`, `get_screener_*`, `preview_screener`, `search_earnings_insights`,
+   `get_earnings_insight`, `get_company_themes`, `get_company_connections`. **Never** create,
+   edit or delete orders, order instructions, alerts, watchlists or saved screeners, and never
+   read account balances, positions, orders or trades.
+6. Only edit `data/picks/` and `scripts/picks/contracts.json`. Never invent numbers, news or URLs.
+7. **TSLA section (`focus`) is optional** — include it only when TSLA is genuinely worth
+   trading today (RVOL ≥ 2, or |gap| ≥ 2%, or important news). Otherwise omit the field.
 
-## 1. Decide the target day
+## 1. Setup and target day
 
 ```bash
-git pull origin main
+cd /home/user/tsla-trading-academy && git checkout main && git pull origin main
 node scripts/picks/market-day.mjs
 ```
 
-- Use `targetDate` as the report date, and `status` from the output (`premarket` when run
-  between 04:00 and 09:30 ET on the trading day, otherwise `test`).
-- If the scheduled run finds today (`date`) is **not** a trading day (weekend/holiday), stop:
-  no files, no commit. Final message: 「今日美股休市（原因），唔使選股。」
-- If `targetHalfDay` is set, mention the early close (13:00 ET) in `market.summary` and `events`.
-- If `note` says the holiday table has run out, confirm NYSE holidays with a web search.
+Use `targetDate` and `status`. If today is not a trading day, stop (no files, no commit) and
+notify 「今日美股休市（原因）」. Mention a half day (13:00 close) in summary and events.
 
-## 2. Review the previous report (yesterday's picks)
+## 2. Review yesterday's report
 
-Find the newest `data/picks/YYYY-MM-DD.json` dated **before** `targetDate` that has no `review`.
-For each of its picks, get the daily bar for that date
-(`get_price_history`, `step: ONE_DAY`, `step_count: 5`, `outside_rth: false`, `security_type: STK`)
-and add:
+Newest `data/picks/*.json` before `targetDate` without `review`: for each pick get the daily
+bar (IBKR `get_price_history` ONE_DAY step_count 5, or Yahoo) and fill
+`review.items[]` = `{sym, open, high, low, close, chgFromOpenPct, hitPmh, verdict, note}`.
+In `verdict`, judge the **plan**: did the trigger happen? would Target 1 or Stop have hit first
+(use 5-min bars if needed)? Summarise honestly in `review.summary` — this is how the user
+learns which kinds of picks work.
 
-```json
-"review": {
-  "writtenAt": "<now ISO>",
-  "summary": "一兩句總結：幾多隻升穿盤前高位、邊隻最符合計劃、學到乜",
-  "items": [{ "sym": "TSLA", "open": 0, "high": 0, "low": 0, "close": 0,
-              "chgFromOpenPct": 0, "hitPmh": true, "verdict": "短評", "note": "可選" }]
-}
-```
+## 3. Collect data — use all sources
 
-`chgFromOpenPct = (close − open) ÷ open × 100`; `hitPmh = high > levels.pmh` (null if no pmh).
-Be honest: a pick that went nowhere is a useful lesson, not something to hide.
-
-## Contract IDs
-
-Look up IBKR `contract_id`s in `scripts/picks/contracts.json` first. Only call
-`search_contracts` for symbols not listed (its output is very long), pick the row with
-`country_code: "US"` and the exact `symbol`, and add it to `contracts.json` (commit it with the
-report). Screener results already include `contract_id`.
-
-## 3. Market overview
-
-`get_price_snapshot` with `["last","change","prior_close","volume"]` for:
-SPY, QQQ, IWM, DIA (US ETFs), plus sector ETFs SMH and XLK. Try the VIX index
-(`contracts.json`: IND on CBOE) and ES/NQ front-month futures
-(`search_futures`, pass the contract's `exchange`). Skip any that return nothing.
-
-Put them in `market.indices` as `{ "sym", "last", "chgPct", "note" }`.
-Then web search (standard mode, one turn, several queries) for:
-- `stock market futures premarket <Month D, YYYY>`
-- `economic calendar today <Month D, YYYY>` (CPI, jobs, FOMC, Fed speakers, PMI…)
-- `earnings before the bell <Month D, YYYY>` and `after the bell` (yesterday after close)
-
-Write `market.bias` (one of 偏好／偏淡／中性／風險高), a 2–4 sentence `market.summary`
-explaining **why** (futures, VIX, yields, key news), `market.events` with ET times and impact
-(高／中／低), and `market.earnings` for relevant big names.
-
-## 4. Find candidates
-
-Run `preview_screener` (selector `STK`, locations `["STK.US.MAJOR"]`, 25 results each):
-
-| Scan | scanner | filters |
-|---|---|---|
-| Gap up | `SCAN_changePerc_DESC` | `priceAbove 5`, `avgVolumeAbove 1000000`, `marketCapAbove1e6 300` |
-| Gap down | `SCAN_changePerc_ASC` | same |
-| Active now | `HIGH_STVOLUME_10MIN` | `priceAbove 5`, `avgVolumeAbove 1000000` |
-
-Also always check this liquid core list (beginner-friendly names):
-TSLA, NVDA, AAPL, AMD, META, AMZN, MSFT, GOOGL, AVGO, NFLX, PLTR, COIN, MU, SMCI.
-
-For every name, confirm with `get_price_snapshot`
-(`["last","change","prior_close","volume","bid_ask","avg_90d_usd_volume"]`).
-Screener ranks can be stale; the snapshot is the source of truth. Shortlist ~12 names where
-`|change %|` is meaningful (large caps ≥ 1.5–2%, others ≥ 4%) **or** there is clear news.
-
-## 5. Data for each shortlisted name
-
-1. Daily bars: `get_price_history` `step: ONE_DAY`, `step_count: 60`, `outside_rth: false`.
-2. Pre-market bars: `get_price_history` `step: FIFTEEN_MINS`, `step_count: 24`, `outside_rth: true`.
-3. Save each raw response to a temp file outside the repo and run:
+### 3a. Automatic collector (Yahoo, Nasdaq, SEC, Finviz, StockAnalysis, RSS, Alpaca)
 
 ```bash
-node scripts/picks/calc.mjs --date <targetDate> /tmp/picks/SYM-daily.json /tmp/picks/SYM-pm.json
+node scripts/picks/gather.mjs --date <targetDate> --movers --out /tmp/picks/gather.json
 ```
 
-It returns `pdc, pdh, pdl, atr14, atrPct, sma20, sma50, avgVol20, trend, pmh, pml, pmLast,
-pmVolume, gapPct, pmVolPct`. Use these numbers as-is.
+Prints which sources worked, plus a table (price, gap %, RVOL, pre-market volume, ATR %,
+news count, SEC filings). Add `--symbols A,B,C` to check extra names (e.g. from IBKR scans).
+If every source fails (network blocked), continue with 3b + 3c and set `dataQuality: partial`.
 
-4. Spread = ask − bid from the snapshot. Market cap / float: only if you found them
-   (screener filters, earnings insight or a reliable search result), else `null`.
-5. News: web search `<SYM> stock news` (and the company name). Prefer items from the last
-   24 hours; say if the only news is older. For earnings movers, `search_earnings_insights`
-   can add the numbers (EPS/revenue vs estimates, guidance).
+### 3b. IBKR (real-time confirmation + discovery)
 
-## 6. Score and choose
+Contract IDs: `scripts/picks/contracts.json` first; `search_contracts` only for new symbols
+(US row, exact symbol), then add them to the file.
 
-Score 0–100:
+- Market: `get_price_snapshot` `["last","change","volume"]` for SPY, QQQ, IWM, DIA, SMH, XLK,
+  VIX (IND/CBOE); ES/NQ via `search_futures` if useful.
+- Discovery scans (`preview_screener`, selector `STK`, locations `["STK.US.MAJOR"]`, 25 each):
+  `SCAN_changePerc_DESC` and `SCAN_changePerc_ASC` with `priceAbove 5`, `avgVolumeAbove 1000000`,
+  `marketCapAbove1e6 300`; `HIGH_STVOLUME_10MIN` with `priceAbove 5`; and an RVOL scan
+  `SCAN_stVolumeVsAvg10min_DESC` with `priceAbove 5`, `avgVolumeAbove 1000000`.
+- For each shortlisted name: `get_price_snapshot`
+  `["last","change","volume","bid_ask","avg_90d_usd_volume"]` (spread = ask − bid).
+- **RVOL when Yahoo is unavailable:** `get_price_history` `step: ONE_HOUR`, `period: TWO_WEEKS`,
+  `outside_rth: true`, plus daily `ONE_DAY` `step_count: 60`. Save both raw responses to
+  `/tmp/picks/SYM-*.json` and run
+  `node scripts/picks/calc.mjs --date <targetDate> /tmp/picks/SYM-daily.json /tmp/picks/SYM-1h.json`.
+  It returns `rvol`, `rvolPass`, `pmh/pml`, `gapPct`, `atr14`, levels and trend.
 
-| Part | Points | What earns them |
-|---|---|---|
-| Liquidity | 25 | price ≥ $10, avg volume ≥ 5M shares, spread ≤ 0.05% of price |
-| In play | 25 | size of gap, pre-market volume vs normal (`pmVolPct`) |
-| Catalyst | 20 | fresh, specific news (earnings, guidance, upgrade/downgrade, deal, FDA, sector news) |
-| Clean levels | 15 | clear PMH/PML, PDH/PDL, gap position vs prior range, daily trend agrees |
-| Market fit | 15 | direction matches futures/sector; no high-impact event right at the open |
+### 3c. News and calendar (web search + the collector's feeds)
 
-- Grade: A ≥ 75, B 60–74, C < 60 (C goes to `watch`, not `picks`).
-- `beginner`: 適合新手 = market cap ≥ $10B, price ≥ $10, avg volume ≥ 5M, normal spread,
-  gap < 10%. 中等 = market cap ≥ $1B. 高風險 = smaller, low float, gap ≥ 20%, biotech
-  binary news, offering/halts. Beginners should mostly see 適合新手／中等 picks.
-- Pick **3–6** names (max 8), best first. If nothing qualifies, `picks: []` and say why —
-  「冇好機會就唔做」 is a valid result.
-- `avoid`: names moving a lot that a beginner should not touch (e.g. tiny float squeezes,
-  dilution news, halted names), each with a reason.
-- `focus`: always write 2–4 sentences on **TSLA** (the course's main stock): gap, PDH/PDL,
-  PMH/PML, news, and whether it is worth trading today.
+- Web search (several queries in one turn): `stock market futures premarket <Month D, YYYY>`,
+  `economic calendar <Month D, YYYY>`, `<SYM> stock news <Month D>` for each candidate, and
+  `stocks moving premarket <Month D, YYYY>`.
+- Prefer news from the last 24 h. For each pick explain **why it is moving** (earnings,
+  guidance, upgrade/downgrade, deal, FDA, filing, sector move, macro). Use SEC filings
+  (8-K, S-3/424B = possible dilution) from the collector as hard evidence.
+- Only cite URLs that appeared in tool results.
 
-## 7. Write each pick (Cantonese, specific, with numbers)
+## 4. Choose the picks
 
-- `why` — 點解今日適合 day trade, citing the data (gap %, pre-market volume vs average,
-  catalyst, ATR, liquidity).
-- `catalyst` — the news in one or two sentences.
-- `technical` — daily trend (from `trend`), where price sits vs PDH/PDL/20-day high, key levels.
-- `setup` — one named setup from the course: Gap & Go (break of PMH after the first 5-minute
-  candle), Opening Range Breakout (Level 6), PDH breakout + retest (Level 3), VWAP pullback,
-  gap-fill fade, intraday VCP (Level 9).
-- `plan.long` / `plan.short` / `plan.noTrade` — If–Then with prices: trigger, stop, first target,
-  R:R (e.g. 「如果 09:35 後升穿 PMH $412.30 並企穩，Entry $412.40、Stop $409.90（開市 5 分鐘低位
-  下方）、Target $417.30（PDH 之前），約 2R」). `noTrade` = when to skip (e.g. 開市跌穿 PML、
-  量唔夠、大市急跌).
-- `risks` — 2–4 short items.
-- `news` — 1–3 items `{title, source, url, time}`.
-- `levels` — `{pmh, pml, pdh, pdl, pdc}` plus optional `other: [{label, price}]`.
+1. Pool = collector table + IBKR scans + core liquid names (TSLA, NVDA, AAPL, AMD, META, AMZN,
+   MSFT, GOOGL, AVGO, NFLX, PLTR, COIN, MU, SMCI, MSTR, HOOD, ARM).
+2. Filter: price ≥ $5, average volume ≥ 1M shares, normal spread (≤ ~0.15% of price for large
+   caps), **RVOL ≥ 2**.
+3. Score 0–100: liquidity 20, RVOL/in-play 25, catalyst 20, clean levels 15, market fit 10,
+   tape quality 10. Grade A ≥ 75, B 60–74 (C does not go in `picks`).
+4. `beginner`: 適合新手 = cap ≥ $10B, price ≥ $10, avg vol ≥ 5M, gap < 10%; 中等 = cap ≥ $1B;
+   高風險 = smaller / low float / gap ≥ 20% / binary news / dilution.
+5. `watch` = interesting names that failed a rule (say which, e.g. 「RVOL 1.4，未夠 2」).
+   `avoid` = big movers a trader should not touch (tiny float, dilution, halts, wide spread).
 
-Also write `news` (5–10 market-wide headlines with URLs) and `lesson` (one beginner tip tied to
-today, e.g. why to wait for the first 5 minutes on a big gap day).
+## 5. Five-pillar analysis for every pick (`pillars`)
 
-## 8. File format
+| Field | What to write |
+|---|---|
+| `bigPicture` | Index futures / SPY / QQQ direction, VIX, sector ETF, events today — does it help or hurt this trade? |
+| `fundamentals` | Why it is moving today (news, earnings numbers, guidance, filings) and how strong / fresh the catalyst is. |
+| `technical` | Daily trend (20/50-day), where the gap sits vs PDH/PDL/20-day high, PMH/PML, key levels, room to target. |
+| `tape` | Pre-market volume pattern (steady or one spike?), RVOL, spread and bid/ask size, holding near PMH or fading — and what volume you need at the open. |
+| `intuition` | Overall judgment and confidence (高／中／低) with the one thing that would change your mind. |
 
-Write `data/picks/<targetDate>.json` (overwrite if it exists — e.g. a `test` version):
+## 6. Trade plan for every pick (`trade` + `plan`)
+
+Main setup: **Opening Drive (開市推動)** — after the open, price breaks the opening range in the
+direction of the gap with a clear volume surge. Alternatives: PMH/PDH breakout + retest
+(Level 3), ORB 15m (Level 6), VWAP pullback, gap-fill fade, intraday VCP (Level 9).
+
+`trade` (numbers only, validated):
+
+```json
+"trade": { "side": "Long", "trigger": "09:35 後升穿首 5 分鐘高位，而首 5 分鐘成交 ≥ 平時 2 倍（約 120 萬股）",
+           "entry": 412.40, "stop": 409.90, "target1": 417.30, "target2": 421.00, "rr": 1.96 }
+```
+
+- Long: stop < entry < target1. Short: reverse. `rr` = |target1 − entry| ÷ |entry − stop|.
+- Stop at structure (opening-range low, PML, VWAP) — normally ≤ 0.3–0.5 ATR for day trades.
+- Target 1 before the next real level (PDH, 20-day high, PMH); aim ≥ 2R, never below 1.5R.
+- Use `avgOpenBarVol` from the collector to write the opening-volume condition.
+- `plan.long` / `plan.short` / `plan.noTrade`: short If–Then text, including when **not** to
+  trade (e.g. opens below PML, no volume surge, market dumps, R:R < 1.5 after the open).
+- `risks`: 2–4 items.
+
+## 7. File format (version 2)
+
+`data/picks/<targetDate>.json` (overwrite a `test` version):
 
 ```json
 {
-  "version": 1,
-  "date": "2026-10-28",
-  "generatedAt": "2026-10-28T12:20:00Z",
-  "status": "premarket",
+  "version": 2, "date": "YYYY-MM-DD", "generatedAt": "<ISO>", "status": "premarket",
   "dataQuality": "full",
-  "dataSources": ["IBKR 實時報價", "IBKR Screener", "網上新聞搜尋"],
+  "sources": [{ "name": "IBKR 實時報價", "ok": true }, { "name": "Yahoo Finance", "ok": false, "note": "網絡封鎖" }],
   "headline": "一句講晒今日重點（≤ 90 字）",
-  "market": { "bias": "偏好", "summary": "", "indices": [], "events": [], "earnings": [] },
-  "focus": "TSLA 今日狀態…",
+  "market": { "bias": "偏好／偏淡／中性／風險高", "summary": "", "indices": [{ "sym": "QQQ", "last": 0, "chgPct": 0, "note": "" }],
+              "events": [{ "time": "08:30 ET", "name": "", "impact": "高", "note": "" }], "earnings": [{ "sym": "", "when": "盤前", "note": "" }] },
+  "focus": "（可選）TSLA 今日真係值得做先寫",
+  "fewPicksReason": "（可選）少過 5 隻時必填",
   "picks": [{
-    "sym": "TSLA", "name": "Tesla", "grade": "A", "beginner": "適合新手", "direction": "Long",
-    "score": 82, "price": 0, "prevClose": 0, "gapPct": 0, "pmVolume": 0, "pmVolPct": 0,
-    "avgVolume": 0, "spread": 0, "atr": 0, "mktCapB": null, "floatM": null,
-    "levels": { "pmh": 0, "pml": 0, "pdh": 0, "pdl": 0, "pdc": 0, "other": [] },
-    "why": "", "catalyst": "", "technical": "", "setup": "",
+    "sym": "", "name": "", "grade": "A", "beginner": "中等", "direction": "Long", "score": 80,
+    "price": 0, "prevClose": 0, "gapPct": 0, "pmVolume": 0, "pmVolPct": 0, "avgVolume": 0,
+    "rvol": 2.4, "spread": 0, "atr": 0, "mktCapB": null, "floatM": null,
+    "levels": { "pmh": 0, "pml": 0, "pdh": 0, "pdl": 0, "pdc": 0, "other": [{ "label": "20 日高", "price": 0 }] },
+    "why": "", "catalyst": "", "technical": "", "setup": "開市推動（Opening Drive）",
+    "pillars": { "bigPicture": "", "fundamentals": "", "technical": "", "tape": "", "intuition": "" },
+    "trade": { "side": "Long", "trigger": "", "entry": 0, "stop": 0, "target1": 0, "target2": null, "rr": 0 },
     "plan": { "long": "", "short": "", "noTrade": "" },
-    "risks": [], "news": []
+    "risks": [], "news": [{ "title": "", "source": "", "url": "https://…", "time": "" }], "newsNote": "（冇新聞先寫）"
   }],
-  "watch": [{ "sym": "", "why": "" }],
-  "avoid": [{ "sym": "", "why": "" }],
+  "watch": [{ "sym": "", "why": "" }], "avoid": [{ "sym": "", "why": "" }],
   "news": [{ "title": "", "source": "", "url": "https://…", "time": "", "tickers": [] }],
-  "lesson": "",
-  "disclaimer": "教學用途，唔係投資建議。Day Trade 風險極高，可能損失全部本金。所有數字開市前請自行喺券商／TradingView 再確認。"
+  "lesson": "今日一個實戰提示",
+  "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
 }
 ```
 
-Numbers are plain numbers (no `$`, no `%`, no strings). `gapPct`, `pmVolPct`, `chgPct` are
-percent values (2.5 means +2.5%). `price` is the latest pre-market price.
+Numbers are plain numbers. `gapPct`, `pmVolPct`, `chgPct` are percents (2.5 = +2.5%).
 
-## 9. Validate, commit, push
+## 8. Validate, commit, push
 
 ```bash
-node scripts/picks/build.mjs        # must print ✅ — fix every ❌ and run again
+node scripts/picks/build.mjs      # must end with ✅; fix every ❌; read every ⚠️
 git add data/picks scripts/picks/contracts.json
 git commit -m "Daily picks <targetDate>"
-git push origin main                # if rejected: git pull --rebase origin main, then push again
+git push origin main               # rejected → git pull --rebase origin main, push again
 ```
 
-Retry the push up to 4 times on network errors (2s, 4s, 8s, 16s).
+Retry network failures up to 4 times (2s, 4s, 8s, 16s).
 
-## 10. Final message (it becomes the push notification)
+## 9. Notify
 
-Keep it short, Cantonese, outcome first:
-
-「📋 10/28 選股已更新：大市偏好（期指 +0.4%）。A 級：NVDA +3.1%（業績）、TSLA +1.8%；
-B 級：AMD。https://bill2712.github.io/tsla-trading-academy/#/picks/2026-10-28」
-
-If anything failed (IBKR down, partial data), say so in one line.
+`PushNotification` (status `proactive`), one Cantonese line under 200 characters, outcome first:
+「📋 10/28 選股：大市偏好。NVDA +3.1% RVOL 4.2（業績）、AMD +2.4% RVOL 2.6…（共 6 隻）
+https://bill2712.github.io/tsla-trading-academy/#/picks/2026-10-28」.
+If a step failed or data was partial, say so in the same line.
 
 ## Time budget
 
-The task starts about 25 minutes before 08:30 ET. Publish by ~08:35 ET even with fewer
-picks — a smaller, accurate report beats a late one. Don't spend more than ~10 minutes
-on news searches.
-
-## If IBKR is unavailable
-
-Try Yahoo (works only if the environment's network allows `query1.finance.yahoo.com`):
-`curl -s "https://query1.finance.yahoo.com/v8/finance/chart/SYM?range=3mo&interval=1d"` and
-`...?range=1d&interval=15m&includePrePost=true`. If that fails too, publish a report built from
-web search only, with `"dataQuality": "partial"`, `null` for unknown numbers, and say so clearly
-in `market.summary`.
+Start ≈ 08:07 ET; publish by ≈ 08:40 ET. Quality first, but a report after 09:15 ET is useless —
+if short on time, publish fewer, fully-checked picks and say so.

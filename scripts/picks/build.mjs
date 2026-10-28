@@ -5,8 +5,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const DIR = path.join(path.dirname(new URL(import.meta.url).pathname), '../../data/picks');
-const errs = [];
+const errs = [], warns = [];
 const err = (f, m) => errs.push(`${f}: ${m}`);
+const warn = (f, m) => warns.push(`${f}: ${m}`);
+const req = (v) => typeof v === 'number' && Number.isFinite(v);
+const nonEmpty = (v, max = 2000) => isStr(v, max) && v.trim().length > 0;
 const isNum = (v) => v === null || (typeof v === 'number' && Number.isFinite(v));
 const isStr = (v, max = 4000) => typeof v === 'string' && v.length <= max;
 const optStr = (v, max) => v === undefined || v === null || isStr(v, max);
@@ -26,12 +29,12 @@ function checkNews(f, where, list) {
 
 function checkDay(f, d) {
   const date = f.replace('.json', '');
-  if (d.version !== 1) err(f, 'version 要係 1');
+  if (d.version !== 1 && d.version !== 2) err(f, 'version 要係 1 或 2（新報告用 2）');
   if (d.date !== date) err(f, `date（${d.date}）要同檔名一樣`);
   if (!isStr(d.generatedAt, 40) || isNaN(Date.parse(d.generatedAt))) err(f, 'generatedAt 要係 ISO 時間');
   if (!STATUS.includes(d.status)) err(f, `status 要係 ${STATUS.join('/')}`);
   if (d.dataQuality && !['full', 'partial'].includes(d.dataQuality)) err(f, 'dataQuality 要係 full 或 partial');
-  if (!Array.isArray(d.dataSources)) err(f, 'dataSources 要係 array');
+  if (d.version === 1 && !Array.isArray(d.dataSources)) err(f, 'dataSources 要係 array');
   const m = d.market;
   if (!m || typeof m !== 'object') err(f, '冇 market');
   else {
@@ -59,7 +62,15 @@ function checkDay(f, d) {
       if (p.plan) ['long', 'short', 'noTrade'].forEach((k) => { if (!optStr(p.plan[k], 800)) err(f, `${w}.plan.${k}`); });
       if (p.risks && !(Array.isArray(p.risks) && p.risks.every((r) => isStr(r, 300)))) err(f, `${w}.risks 要係字串 array`);
       checkNews(f, `${w}.news`, p.news);
+      if (d.version === 2) checkPickV2(f, w, p);
     });
+    if (d.version === 2 && d.status === 'premarket' && d.picks.length < 5 && !nonEmpty(d.fewPicksReason)) err(f, `只有 ${d.picks.length} 隻候選股：目標係 5–7 隻；如果真係唔夠 RVOL ≥ 2 嘅股票，要寫 fewPicksReason 解釋`);
+    if (d.version === 2 && d.picks.length > 8) err(f, 'picks 最多 8 隻');
+  }
+  if (d.version === 2) {
+    if (!Array.isArray(d.sources) || !d.sources.length) err(f, 'sources 要列出每個數據來源 [{name, ok, note}]');
+    else d.sources.forEach((x, i) => { if (!nonEmpty(x.name, 80) || typeof x.ok !== 'boolean') err(f, `sources[${i}] 要有 name 同 ok（true/false）`); });
+    if (Array.isArray(d.sources) && d.sources.filter((x) => x.ok).length < 2) warn(f, '少過 2 個數據來源成功，報告可信度較低');
   }
   ['watch', 'avoid'].forEach((k) => (d[k] || []).forEach((x, i) => { if (!isStr(x.sym, 12) || !isStr(x.why, 500)) err(f, `${k}[${i}] 要有 sym 同 why`); }));
   checkNews(f, 'news', d.news);
@@ -74,6 +85,37 @@ function checkDay(f, d) {
   }
 }
 
+// v2：認真用嚟交易，每隻候選股一定要有齊數據同可執行計劃
+function checkPickV2(f, w, p) {
+  if (!req(p.rvol)) err(f, `${w}.rvol 一定要有（盤前 RVOL at time）；計唔到就唔可以放入 picks，改放 watch`);
+  else if (p.rvol < 2) err(f, `${w}.rvol = ${p.rvol}，規則要求 ≥ 2 先可以入候選名單（可以放 watch）`);
+  ['price', 'prevClose', 'gapPct', 'pmVolume', 'avgVolume', 'atr', 'spread'].forEach((k) => { if (!req(p[k])) err(f, `${w}.${k} 一定要有數字`); });
+  const L = p.levels || {};
+  ['pmh', 'pml', 'pdh', 'pdl', 'pdc'].forEach((k) => { if (!req(L[k])) err(f, `${w}.levels.${k} 一定要有數字`); });
+  if (!GRADE.includes(p.grade)) err(f, `${w}.grade 一定要有（A/B/C）`);
+  if (!BEGIN.includes(p.beginner)) err(f, `${w}.beginner 一定要有`);
+  ['why', 'catalyst', 'technical', 'setup'].forEach((k) => { if (!nonEmpty(p[k])) err(f, `${w}.${k} 唔可以空`); });
+  const P5 = p.pillars || {};
+  ['bigPicture', 'fundamentals', 'technical', 'tape', 'intuition'].forEach((k) => { if (!nonEmpty(P5[k], 800)) err(f, `${w}.pillars.${k}（五大分析）唔可以空`); });
+  const t = p.trade;
+  if (!t || typeof t !== 'object') err(f, `${w}.trade（Entry／Stop／Target／R:R）一定要有`);
+  else {
+    if (!['Long', 'Short'].includes(t.side)) err(f, `${w}.trade.side 要係 Long 或 Short`);
+    ['entry', 'stop', 'target1', 'rr'].forEach((k) => { if (!req(t[k])) err(f, `${w}.trade.${k} 一定要有數字`); });
+    if (!nonEmpty(t.trigger, 400)) err(f, `${w}.trade.trigger（幾時先入場）唔可以空`);
+    if (t.target2 != null && !req(t.target2)) err(f, `${w}.trade.target2 要係數字或 null`);
+    if (req(t.entry) && req(t.stop) && req(t.target1)) {
+      const L2 = t.side === 'Long';
+      if (L2 ? !(t.stop < t.entry && t.entry < t.target1) : !(t.stop > t.entry && t.entry > t.target1)) err(f, `${w}.trade：${t.side} 嘅 Stop／Entry／Target 次序唔啱`);
+      const rr = Math.abs(t.target1 - t.entry) / Math.abs(t.entry - t.stop);
+      if (req(t.rr) && Math.abs(rr - t.rr) > 0.15) err(f, `${w}.trade.rr 寫 ${t.rr}，但按價錢計係 ${rr.toFixed(2)}`);
+      if (rr < 1.5) warn(f, `${w}.trade R:R 只有 ${rr.toFixed(2)}`);
+      if (req(p.atr) && Math.abs(t.entry - t.stop) > p.atr) warn(f, `${w}.trade Stop 闊過一個 ATR，檢查下`);
+    }
+  }
+  if (!(p.news || []).length && !nonEmpty(p.newsNote, 300)) err(f, `${w} 冇新聞：要搵到最少 1 條有連結嘅新聞，或者用 newsNote 講明搜尋過但冇新聞`);
+}
+
 const files = fs.readdirSync(DIR).filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse();
 const days = [];
 for (const f of files) {
@@ -85,10 +127,11 @@ for (const f of files) {
   const m = d.market || {};
   days.push({
     date: d.date, status: d.status, bias: m.bias, headline: (d.headline || m.summary || '').slice(0, 90), n: d.picks.length,
-    top: d.picks.slice(0, 5).map((p) => ({ sym: p.sym, gapPct: p.gapPct ?? null, beginner: p.beginner || null })),
+    top: d.picks.slice(0, 7).map((p) => ({ sym: p.sym, gapPct: p.gapPct ?? null, rvol: p.rvol ?? null, beginner: p.beginner || null, grade: p.grade || null })),
     reviewed: !!(d.review && (d.review.items || []).length),
   });
 }
+if (warns.length) console.warn('⚠️ 提醒：\n' + warns.map((e) => ' - ' + e).join('\n'));
 if (errs.length) { console.error('❌ 格式錯誤：\n' + errs.map((e) => ' - ' + e).join('\n')); process.exit(1); }
 fs.writeFileSync(path.join(DIR, 'index.json'), JSON.stringify({ updated: new Date().toISOString(), days }, null, 1) + '\n');
 console.log(`✅ ${days.length} 日選股通過檢查，已更新 index.json`);

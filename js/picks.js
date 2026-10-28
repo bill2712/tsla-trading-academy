@@ -65,15 +65,15 @@
       <header class="pk-head">
         <div class="pk-rank">${i + 1}</div>
         <div class="pk-title"><b>${esc(p.sym)}</b><span>${esc(p.name || '')}</span></div>
-        <div class="pk-tags">${p.grade ? `<span class="pk-grade g-${esc(p.grade)}">${esc(p.grade)} 級</span>` : ''}${p.beginner ? `<span class="pk-beg ${BEGIN[p.beginner] || 'mid'}">${esc(p.beginner)}</span>` : ''}${p.direction ? `<span class="pk-dir">${esc(p.direction)}</span>` : ''}</div>
+        <div class="pk-tags">${num(p.rvol) != null ? `<span class="pk-rvol ${p.rvol >= 2 ? 'ok' : 'low'}" title="盤前相對成交量（同時段）">RVOL ${F(p.rvol, 1)}×</span>` : ''}${p.grade ? `<span class="pk-grade g-${esc(p.grade)}">${esc(p.grade)} 級</span>` : ''}${p.beginner ? `<span class="pk-beg ${BEGIN[p.beginner] || 'mid'}">${esc(p.beginner)}</span>` : ''}${p.direction ? `<span class="pk-dir">${esc(p.direction)}</span>` : ''}</div>
       </header>
       <div class="pk-nums">
         <div><span>盤前價</span><b>$${F(p.price)}</b></div>
-        <div><span>跳空</span><b class="${cls(p.gapPct)}">${P(p.gapPct)}</b></div>
+        <div><span>較昨收（Change from Close）</span><b class="${cls(p.gapPct)}">${P(p.gapPct)}</b></div>
         <div><span>盤前成交</span><b>${big(p.pmVolume)}</b></div>
         <div><span>平均成交</span><b>${big(p.avgVolume)}</b></div>
         <div><span>盤前量佔日均</span><b>${num(p.pmVolPct) == null ? '—' : F(p.pmVolPct, 1) + '%'}</b></div>
-        ${num(p.rvol) != null ? `<div><span>RVOL</span><b>${F(p.rvol, 1)}×</b></div>` : ''}
+        <div><span>RVOL（盤前同時段）</span><b class="${num(p.rvol) != null && p.rvol >= 2 ? 'pos' : ''}">${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</b></div>
         <div><span>買賣差價</span><b>${num(p.spread) == null ? '—' : '$' + F(p.spread)}</b></div>
         <div><span>ATR</span><b>${num(p.atr) == null ? '—' : '$' + F(p.atr)}</b></div>
         <div><span>市值</span><b>${num(p.mktCapB) == null ? '—' : F(p.mktCapB, 1) + 'B'}</b></div>
@@ -84,9 +84,12 @@
       ${p.catalyst ? `<p><b>📰 催化劑：</b>${esc(p.catalyst)}</p>` : ''}
       ${p.technical ? `<p><b>📈 技術面：</b>${esc(p.technical)}</p>` : ''}
       ${p.setup ? `<p><b>🎯 Setup：</b>${esc(p.setup)}</p>` : ''}
+      ${tradeHTML(p.trade)}
+      ${pillarsHTML(p.pillars)}
       ${plan.long || plan.short || plan.noTrade ? `<div class="pk-plan">${plan.long ? `<div class="up"><b>如果向上</b>${esc(plan.long)}</div>` : ''}${plan.short ? `<div class="down"><b>如果向下</b>${esc(plan.short)}</div>` : ''}${plan.noTrade ? `<div class="no"><b>唔做嘅情況</b>${esc(plan.noTrade)}</div>` : ''}</div>` : ''}
       ${(p.risks || []).length ? `<p class="pk-risk"><b>⚠️ 風險：</b>${p.risks.map(esc).join('；')}</p>` : ''}
-      ${(p.news || []).length ? `<details class="pk-news"><summary>相關新聞（${p.news.length}）</summary><ul class="pk-newslist">${newsHTML(p.news)}</ul></details>` : ''}
+      ${!(p.news || []).length && p.newsNote ? `<p class="pk-risk"><b>📰 新聞：</b>${esc(p.newsNote)}</p>` : ''}
+      ${(p.news || []).length ? `<details class="pk-news" open><summary>相關新聞（${p.news.length}）</summary><ul class="pk-newslist">${newsHTML(p.news)}</ul></details>` : ''}
       <div class="pk-log">
         <select data-st aria-label="${esc(p.sym)} 紀錄狀態">${STATUS.map(([v, t]) => `<option value="${v}" ${lg.status === v || (!lg.status && !v) ? 'selected' : ''}>${t}</option>`).join('')}</select>
         <input data-r type="number" step="0.1" placeholder="結果（R）" value="${num(lg.r) == null ? '' : lg.r}" aria-label="${esc(p.sym)} 結果 R">
@@ -94,6 +97,22 @@
       </div>
       ${fam ? `<div class="pk-fams">${fam}</div>` : ''}
     </article>`;
+  }
+
+  function tradeHTML(t) {
+    if (!t || num(t.entry) == null) return '';
+    const L = t.side !== 'Short';
+    const pct = (a) => (num(a) == null || !t.entry ? '' : ` <small>(${((a - t.entry) / t.entry * 100 >= 0 ? '+' : '') + ((a - t.entry) / t.entry * 100).toFixed(2)}%)</small>`);
+    return `<div class="pk-trade ${L ? 'long' : 'short'}">
+      <div class="pk-trade-h"><b>${L ? '📈 Long' : '📉 Short'} 交易計劃</b>${num(t.rr) != null ? `<span class="pk-rr">R:R ${F(t.rr, 2)}</span>` : ''}</div>
+      ${t.trigger ? `<p class="pk-trig"><b>入場條件：</b>${esc(t.trigger)}</p>` : ''}
+      <div class="pk-trade-g"><div><span>Entry</span><b>$${F(t.entry)}</b></div><div class="neg"><span>Stop</span><b>$${F(t.stop)}</b>${pct(t.stop)}</div><div class="pos"><span>Target 1</span><b>$${F(t.target1)}</b>${pct(t.target1)}</div>${num(t.target2) != null ? `<div class="pos"><span>Target 2</span><b>$${F(t.target2)}</b>${pct(t.target2)}</div>` : ''}<div><span>每股風險</span><b>$${F(Math.abs(t.entry - t.stop))}</b></div></div>
+    </div>`;
+  }
+  const PILLARS = [['bigPicture', '🌍', '大環境'], ['fundamentals', '📰', '日內基本面'], ['technical', '📈', '技術分析'], ['tape', '📜', '睇盤（Tape）'], ['intuition', '🧭', '直覺／經驗判斷']];
+  function pillarsHTML(x) {
+    if (!x) return '';
+    return `<details class="pk-pillars" open><summary><b>五大分析</b></summary><dl>${PILLARS.filter(([k]) => x[k]).map(([k, ic, t]) => `<div><dt>${ic} ${t}</dt><dd>${esc(x[k])}</dd></div>`).join('')}</dl></details>`;
   }
 
   function reviewHTML(rv) {
@@ -109,13 +128,14 @@
     const m = d.market || {};
     const st = myStats();
     const days = (idx && idx.days) || [];
-    return `<div class="page-head"><h1>📋 每日選股</h1><p class="muted">每個美股交易日開市前約一小時（美東 08:30）自動更新：大市、新聞、數據同 Day Trade 候選股。全部係教學參考，<b>唔係投資建議</b>，入場前一定要自己再睇圖、計風險。</p></div>
+    return `<div class="page-head"><h1>📋 每日選股</h1><p class="muted">每個美股交易日開市前約一小時（美東 08:30）自動更新：大市、新聞、數據同 Day Trade 候選股。只有盤前 <b>RVOL ≥ 2</b> 嘅股票先會入候選名單。AI 整理嘅數據可能有延遲或者錯漏，落單前一定要喺券商再核對價位、計好股數同風險。</p></div>
       <div class="pk-days" role="tablist" aria-label="日期">${days.slice(0, 30).map((x) => `<a href="#/picks/${esc(x.date)}" class="pk-day ${x.date === d.date ? 'on' : ''}"><b>${esc(x.date.slice(5))}</b><small>${esc(x.bias || '')}${x.reviewed ? ' · 已回顧' : ''}</small></a>`).join('')}</div>
       <section class="pk-hero card">
         <div><div class="pk-date">${esc(d.date)}（美東）${d.status === 'test' ? '<span class="pk-beg mid">測試版</span>' : ''}</div>
           <div class="pk-bias">大市傾向：<b>${esc(m.bias || '—')}</b></div>
           <p>${esc(m.summary || '')}</p>
-          <small class="muted">更新時間：${esc((d.generatedAt || '').slice(0, 16).replace('T', ' '))} UTC・數據：${esc((d.dataSources || []).join('、'))}${d.dataQuality === 'partial' ? '・⚠️ 部分數據未能取得' : ''}</small></div>
+          <small class="muted">更新時間：${esc((d.generatedAt || '').slice(0, 16).replace('T', ' '))} UTC${(d.sources || []).length ? '' : '・數據：' + esc((d.dataSources || []).join('、'))}${d.dataQuality === 'partial' ? '・⚠️ 部分數據未能取得' : ''}</small>
+          ${(d.sources || []).length ? `<div class="pk-src">${d.sources.map((x) => `<span class="${x.ok ? 'ok' : 'no'}" title="${esc(x.note || '')}">${x.ok ? '✅' : '❌'} ${esc(x.name)}</span>`).join('')}</div>` : ''}</div>
         <div class="pk-mystats"><span>我嘅紀錄</span><b>${st.traded} 筆</b><small>${st.n ? `平均 ${(st.exp >= 0 ? '+' : '') + st.exp.toFixed(2)}R・勝率 ${Math.round(st.wr * 100)}%` : '記錄咗結果先有統計'}</small></div>
       </section>
       ${(m.indices || []).length ? `<section class="card"><div class="card-h">🌐 指數、期貨同市場數據</div><div class="pk-idx">${m.indices.map((x) => `<div><span>${esc(x.sym)}</span><b>${num(x.last) == null ? '—' : F(x.last)}</b><em class="${cls(x.chgPct)}">${P(x.chgPct)}</em>${x.note ? `<small>${esc(x.note)}</small>` : ''}</div>`).join('')}</div></section>` : ''}
@@ -124,6 +144,7 @@
         ${(m.earnings || []).length ? `<p><b>業績：</b>${m.earnings.map((e) => `${esc(e.sym)}（${esc(e.when || '')}${e.note ? '，' + esc(e.note) : ''}）`).join('、')}</p>` : ''}</section>` : ''}
       ${d.focus ? `<section class="card pk-focus"><div class="card-h">⚡ TSLA 今日狀態</div><p>${esc(d.focus)}</p></section>` : ''}
       <h2 class="sec-h">🎯 今日候選股（${(d.picks || []).length}）</h2>
+      ${d.fewPicksReason ? `<p class="pk-risk">ℹ️ ${esc(d.fewPicksReason)}</p>` : ''}
       <div class="pk-list">${(d.picks || []).map((p, i) => pickHTML(p, d.date, i)).join('') || '<div class="empty">今日冇符合條件嘅候選股 —— 冇好機會就唔做，都係一個決定。</div>'}</div>
       ${(d.watch || []).length ? `<section class="card"><div class="card-h">👀 次選／觀察名單</div><ul class="pk-simple">${d.watch.map((x) => `<li><b>${esc(x.sym)}</b> ${esc(x.why)}</li>`).join('')}</ul></section>` : ''}
       ${(d.avoid || []).length ? `<section class="card"><div class="card-h">🚫 今日避開</div><ul class="pk-simple">${d.avoid.map((x) => `<li><b>${esc(x.sym)}</b> ${esc(x.why)}</li>`).join('')}</ul></section>` : ''}
@@ -131,14 +152,17 @@
       ${d.lesson ? `<section class="card tip-card"><div class="card-h">💡 新手提示</div><p>${esc(d.lesson)}</p></section>` : ''}
       ${reviewHTML(d.review)}
       <details class="card pk-method"><summary><b>🔍 選股方法（點樣揀出嚟）</b></summary>
+        <p><b>硬性規則：盤前 RVOL（同時段相對成交量）≥ 2 先可以入候選名單。</b>RVOL = 今日 04:00 至今嘅盤前成交 ÷ 之前 10 日同一段時間嘅平均。</p>
+        <p><b>五大分析：</b>① 大環境（指數、期貨、VIX、板塊）② 日內基本面（今日新聞、業績、公告點解郁）③ 技術分析（日線趨勢、PDH／PDL、PMH／PML）④ 睇盤（盤前成交分佈、買賣差價同掛單、開市首幾分鐘成交）⑤ 直覺（綜合經驗判斷同信心）。</p>
+        <p><b>主力 Setup：開市推動（Opening Drive）</b>—— 開市後股價順住跳空方向突破開市區間（例如首 5 分鐘高位），同時成交量明顯放大（首 5 分鐘成交 ≥ 平時 2 倍），先順勢入場；Stop 放開市區間另一邊或者 VWAP 下方。</p>
         <ol><li><b>流動性先：</b>股價 $5 以上、平均每日成交 200 萬股以上；新手級要市值 10 億美元以上、買賣差價細。</li>
         <li><b>今日有人玩（In Play）：</b>盤前跳空明顯（大型股 ±2% 以上、中小型股 ±4% 以上），而且盤前成交量高過平時。</li>
         <li><b>有催化劑：</b>業績、指引、評級升降、合約、行業消息、宏觀數據。冇新聞嘅急升急跌較易假突破。</li>
         <li><b>清楚嘅價位：</b>盤前高低位（PMH／PML）、昨日高低位（PDH／PDL）、昨收，同日線趨勢（20／50 日線）。</li>
         <li><b>波幅夠但唔過份：</b>ATR 足夠做到 2R，但唔係每分鐘亂跳。</li>
         <li><b>睇大市：</b>指數期貨、VIX、相關板塊、今日經濟數據時間。大市逆風就減少交易。</li></ol>
-        <p class="tool-fine">數據來源：IBKR 實時報價同 Screener（只讀）、網上新聞搜尋。由 AI 排程任務整理，可能有錯漏；所有數字開市前都要自己喺 TradingView／券商再確認。</p></details>
-      <p class="disclaimer">${esc(d.disclaimer || '教學用途，唔係投資建議。Day Trade 風險極高，可能損失全部本金。')}</p>`;
+        <p class="tool-fine">數據來源：IBKR 實時報價同 Screener（只讀）、Yahoo Finance、Nasdaq、SEC 公告、Finviz、StockAnalysis、新聞 RSS 同網上搜尋（實際用到邊啲睇每日頂部嘅來源列）。由 AI 排程任務整理，可能有延遲或者錯漏。</p></details>
+      <p class="disclaimer">${esc(d.disclaimer || 'Day Trade 風險極高，可能損失全部本金。報告由 AI 用公開同券商數據整理，可能有延遲或者錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。')}</p>`;
   }
 
   function bind(view, d) {
@@ -178,7 +202,7 @@
       el.hidden = false;
       el.innerHTML = `<div class="card-h">📋 每日選股 <small>${esc(d0.date)}・${esc(d0.bias || '')}</small><a href="#/picks">全部 →</a></div>
         ${d0.headline ? `<p class="muted">${esc(d0.headline)}</p>` : ''}
-        <div class="quick-tools">${(d0.top || []).slice(0, 4).map((t) => `<a href="#/picks/${esc(d0.date)}"><span>🎯</span><b>${esc(t.sym || t)}</b>${t.gapPct != null ? `&nbsp;<small class="${cls(t.gapPct)}">${P(t.gapPct)}</small>` : ''}${t.beginner ? `&nbsp;<small>${esc(t.beginner)}</small>` : ''}</a>`).join('')}</div>`;
+        <div class="quick-tools">${(d0.top || []).slice(0, 5).map((t) => `<a href="#/picks/${esc(d0.date)}"><span>🎯</span><b>${esc(t.sym || t)}</b>${t.gapPct != null ? `&nbsp;<small class="${cls(t.gapPct)}">${P(t.gapPct)}</small>` : ''}${t.rvol != null ? `&nbsp;<small>RVOL ${F(t.rvol, 1)}×</small>` : ''}${t.beginner ? `&nbsp;<small>${esc(t.beginner)}</small>` : ''}</a>`).join('')}</div>`;
     }).catch(() => {});
   }
 

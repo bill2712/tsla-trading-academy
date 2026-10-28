@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-28T03:07:32.581Z",
+ "updated": "2026-10-28T04:57:21.035Z",
  "days": [
   {
    "date": "2026-10-28",
@@ -11,12 +11,16 @@
     {
      "sym": "TSLA",
      "gapPct": 0.12,
-     "beginner": "適合新手"
+     "rvol": null,
+     "beginner": "適合新手",
+     "grade": "B"
     },
     {
      "sym": "MU",
      "gapPct": 3.06,
-     "beginner": "中等"
+     "rvol": null,
+     "beginner": "中等",
+     "grade": "B"
     }
    ],
    "reviewed": false
