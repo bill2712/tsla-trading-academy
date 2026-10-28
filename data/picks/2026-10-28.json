@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "date": "2026-10-28",
+  "generatedAt": "2026-10-28T03:15:00Z",
+  "status": "test",
+  "dataQuality": "partial",
+  "dataSources": ["IBKR 實時報價（美東 23:00 夜盤）", "IBKR Screener", "IBKR 日線", "網上新聞搜尋"],
+  "headline": "測試版：今晚 14:00 聯儲局議息，MU 盤後升 3%；TSLA 收喺 20 日高位",
+  "market": {
+    "bias": "中性",
+    "summary": "呢份係測試版，喺美東前一晚 23:00 用夜盤報價整理，冇盤前數據；正式版會喺美東 08:30 前更新。夜盤 QQQ +0.26%、SPY 大致持平、SMH 半導體 +0.54%，VIX 收 17.52（−4.7%），情緒平穩。今日最大事件係聯儲局 14:00 公布議息、14:30 記者會，下晝波幅好可能急升，所以大市傾向暫定「中性」。",
+    "indices": [
+      { "sym": "SPY", "last": 770.14, "chgPct": 0.06, "note": "夜盤" },
+      { "sym": "QQQ", "last": 723.14, "chgPct": 0.26, "note": "夜盤" },
+      { "sym": "IWM", "last": 279.72, "chgPct": -0.16, "note": "夜盤" },
+      { "sym": "SMH", "last": 561.01, "chgPct": 0.54, "note": "半導體，夜盤" },
+      { "sym": "VIX", "last": 17.52, "chgPct": -4.73, "note": "昨日收市" }
+    ],
+    "events": [
+      { "time": "08:30 ET", "name": "9 月商品貿易差額（初值）", "impact": "低" },
+      { "time": "10:30 ET", "name": "EIA 原油庫存", "impact": "低" },
+      { "time": "14:00 ET", "name": "聯儲局議息結果", "impact": "高", "note": "14:30 主席記者會。公布前後波幅急升，新手可以 13:45 前平晒倉。" }
+    ],
+    "earnings": [
+      { "sym": "MSFT", "when": "盤後（待確認）", "note": "有日曆列出 10/28，未經公司確認" },
+      { "sym": "GOOGL", "when": "盤後（待確認）", "note": "同上" },
+      { "sym": "META", "when": "盤後（待確認）", "note": "同上" }
+    ]
+  },
+  "focus": "TSLA 昨日收 $407.46，升 4%，收喺 20 日最高位（$408.45）附近；夜盤 $407.96，大致持平。過去兩日由 $372 升到 $407，短線已經急升，今日重點係 PDH $408.45：開市後企穩上方可以研究突破延續，跌返 PDL $395.25 方向就要小心。14:00 議息前後唔好留倉。",
+  "picks": [
+    {
+      "sym": "TSLA", "name": "Tesla", "grade": "B", "beginner": "適合新手", "direction": "Long", "score": 68,
+      "price": 407.96, "prevClose": 407.46, "gapPct": 0.12, "pmVolume": null, "pmVolPct": null,
+      "avgVolume": 26376986, "spread": 0.13, "atr": 13.79, "mktCapB": null, "floatM": null,
+      "levels": { "pmh": null, "pml": null, "pdh": 408.45, "pdl": 395.25, "pdc": 407.46, "other": [{ "label": "20 日線", "price": 374.31 }] },
+      "why": "流動性極高（20 日平均 2,640 萬股、差價 $0.13），ATR $13.8（3.4%）夠空間做 2R；昨日大升收喺 20 日高位，今日開市測試 PDH $408.45 係清晰嘅關鍵位。冇明顯跳空，所以唔係「Gap & Go」，而係突破／回測型。",
+      "catalyst": "未搵到 10/27 當日嘅確定新聞（搜尋結果最新只去到 10/22–23 季績後走勢）。冇新聞嘅突破較易失敗，要靠價格確認。",
+      "technical": "收市高過 20 日線（$374.31）好多，兩日升咗 9%，短線有過熱風險。昨日高 $408.45 = 20 日高位，上方冇近期阻力；下方支持睇昨日低 $395.25。",
+      "setup": "PDH 突破 + 回測（Level 3）：等開市 15 分鐘，升穿 $408.45 之後回測守住先入。",
+      "plan": {
+        "long": "如果 09:45 後升穿 PDH $408.45，回測 $408 附近守住，再升穿回測 K 線高位 → Entry 約 $409.10、Stop $405.60（回測低位下方，約 0.25 ATR）、Target $416.10（約 2R）。",
+        "short": "",
+        "noTrade": "開市跌穿 $403 或者喺 PDH 下面反覆唔企得穩；13:45 之後唔開新倉（議息）。"
+      },
+      "risks": ["兩日急升 9% 之後容易獲利回吐", "冇確定新聞支持", "14:00 議息波動"],
+      "news": []
+    },
+    {
+      "sym": "MU", "name": "Micron Technology", "grade": "B", "beginner": "中等", "direction": "兩邊", "score": 62,
+      "price": 957.2, "prevClose": 928.76, "gapPct": 3.06, "pmVolume": null, "pmVolPct": null,
+      "avgVolume": 16957976, "spread": 0.7, "atr": 47.72, "mktCapB": null, "floatM": null,
+      "levels": { "pmh": null, "pml": null, "pdh": 935.87, "pdl": 910.67, "pdc": 928.76, "other": [{ "label": "20 日線", "price": 972.37 }] },
+      "why": "夜盤升 3.1%，跳空企喺昨日高位 $935.87 上方，半導體 ETF 同步上升；成交活躍（20 日平均 1,700 萬股）。但每股 $957、ATR $47.7（5.1%），$10,000 本金每筆 0.25% 風險只可以買好少股，新手要特別計清楚。",
+      "catalyst": "未確認：IBKR 夜盤顯示升 3%，但搜尋未搵到 10/27 當日原因（搵到嘅都係舊季績新聞）。正式版會再查。",
+      "technical": "日線仲喺 20 日線（$972.37）下面，10 月由 $1,108 跌落嚟，屬反彈而唔係升勢。跳空後第一個阻力係 20 日線 $972 附近。",
+      "setup": "Gap & Go（升穿開市 5 分鐘高位）或者缺口回補（跌返 PDH 下方）。",
+      "plan": {
+        "long": "如果開市 5 分鐘後升穿首支 K 線高位，而且企喺 VWAP 上方 → Entry 首 5 分鐘高位 +$0.20、Stop 首 5 分鐘低位下方、Target $972（20 日線）之前；R:R 唔夠 2 就唔做。",
+        "short": "（只供觀察）如果跌返 PDH $935.87 下方並企唔返，缺口可能回補去昨收 $928.76。新手唔建議做空。",
+        "noTrade": "開市跳空超過 4% 或者首 5 分鐘波幅大過 $15（Stop 太闊，股數太少）。"
+      },
+      "risks": ["升幅原因未確認", "每股價錢高、ATR 大，Stop 要好闊", "20 日線阻力近"],
+      "news": []
+    }
+  ],
+  "watch": [
+    { "sym": "SNDK", "why": "夜盤 +3.0%（$1,343.6），同 MU 一齊升；但 ATR $90.6（6.9%）、每股 $1,300+，新手難控制風險，只觀察。" },
+    { "sym": "SMH", "why": "半導體 ETF 夜盤 +0.5%，可以用嚟確認晶片股強弱。" }
+  ],
+  "avoid": [
+    { "sym": "UCTT", "why": "盤後升 13%，但盤後成交只得 1,300 股、買賣差價 $2.87（約 5%），價格唔可靠，開市可能大幅跳動。" }
+  ],
+  "news": [
+    { "title": "Federal Reserve：2026 年 10 月日程（FOMC 10/27–28）", "source": "Federal Reserve", "url": "https://www.federalreserve.gov/newsevents/2026-october.htm", "time": "官方日程" },
+    { "title": "Weekly Event Calendar 10/26–10/30/2026", "source": "Investrade", "url": "https://investrade.com/weekly-event-calendar-10-26-2026-10-30-2026/", "time": "10/23" },
+    { "title": "Market Pulse 2026-10-22（納指跌 2.6%）", "source": "Tapeboard", "url": "https://tapeboard.com/blog/market-pulse-2026-10-22", "time": "10/22" }
+  ],
+  "lesson": "議息日（FOMC）嘅節奏：早段（09:45–11:30）通常最適合新手；13:30 之後成交縮、14:00 公布一刻可以幾秒內上落幾個百分點，Stop 都未必喺你設定嘅價成交。最穩陣係 13:45 前平晒倉，等第二日先再做。",
+  "disclaimer": "測試版：用夜盤報價，冇盤前數據，正式版會覆蓋。教學用途，唔係投資建議。Day Trade 風險極高，可能損失全部本金。所有數字開市前請自行喺券商／TradingView 再確認。"
+}

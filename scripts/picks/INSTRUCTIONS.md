@@ -20,7 +20,7 @@ recommendation to buy or sell. Never invent numbers, news, or URLs.
 - **Never** call any tool that creates, edits, or deletes anything at IBKR (orders, order
   instructions, alerts, watchlists, saved screeners), and never read account balances,
   positions, orders or trades. They are not needed.
-- Only change files under `data/picks/`. Do not touch app code.
+- Only change files under `data/picks/` (and add new IDs to `scripts/picks/contracts.json`). Do not touch app code.
 - If a number is unavailable, write `null` and set `"dataQuality": "partial"`. Never guess.
 - Only cite news URLs that actually appeared in your search results or fetched pages.
 
@@ -57,11 +57,18 @@ and add:
 `chgFromOpenPct = (close − open) ÷ open × 100`; `hitPmh = high > levels.pmh` (null if no pmh).
 Be honest: a pick that went nowhere is a useful lesson, not something to hide.
 
+## Contract IDs
+
+Look up IBKR `contract_id`s in `scripts/picks/contracts.json` first. Only call
+`search_contracts` for symbols not listed (its output is very long), pick the row with
+`country_code: "US"` and the exact `symbol`, and add it to `contracts.json` (commit it with the
+report). Screener results already include `contract_id`.
+
 ## 3. Market overview
 
 `get_price_snapshot` with `["last","change","prior_close","volume"]` for:
 SPY, QQQ, IWM, DIA (US ETFs), plus sector ETFs SMH and XLK. Try the VIX index
-(`search_contracts` "VIX", the CBOE index row) and ES/NQ front-month futures
+(`contracts.json`: IND on CBOE) and ES/NQ front-month futures
 (`search_futures`, pass the contract's `exchange`). Skip any that return nothing.
 
 Put them in `market.indices` as `{ "sym", "last", "chgPct", "note" }`.
@@ -193,7 +200,7 @@ percent values (2.5 means +2.5%). `price` is the latest pre-market price.
 
 ```bash
 node scripts/picks/build.mjs        # must print ✅ — fix every ❌ and run again
-git add data/picks
+git add data/picks scripts/picks/contracts.json
 git commit -m "Daily picks <targetDate>"
 git push origin main                # if rejected: git pull --rebase origin main, then push again
 ```

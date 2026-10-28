@@ -1,4 +1,25 @@
 {
- "updated": "2026-10-28T02:59:42.348Z",
- "days": []
+ "updated": "2026-10-28T03:07:32.581Z",
+ "days": [
+  {
+   "date": "2026-10-28",
+   "status": "test",
+   "bias": "中性",
+   "headline": "測試版：今晚 14:00 聯儲局議息，MU 盤後升 3%；TSLA 收喺 20 日高位",
+   "n": 2,
+   "top": [
+    {
+     "sym": "TSLA",
+     "gapPct": 0.12,
+     "beginner": "適合新手"
+    },
+    {
+     "sym": "MU",
+     "gapPct": 3.06,
+     "beginner": "中等"
+    }
+   ],
+   "reviewed": false
+  }
+ ]
 }

@@ -1,0 +1,19 @@
+{
+ "_note": "IBKR contract_id 快取（美國主要上市）。用 get_price_snapshot / get_price_history 前先查呢度；冇先用 search_contracts，搵到之後加入呢個檔案（揀 country_code US、symbol 完全一樣嗰行）。Screener 結果本身已經有 contract_id。",
+ "SPY": { "id": 756733, "type": "STK", "name": "SPDR S&P 500 ETF" },
+ "QQQ": { "id": 320227571, "type": "STK", "name": "Invesco QQQ（納指 100）" },
+ "IWM": { "id": 9579970, "type": "STK", "name": "iShares 羅素 2000" },
+ "DIA": { "id": 73128548, "type": "STK", "name": "SPDR 道指" },
+ "SMH": { "id": 229725622, "type": "STK", "name": "VanEck 半導體 ETF" },
+ "XLK": { "id": 4215230, "type": "STK", "name": "科技板塊 ETF" },
+ "VIX": { "id": 13455763, "type": "IND", "exchange": "CBOE", "name": "VIX 恐慌指數" },
+ "TSLA": { "id": 76792991, "type": "STK", "name": "Tesla" },
+ "NVDA": { "id": 4815747, "type": "STK", "name": "NVIDIA" },
+ "AAPL": { "id": 265598, "type": "STK", "name": "Apple" },
+ "AMD": { "id": 4391, "type": "STK", "name": "AMD" },
+ "META": { "id": 107113386, "type": "STK", "name": "Meta Platforms" },
+ "AMZN": { "id": 3691937, "type": "STK", "name": "Amazon" },
+ "MSFT": { "id": 272093, "type": "STK", "name": "Microsoft" },
+ "GOOGL": { "id": 208813719, "type": "STK", "name": "Alphabet A" },
+ "MU": { "id": 9939, "type": "STK", "name": "Micron" }
+}
