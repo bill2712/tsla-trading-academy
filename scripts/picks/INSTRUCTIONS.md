@@ -41,6 +41,20 @@ cd /home/user/tsla-trading-academy && git checkout main && git pull origin main
 node scripts/picks/market-day.mjs
 ```
 
+Make sure the trader-skill pack is installed (the machine can be reset between runs).
+It is pinned to a reviewed commit; don't upgrade it without reviewing the new code:
+
+```bash
+if [ ! -f ~/.claude/skills/trader-news/news.py ]; then
+  git clone https://github.com/Jakeschincariol/trader-skill /tmp/trader-skill \
+    && git -C /tmp/trader-skill checkout 5189e79 \
+    && mkdir -p ~/.claude/skills && cp -r /tmp/trader-skill/trader-* ~/.claude/skills/
+fi
+mkdir -p /tmp/picks && cd /tmp/picks   # trader-* tools write a trader/ folder in the current directory — keep it out of the repo
+python3 ~/.claude/skills/trader-alerts/alerts.py clock   # cross-check the NYSE calendar / half day
+cd /home/user/tsla-trading-academy
+```
+
 Use `targetDate` and `status`. If today is not a trading day, stop (no files, no commit) and
 notify 「今日美股休市（原因）」. Mention a half day (13:00 close) in summary and events.
 
@@ -106,7 +120,22 @@ For each pick, set `lists` to the lists it appears on, e.g.
 `["CNBC 盤前異動", "TradeThatSwing 本週名單", "StockAnalysis 盤前升幅榜", "Warrior 動能準則"]`.
 Being on several lists raises confidence but never replaces the RVOL ≥ 2 rule.
 
-### 3d. News and calendar (web search + the collector's feeds)
+### 3d. trader-skill pack (run from `/tmp/picks`)
+
+| Skill / tool | Command | Use it for |
+|---|---|---|
+| trader-news | `python3 ~/.claude/skills/trader-news/news.py --tickers SYM1 SYM2 … --hours 24 --dry-run --state /tmp/picks/news-state.json` | Headlines per candidate (Yahoo, fetched one ticker at a time) plus 8-K filings when an SEC user agent is set. Add `--no-sec` if not. |
+| trader-alerts | `python3 ~/.claude/skills/trader-alerts/alerts.py quote SYM1 SYM2 …` | Second price source (delayed; yesterday's close) to cross-check IBKR's prevClose. |
+| trader-analyst | `python3 ~/.claude/skills/trader-analyst/facts.py SYM` | For earnings movers: revenue, margins, EPS vs a year ago from SEC filings → `pillars.fundamentals`. Needs an SEC user agent. |
+| trader-pelosi | `python3 ~/.claude/skills/trader-pelosi/ptr.py index --member <name>` / `--help` | Optional: recent Congress trades in a pick → tag `lists` with 「國會議員近期交易」. |
+
+SEC user agent: `SEC_USER_AGENT` env var, or `/tmp/picks/trader/config.json` with
+`{"sec_user_agent": "Name email"}`, copied from `scripts/picks/config.json` → `secContact` when set.
+If it is empty, run trader-news with `--no-sec` and skip trader-analyst; record that in `sources`.
+Do not use trader-budget / trader-risk / trader-broker / trader-alerts `add` in this task —
+this task never prepares or places orders.
+
+### 3e. News and calendar (web search + the collector's feeds)
 
 - Web search (several queries in one turn): `stock market futures premarket <Month D, YYYY>`,
   `economic calendar <Month D, YYYY>`, `<SYM> stock news <Month D>` for each candidate, and

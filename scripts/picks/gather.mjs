@@ -20,11 +20,14 @@ const INDEX = ['SPY', 'QQQ', 'IWM', 'DIA', 'SMH', 'XLK', '^VIX', '^TNX', 'ES=F',
 let symbols = (opt('--symbols', '') || '').split(',').map((s) => s.trim().toUpperCase()).filter(Boolean);
 if (!symbols.length) symbols = CORE.slice();
 const wantMovers = args.includes('--movers');
+// Yahoo 預設唔用：佢對呢個雲端 IP 限流（HTTP 429）。價格同 RVOL 用 IBKR；Yahoo 報價同新聞交俾 trader-alerts／trader-news（一次一隻）。
+const useYahoo = args.includes('--yahoo');
 
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 // SEC 要求每個請求附真實聯絡電郵：喺 scripts/picks/config.json 填 secContact，或者設環境變數 SEC_CONTACT
 let cfg = {}; try { cfg = JSON.parse(fs.readFileSync(new URL('./config.json', import.meta.url), 'utf8')); } catch (e) {}
-const SEC_CONTACT = process.env.SEC_CONTACT || cfg.secContact || '';
+// 同 trader-skill 共用：SEC_USER_AGENT（「名 電郵」）亦得
+const SEC_CONTACT = process.env.SEC_CONTACT || process.env.SEC_USER_AGENT || cfg.secContact || '';
 const SEC_UA = `tsla-trading-academy research ${SEC_CONTACT}`;
 const sources = {};
 const note = (name, ok, extra) => { const s = (sources[name] = sources[name] || { ok: 0, fail: 0 }); ok ? s.ok++ : s.fail++; if (!ok && extra && !s.error) s.error = String(extra).slice(0, 160); };
@@ -43,7 +46,14 @@ const recent = (iso, hours) => { const t = Date.parse(iso); return isFinite(t) &
 
 /* ---------- Yahoo 價格 ---------- */
 let yahoo429 = 0; // 連續被限流 3 次就唔再問 Yahoo（尊重對方限流）
-async function yahooChart(sym, range, interval, prepost) {
+let yq = Promise.resolve(); // Yahoo 一次只問一個，每個之間隔 0.5 秒，避免觸發限流
+function yahooChart(sym, range, interval, prepost) {
+  if (!useYahoo) return Promise.resolve(null);
+  const run = yq.then(() => yahooChartNow(sym, range, interval, prepost)).finally(() => new Promise((r) => setTimeout(r, 500)));
+  yq = run.catch(() => {});
+  return run;
+}
+async function yahooChartNow(sym, range, interval, prepost) {
   if (yahoo429 >= 3) { note('Yahoo 價格', false, 'HTTP 429（Yahoo 限流，已停止再試）'); return null; }
   const host = Math.random() < 0.5 ? 'query1' : 'query2';
   const url = `https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=${range}&interval=${interval}&includePrePost=${prepost}`;
@@ -54,6 +64,7 @@ async function yahooChart(sym, range, interval, prepost) {
   return null;
 }
 async function yahooMetrics(sym) {
+  if (!useYahoo) return { sym, note: '價格同 RVOL 用 IBKR（Yahoo 預設關閉）' };
   const [d, i] = await Promise.all([yahooChart(sym, '1y', '1d', false), yahooChart(sym, '10d', '5m', true)]);
   if (!d) return { sym, error: 'Yahoo 日線失敗' };
   const D = fromYahoo(d), meta = D.meta || {};
@@ -66,6 +77,7 @@ async function yahooMetrics(sym) {
 
 /* ---------- 新聞 ---------- */
 async function yahooNews(sym) {
+  if (!useYahoo) return [];
   if (yahoo429 >= 3) { note('Yahoo 新聞 RSS', false, 'HTTP 429（Yahoo 限流，已停止再試）'); return []; }
   try {
     const x = await get(`https://feeds.finance.yahoo.com/rss/2.0/headline?s=${encodeURIComponent(sym)}&region=US&lang=en-US`, { json: false });
@@ -154,7 +166,7 @@ if (wantMovers) {
 }
 const [earnings, econ] = await Promise.all([nasdaqEarnings(), nasdaqEconomic()]);
 result.market.earnings = earnings; result.market.economic = econ;
-const idx = await pool(INDEX, 4, yahooMetrics);
+const idx = useYahoo ? await pool(INDEX, 4, yahooMetrics) : [];
 idx.forEach((m) => (result.market[m.sym] = { last: m.pmLast ?? null, pdc: m.pdc ?? null, chgPct: m.gapPct ?? null, rvol: m.rvol ?? null, trend: m.trend, error: m.error }));
 const alp = await alpacaNews(symbols);
 await pool(symbols, 4, async (sym) => {
