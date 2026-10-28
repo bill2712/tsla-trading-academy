@@ -55,11 +55,18 @@ learns which kinds of picks work.
 
 ## 3. Collect data — use all sources
 
-### 3a. Automatic collector (Yahoo, Nasdaq, SEC, Finviz, StockAnalysis, RSS, Alpaca)
+### 3a. Automatic collector (Nasdaq, StockAnalysis, Finviz, Yahoo, SEC, RSS, Alpaca)
 
 ```bash
-node scripts/picks/gather.mjs --date <targetDate> --movers --out /tmp/picks/gather.json
+NODE_USE_ENV_PROXY=1 node --no-warnings scripts/picks/gather.mjs --date <targetDate> --movers --out /tmp/picks/gather.json
 ```
+
+(`NODE_USE_ENV_PROXY=1` is required — without it Node cannot reach the internet in this sandbox.)
+Known status: Nasdaq calendars, StockAnalysis pre-market movers and Finviz news work. Yahoo often
+answers HTTP 429 from this cloud IP — the collector stops after 3 refusals; do not try to get
+around rate limits. SEC needs `secContact` in `scripts/picks/config.json`; if empty it is skipped.
+Use the Nasdaq economic calendar (`timeET`, consensus, previous, actual) for `market.events` and
+the Nasdaq earnings list for `market.earnings`.
 
 Prints which sources worked, plus a table (price, gap %, RVOL, pre-market volume, ATR %,
 news count, SEC filings). Add `--symbols A,B,C` to check extra names (e.g. from IBKR scans).
@@ -84,7 +91,22 @@ Contract IDs: `scripts/picks/contracts.json` first; `search_contracts` only for 
   `node scripts/picks/calc.mjs --date <targetDate> /tmp/picks/SYM-daily.json /tmp/picks/SYM-1h.json`.
   It returns `rvol`, `rvolPass`, `pmh/pml`, `gapPct`, `atr14`, levels and trend.
 
-### 3c. News and calendar (web search + the collector's feeds)
+### 3c. Daily reference lists (check every run)
+
+Use the **web search tool with `allowed_domains`** (these sites block scripted access; don't
+scrape them or call their internal APIs):
+
+| Source | Search | Use it for |
+|---|---|---|
+| CNBC (`cnbc.com`) | `stocks making the biggest moves premarket <Month D, YYYY>` and `stock market today live updates <Month D>` | Today's premarket movers with the reason, market tone |
+| TradeThatSwing (`tradethatswing.com`) | `best stocks for day trading this week` | Weekly list of liquid, high-range day-trading names (high volatility %, big $ movement, mid-priced high volume). Tag picks that are on it. |
+| Warrior Trading (`warriortrading.com`) | `day trading watch list` | Its live scanner table is not publicly readable — use its stock-selection criteria: up ≥ 10% / big gap, RVOL ≥ 5×, price $1–20, fresh news, float < 20M. Names that meet all five get the tag 「Warrior 動能準則」 and are usually 高風險. |
+
+For each pick, set `lists` to the lists it appears on, e.g.
+`["CNBC 盤前異動", "TradeThatSwing 本週名單", "StockAnalysis 盤前升幅榜", "Warrior 動能準則"]`.
+Being on several lists raises confidence but never replaces the RVOL ≥ 2 rule.
+
+### 3d. News and calendar (web search + the collector's feeds)
 
 - Web search (several queries in one turn): `stock market futures premarket <Month D, YYYY>`,
   `economic calendar <Month D, YYYY>`, `<SYM> stock news <Month D>` for each candidate, and
@@ -96,7 +118,7 @@ Contract IDs: `scripts/picks/contracts.json` first; `search_contracts` only for 
 
 ## 4. Choose the picks
 
-1. Pool = collector table + IBKR scans + core liquid names (TSLA, NVDA, AAPL, AMD, META, AMZN,
+1. Pool = collector table + IBKR scans + CNBC premarket movers + TradeThatSwing weekly list + core liquid names (TSLA, NVDA, AAPL, AMD, META, AMZN,
    MSFT, GOOGL, AVGO, NFLX, PLTR, COIN, MU, SMCI, MSTR, HOOD, ARM).
 2. Filter: price ≥ $5, average volume ≥ 1M shares, normal spread (≤ ~0.15% of price for large
    caps), **RVOL ≥ 2**.
@@ -161,7 +183,8 @@ direction of the gap with a clear volume surge. Alternatives: PMH/PDH breakout +
     "pillars": { "bigPicture": "", "fundamentals": "", "technical": "", "tape": "", "intuition": "" },
     "trade": { "side": "Long", "trigger": "", "entry": 0, "stop": 0, "target1": 0, "target2": null, "rr": 0 },
     "plan": { "long": "", "short": "", "noTrade": "" },
-    "risks": [], "news": [{ "title": "", "source": "", "url": "https://…", "time": "" }], "newsNote": "（冇新聞先寫）"
+    "risks": [], "news": [{ "title": "", "source": "", "url": "https://…", "time": "" }], "newsNote": "（冇新聞先寫）",
+    "lists": ["CNBC 盤前異動", "TradeThatSwing 本週名單"]
   }],
   "watch": [{ "sym": "", "why": "" }], "avoid": [{ "sym": "", "why": "" }],
   "news": [{ "title": "", "source": "", "url": "https://…", "time": "", "tickers": [] }],

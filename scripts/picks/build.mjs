@@ -113,6 +113,7 @@ function checkPickV2(f, w, p) {
       if (req(p.atr) && Math.abs(t.entry - t.stop) > p.atr) warn(f, `${w}.trade Stop 闊過一個 ATR，檢查下`);
     }
   }
+  if (p.lists != null && !(Array.isArray(p.lists) && p.lists.every((x) => nonEmpty(x, 40)))) err(f, `${w}.lists 要係字串 array`);
   if (!(p.news || []).length && !nonEmpty(p.newsNote, 300)) err(f, `${w} 冇新聞：要搵到最少 1 條有連結嘅新聞，或者用 newsNote 講明搜尋過但冇新聞`);
 }
 

@@ -1237,3 +1237,5 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .pk-pillars dt { font-weight: 700; font-size: .88em; }
 .pk-pillars dd { margin: 0; font-size: .92em; }
 @media (max-width: 640px) { .pk-pillars dl > div { grid-template-columns: 1fr; gap: 2px; } }
+.pk-lists { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.pk-lists span { font-size: .78em; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }

@@ -1,5 +1,5 @@
 // 多來源數據收集（唔使人手抄數據）：
-//   node scripts/picks/gather.mjs --date YYYY-MM-DD [--symbols TSLA,NVDA] [--movers] [--out /tmp/picks/gather.json]
+//   NODE_USE_ENV_PROXY=1 node --no-warnings scripts/picks/gather.mjs --date YYYY-MM-DD [--symbols TSLA,NVDA] [--movers] [--out /tmp/picks/gather.json]
 // 來源（每個都係可選；失敗會記錄喺 sources，唔會令成個程式停）：
 //   Yahoo Finance chart API（日線 + 5 分鐘盤前 → ATR、PDH/PDL、PMH/PML、跳空、RVOL at time）
 //   Yahoo Finance RSS（個股新聞）、Finviz（流通股、沽空比例、業績日、新聞）
@@ -22,7 +22,10 @@ if (!symbols.length) symbols = CORE.slice();
 const wantMovers = args.includes('--movers');
 
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
-const SEC_UA = 'tsla-trading-academy research (github.com/bill2712/tsla-trading-academy)';
+// SEC 要求每個請求附真實聯絡電郵：喺 scripts/picks/config.json 填 secContact，或者設環境變數 SEC_CONTACT
+let cfg = {}; try { cfg = JSON.parse(fs.readFileSync(new URL('./config.json', import.meta.url), 'utf8')); } catch (e) {}
+const SEC_CONTACT = process.env.SEC_CONTACT || cfg.secContact || '';
+const SEC_UA = `tsla-trading-academy research ${SEC_CONTACT}`;
 const sources = {};
 const note = (name, ok, extra) => { const s = (sources[name] = sources[name] || { ok: 0, fail: 0 }); ok ? s.ok++ : s.fail++; if (!ok && extra && !s.error) s.error = String(extra).slice(0, 160); };
 
@@ -39,10 +42,16 @@ const strip = (s) => String(s || '').replace(/<!\[CDATA\[|\]\]>/g, '').replace(/
 const recent = (iso, hours) => { const t = Date.parse(iso); return isFinite(t) && Date.now() - t <= hours * 3600e3; };
 
 /* ---------- Yahoo 價格 ---------- */
+let yahoo429 = 0; // 連續被限流 3 次就唔再問 Yahoo（尊重對方限流）
 async function yahooChart(sym, range, interval, prepost) {
+  if (yahoo429 >= 3) { note('Yahoo 價格', false, 'HTTP 429（Yahoo 限流，已停止再試）'); return null; }
   const host = Math.random() < 0.5 ? 'query1' : 'query2';
   const url = `https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=${range}&interval=${interval}&includePrePost=${prepost}`;
-  try { const j = await get(url); note('Yahoo 價格', true); return j; } catch (e) { note('Yahoo 價格', false, e.message); return null; }
+  for (let a = 0; a < 2; a++) {
+    try { const j = await get(url); yahoo429 = 0; note('Yahoo 價格', true); return j; }
+    catch (e) { if (/429/.test(e.message)) yahoo429++; if (a === 1 || !/429/.test(e.message) || yahoo429 >= 3) { note('Yahoo 價格', false, /429/.test(e.message) ? 'HTTP 429（Yahoo 限流）' : e.message); return null; } await new Promise((r) => setTimeout(r, 3000)); }
+  }
+  return null;
 }
 async function yahooMetrics(sym) {
   const [d, i] = await Promise.all([yahooChart(sym, '1y', '1d', false), yahooChart(sym, '10d', '5m', true)]);
@@ -57,6 +66,7 @@ async function yahooMetrics(sym) {
 
 /* ---------- 新聞 ---------- */
 async function yahooNews(sym) {
+  if (yahoo429 >= 3) { note('Yahoo 新聞 RSS', false, 'HTTP 429（Yahoo 限流，已停止再試）'); return []; }
   try {
     const x = await get(`https://feeds.finance.yahoo.com/rss/2.0/headline?s=${encodeURIComponent(sym)}&region=US&lang=en-US`, { json: false });
     const items = [...x.matchAll(/<item>([\s\S]*?)<\/item>/g)].map((m) => {
@@ -71,12 +81,15 @@ async function finviz(sym) {
     const h = await get(`https://finviz.com/quote.ashx?t=${encodeURIComponent(sym.replace('.', '-'))}&p=d`, { json: false });
     const field = (label) => { const m = h.match(new RegExp(`>${label}<\\/td>\\s*<td[^>]*>(?:<[^>]+>)*([^<]+)`)); return m ? m[1].trim() : null; };
     const news = [...h.matchAll(/<a[^>]+class="tab-link-news"[^>]+href="([^"]+)"[^>]*>([^<]+)<\/a>/g)].slice(0, 6).map((m) => ({ title: strip(m[2]), url: m[1].startsWith('http') ? m[1] : 'https://finviz.com' + m[1], source: 'Finviz' })).filter((n) => /^https:/.test(n.url));
-    note('Finviz', true);
+    const ok = field('Shs Float') || news.length;
+    note('Finviz', !!ok, ok ? '' : '頁面格式改咗，讀唔到欄位');
+    if (!ok) return null;
     return { float: field('Shs Float'), shortFloat: field('Short Float'), earnings: field('Earnings'), relVolume: field('Rel Volume'), avgVolume: field('Avg Volume'), marketCap: field('Market Cap'), sector: field('Sector'), news };
   } catch (e) { note('Finviz', false, e.message); return null; }
 }
 let secMap = null;
 async function secFilings(sym) {
+  if (!/@/.test(SEC_CONTACT)) { sources['SEC EDGAR'] = { ok: 0, fail: 0, error: '未設定聯絡電郵（config.json secContact）' }; return []; }
   try {
     if (!secMap) { const j = await get('https://www.sec.gov/files/company_tickers.json', { headers: { 'User-Agent': SEC_UA } }); secMap = {}; Object.values(j).forEach((r) => (secMap[r.ticker] = r.cik_str)); }
     const cik = secMap[sym.replace('.', '-')]; if (!cik) return [];
@@ -113,11 +126,12 @@ async function nasdaqEarnings() {
       .sort((a, b) => (parseFloat(String(b.marketCap).replace(/[$,]/g, '')) || 0) - (parseFloat(String(a.marketCap).replace(/[$,]/g, '')) || 0)).slice(0, 40);
   } catch (e) { note('Nasdaq 業績日曆', false, e.message); return []; }
 }
+// Nasdaq 欄位叫 gmt，但實際係美東時間（例如耐用品訂單 08:30）
 async function nasdaqEconomic() {
   try {
     const j = await get(`https://api.nasdaq.com/api/calendar/economicevents?date=${target}`, { headers: NASDAQ_H });
     note('Nasdaq 經濟日曆', true);
-    return ((j.data && j.data.rows) || []).filter((r) => /United States/i.test(r.country || '')).map((r) => ({ timeGMT: r.gmt, name: r.eventName, consensus: r.consensus, previous: r.previous, actual: r.actual }));
+    return ((j.data && j.data.rows) || []).filter((r) => /United States/i.test(r.country || '')).map((r) => ({ timeET: r.gmt, name: r.eventName, consensus: r.consensus, previous: r.previous, actual: r.actual }));
   } catch (e) { note('Nasdaq 經濟日曆', false, e.message); return []; }
 }
 
@@ -125,7 +139,8 @@ async function nasdaqEconomic() {
 async function stockanalysisMovers(kind) {
   try {
     const h = await get(`https://stockanalysis.com/markets/premarket/${kind}/`, { json: false });
-    const syms = [...new Set([...h.matchAll(/href="\/stocks\/([a-z0-9.\-]+)\/"/g)].map((m) => m[1].toUpperCase()))].slice(0, 25);
+    const NAV = new Set(['screener', 'compare', 'earnings-calendar', 'industry', 'sector', 'ipos', 'list', 'etf', 'market-cap']);
+    const syms = [...new Set([...h.matchAll(/href="\/stocks\/([a-z0-9.\-]+)\/"/g)].map((m) => m[1]).filter((x) => !NAV.has(x) && /^[a-z]{1,5}(\.[a-z])?$/.test(x)).map((x) => x.toUpperCase()))].slice(0, 25);
     note('StockAnalysis 盤前榜', true); return syms;
   } catch (e) { note('StockAnalysis 盤前榜', false, e.message); return []; }
 }

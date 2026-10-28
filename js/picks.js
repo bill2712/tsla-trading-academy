@@ -79,6 +79,7 @@
         <div><span>市值</span><b>${num(p.mktCapB) == null ? '—' : F(p.mktCapB, 1) + 'B'}</b></div>
         <div><span>流通股</span><b>${num(p.floatM) == null ? '—' : big(p.floatM * 1e6)}</b></div>
       </div>
+      ${(p.lists || []).length ? `<div class="pk-lists">${p.lists.map((x) => `<span>📌 ${esc(x)}</span>`).join('')}</div>` : ''}
       <div class="pk-levels">${lvl('PMH', L.pmh)}${lvl('PML', L.pml)}${lvl('PDH', L.pdh)}${lvl('PDL', L.pdl)}${lvl('昨收', L.pdc)}${(L.other || []).map((o) => lvl(esc(o.label), o.price)).join('')}</div>
       ${p.why ? `<p class="pk-why"><b>點解適合今日 Day Trade：</b>${esc(p.why)}</p>` : ''}
       ${p.catalyst ? `<p><b>📰 催化劑：</b>${esc(p.catalyst)}</p>` : ''}
@@ -155,13 +156,14 @@
         <p><b>硬性規則：盤前 RVOL（同時段相對成交量）≥ 2 先可以入候選名單。</b>RVOL = 今日 04:00 至今嘅盤前成交 ÷ 之前 10 日同一段時間嘅平均。</p>
         <p><b>五大分析：</b>① 大環境（指數、期貨、VIX、板塊）② 日內基本面（今日新聞、業績、公告點解郁）③ 技術分析（日線趨勢、PDH／PDL、PMH／PML）④ 睇盤（盤前成交分佈、買賣差價同掛單、開市首幾分鐘成交）⑤ 直覺（綜合經驗判斷同信心）。</p>
         <p><b>主力 Setup：開市推動（Opening Drive）</b>—— 開市後股價順住跳空方向突破開市區間（例如首 5 分鐘高位），同時成交量明顯放大（首 5 分鐘成交 ≥ 平時 2 倍），先順勢入場；Stop 放開市區間另一邊或者 VWAP 下方。</p>
+        <p><b>每日參考名單：</b>CNBC「盤前異動股」、TradeThatSwing 每週 Day Trade 名單、StockAnalysis 盤前升跌榜，同埋 Warrior Trading 嘅動能選股準則（升 ≥ 10%、RVOL ≥ 5、股價 $1–20、有新聞、流通股 < 2,000 萬）。每隻候選股會標明出現喺邊個名單。</p>
         <ol><li><b>流動性先：</b>股價 $5 以上、平均每日成交 200 萬股以上；新手級要市值 10 億美元以上、買賣差價細。</li>
         <li><b>今日有人玩（In Play）：</b>盤前跳空明顯（大型股 ±2% 以上、中小型股 ±4% 以上），而且盤前成交量高過平時。</li>
         <li><b>有催化劑：</b>業績、指引、評級升降、合約、行業消息、宏觀數據。冇新聞嘅急升急跌較易假突破。</li>
         <li><b>清楚嘅價位：</b>盤前高低位（PMH／PML）、昨日高低位（PDH／PDL）、昨收，同日線趨勢（20／50 日線）。</li>
         <li><b>波幅夠但唔過份：</b>ATR 足夠做到 2R，但唔係每分鐘亂跳。</li>
         <li><b>睇大市：</b>指數期貨、VIX、相關板塊、今日經濟數據時間。大市逆風就減少交易。</li></ol>
-        <p class="tool-fine">數據來源：IBKR 實時報價同 Screener（只讀）、Yahoo Finance、Nasdaq、SEC 公告、Finviz、StockAnalysis、新聞 RSS 同網上搜尋（實際用到邊啲睇每日頂部嘅來源列）。由 AI 排程任務整理，可能有延遲或者錯漏。</p></details>
+        <p class="tool-fine">數據來源：IBKR 實時報價同 Screener（只讀）、Nasdaq 業績同經濟日曆、StockAnalysis、Finviz、CNBC、TradeThatSwing、Yahoo Finance、SEC 公告同網上搜尋（實際用到邊啲睇每日頂部嘅來源列）。由 AI 排程任務整理，可能有延遲或者錯漏。</p></details>
       <p class="disclaimer">${esc(d.disclaimer || 'Day Trade 風險極高，可能損失全部本金。報告由 AI 用公開同券商數據整理，可能有延遲或者錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。')}</p>`;
   }
 
