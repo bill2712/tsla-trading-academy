@@ -129,9 +129,11 @@ Being on several lists raises confidence but never replaces the RVOL ≥ 2 rule.
 | trader-analyst | `python3 ~/.claude/skills/trader-analyst/facts.py SYM` | For earnings movers: revenue, margins, EPS vs a year ago from SEC filings → `pillars.fundamentals`. Needs an SEC user agent. |
 | trader-pelosi | `python3 ~/.claude/skills/trader-pelosi/ptr.py index --member <name>` / `--help` | Optional: recent Congress trades in a pick → tag `lists` with 「國會議員近期交易」. |
 
-SEC user agent: `SEC_USER_AGENT` env var, or `/tmp/picks/trader/config.json` with
-`{"sec_user_agent": "Name email"}`, copied from `scripts/picks/config.json` → `secContact` when set.
-If it is empty, run trader-news with `--no-sec` and skip trader-analyst; record that in `sources`.
+SEC user agent (set, from `scripts/picks/config.json` → `secContact`). Before running the
+trader-* tools and gather.mjs, export it in the same shell command:
+`export SEC_USER_AGENT="$(node -p "require('/home/user/tsla-trading-academy/scripts/picks/config.json').secContact")"`.
+Keep SEC requests polite (the tools already limit themselves; don't run them in parallel loops).
+If SEC answers 403, run trader-news with `--no-sec`, skip trader-analyst and record it in `sources`.
 Do not use trader-budget / trader-risk / trader-broker / trader-alerts `add` in this task —
 this task never prepares or places orders.
 
