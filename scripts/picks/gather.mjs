@@ -48,9 +48,10 @@ result.market.economicNote = econ.note || '';
 const saMap = {}; [...saG, ...saL].forEach((r) => (saMap[r.sym] = r));
 const tbsMap = {}; tbs.watch.forEach((x) => (tbsMap[x.sym] = Object.assign({ kind: '即將突破' }, x))); tbs.yesterday.forEach((x) => (tbsMap[x.sym] = tbsMap[x.sym] || Object.assign({ kind: '昨日突破' }, x)));
 // 候選池：細價、冇乜成交嘅盤前異動股先過濾走（新手唔做 $1 以下、盤前成交 < 5 萬股）
+const liquid = (x) => x.price == null || x.price >= 2; // Alpaca 異動榜有好多認股證同 $1 以下嘅股，唔要
 const saPool = [...saG, ...saL].filter((r) => (r.price == null || r.price >= 1) && (r.pmVolume == null || r.pmVolume >= 50000)).map((r) => r.sym);
 const pool = [...new Set([
-  ...userSyms, ...saPool, ...alpM.gainers.slice(0, 20).map((x) => x.sym), ...alpM.losers.slice(0, 15).map((x) => x.sym), ...alpM.active.slice(0, 15).map((x) => x.sym),
+  ...userSyms, ...saPool, ...alpM.gainers.filter(liquid).slice(0, 20).map((x) => x.sym), ...alpM.losers.filter(liquid).slice(0, 15).map((x) => x.sym), ...alpM.active.slice(0, 15).map((x) => x.sym),
   ...result.market.earnings.filter((e) => e.mcap >= 2e9).map((e) => e.sym), ...CORE,
   ...tbs.watch.map((x) => x.sym), ...tbs.yesterday.map((x) => x.sym)
 ])].filter(okSym).filter((s) => !INDEX.includes(s)).slice(0, MAX);
@@ -100,6 +101,10 @@ const baseArg = Object.fromEntries((opt('--base', '') || '').split(',').filter(B
 const base = { spy: idx.SPY && idx.SPY.chgPct != null ? idx.SPY.chgPct : baseArg.spy ?? null, qqq: idx.QQQ && idx.QQQ.chgPct != null ? idx.QQQ.chgPct : baseArg.qqq ?? null };
 result.market.base = Object.assign({ from: idx.QQQ && idx.QQQ.chgPct != null ? idx.QQQ.source : (baseArg.qqq != null ? '--base（人手輸入）' : null) }, base);
 
+const live = Math.abs(Date.now() - NOW) < 30 * 60e3; // --now 係過去時間（重做測試）就唔用即時 IEX 報價
+const withPx = pool.filter((s) => M[s] && M[s].pmLast != null);
+const quoteList = [...new Set([...userSyms, ...CORE].filter((s) => withPx.includes(s)).concat(withPx.sort((a, b) => Math.abs(M[b].gapPct || 0) - Math.abs(M[a].gapPct || 0)).slice(0, 60)))];
+const sipQ = await S.alpacaSipQuotes(quoteList, new Date(NOW - 16 * 60e3).toISOString());
 /* ---------- 4. 每隻股票：買賣差價、第二來源核對、初步排序 ---------- */
 pool.forEach((s) => {
   const m = M[s] || { sym: s, error: '冇價格數據（Alpaca 未設定／Yahoo 限流）' };
@@ -109,9 +114,10 @@ pool.forEach((s) => {
     if (m.pmLast == null && sa.price != null) { m.pmLast = sa.price; m.gapPct = sa.chgPct; m.pmVolume = sa.pmVolume; m.priceFrom = 'StockAnalysis'; }
     else if (m.pmLast && sa.price) m.xcheckPct = r2((sa.price - m.pmLast) / m.pmLast * 100);
   }
-  const q = snaps[s];
-  if (q && q.bid > 0 && q.ask > 0 && q.ask >= q.bid) { const mid = (q.bid + q.ask) / 2; m.spread = r2(q.ask - q.bid); m.spreadPct = r2((q.ask - q.bid) / mid * 100); m.quote = Object.assign({ feed: 'IEX' }, q); }
-  if (q && q.last && q.lastTime && NOW - Date.parse(q.lastTime) < 10 * 60e3) m.lastIex = q.last;
+  const q = sipQ[s] || (live ? snaps[s] : null); // 用 SIP 全市場報價（16 分鐘前）；冇先用 IEX 即時報價（只係一間交易所）
+  if (q && q.bid > 0 && q.ask > 0 && q.ask >= q.bid) { const mid = (q.bid + q.ask) / 2; m.spread = r2(q.ask - q.bid); m.spreadPct = r2((q.ask - q.bid) / mid * 100); m.quote = Object.assign({ feed: q.feed || 'IEX' }, q); }
+  const iq = snaps[s];
+  if (live && iq && iq.last && iq.lastTime && NOW - Date.parse(iq.lastTime) < 10 * 60e3) m.lastIex = iq.last;
   m.lists = [];
   if (saG.find((x) => x.sym === s)) m.lists.push('StockAnalysis 盤前升幅榜');
   if (saL.find((x) => x.sym === s)) m.lists.push('StockAnalysis 盤前跌幅榜');
@@ -122,8 +128,10 @@ pool.forEach((s) => {
   M[s] = m;
 });
 // 詳細資料（Finviz、新聞、SEC）只查最有機會嘅 40 隻：RVOL ≥ 2 先，之後跳空大、盤前成交多
-const rank = (m) => (m.rvol >= 2 ? 1000 : 0) + Math.min(Math.abs(m.gapPct || 0), 50) * 10 + Math.min((m.pmVolume || 0) / 1e5, 100) + (CORE.includes(m.sym) ? 5 : 0) + (earnMap[m.sym] ? 50 : 0);
-const short = pool.map((s) => M[s]).filter((m) => m.pmLast != null || m.pdc != null).sort((a, b) => rank(b) - rank(a)).slice(0, 40).map((m) => m.sym);
+// 細價股（< $5）、盤前冇乜成交、日均成交低（多數係槓桿 ETF／冷門股）排後；用戶指定嘅一定查
+const rank = (m) => (userSyms.includes(m.sym) ? 5000 : 0) + (m.rvol >= 2 ? 1000 : 0) + Math.min(Math.abs(m.gapPct || 0), 50) * 10 + Math.min((m.pmVolume || 0) / 1e5, 100)
+  + (CORE.includes(m.sym) ? 5 : 0) + (earnMap[m.sym] ? 300 : 0) - ((m.pmLast || m.pdc || 0) < 5 ? 800 : 0) - ((m.pmVolume || 0) < 100000 ? 400 : 0) - (m.avgVol20 != null && m.avgVol20 < 1e6 ? 400 : 0);
+const short = pool.map((s) => M[s]).filter((m) => m.pmLast != null || m.pdc != null).sort((a, b) => rank(b) - rank(a)).slice(0, 50).map((m) => m.sym);
 
 /* ---------- 5. 新聞 + 基本資料 ---------- */
 const [alpNews, mktNews] = await Promise.all([S.alpacaNews(short, NOW), S.marketNews(NOW)]);
@@ -175,4 +183,4 @@ console.log(`目標日 ${target}｜寫入 ${outFile}｜候選池 ${pool.length} 
 console.log('來源：' + Object.entries(S.sources).map(([k, v]) => `${k} ${v.ok ? '✅' + v.ok : ''}${v.fail ? '❌' + v.fail : ''}${!v.ok && v.error ? '（' + v.error + '）' : ''}`).join('｜'));
 console.log(`大市：` + ['SPY', 'QQQ', 'IWM', 'SMH'].map((s) => `${s} ${idx[s] ? fmt(idx[s].chgPct, 2) + '%' : '—'}`).join('  ') + (base.qqq != null && !idx.QQQ ? `（RS 基準用 --base：SPY ${base.spy}%、QQQ ${base.qqq}%）` : '') + (result.market.economic.length ? `｜今日數據：${result.market.economic.filter((e) => e.impact === '高').map((e) => e.timeET + ' ' + e.name).join('、') || '冇高影響'}` : ''));
 console.log('代號    價格     跳空%  RVOL  盤前量   流通M   ATR%  差價%  RS/QQQ 消息 8項   來源');
-rows.slice(0, 45).forEach((m) => { const c = m.screen.checks; console.log([m.sym.padEnd(7), fmt(m.pmLast, 2).padEnd(8), (mark(c.gap.pass) + fmt(m.gapPct)).padEnd(7), (mark(c.rvol.pass) + fmt(m.rvol)).padEnd(6), (mark(c.pmVolume.pass) + fmt(m.pmVolume)).padEnd(8), (mark(c.float.pass) + (m.floatM == null ? '—' : String(Math.round(m.floatM)))).padEnd(7), (mark(c.atr.pass) + fmt(m.atrPct)).padEnd(6), (mark(c.spread.pass) + fmt(m.spreadPct, 2)).padEnd(6), (mark(c.rs.pass) + fmt(m.rsQqq)).padEnd(7), (mark(c.catalyst.pass) + String((m.news || []).length)).padEnd(4), `${m.screen.passed}/${m.screen.known}`.padEnd(5), (m.dataSource || m.priceFrom || '').slice(0, 14)].join(' ')); });
+rows.slice(0, 45).forEach((m) => { const c = m.screen.checks; console.log([m.sym.padEnd(7), (m.pmLast == null ? '—' : m.pmLast.toFixed(2)).padEnd(8), (mark(c.gap.pass) + fmt(m.gapPct)).padEnd(7), (mark(c.rvol.pass) + fmt(m.rvol)).padEnd(6), (mark(c.pmVolume.pass) + fmt(m.pmVolume)).padEnd(8), (mark(c.float.pass) + (m.floatM == null ? '—' : String(Math.round(m.floatM)))).padEnd(7), (mark(c.atr.pass) + fmt(m.atrPct)).padEnd(6), (mark(c.spread.pass) + fmt(m.spreadPct, 2)).padEnd(6), (mark(c.rs.pass) + fmt(m.rsQqq)).padEnd(7), (mark(c.catalyst.pass) + String((m.news || []).length)).padEnd(4), `${m.screen.passed}/${m.screen.known}`.padEnd(5), (m.dataSource || m.priceFrom || '').slice(0, 14)].join(' ')); });

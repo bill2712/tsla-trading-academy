@@ -25,7 +25,7 @@
     const cat = x.catalyst != null ? !!String(x.catalyst).trim() : null;
     return [
       ['gap', '① 跳空 %', P(x.gapPct, 1), `絕對值 ≥ ${R.gapAbs}%`, has(x.gapPct) ? Math.abs(x.gapPct) >= R.gapAbs : null],
-      ['rvol', '② RVOL', has(x.rvol) ? F(x.rvol, 1) + '×' : '—', `≥ ${R.rvol}×（硬性）`, has(x.rvol) ? x.rvol >= R.rvol : null],
+      ['rvol', '② RVOL', has(x.rvol) ? (x.rvol > 999 ? '999+×' : F(x.rvol, 1) + '×') : '—', `≥ ${R.rvol}×（硬性）`, has(x.rvol) ? x.rvol >= R.rvol : null],
       ['pmv', '③ 盤前成交', big(x.pmVolume), `≥ ${big(pmMin)}`, has(x.pmVolume) ? x.pmVolume >= pmMin : null],
       ['cat', '④ 催化劑', cat == null ? '—' : cat ? '有' : '冇', '要有', cat],
       ['float', '⑤ 流通股', has(x.floatM) ? big(x.floatM * 1e6) : '—', `≥ ${R.floatM}M`, has(x.floatM) ? x.floatM >= R.floatM : null],

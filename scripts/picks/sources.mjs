@@ -7,8 +7,11 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 let cfg = {}; try { cfg = JSON.parse(fs.readFileSync(new URL('./config.json', import.meta.url), 'utf8')); } catch (e) {}
 const SEC_CONTACT = process.env.SEC_CONTACT || process.env.SEC_USER_AGENT || cfg.secContact || '';
 const SEC_UA = `tsla-trading-academy research ${SEC_CONTACT}`;
-const ALPACA_ID = process.env.ALPACA_KEY_ID || process.env.APCA_API_KEY_ID || '';
-const ALPACA_SECRET = process.env.ALPACA_SECRET_KEY || process.env.APCA_API_SECRET_KEY || '';
+// Alpaca key：先睇環境變數；冇就讀本機私人檔 ~/.config/tsla-picks/alpaca.env（KEY=VALUE，chmod 600，唔喺 repo 入面，永遠唔好 commit）
+const localEnv = (() => { try { return Object.fromEntries(fs.readFileSync(`${process.env.HOME || '/root'}/.config/tsla-picks/alpaca.env`, 'utf8').split('\n').map((l) => l.trim()).filter((l) => /^[A-Z_]+=/.test(l)).map((l) => [l.slice(0, l.indexOf('=')), l.slice(l.indexOf('=') + 1)])); } catch (e) { return {}; } })();
+const ALPACA_ID = process.env.ALPACA_KEY_ID || process.env.APCA_API_KEY_ID || localEnv.ALPACA_KEY_ID || '';
+const ALPACA_SECRET = process.env.ALPACA_SECRET_KEY || process.env.APCA_API_SECRET_KEY || localEnv.ALPACA_SECRET_KEY || '';
+export const alpacaKeyFrom = process.env.ALPACA_KEY_ID || process.env.APCA_API_KEY_ID ? '環境變數' : localEnv.ALPACA_KEY_ID ? '本機私人檔' : null;
 export const hasAlpaca = !!(ALPACA_ID && ALPACA_SECRET);
 
 export const sources = {};
@@ -25,7 +28,7 @@ export async function get(url, { json = true, headers = {}, timeout = 20000 } = 
 }
 export async function pool(items, n, fn) { const out = []; let i = 0; await Promise.all(Array.from({ length: n }, async () => { while (i < items.length) { const k = i++; out[k] = await fn(items[k]); } })); return out; }
 export const strip = (s) => String(s || '').replace(/<!\[CDATA\[|\]\]>/g, '').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;|&apos;|&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ').replace(/&#(\d+);/g, (m, c) => String.fromCharCode(+c)).replace(/\s+/g, ' ').trim();
-export const recent = (iso, hours, now = Date.now()) => { const t = Date.parse(iso); return isFinite(t) && now - t <= hours * 3600e3 && t <= now + 3600e3; };
+export const recent = (iso, hours, now = Date.now()) => { const t = Date.parse(iso); return isFinite(t) && now - t <= hours * 3600e3 && t <= now + 5 * 60e3; };
 const iso = (s) => { const t = Date.parse(s); return isFinite(t) ? new Date(t).toISOString() : null; };
 
 /* ================= 價格數據 ================= */
@@ -80,6 +83,21 @@ export async function alpacaSnapshots(symbols) {
       note('Alpaca IEX 報價', true);
     } catch (e) { note('Alpaca IEX 報價', false, e.message); }
   }
+  return out;
+}
+/* SIP 全市場最佳買賣價（NBBO）：免費方案只可以問 16 分鐘前，所以取 endISO 之前最後一個報價 */
+export async function alpacaSipQuotes(symbols, endISO) {
+  if (!hasAlpaca) return {};
+  const out = {};
+  const start = new Date(Date.parse(endISO) - 60 * 60e3).toISOString();
+  await pool(symbols, 5, async (s) => {
+    try {
+      const j = await get(`${ABASE}/v2/stocks/${encodeURIComponent(s)}/quotes?start=${start}&end=${endISO}&limit=20&sort=desc&feed=sip`, { headers: AH() });
+      const q = (j.quotes || []).find((x) => x.bp > 0 && x.ap >= x.bp);
+      if (q) out[s] = { bid: q.bp, ask: q.ap, bidSize: q.bs, askSize: q.as, quoteTime: q.t, feed: 'SIP' };
+      note('Alpaca SIP 報價', true);
+    } catch (e) { note('Alpaca SIP 報價', false, e.message); }
+  });
   return out;
 }
 /* Alpaca 市場異動榜（升跌榜、最活躍） */
@@ -188,7 +206,7 @@ export async function alpacaNews(list, now) {
     for (let i = 0; i < list.length; i += 25) {
       let token = null, pages = 0;
       do {
-        const q = new URLSearchParams({ symbols: list.slice(i, i + 25).join(','), start, limit: '50', sort: 'desc' });
+        const q = new URLSearchParams({ symbols: list.slice(i, i + 25).join(','), start, end: new Date(now).toISOString(), limit: '50', sort: 'desc' });
         if (token) q.set('page_token', token);
         const j = await get(`${ABASE}/v1beta1/news?${q}`, { headers: AH() });
         (j.news || []).forEach((n) => (n.symbols || []).forEach((s) => { const a = (by[s] = by[s] || []); if (a.length < 6) a.push({ title: n.headline, url: n.url, time: iso(n.created_at), source: `${n.source || 'benzinga'}（Alpaca）`, summary: strip(n.summary).slice(0, 240) }); }));

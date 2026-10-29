@@ -61,7 +61,7 @@ The report is laid out as: **data first** (8-indicator scan table for every cand
 ```bash
 cd /home/user/tsla-trading-academy && git checkout main && git pull origin main
 node scripts/picks/market-day.mjs
-[ -n "$ALPACA_KEY_ID$APCA_API_KEY_ID" ] && echo "Alpaca key: set" || echo "Alpaca key: NOT set"
+[ -n "$ALPACA_KEY_ID$APCA_API_KEY_ID" ] || [ -f ~/.config/tsla-picks/alpaca.env ] && echo "Alpaca key: set" || echo "Alpaca key: NOT set"
 ```
 
 Make sure the trader-skill pack is installed (the machine can be reset between runs).
@@ -84,9 +84,13 @@ If the run starts after 09:15 ET, say clearly in `headline` and the notification
 
 ## 2. Review yesterday's report
 
-Newest `data/picks/*.json` before `targetDate` without `review`: for each pick get the daily
-bar (collector's Alpaca/Yahoo data, IBKR `get_price_history` ONE_DAY step_count 5) and fill
-`review.items[]` = `{sym, open, high, low, close, chgFromOpenPct, hitPmh, verdict, note}`.
+Newest `data/picks/*.json` before `targetDate` without `review`: run
+`NODE_USE_ENV_PROXY=1 node --no-warnings scripts/picks/review.mjs data/picks/<that date>.json --write`.
+It replays the day with Alpaca 5-minute bars and fills
+`review.items[]` = `{sym, open, high, low, close, chgFromOpenPct, hitPmh, verdict, note}`:
+whether the entry triggered after 09:35, whether Target 1 or the Stop came first (same bar =
+Stop, conservative), the "don't chase" rule (open already > 0.3 ATR past the entry), and the
+backup 5-minute ORB result. Without Alpaca, use IBKR `get_price_history` FIVE_MINS bars.
 In `verdict`, judge the **plan**: did the trigger happen? would Target 1 or Stop have hit first
 (use 5-min bars if needed)? Summarise honestly in `review.summary`.
 
@@ -104,8 +108,8 @@ It builds a candidate pool (StockAnalysis pre-market gainers/losers, Alpaca move
 active, TopBreakoutStocks lists, big earnings names from Nasdaq for today pre-market and
 yesterday after the close, core liquid names, `--symbols`), then:
 
-- **Prices / RVOL / levels**: Alpaca SIP bars (needs `ALPACA_KEY_ID` + `ALPACA_SECRET_KEY` in the
-  environment; free plan → data is 16 minutes delayed, so at 08:10 the cutoff is ~07:50) →
+- **Prices / RVOL / levels**: Alpaca SIP bars (key from the environment variables `ALPACA_KEY_ID` +
+  `ALPACA_SECRET_KEY`, or the private file `~/.config/tsla-picks/alpaca.env` — never commit keys; free plan → data is 16 minutes delayed, so at 08:10 the cutoff is ~07:50) →
   Yahoo chart (backup, one request at a time, stops after 3× HTTP 429). StockAnalysis gives
   pre-market price and volume as a second source (and the only one if both fail).
 - **Spread**: Alpaca IEX quote (single exchange, indicative). Confirm with IBKR `bid_ask` for picks.
@@ -207,6 +211,11 @@ failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never cha
 - Stop at structure (opening-range low, PML, VWAP) — normally ≤ 0.3–0.5 ATR.
 - Target 1 before the next real level (PDH, 20-day high, PMH, breakout price); aim ≥ 2R, never below 1.5R.
 - Use `avgOpenBarVol` (average first 5-min bar volume) to write the opening-volume condition.
+- **Backup plan (always write it in `plan.noTrade`)**: pre-market levels go stale by the open
+  (tested 2026-10-29: 3 of 7 entries were already passed at 09:35). If at 09:35 price is more than
+  0.3 ATR past the entry, don't chase — switch to a 5-minute ORB in the same direction: break of
+  the first 5-minute high (long) / low (short), Stop at the other side of that range (max 0.5 ATR),
+  Target 2R.
 - `plan.long` / `plan.short` / `plan.noTrade`: short If–Then text, including when **not** to trade.
 - `risks`: 2–4 items.
 

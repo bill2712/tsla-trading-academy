@@ -1,15 +1,65 @@
 {
- "updated": "2026-10-29T20:46:11.234Z",
+ "updated": "2026-10-29T21:06:15.523Z",
  "days": [
   {
    "date": "2026-10-29",
-   "version": 2,
-   "status": "premarket",
+   "version": 3,
+   "status": "test",
    "bias": "偏淡",
-   "headline": "⚠️ 遲咗補發（09:40 ET 後）：Alphabet 業績後急跌拖低科技股，QQQ −1.7%；IBKR 故障計唔到 RVOL，今日冇正式 picks，只列觀察名單。",
-   "n": 0,
-   "top": [],
-   "reviewed": false
+   "headline": "🧪 測試版（收市後重做，模擬 08:40 ET）：Alphabet 業績後跌 11% 拖低科技股，QQQ −1.2%；7 隻 RVOL ≥ 2：沽空 GOOGL、MRVL、CAT",
+   "n": 7,
+   "top": [
+    {
+     "sym": "GOOGL",
+     "gapPct": -11.31,
+     "rvol": 11.03,
+     "beginner": "中等",
+     "grade": "A"
+    },
+    {
+     "sym": "NCLH",
+     "gapPct": 11.83,
+     "rvol": 36.14,
+     "beginner": "中等",
+     "grade": "A"
+    },
+    {
+     "sym": "MRVL",
+     "gapPct": -11.78,
+     "rvol": 4.09,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "CAT",
+     "gapPct": -10.58,
+     "rvol": 23.78,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "NOW",
+     "gapPct": -18.84,
+     "rvol": 12.41,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "CMG",
+     "gapPct": 8.25,
+     "rvol": 4.77,
+     "beginner": "適合新手",
+     "grade": "B"
+    },
+    {
+     "sym": "LLY",
+     "gapPct": 5.16,
+     "rvol": 14.93,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": true
   },
   {
    "date": "2026-10-28",
