@@ -1,0 +1,344 @@
+{
+ "version": 2,
+ "date": "2026-10-29",
+ "generatedAt": "2026-10-29T13:37:48Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "sources": [
+  {
+   "name": "IBKR 實時報價／歷史數據／掃描",
+   "ok": false,
+   "note": "09:31 ET 之後大部分請求回覆 Service Unavailable；只攞到 QQQ 一次報價同一個升幅榜掃描，冇盤前每小時數據，計唔到 RVOL"
+  },
+  {
+   "name": "Yahoo Finance（trader-alerts 報價）",
+   "ok": true,
+   "note": "09:33–09:36 ET 現價同昨收（延遲報價）"
+  },
+  {
+   "name": "Yahoo Finance（收集器日線／盤前數據）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇繞過"
+  },
+  {
+   "name": "trader-news（Yahoo 新聞 + SEC 8-K）",
+   "ok": true
+  },
+  {
+   "name": "Finviz 新聞",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR 公告",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前升跌榜",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 業績日曆",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 經濟日曆",
+   "ok": false,
+   "note": "傳回咗 10/28 嘅數據（FOMC、原油庫存），今日唔採用"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true,
+   "note": "盤後異動、Alphabet／Microsoft、Eli Lilly、DoorDash 報道"
+  },
+  {
+   "name": "TradeThatSwing 本週名單（網上搜尋）",
+   "ok": true,
+   "note": "10/26 週：CIFR、BTDR、WULF、PURR、MARA、IOVA、RIOT、RDW、CRWV、INTC、ORCL、TSLA、NVDA、IREN、IONQ、BMNR、SMCI"
+  },
+  {
+   "name": "Warrior Trading 選股準則",
+   "ok": true,
+   "note": "只用準則；今日冇候選股可以核實 RVOL ≥ 5"
+  },
+  {
+   "name": "Alpaca 新聞",
+   "ok": false,
+   "note": "未設定 API key"
+  }
+ ],
+ "headline": "⚠️ 遲咗補發（09:40 ET 後）：Alphabet 業績後急跌拖低科技股，QQQ −1.7%；IBKR 故障計唔到 RVOL，今日冇正式 picks，只列觀察名單。",
+ "market": {
+  "bias": "偏淡",
+  "summary": "Alphabet 第三季業績差過預期、自由現金流轉負（−90.7 億美元），盤前跌 10–13%，重燃 AI 資本開支憂慮；ServiceNow、Fortinet 業績後跌超過 20%，拖低軟件同網絡安全股；Samsung 業績令記憶體／晶片股受壓（SMH −1.6%）。另一邊 Eli Lilly、Mastercard、Merck 業績好，醫藥同金融相對強；細價股 IWM 反而 +0.9%。科技股偏淡、資金轉去非科技板塊，開市後波動大，新手宜細注或者觀望。",
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 768.1,
+    "chgPct": -0.56,
+    "note": "09:36 ET（Yahoo）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 713.08,
+    "chgPct": -1.73,
+    "note": "IBKR 09:32 ET 714.69（−1.5%），兩邊一致"
+   },
+   {
+    "sym": "IWM",
+    "last": 283.77,
+    "chgPct": 0.86,
+    "note": "細價股逆市升"
+   },
+   {
+    "sym": "DIA",
+    "last": 522.39,
+    "chgPct": -0.45,
+    "note": "CAT −10% 拖累"
+   },
+   {
+    "sym": "SMH",
+    "last": 558.66,
+    "chgPct": -1.59,
+    "note": "晶片股受 Samsung、Alphabet 拖累"
+   },
+   {
+    "sym": "XLK",
+    "last": 188.37,
+    "chgPct": -1.47,
+    "note": ""
+   },
+   {
+    "sym": "VIX",
+    "last": 16.95,
+    "chgPct": 0.24,
+    "note": "09:21 ET 報價"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "GDP／通脹數據",
+    "impact": "高",
+    "note": "新聞提到今日公布；數字未能由日曆核實"
+   },
+   {
+    "time": "全日",
+    "name": "歐洲央行（ECB）議息",
+    "impact": "中",
+    "note": ""
+   },
+   {
+    "time": "盤後",
+    "name": "Amazon、Intel、Sandisk、Gilead、Starbucks、Strategy 業績",
+    "impact": "高",
+    "note": "收市前減倉，唔好揸過夜"
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "LLY",
+    "when": "盤前",
+    "note": "經調整 EPS 7.48 vs 預期 6.26，上調全年指引"
+   },
+   {
+    "sym": "CAT",
+    "when": "盤前",
+    "note": "業績勝預期但建造業銷售略遜，股價跌 ~10%"
+   },
+   {
+    "sym": "MA",
+    "when": "盤前",
+    "note": "+4%"
+   },
+   {
+    "sym": "MRK",
+    "when": "盤前",
+    "note": "+4.6%"
+   },
+   {
+    "sym": "AMZN",
+    "when": "盤後",
+    "note": ""
+   },
+   {
+    "sym": "INTC",
+    "when": "盤後",
+    "note": ""
+   },
+   {
+    "sym": "SNDK",
+    "when": "盤後",
+    "note": ""
+   }
+  ]
+ },
+ "fewPicksReason": "今日 0 隻正式 picks：排程因為用量上限遲咗，09:31 ET 先開始；IBKR 由開市起一直 Service Unavailable，Yahoo 盤前數據又限流，所以冇一隻可以核實盤前 RVOL ≥ 2（硬性規則，唔降低標準、唔估數）。以下觀察名單有新聞同現價支持，但入場前要自己喺券商睇 RVOL、首 5／15 分鐘高低位同買賣差價。",
+ "picks": [],
+ "watch": [
+  {
+   "sym": "GOOGL",
+   "why": "−12.8%（283.45 vs 昨收 324.89，09:33 ET）。Q3 EPS／收入低過預期、自由現金流 −90.7 億，可能係上市以來最大業績後跌幅。大型、流動性高，適合新手觀察：等首 15 分鐘區間，跌穿區間低位兼成交放大先考慮短線沽空；企穩 VWAP 之上就唔好追沽。RVOL 未核實。"
+  },
+  {
+   "sym": "NOW",
+   "why": "−23.8%（114.23 vs 149.85）。合約增長放慢，蓋過 AI 目標上調；EPS 1.00 vs 預期 1.02。跌幅大、波幅高（中等至高風險）：只做開市區間突破方向，止蝕放區間另一邊。RVOL 未核實。"
+  },
+  {
+   "sym": "FTNT",
+   "why": "−23.3%（133.50 vs 174.08）。服務收入指引遜預期，拖低網絡安全股。跌幅大，開市頭 15 分鐘波動極大；等區間形成先睇方向。RVOL 未核實。"
+  },
+  {
+   "sym": "CAT",
+   "why": "−10.3%（640.62 vs 714.23）。Q3 勝預期但建造業銷售同第四季展望令人失望。高價股、每股波幅大，計好股數。RVOL 未核實。"
+  },
+  {
+   "sym": "LLY",
+   "why": "+7.8%（1389.61 vs 1289.19），盤前創新高。EPS 7.48 vs 6.26，上調全年指引。逆大市強勢股：可觀察開市推動向上或者回 VWAP 企穩再上；股價極高，每股風險大。RVOL 未核實。"
+  },
+  {
+   "sym": "CROX",
+   "why": "+18.9%（142.28 vs 119.69）。Q3 勝預期兼上調全年指引。中型股、跳空大（中等風險）：等首 5 分鐘高位突破兼放量；跌穿昨收方向轉弱就唔做。RVOL 未核實。"
+  },
+  {
+   "sym": "DASH",
+   "why": "+4.7%（177.37 vs 169.49）。Q3 收入勝預期，宣布以 170 億美元收購 Instacart（每股 65 元）；有反壟斷審查風險。RVOL 未核實。"
+  },
+  {
+   "sym": "MRVL",
+   "why": "−12.3%（220.64 vs 251.65）。報道指 Marvell 接近收購 Lumentum（LITE +4.8%），加上 Alphabet 拖累 AI 晶片。消息未證實，新聞驅動，波動大。RVOL 未核實。"
+  },
+  {
+   "sym": "CVNA",
+   "why": "+13.3%（66.91 vs 59.06）。單位銷量增長 39% 創紀錄，但 EPS 遜預期、每單位利潤收窄，好淡消息混合。RVOL 未核實。"
+  },
+  {
+   "sym": "MSFT",
+   "why": "−0.3%（529.43 vs 531.01）。Azure 增長 48%，盤後一度 +4%，但開市前升幅已經蝕晒，被 Alphabet 拖累。走勢已經冇方向，暫時唔適合開市推動。RVOL 未核實。"
+  },
+  {
+   "sym": "AMZN",
+   "why": "−3.6%（245.42 vs 254.60）。今晚收市後公布業績，日內會跟大科技股走；業績前波動可能突然加大，唔好揸過夜。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "TDOC",
+   "why": "+28%（8.81），細價股、收入仍然收縮，跳空大兼價位低，波動同差價風險高，新手唔好掂。"
+  },
+  {
+   "sym": "CART",
+   "why": "DoorDash 以每股 65 元收購，股價會貼住收購價（併購套利），日內波幅細，唔適合 day trade；報價亦未能核實。"
+  }
+ ],
+ "news": [
+  {
+   "title": "Alphabet falls 10% in premarket, putting it on course for its biggest ever post-earnings drop",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/29/alphabet-google-microsoft-msft-shares-today-earnings.html",
+   "time": "2026-10-29",
+   "tickers": [
+    "GOOGL",
+    "MSFT"
+   ]
+  },
+  {
+   "title": "Stocks making the biggest moves after hours: Alphabet, Microsoft, Chipotle, ServiceNow, Fortinet & more",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/28/stocks-making-the-biggest-moves-after-hours-googl-msft-cmg-now.html",
+   "time": "2026-10-28",
+   "tickers": [
+    "GOOGL",
+    "MSFT",
+    "CMG",
+    "NOW",
+    "FTNT"
+   ]
+  },
+  {
+   "title": "Eli Lilly blows past estimates, hikes sales outlook as Zepbound and Mounjaro demand surge again",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/29/eli-lilly-lly-earnings-q3-2026.html",
+   "time": "2026-10-29",
+   "tickers": [
+    "LLY"
+   ]
+  },
+  {
+   "title": "ServiceNow Tumbles 19% as Slower Contract Growth Overshadows Raised AI Target",
+   "source": "247wallst（Yahoo）",
+   "url": "https://247wallst.com/investing/2026/10/29/servicenow-tumbles-19-as-slower-contract-growth-overshadows-raised-ai-target-salesforce-slides-6-workday-drops-5/",
+   "time": "2026-10-29 09:09 ET",
+   "tickers": [
+    "NOW"
+   ]
+  },
+  {
+   "title": "Fortinet drags down cybersecurity stocks as the company's service revenue forecast misses estimates",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/article/fortinet-drags-down-cybersecurity-stocks-as-the-companys-service-revenue-forecast-misses-estimates-124146969.html",
+   "time": "2026-10-29 08:41 ET",
+   "tickers": [
+    "FTNT",
+    "NOW"
+   ]
+  },
+  {
+   "title": "Caterpillar Stock Slumps 9% Despite Q3 Earnings Beat As Revenue Falls Short Of Estimates",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/caterpillar-stock-slumps-9-despite-131620508.html",
+   "time": "2026-10-29 09:16 ET",
+   "tickers": [
+    "CAT"
+   ]
+  },
+  {
+   "title": "Crocs stock soars 19% on earnings beat and raised guidance",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/crocs-stock-soars-19-earnings-123106332.html",
+   "time": "2026-10-29 08:31 ET",
+   "tickers": [
+    "CROX"
+   ]
+  },
+  {
+   "title": "DoorDash earnings beat estimates, acquires Instacart for $17 billion",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/doordash-earnings-beat-estimates-acquires-123858946.html",
+   "time": "2026-10-29 08:38 ET",
+   "tickers": [
+    "DASH",
+    "CART"
+   ]
+  },
+  {
+   "title": "Marvell shares sink as Alphabet miss and Lumentum deal reports weigh on sentiment",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/marvell-shares-sink-alphabet-miss-130147004.html",
+   "time": "2026-10-29 09:01 ET",
+   "tickers": [
+    "MRVL",
+    "LITE"
+   ]
+  },
+  {
+   "title": "Why Is CVNA Stock Rising 8% Overnight?",
+   "source": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/why-cvna-stock-rising-8-053804735.html",
+   "time": "2026-10-29",
+   "tickers": [
+    "CVNA"
+   ]
+  },
+  {
+   "title": "Alphabet 10-Q（Q3 2026）",
+   "source": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm",
+   "time": "2026-10-29",
+   "tickers": [
+    "GOOGL"
+   ]
+  }
+ ],
+ "lesson": "數據唔齊就唔好當正式選股：今日 IBKR 故障計唔到 RVOL，寧願只出觀察名單。開市後先睇首 5／15 分鐘區間同成交，有量先跟方向，冇量就唔做。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

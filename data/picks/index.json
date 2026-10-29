@@ -1,6 +1,15 @@
 {
- "updated": "2026-10-28T05:32:35.389Z",
+ "updated": "2026-10-29T13:37:48.849Z",
  "days": [
+  {
+   "date": "2026-10-29",
+   "status": "premarket",
+   "bias": "偏淡",
+   "headline": "⚠️ 遲咗補發（09:40 ET 後）：Alphabet 業績後急跌拖低科技股，QQQ −1.7%；IBKR 故障計唔到 RVOL，今日冇正式 picks，只列觀察名單。",
+   "n": 0,
+   "top": [],
+   "reviewed": false
+  },
   {
    "date": "2026-10-28",
    "status": "test",
