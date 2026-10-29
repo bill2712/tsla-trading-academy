@@ -1,8 +1,9 @@
 {
- "updated": "2026-10-29T13:37:48.849Z",
+ "updated": "2026-10-29T20:46:11.234Z",
  "days": [
   {
    "date": "2026-10-29",
+   "version": 2,
    "status": "premarket",
    "bias": "偏淡",
    "headline": "⚠️ 遲咗補發（09:40 ET 後）：Alphabet 業績後急跌拖低科技股，QQQ −1.7%；IBKR 故障計唔到 RVOL，今日冇正式 picks，只列觀察名單。",
@@ -12,6 +13,7 @@
   },
   {
    "date": "2026-10-28",
+   "version": 1,
    "status": "test",
    "bias": "中性",
    "headline": "測試版：今晚 14:00 聯儲局議息，MU 盤後升 3%；TSLA 收喺 20 日高位",

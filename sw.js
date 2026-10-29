@@ -1,5 +1,5 @@
 /* 簡單離線快取：先用網絡，失敗先用快取（內容更新後即刻見到） */
-const CACHE = 'ta-v9';
+const CACHE = 'ta-v10';
 const CORE = [
   './', 'index.html', 'css/style.css', 'css/theme.css', 'manifest.webmanifest', 'assets/icon.svg',
   'js/vendor/marked.min.js', 'js/store.js', 'js/charts.js', 'js/data-glossary.js', 'js/data-quizzes.js',

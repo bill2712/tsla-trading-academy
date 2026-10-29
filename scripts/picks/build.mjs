@@ -29,7 +29,7 @@ function checkNews(f, where, list) {
 
 function checkDay(f, d) {
   const date = f.replace('.json', '');
-  if (d.version !== 1 && d.version !== 2) err(f, 'version 要係 1 或 2（新報告用 2）');
+  if (![1, 2, 3].includes(d.version)) err(f, 'version 要係 1、2 或 3（新報告用 3）');
   if (d.date !== date) err(f, `date（${d.date}）要同檔名一樣`);
   if (!isStr(d.generatedAt, 40) || isNaN(Date.parse(d.generatedAt))) err(f, 'generatedAt 要係 ISO 時間');
   if (!STATUS.includes(d.status)) err(f, `status 要係 ${STATUS.join('/')}`);
@@ -62,12 +62,14 @@ function checkDay(f, d) {
       if (p.plan) ['long', 'short', 'noTrade'].forEach((k) => { if (!optStr(p.plan[k], 800)) err(f, `${w}.plan.${k}`); });
       if (p.risks && !(Array.isArray(p.risks) && p.risks.every((r) => isStr(r, 300)))) err(f, `${w}.risks 要係字串 array`);
       checkNews(f, `${w}.news`, p.news);
-      if (d.version === 2) checkPickV2(f, w, p);
+      if (d.version >= 2) checkPickV2(f, w, p);
+      if (d.version >= 3) checkPickV3(f, w, p, d.rules || {});
     });
-    if (d.version === 2 && d.status === 'premarket' && d.picks.length < 5 && !nonEmpty(d.fewPicksReason)) err(f, `只有 ${d.picks.length} 隻候選股：目標係 5–7 隻；如果真係唔夠 RVOL ≥ 2 嘅股票，要寫 fewPicksReason 解釋`);
-    if (d.version === 2 && d.picks.length > 8) err(f, 'picks 最多 8 隻');
+    if (d.version >= 2 && d.status === 'premarket' && d.picks.length < 5 && !nonEmpty(d.fewPicksReason)) err(f, `只有 ${d.picks.length} 隻候選股：目標係 5–7 隻；如果真係唔夠 RVOL ≥ 2 嘅股票，要寫 fewPicksReason 解釋`);
+    if (d.version >= 2 && d.picks.length > 8) err(f, 'picks 最多 8 隻');
   }
-  if (d.version === 2) {
+  if (d.version >= 3) checkScan(f, d);
+  if (d.version >= 2) {
     if (!Array.isArray(d.sources) || !d.sources.length) err(f, 'sources 要列出每個數據來源 [{name, ok, note}]');
     else d.sources.forEach((x, i) => { if (!nonEmpty(x.name, 80) || typeof x.ok !== 'boolean') err(f, `sources[${i}] 要有 name 同 ok（true/false）`); });
     if (Array.isArray(d.sources) && d.sources.filter((x) => x.ok).length < 2) warn(f, '少過 2 個數據來源成功，報告可信度較低');
@@ -117,6 +119,41 @@ function checkPickV2(f, w, p) {
   if (!(p.news || []).length && !nonEmpty(p.newsNote, 300)) err(f, `${w} 冇新聞：要搵到最少 1 條有連結嘅新聞，或者用 newsNote 講明搜尋過但冇新聞`);
 }
 
+// v3：盤前揀股 8 大指標（Gap%、RVOL、盤前成交、Catalyst、Float、ATR%、Spread、相對強弱）
+const R3 = { gapAbs: 3, rvol: 2, pmVolume: 200000, pmVolumeEarly: 100000, floatM: 30, atrPct: 2, spreadPct: 0.1 };
+function checkPickV3(f, w, p, rules) {
+  const R = Object.assign({}, R3, rules);
+  ['atrPct', 'spreadPct', 'rsQqq'].forEach((k) => { if (!req(p[k])) err(f, `${w}.${k} 一定要有數字（8 大指標）`); });
+  if (p.floatM == null && !nonEmpty(p.floatNote, 200)) err(f, `${w}.floatM（流通股，百萬）冇數字就要寫 floatNote 解釋`);
+  if (p.rsSpy !== undefined && !isNum(p.rsSpy)) err(f, `${w}.rsSpy 要係數字或 null`);
+  const side = p.trade && p.trade.side === 'Short' ? -1 : 1;
+  const miss = [];
+  if (req(p.gapPct) && Math.abs(p.gapPct) < R.gapAbs) miss.push(`跳空 ${p.gapPct}%（< ${R.gapAbs}%）`);
+  if (req(p.pmVolume) && p.pmVolume < R.pmVolumeEarly) miss.push(`盤前成交 ${p.pmVolume}（< ${R.pmVolumeEarly}）`);
+  if (req(p.floatM) && p.floatM < R.floatM) miss.push(`流通股 ${p.floatM}M（< ${R.floatM}M）`);
+  if (req(p.atrPct) && p.atrPct < R.atrPct) miss.push(`ATR ${p.atrPct}%（< ${R.atrPct}%）`);
+  if (req(p.spreadPct) && p.spreadPct > R.spreadPct) miss.push(`差價 ${p.spreadPct}%（> ${R.spreadPct}%）`);
+  if (req(p.rsQqq) && p.rsQqq * side <= 0) miss.push(`相對 QQQ ${p.rsQqq}（同交易方向相反）`);
+  if (miss.length) warn(f, `${w} ${p.sym} 唔合 8 大指標：${miss.join('、')}——要喺 why／risks 講明點解仍然揀`);
+}
+const VERDICT = ['pick', 'watch', 'avoid', 'skip'];
+function checkScan(f, d) {
+  if (!Array.isArray(d.scan)) { err(f, 'scan（盤前掃描總表）要係 array'); return; }
+  if (!d.scan.length && d.status === 'premarket') warn(f, 'scan 係空嘅：總表冇數據');
+  const seen = new Set();
+  d.scan.forEach((x, i) => {
+    const w = `scan[${i}]`;
+    if (!/^[A-Z][A-Z0-9.\-]{0,9}$/.test(x.sym || '')) err(f, `${w}.sym`);
+    if (seen.has(x.sym)) err(f, `${w}.sym 重複 ${x.sym}`); seen.add(x.sym);
+    ['price', 'gapPct', 'rvol', 'pmVolume', 'avgVolume', 'floatM', 'atrPct', 'spreadPct', 'rsQqq'].forEach((k) => { if (!isNum(x[k] ?? null)) err(f, `${w}.${k} 要係數字或 null`); });
+    if (!VERDICT.includes(x.verdict)) err(f, `${w}.verdict 要係 ${VERDICT.join('/')}`);
+    ['catalyst', 'note'].forEach((k) => { if (!optStr(x[k], 300)) err(f, `${w}.${k} 要係字串（≤ 300 字）`); });
+  });
+  (d.picks || []).forEach((p) => { const r = d.scan.find((x) => x.sym === p.sym); if (!r) warn(f, `${p.sym} 喺 picks 但唔喺 scan 總表`); else if (r.verdict !== 'pick') err(f, `scan 入面 ${p.sym} 嘅 verdict 要係 pick`); });
+  if (d.rules != null) Object.entries(d.rules).forEach(([k, v]) => { if (typeof v !== 'number' && typeof v !== 'boolean') err(f, `rules.${k} 要係數字`); });
+  if (d.market && d.market.base != null) ['spy', 'qqq'].forEach((k) => { if (!isNum(d.market.base[k] ?? null)) err(f, `market.base.${k} 要係數字或 null`); });
+}
+
 const files = fs.readdirSync(DIR).filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse();
 const days = [];
 for (const f of files) {
@@ -127,7 +164,7 @@ for (const f of files) {
   if (errs.length > before) continue;
   const m = d.market || {};
   days.push({
-    date: d.date, status: d.status, bias: m.bias, headline: (d.headline || m.summary || '').slice(0, 90), n: d.picks.length,
+    date: d.date, version: d.version, status: d.status, bias: m.bias, headline: (d.headline || m.summary || '').slice(0, 90), n: d.picks.length,
     top: d.picks.slice(0, 7).map((p) => ({ sym: p.sym, gapPct: p.gapPct ?? null, rvol: p.rvol ?? null, beginner: p.beginner || null, grade: p.grade || null })),
     reviewed: !!(d.review && (d.review.items || []).length),
   });

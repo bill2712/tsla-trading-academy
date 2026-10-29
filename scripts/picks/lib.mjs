@@ -78,3 +78,71 @@ export function premarketMetrics(intraJson, target, pdc, now = Date.now()) {
   if (open.length >= 3) out.avgOpenBarVol = Math.round(avg(open.map((b) => b.v)));
   return out;
 }
+
+/* Alpaca bars（[{t,o,h,l,c,v}]）→ 同 IBKR 一樣嘅格式 */
+export function fromAlpaca(list) {
+  const B = Array.isArray(list) ? list : [];
+  return { time: B.map((b) => b.t), open: B.map((b) => b.o), high: B.map((b) => b.h), low: B.map((b) => b.l), close: B.map((b) => b.c), volume: B.map((b) => b.v) };
+}
+
+/* 由日內 K 線砌返每日正常時段（09:30–16:00）嘅高低位，用嚟核對 PDH/PDL */
+export function rthDays(intraJson) {
+  const by = {};
+  bars(intraJson).filter((b) => b.hm >= '09:30' && b.hm < '16:00').forEach((b) => {
+    const d = (by[b.d] = by[b.d] || { d: b.d, h: -Infinity, l: Infinity, v: 0 });
+    d.h = Math.max(d.h, b.h); d.l = Math.min(d.l, b.l); d.v += b.v || 0; d.c = b.c; if (d.o == null) d.o = b.o;
+  });
+  return Object.values(by).sort((a, b) => (a.d < b.d ? -1 : 1));
+}
+
+/* 「5.85B」「26.06M」「1,234,567」→ 數字 */
+export function parseNum(s) {
+  if (s == null) return null;
+  const m = String(s).replace(/,/g, '').match(/^\s*(-?[\d.]+)\s*([KMBT])?/i);
+  if (!m) return null;
+  const k = { K: 1e3, M: 1e6, B: 1e9, T: 1e12 }[(m[2] || '').toUpperCase()] || 1;
+  const v = parseFloat(m[1]) * k;
+  return isFinite(v) ? v : null;
+}
+
+/* 盤前揀股 8 大指標嘅預設門檻（新手起步值，唔係驗證過嘅獲利門檻） */
+export const RULES = {
+  gapAbs: 3,          // 1. |盤前漲跌幅| ≥ 3%
+  rvol: 2,            // 2. 盤前同時段 RVOL ≥ 2（硬性規則）
+  pmVolume: 200000,   // 3. 盤前成交 ≥ 20 萬股（08:30 前用 pmVolumeEarly）
+  pmVolumeEarly: 100000,
+  catalyst: true,     // 4. 要有消息催化劑（新聞／公告／業績）
+  floatM: 30,         // 5. 流通股 ≥ 3,000 萬
+  atrPct: 2,          // 6. ATR% ≥ 2%
+  spreadPct: 0.1,     // 7. 買賣差價 ≤ 0.1%
+  rs: true,           // 8. 相對大市強弱：同交易方向一致地跑贏／跑輸 QQQ
+  avgVolume: 1000000, // 額外：平均成交 ≥ 100 萬股
+  priceMin: 10, priceMax: 150 // 額外：新手價格範圍
+};
+
+/* 計 8 大指標：每項 {v, pass}，pass = true/false/null（null = 冇數據） */
+export function screen(m, base = {}, rules = RULES) {
+  const has = (v) => v != null && isFinite(v);
+  const dir = has(m.gapPct) ? (m.gapPct >= 0 ? 1 : -1) : 0;
+  const rsQqq = has(m.gapPct) && has(base.qqq) ? r2(m.gapPct - base.qqq) : null;
+  const rsSpy = has(m.gapPct) && has(base.spy) ? r2(m.gapPct - base.spy) : null;
+  const early = m.rvolCutoff && m.rvolCutoff < '08:30';
+  const pmMin = early ? rules.pmVolumeEarly : rules.pmVolume;
+  const cat = (m.news && m.news.length) || (m.filings && m.filings.length) || m.earningsToday ? true : m.news ? false : null;
+  const c = {
+    gap: { v: m.gapPct ?? null, pass: has(m.gapPct) ? Math.abs(m.gapPct) >= rules.gapAbs : null },
+    rvol: { v: m.rvol ?? null, pass: has(m.rvol) ? m.rvol >= rules.rvol : null },
+    pmVolume: { v: m.pmVolume ?? null, pass: has(m.pmVolume) ? m.pmVolume >= pmMin : null, min: pmMin },
+    catalyst: { v: cat, pass: cat },
+    float: { v: m.floatM ?? null, pass: has(m.floatM) ? m.floatM >= rules.floatM : null },
+    atr: { v: m.atrPct ?? null, pass: has(m.atrPct) ? m.atrPct >= rules.atrPct : null },
+    spread: { v: m.spreadPct ?? null, pass: has(m.spreadPct) ? m.spreadPct <= rules.spreadPct : null },
+    rs: { v: rsQqq, pass: has(rsQqq) && dir ? rsQqq * dir > 0 : null }
+  };
+  const extra = {
+    avgVolume: { v: m.avgVol20 ?? null, pass: has(m.avgVol20) ? m.avgVol20 >= rules.avgVolume : null },
+    price: { v: m.pmLast ?? null, pass: has(m.pmLast) ? m.pmLast >= rules.priceMin && m.pmLast <= rules.priceMax : null }
+  };
+  const vals = Object.values(c);
+  return { checks: c, extra, rsSpy, rsQqq, passed: vals.filter((x) => x.pass === true).length, known: vals.filter((x) => x.pass != null).length, rvolOk: c.rvol.pass === true };
+}
