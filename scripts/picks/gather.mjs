@@ -170,7 +170,7 @@ pool.forEach((s) => {
 const rows = Object.values(result.symbols).sort((a, b) => (b.screen.rvolOk - a.screen.rvolOk) || (b.screen.passed - a.screen.passed) || Math.abs(b.gapPct || 0) - Math.abs(a.gapPct || 0));
 result.scanDraft = rows.slice(0, 30).map((m) => ({
   sym: m.sym, price: m.pmLast, gapPct: m.gapPct ?? null, rvol: m.rvol ?? null, pmVolume: m.pmVolume ?? null, avgVolume: m.avgVol20 ?? null,
-  floatM: m.floatM ?? null, atrPct: m.atrPct ?? null, spreadPct: m.spreadPct ?? null, rsQqq: m.rsQqq ?? null,
+  floatM: m.floatM ?? null, atrPct: m.atrPct ?? null, spreadPct: m.spreadPct ?? null, rsQqq: m.rsQqq ?? null, ema9Pct: m.ema9Pct ?? null,
   catalyst: m.earningsToday ? `業績（${m.earningsToday.when}）` : (m.news && m.news[0] ? m.news[0].title.slice(0, 80) : ''), passed: m.screen.passed, verdict: '', note: ''
 }));
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
@@ -182,5 +182,5 @@ const mark = (p) => (p === true ? '✅' : p === false ? '❌' : '・');
 console.log(`目標日 ${target}｜寫入 ${outFile}｜候選池 ${pool.length} 隻，有價格 ${rows.length} 隻`);
 console.log('來源：' + Object.entries(S.sources).map(([k, v]) => `${k} ${v.ok ? '✅' + v.ok : ''}${v.fail ? '❌' + v.fail : ''}${!v.ok && v.error ? '（' + v.error + '）' : ''}`).join('｜'));
 console.log(`大市：` + ['SPY', 'QQQ', 'IWM', 'SMH'].map((s) => `${s} ${idx[s] ? fmt(idx[s].chgPct, 2) + '%' : '—'}`).join('  ') + (base.qqq != null && !idx.QQQ ? `（RS 基準用 --base：SPY ${base.spy}%、QQQ ${base.qqq}%）` : '') + (result.market.economic.length ? `｜今日數據：${result.market.economic.filter((e) => e.impact === '高').map((e) => e.timeET + ' ' + e.name).join('、') || '冇高影響'}` : ''));
-console.log('代號    價格     跳空%  RVOL  盤前量   流通M   ATR%  差價%  RS/QQQ 消息 8項   來源');
-rows.slice(0, 45).forEach((m) => { const c = m.screen.checks; console.log([m.sym.padEnd(7), (m.pmLast == null ? '—' : m.pmLast.toFixed(2)).padEnd(8), (mark(c.gap.pass) + fmt(m.gapPct)).padEnd(7), (mark(c.rvol.pass) + fmt(m.rvol)).padEnd(6), (mark(c.pmVolume.pass) + fmt(m.pmVolume)).padEnd(8), (mark(c.float.pass) + (m.floatM == null ? '—' : String(Math.round(m.floatM)))).padEnd(7), (mark(c.atr.pass) + fmt(m.atrPct)).padEnd(6), (mark(c.spread.pass) + fmt(m.spreadPct, 2)).padEnd(6), (mark(c.rs.pass) + fmt(m.rsQqq)).padEnd(7), (mark(c.catalyst.pass) + String((m.news || []).length)).padEnd(4), `${m.screen.passed}/${m.screen.known}`.padEnd(5), (m.dataSource || m.priceFrom || '').slice(0, 14)].join(' ')); });
+console.log('Symbol  Price    Gap%   RVOL  PM Vol   FloatM  ATR%  Sprd%  RS/QQQ EMA9%  News 9項   Source');
+rows.slice(0, 45).forEach((m) => { const c = m.screen.checks; console.log([m.sym.padEnd(7), (m.pmLast == null ? '—' : m.pmLast.toFixed(2)).padEnd(8), (mark(c.gap.pass) + fmt(m.gapPct)).padEnd(7), (mark(c.rvol.pass) + fmt(m.rvol)).padEnd(6), (mark(c.pmVolume.pass) + fmt(m.pmVolume)).padEnd(8), (mark(c.float.pass) + (m.floatM == null ? '—' : String(Math.round(m.floatM)))).padEnd(7), (mark(c.atr.pass) + fmt(m.atrPct)).padEnd(6), (mark(c.spread.pass) + fmt(m.spreadPct, 2)).padEnd(6), (mark(c.rs.pass) + fmt(m.rsQqq)).padEnd(7), (mark(c.ema9.pass) + fmt(m.ema9Pct, 2)).padEnd(7), (mark(c.catalyst.pass) + String((m.news || []).length)).padEnd(4), `${m.screen.passed}/${m.screen.known}`.padEnd(5), (m.dataSource || m.priceFrom || '').slice(0, 14)].join(' ')); });

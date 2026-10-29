@@ -6,6 +6,14 @@ export const etDate = (d) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Ameri
 export const etHM = (d) => new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(d));
 export const r2 = (v) => (v == null || !isFinite(v) ? null : Math.round(v * 100) / 100);
 const avg = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+/* EMA：頭 n 支用簡單平均做起點 */
+export function ema(values, n = 9) {
+  const v = values.filter((x) => typeof x === 'number' && isFinite(x));
+  if (v.length < n) return null;
+  const k = 2 / (n + 1); let e = avg(v.slice(0, n));
+  for (let i = n; i < v.length; i++) e = v[i] * k + e * (1 - k);
+  return e;
+}
 
 export function bars(j) {
   if (!j || !Array.isArray(j.time)) return [];
@@ -34,6 +42,7 @@ export function dailyMetrics(dailyJson, target) {
   out.sma50 = D.length >= 50 ? r2(avg(D.slice(-50).map((b) => b.c))) : null;
   const vols = D.slice(-20).map((b) => b.v).filter((v) => v != null);
   out.avgVol20 = vols.length ? Math.round(avg(vols)) : null;
+  out.ema9Daily = r2(ema(D.map((b) => b.c), 9));
   out.high20 = r2(Math.max(...D.slice(-20).map((b) => b.h)));
   out.low20 = r2(Math.min(...D.slice(-20).map((b) => b.l)));
   out.high52w = D.length >= 200 ? r2(Math.max(...D.slice(-252).map((b) => b.h))) : null;
@@ -67,6 +76,12 @@ export function premarketMetrics(intraJson, target, pdc, now = Date.now()) {
   const days = [...new Set(B.map((b) => b.d))].filter((d) => d < target).sort().slice(-10);
   const prior = cutoff ? days.map((d) => B.filter((b) => b.d === d && isPm(b) && b.hm <= cutoff).reduce((a, b) => a + (b.v || 0), 0)).filter((v) => v > 0) : [];
   const todayDone = done.reduce((a, b) => a + (b.v || 0), 0);
+  // EMA 9：用日內 K 線（包盤前盤後，連之前幾日做熱身），計到今日最後一支已完成嘅 K 線
+  if (done.length) {
+    const last = new Date(done[done.length - 1].t).getTime();
+    const e9 = ema(B.filter((b) => b.d <= target && new Date(b.t).getTime() <= last).map((b) => b.c), 9);
+    if (e9 != null) { out.ema9 = r2(e9); out.ema9Step = step >= 3600e3 ? '60m' : Math.round(step / 60e3) + 'm'; out.ema9Pct = r2((done[done.length - 1].c - e9) / e9 * 100); }
+  }
   if (cutoff && out.pmVolume != null && prior.length >= 3) {
     out.pmAvgSameTime = Math.round(avg(prior));
     out.rvol = r2(todayDone / out.pmAvgSameTime);
@@ -116,6 +131,7 @@ export const RULES = {
   atrPct: 2,          // 6. ATR% ≥ 2%
   spreadPct: 0.1,     // 7. 買賣差價 ≤ 0.1%
   rs: true,           // 8. 相對大市強弱：同交易方向一致地跑贏／跑輸 QQQ
+  ema9: true,         // 9. EMA 9（5 分鐘，包盤前）：做多價格要喺 EMA 9 之上，沽空要喺之下
   avgVolume: 1000000, // 額外：平均成交 ≥ 100 萬股
   priceMin: 10, priceMax: 150 // 額外：新手價格範圍
 };
@@ -137,7 +153,8 @@ export function screen(m, base = {}, rules = RULES) {
     float: { v: m.floatM ?? null, pass: has(m.floatM) ? m.floatM >= rules.floatM : null },
     atr: { v: m.atrPct ?? null, pass: has(m.atrPct) ? m.atrPct >= rules.atrPct : null },
     spread: { v: m.spreadPct ?? null, pass: has(m.spreadPct) ? m.spreadPct <= rules.spreadPct : null },
-    rs: { v: rsQqq, pass: has(rsQqq) && dir ? rsQqq * dir > 0 : null }
+    rs: { v: rsQqq, pass: has(rsQqq) && dir ? rsQqq * dir > 0 : null },
+    ema9: { v: m.ema9Pct ?? null, pass: has(m.ema9Pct) && dir ? m.ema9Pct * dir > 0 : null }
   };
   const extra = {
     avgVolume: { v: m.avgVol20 ?? null, pass: has(m.avgVol20) ? m.avgVol20 >= rules.avgVolume : null },

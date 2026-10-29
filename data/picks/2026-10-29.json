@@ -250,7 +250,8 @@
    "rsQqq": -10.12,
    "catalyst": "業績差、自由現金流轉負",
    "verdict": "pick",
-   "note": ""
+   "note": "",
+   "ema9Pct": -0.15
   },
   {
    "sym": "NCLH",
@@ -265,7 +266,8 @@
    "rsQqq": 13.02,
    "catalyst": "業績 + 上調指引",
    "verdict": "pick",
-   "note": ""
+   "note": "",
+   "ema9Pct": -0.31
   },
   {
    "sym": "CAT",
@@ -280,7 +282,8 @@
    "rsQqq": -9.39,
    "catalyst": "業績勝預期但前景差",
    "verdict": "pick",
-   "note": ""
+   "note": "",
+   "ema9Pct": -0.71
   },
   {
    "sym": "MRVL",
@@ -295,7 +298,8 @@
    "rsQqq": -10.59,
    "catalyst": "傳收購 Lumentum（未證實）",
    "verdict": "pick",
-   "note": ""
+   "note": "",
+   "ema9Pct": -0.04
   },
   {
    "sym": "NOW",
@@ -310,7 +314,8 @@
    "rsQqq": -17.65,
    "catalyst": "業績、合約增長放慢",
    "verdict": "pick",
-   "note": "差價 0.21%"
+   "note": "差價 0.21%",
+   "ema9Pct": 0.16
   },
   {
    "sym": "CMG",
@@ -325,7 +330,8 @@
    "rsQqq": 9.44,
    "catalyst": "Q3 銷售動力",
    "verdict": "pick",
-   "note": "差價 0.16%"
+   "note": "差價 0.16%",
+   "ema9Pct": 0.33
   },
   {
    "sym": "LLY",
@@ -340,7 +346,8 @@
    "rsQqq": 6.35,
    "catalyst": "業績大勝、上調指引",
    "verdict": "pick",
-   "note": "差價 0.27%、高價"
+   "note": "差價 0.27%、高價",
+   "ema9Pct": 0.55
   },
   {
    "sym": "FTNT",
@@ -355,7 +362,8 @@
    "rsQqq": -26.43,
    "catalyst": "服務收入指引遜預期",
    "verdict": "watch",
-   "note": "差價 0.35%、跌 27.6% 太大"
+   "note": "差價 0.35%、跌 27.6% 太大",
+   "ema9Pct": -1.19
   },
   {
    "sym": "DASH",
@@ -370,7 +378,8 @@
    "rsQqq": 8.26,
    "catalyst": "業績 + 收購 Instacart",
    "verdict": "watch",
-   "note": "差價 0.33%，盤前高係消息後瞬間尖峰"
+   "note": "差價 0.33%，盤前高係消息後瞬間尖峰",
+   "ema9Pct": 0.73
   },
   {
    "sym": "IOVA",
@@ -385,7 +394,8 @@
    "rsQqq": -29.8,
    "catalyst": "肺癌試驗數據公布後急跌",
    "verdict": "avoid",
-   "note": "生物科技二元消息，跌 31%"
+   "note": "生物科技二元消息，跌 31%",
+   "ema9Pct": -7.7
   },
   {
    "sym": "SFM",
@@ -400,7 +410,8 @@
    "rsQqq": -22.39,
    "catalyst": "業績、RBC 降級",
    "verdict": "watch",
-   "note": "差價 0.32%"
+   "note": "差價 0.32%",
+   "ema9Pct": -0.67
   },
   {
    "sym": "CROX",
@@ -415,7 +426,8 @@
    "rsQqq": 19.82,
    "catalyst": "業績 + 上調指引",
    "verdict": "watch",
-   "note": "差價 1.2%、盤前成交 15 萬"
+   "note": "差價 1.2%、盤前成交 15 萬",
+   "ema9Pct": 0.32
   },
   {
    "sym": "INSM",
@@ -430,7 +442,8 @@
    "rsQqq": 14.62,
    "catalyst": "Q3 業績",
    "verdict": "watch",
-   "note": "差價 1.79%"
+   "note": "差價 1.79%",
+   "ema9Pct": 0.15
   },
   {
    "sym": "CVNA",
@@ -445,7 +458,8 @@
    "rsQqq": 9.64,
    "catalyst": "收入破 80 億，EPS 遜預期",
    "verdict": "watch",
-   "note": "差價 0.72%"
+   "note": "差價 0.72%",
+   "ema9Pct": 0.09
   },
   {
    "sym": "LITE",
@@ -460,7 +474,8 @@
    "rsQqq": 6.67,
    "catalyst": "傳被 Marvell 收購",
    "verdict": "watch",
-   "note": "併購消息，差價 0.29%、ATR 8%"
+   "note": "併購消息，差價 0.29%、ATR 8%",
+   "ema9Pct": -0.2
   },
   {
    "sym": "MA",
@@ -475,7 +490,8 @@
    "rsQqq": 4.44,
    "catalyst": "業績勝預期",
    "verdict": "watch",
-   "note": "盤前成交得 2 萬股"
+   "note": "盤前成交得 2 萬股",
+   "ema9Pct": 0.95
   },
   {
    "sym": "MRK",
@@ -490,7 +506,8 @@
    "rsQqq": 3.65,
    "catalyst": "業績勝預期、上調指引",
    "verdict": "watch",
-   "note": "差價 0.52%、盤前成交 6 萬"
+   "note": "差價 0.52%、盤前成交 6 萬",
+   "ema9Pct": 0.23
   },
   {
    "sym": "MSFT",
@@ -505,7 +522,8 @@
    "rsQqq": 2.14,
    "catalyst": "Azure 增長 48%",
    "verdict": "watch",
-   "note": "跳空 0.95% 未夠 3%"
+   "note": "跳空 0.95% 未夠 3%",
+   "ema9Pct": -0.25
   },
   {
    "sym": "AMZN",
@@ -520,7 +538,8 @@
    "rsQqq": -0.54,
    "catalyst": "今晚收市後業績",
    "verdict": "watch",
-   "note": "跳空 −1.7% 未夠 3%"
+   "note": "跳空 −1.7% 未夠 3%",
+   "ema9Pct": 0.03
   },
   {
    "sym": "META",
@@ -535,7 +554,8 @@
    "rsQqq": 2.06,
    "catalyst": "冇新消息",
    "verdict": "skip",
-   "note": "RVOL 0.7"
+   "note": "RVOL 0.7",
+   "ema9Pct": -0.01
   },
   {
    "sym": "NCPL",
@@ -550,7 +570,8 @@
    "rsQqq": 45.74,
    "catalyst": "細價股急升",
    "verdict": "avoid",
-   "note": "$1.6、流通股 200 萬"
+   "note": "$1.6、流通股 200 萬",
+   "ema9Pct": -1.12
   },
   {
    "sym": "PCLA",
@@ -565,7 +586,8 @@
    "rsQqq": 33.18,
    "catalyst": "細價股急升",
    "verdict": "avoid",
-   "note": "流通股 900 萬"
+   "note": "流通股 900 萬",
+   "ema9Pct": -1.03
   },
   {
    "sym": "XRX",
@@ -580,7 +602,8 @@
    "rsQqq": -29.28,
    "catalyst": "業績、債務交換",
    "verdict": "avoid",
-   "note": "$1.9、差價 1%"
+   "note": "$1.9、差價 1%",
+   "ema9Pct": -1.7
   }
  ],
  "picks": [
@@ -686,7 +709,11 @@
    "lists": [
     "CNBC 盤前異動",
     "Alpaca 最活躍"
-   ]
+   ],
+   "ema9": 288.61,
+   "ema9Pct": -0.15,
+   "ema9Step": "5m",
+   "ema9Daily": 328.67
   },
   {
    "sym": "NCLH",
@@ -739,7 +766,7 @@
     "bigPicture": "大市偏淡（QQQ −1.2%），但 XLY 非必需消費 +0.85%、IWM +0.24%，資金轉去非科技股，對 NCLH 有利。",
     "fundamentals": "業績 + 上調指引係最強嘅催化劑之一；CFO 交接係小雜音。",
     "technical": "突破 20 日高，上面冇近期阻力；目標 18.86（+2R）之後係心理關口 19。",
-    "tape": "盤前成交日均 22%，RVOL 36；沽空比例 19.65%（流通股），升穿盤前高可能觸發淡友回補。要見首 5 分鐘成交 ≥ 118 萬股。",
+    "tape": "盤前成交日均 22%，RVOL 36；沽空比例 19.65%（流通股），升穿盤前高可能觸發淡友回補。要見首 5 分鐘成交 ≥ 118 萬股。 5 分鐘 EMA 9 = 18.02，現價略低過佢（−0.31%），盤前動能放緩。",
     "intuition": "信心中至高。如果開市即跌穿 17.5 返入盤前區間下半部，代表跳空被沽，即放棄。"
    },
    "trade": {
@@ -759,7 +786,8 @@
    "risks": [
     "跳空 ≥ 10%，開市可能先回吐（Gap Fade）",
     "沽空比例高，波動可能好急",
-    "大市偏淡"
+    "大市偏淡",
+    "盤前價（17.96）喺 5 分鐘 EMA 9（18.02）之下，短線動能轉弱，要等返上 EMA 9 先考慮"
    ],
    "news": [
     {
@@ -790,7 +818,11 @@
    "lists": [
     "StockAnalysis 盤前升幅榜",
     "Alpaca 最活躍"
-   ]
+   ],
+   "ema9": 18.02,
+   "ema9Pct": -0.31,
+   "ema9Step": "5m",
+   "ema9Daily": 15.53
   },
   {
    "sym": "MRVL",
@@ -893,7 +925,11 @@
    ],
    "lists": [
     "Benzinga 盤前異動股"
-   ]
+   ],
+   "ema9": 222.08,
+   "ema9Pct": -0.04,
+   "ema9Step": "5m",
+   "ema9Daily": 242.16
   },
   {
    "sym": "CAT",
@@ -997,7 +1033,11 @@
    "lists": [
     "CNBC 盤前異動",
     "Nasdaq 業績日曆"
-   ]
+   ],
+   "ema9": 642.46,
+   "ema9Pct": -0.71,
+   "ema9Step": "5m",
+   "ema9Daily": 720.03
   },
   {
    "sym": "NOW",
@@ -1070,7 +1110,8 @@
    "risks": [
     "差價偏闊（0.21%）",
     "大跌後容易急速反彈",
-    "軟件股可能有板塊性抄底"
+    "軟件股可能有板塊性抄底",
+    "盤前價略高過 5 分鐘 EMA 9（+0.16%），短線仲未轉弱，要跌穿 EMA 9 同盤前低先沽"
    ],
    "news": [
     {
@@ -1102,7 +1143,11 @@
     "StockAnalysis 盤前跌幅榜",
     "Alpaca 異動榜",
     "CNBC 盤後異動"
-   ]
+   ],
+   "ema9": 121.65,
+   "ema9Pct": 0.16,
+   "ema9Step": "5m",
+   "ema9Daily": 151.79
   },
   {
    "sym": "CMG",
@@ -1205,7 +1250,11 @@
    ],
    "lists": [
     "CNBC 盤後異動"
-   ]
+   ],
+   "ema9": 31,
+   "ema9Pct": 0.33,
+   "ema9Step": "5m",
+   "ema9Daily": 28.8
   },
   {
    "sym": "LLY",
@@ -1309,7 +1358,11 @@
    "lists": [
     "CNBC 盤前異動",
     "Nasdaq 業績日曆"
-   ]
+   ],
+   "ema9": 1347.35,
+   "ema9Pct": 0.55,
+   "ema9Step": "5m",
+   "ema9Daily": 1268.76
   }
  ],
  "watch": [
@@ -1409,7 +1462,7 @@
    ]
   }
  ],
- "lesson": "今日示範咗「跟大市方向揀邊」：大市偏淡日，弱勢股（業績差 + 跌穿 20 日低）做沽空，強勢股要搵逆市都升、有業績支持嘅非科技股。8 大指標入面最常唔合格係買賣差價——盤前差價闊，開市後先再睇。",
+ "lesson": "今日示範咗「跟大市方向揀邊」：大市偏淡日，弱勢股（業績差 + 跌穿 20 日低）做沽空，強勢股要搵逆市都升、有業績支持嘅非科技股。8 大指標入面最常唔合格係買賣差價——盤前差價闊，開市後先再睇。 EMA 9 都幫到手：NCLH 盤前已經跌落 5 分鐘 EMA 9 之下，之後開市做多中 Stop。",
  "disclaimer": "🧪 測試版：收市後用當日 08:24 ET 之前嘅數據重做，示範新流程，唔係當日實時建議。Day Trade 風險極高，可能損失全部本金。",
  "review": {
   "writtenAt": "2026-10-29T21:05:31.284Z",

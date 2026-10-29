@@ -123,7 +123,7 @@ function checkPickV2(f, w, p) {
 const R3 = { gapAbs: 3, rvol: 2, pmVolume: 200000, pmVolumeEarly: 100000, floatM: 30, atrPct: 2, spreadPct: 0.1 };
 function checkPickV3(f, w, p, rules) {
   const R = Object.assign({}, R3, rules);
-  ['atrPct', 'spreadPct', 'rsQqq'].forEach((k) => { if (!req(p[k])) err(f, `${w}.${k} 一定要有數字（8 大指標）`); });
+  ['atrPct', 'spreadPct', 'rsQqq', 'ema9', 'ema9Pct'].forEach((k) => { if (!req(p[k])) err(f, `${w}.${k} 一定要有數字（9 大指標）`); });
   if (p.floatM == null && !nonEmpty(p.floatNote, 200)) err(f, `${w}.floatM（流通股，百萬）冇數字就要寫 floatNote 解釋`);
   if (p.rsSpy !== undefined && !isNum(p.rsSpy)) err(f, `${w}.rsSpy 要係數字或 null`);
   const side = p.trade && p.trade.side === 'Short' ? -1 : 1;
@@ -133,8 +133,9 @@ function checkPickV3(f, w, p, rules) {
   if (req(p.floatM) && p.floatM < R.floatM) miss.push(`流通股 ${p.floatM}M（< ${R.floatM}M）`);
   if (req(p.atrPct) && p.atrPct < R.atrPct) miss.push(`ATR ${p.atrPct}%（< ${R.atrPct}%）`);
   if (req(p.spreadPct) && p.spreadPct > R.spreadPct) miss.push(`差價 ${p.spreadPct}%（> ${R.spreadPct}%）`);
-  if (req(p.rsQqq) && p.rsQqq * side <= 0) miss.push(`相對 QQQ ${p.rsQqq}（同交易方向相反）`);
-  if (miss.length) warn(f, `${w} ${p.sym} 唔合 8 大指標：${miss.join('、')}——要喺 why／risks 講明點解仍然揀`);
+  if (req(p.rsQqq) && p.rsQqq * side <= 0) miss.push(`Relative Strength ${p.rsQqq}（同交易方向相反）`);
+  if (req(p.ema9Pct) && p.ema9Pct * side <= 0) miss.push(`EMA 9 ${p.ema9Pct}%（${side > 0 ? '價格喺 EMA 9 之下' : '價格喺 EMA 9 之上'}）`);
+  if (miss.length) warn(f, `${w} ${p.sym} 唔合指標：${miss.join('、')}——要喺 why／risks 講明點解仍然揀`);
 }
 const VERDICT = ['pick', 'watch', 'avoid', 'skip'];
 function checkScan(f, d) {
@@ -145,7 +146,7 @@ function checkScan(f, d) {
     const w = `scan[${i}]`;
     if (!/^[A-Z][A-Z0-9.\-]{0,9}$/.test(x.sym || '')) err(f, `${w}.sym`);
     if (seen.has(x.sym)) err(f, `${w}.sym 重複 ${x.sym}`); seen.add(x.sym);
-    ['price', 'gapPct', 'rvol', 'pmVolume', 'avgVolume', 'floatM', 'atrPct', 'spreadPct', 'rsQqq'].forEach((k) => { if (!isNum(x[k] ?? null)) err(f, `${w}.${k} 要係數字或 null`); });
+    ['price', 'gapPct', 'rvol', 'pmVolume', 'avgVolume', 'floatM', 'atrPct', 'spreadPct', 'rsQqq', 'ema9Pct'].forEach((k) => { if (!isNum(x[k] ?? null)) err(f, `${w}.${k} 要係數字或 null`); });
     if (!VERDICT.includes(x.verdict)) err(f, `${w}.verdict 要係 ${VERDICT.join('/')}`);
     ['catalyst', 'note'].forEach((k) => { if (!optStr(x[k], 300)) err(f, `${w}.${k} 要係字串（≤ 300 字）`); });
   });

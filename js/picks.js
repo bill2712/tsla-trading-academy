@@ -16,42 +16,45 @@
   const BEGIN = { 適合新手: 'ok', 中等: 'mid', 高風險: 'bad' };
   // 盤前揀股 8 大指標嘅預設門檻（同 scripts/picks/lib.mjs RULES 一樣；報告可以用 rules 覆蓋）
   const RULES = { gapAbs: 3, rvol: 2, pmVolume: 200000, pmVolumeEarly: 100000, floatM: 30, atrPct: 2, spreadPct: 0.1, avgVolume: 1000000, priceMin: 10, priceMax: 150 };
-  const VERDICT = { pick: ['🎯', '候選', 'ok'], watch: ['👀', '觀察', 'mid'], avoid: ['🚫', '避開', 'bad'], skip: ['・', '唔合', ''] };
+  const VERDICT = { pick: ['🎯', 'Pick 候選', 'ok'], watch: ['👀', 'Watch 觀察', 'mid'], avoid: ['🚫', 'Avoid 避開', 'bad'], skip: ['・', 'Skip 唔合', ''] };
   /* 每個指標：值、門檻文字、合唔合（true/false/null） */
   function checks(x, R, early) {
     const side = x.side === 'Short' ? -1 : x.side === 'Long' ? 1 : num(x.gapPct) == null ? 0 : x.gapPct >= 0 ? 1 : -1;
     const pmMin = early ? R.pmVolumeEarly : R.pmVolume;
     const has = (v) => num(v) != null;
     const cat = x.catalyst != null ? !!String(x.catalyst).trim() : null;
+    // [key, English name, 中文, 值, 門檻, 合唔合]
     return [
-      ['gap', '① 跳空 %', P(x.gapPct, 1), `絕對值 ≥ ${R.gapAbs}%`, has(x.gapPct) ? Math.abs(x.gapPct) >= R.gapAbs : null],
-      ['rvol', '② RVOL', has(x.rvol) ? (x.rvol > 999 ? '999+×' : F(x.rvol, 1) + '×') : '—', `≥ ${R.rvol}×（硬性）`, has(x.rvol) ? x.rvol >= R.rvol : null],
-      ['pmv', '③ 盤前成交', big(x.pmVolume), `≥ ${big(pmMin)}`, has(x.pmVolume) ? x.pmVolume >= pmMin : null],
-      ['cat', '④ 催化劑', cat == null ? '—' : cat ? '有' : '冇', '要有', cat],
-      ['float', '⑤ 流通股', has(x.floatM) ? big(x.floatM * 1e6) : '—', `≥ ${R.floatM}M`, has(x.floatM) ? x.floatM >= R.floatM : null],
-      ['atr', '⑥ ATR %', has(x.atrPct) ? F(x.atrPct, 1) + '%' : '—', `≥ ${R.atrPct}%`, has(x.atrPct) ? x.atrPct >= R.atrPct : null],
-      ['spr', '⑦ 買賣差價', has(x.spreadPct) ? F(x.spreadPct, 2) + '%' : '—', `≤ ${R.spreadPct}%`, has(x.spreadPct) ? x.spreadPct <= R.spreadPct : null],
-      ['rs', '⑧ 相對 QQQ', has(x.rsQqq) ? P(x.rsQqq, 1) : '—', side < 0 ? '弱過 QQQ' : '強過 QQQ', has(x.rsQqq) && side ? x.rsQqq * side > 0 : null]
+      ['gap', 'Gap %', '盤前漲跌幅', P(x.gapPct, 1), `|Gap| ≥ ${R.gapAbs}%`, has(x.gapPct) ? Math.abs(x.gapPct) >= R.gapAbs : null],
+      ['rvol', 'RVOL', '相對成交量（同時段）', has(x.rvol) ? (x.rvol > 999 ? '999+×' : F(x.rvol, 1) + '×') : '—', `≥ ${R.rvol}×（must）`, has(x.rvol) ? x.rvol >= R.rvol : null],
+      ['pmv', 'Pre-Market Volume', '盤前成交量', big(x.pmVolume), `≥ ${big(pmMin)}`, has(x.pmVolume) ? x.pmVolume >= pmMin : null],
+      ['cat', 'Catalyst', '消息催化劑', cat == null ? '—' : cat ? 'Yes' : 'No', 'news / earnings', cat],
+      ['float', 'Float', '流通股數', has(x.floatM) ? big(x.floatM * 1e6) : '—', `≥ ${R.floatM}M`, has(x.floatM) ? x.floatM >= R.floatM : null],
+      ['atr', 'ATR %', '波幅', has(x.atrPct) ? F(x.atrPct, 1) + '%' : '—', `≥ ${R.atrPct}%`, has(x.atrPct) ? x.atrPct >= R.atrPct : null],
+      ['spr', 'Bid-Ask Spread', '買賣差價', has(x.spreadPct) ? F(x.spreadPct, 2) + '%' : '—', `≤ ${R.spreadPct}%`, has(x.spreadPct) ? x.spreadPct <= R.spreadPct : null],
+      ['rs', 'Relative Strength', '相對大市強弱（vs QQQ）', has(x.rsQqq) ? P(x.rsQqq, 1) : '—', side < 0 ? 'weaker than QQQ' : 'stronger than QQQ', has(x.rsQqq) && side ? x.rsQqq * side > 0 : null],
+      ['ema', 'EMA 9', '5 分鐘 9 EMA（包盤前）', has(x.ema9Pct) ? P(x.ema9Pct, 2) : '—', side < 0 ? 'price below EMA 9' : 'price above EMA 9', has(x.ema9Pct) && side ? x.ema9Pct * side > 0 : null]
     ];
   }
   const mk = (ok) => (ok === true ? 'ok' : ok === false ? 'bad' : 'na');
   function indicatorsHTML(p, R, early) {
-    if (![p.atrPct, p.rsQqq, p.spreadPct].some((v) => num(v) != null)) return '';
+    if (![p.atrPct, p.rsQqq, p.spreadPct, p.ema9Pct].some((v) => num(v) != null)) return '';
     const c = checks(Object.assign({ side: p.trade && p.trade.side }, p), R, early);
-    const n = c.filter((x) => x[4] === true).length, k = c.filter((x) => x[4] != null).length;
-    return `<div class="pk-ind" aria-label="8 大盤前指標"><div class="pk-ind-h"><b>8 大盤前指標</b><span>${n}／${k} 合格</span></div><div class="pk-ind-g">${c.map(([, t, v, th, ok]) => `<div class="${mk(ok)}"><span>${t}</span><b>${esc(v)}</b><small>${ok === true ? '✅' : ok === false ? '❌' : '・'} ${esc(th)}</small></div>`).join('')}</div></div>`;
+    const n = c.filter((x) => x[5] === true).length, k = c.filter((x) => x[5] != null).length;
+    return `<div class="pk-ind" aria-label="Pre-Market Indicators"><div class="pk-ind-h"><b>Pre-Market Indicators</b><span>${n} / ${k} pass</span></div><div class="pk-ind-g">${c.map(([, t, zh, v, th, ok]) => `<div class="${mk(ok)}" title="${esc(zh)}"><span>${t}<em>${esc(zh)}</em></span><b>${esc(v)}</b><small>${ok === true ? '✅' : ok === false ? '❌' : '・'} ${esc(th)}</small></div>`).join('')}</div>${num(p.ema9) != null ? `<p class="tool-fine">EMA 9 (${esc(p.ema9Step || '5m')}) = $${F(p.ema9)}${num(p.ema9Daily) != null ? `・Daily EMA 9 = $${F(p.ema9Daily)}` : ''}</p>` : ''}</div>`;
   }
   function scanHTML(d, R, early) {
     const rows = d.scan || [];
     if (!rows.length) return '';
-    const cell = (c) => `<td class="pk-c ${mk(c[4])}">${esc(c[2])}</td>`;
-    return `<section class="card pk-scan"><div class="card-h">📊 盤前掃描總表（8 大指標）<small>${esc(d.scanTime ? '數據截至美東 ' + d.scanTime : '')}</small></div>
-      <p class="muted">先睇數據，再睇下面每隻嘅分析同新聞。綠色 = 合新手起步條件，紅色 = 唔合，灰色 = 冇數據。RVOL ≥ ${R.rvol} 係硬性規則，其他係參考條件（唔係驗證過嘅獲利門檻）。</p>
-      <div class="tbl-scroll"><table class="mini-tbl wide pk-scan-t"><thead><tr><th>股票</th><th>價</th><th>跳空</th><th>RVOL</th><th>盤前量</th><th>催化劑</th><th>流通股</th><th>ATR%</th><th>差價%</th><th>相對 QQQ</th><th>合格</th><th>結論</th></tr></thead><tbody>
-      ${rows.map((x) => { const c = checks(x, R, early); const v = VERDICT[x.verdict] || VERDICT.skip; const n = c.filter((y) => y[4] === true).length, k = c.filter((y) => y[4] != null).length;
-        return `<tr><th>${esc(x.sym)}</th><td>${num(x.price) == null ? '—' : '$' + F(x.price)}</td>${cell(c[0])}${cell(c[1])}${cell(c[2])}<td class="pk-c ${mk(c[3][4])} pk-cat" title="${esc(x.catalyst || '')}">${esc((x.catalyst || '—').slice(0, 40))}</td>${cell(c[4])}${cell(c[5])}${cell(c[6])}${cell(c[7])}<td>${n}/${k}</td><td><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span>${x.note ? `<small>${esc(x.note)}</small>` : ''}</td></tr>`; }).join('')}
+    const cell = (c) => `<td class="pk-c ${mk(c[5])}">${esc(c[3])}</td>`;
+    const H = (en, zh) => `<th>${en}<small>${zh}</small></th>`;
+    return `<section class="card pk-scan"><div class="card-h">📊 Pre-Market Scanner（盤前掃描總表）<small>${esc(d.scanTime ? '數據截至美東 ' + d.scanTime : '')}</small></div>
+      <p class="muted">先睇數據，再睇下面每隻嘅分析同新聞。綠色 = 合新手起步條件，紅色 = 唔合，灰色 = 冇數據。RVOL ≥ ${R.rvol} 係硬性規則（must），其他係參考條件（唔係驗證過嘅獲利門檻）。</p>
+      <div class="tbl-scroll"><table class="mini-tbl wide pk-scan-t"><thead><tr>${H('Symbol', '股票')}${H('Price', '價')}${H('Gap %', '盤前漲跌幅')}${H('RVOL', '相對成交量')}${H('Pre-Mkt Vol', '盤前成交量')}${H('Catalyst', '消息催化劑')}${H('Float', '流通股數')}${H('ATR %', '波幅')}${H('Spread %', '買賣差價')}${H('Rel. Strength', 'vs QQQ')}${H('EMA 9', '5m，價距 %')}${H('Pass', '合格')}${H('Verdict', '結論')}</tr></thead><tbody>
+      ${rows.map((x) => { const c = checks(x, R, early); const v = VERDICT[x.verdict] || VERDICT.skip; const n = c.filter((y) => y[5] === true).length, k = c.filter((y) => y[5] != null).length;
+        return `<tr><th>${esc(x.sym)}</th><td>${num(x.price) == null ? '—' : '$' + F(x.price)}</td>${cell(c[0])}${cell(c[1])}${cell(c[2])}<td class="pk-c ${mk(c[3][5])} pk-cat" title="${esc(x.catalyst || '')}">${esc((x.catalyst || '—').slice(0, 40))}</td>${cell(c[4])}${cell(c[5])}${cell(c[6])}${cell(c[7])}${cell(c[8])}<td>${n}/${k}</td><td><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span>${x.note ? `<small>${esc(x.note)}</small>` : ''}</td></tr>`; }).join('')}
       </tbody></table></div>
-      <p class="tool-fine">門檻：|跳空| ≥ ${R.gapAbs}%・RVOL ≥ ${R.rvol}×・盤前成交 ≥ ${big(early ? R.pmVolumeEarly : R.pmVolume)} 股・流通股 ≥ ${R.floatM}M・ATR ≥ ${R.atrPct}%・差價 ≤ ${R.spreadPct}%・升嘅股要強過 QQQ、跌嘅要弱過 QQQ。另外新手宜揀股價 $${R.priceMin}–${R.priceMax}、日均成交 ≥ ${big(R.avgVolume)}。盤前買賣差價通常比開市後闊，開市前再喺券商睇一次。</p></section>`;
+      <p class="tool-fine">Thresholds：|Gap %| ≥ ${R.gapAbs}%・RVOL ≥ ${R.rvol}×・Pre-Market Volume ≥ ${big(early ? R.pmVolumeEarly : R.pmVolume)}・Float ≥ ${R.floatM}M・ATR % ≥ ${R.atrPct}%・Bid-Ask Spread ≤ ${R.spreadPct}%・Relative Strength：升嘅股要強過 QQQ、跌嘅要弱過 QQQ・EMA 9：做多價格要喺 5 分鐘 EMA 9 之上，沽空要喺之下。另外新手宜揀股價 $${R.priceMin}–${R.priceMax}、日均成交 ≥ ${big(R.avgVolume)}。盤前買賣差價通常比開市後闊，開市前再喺券商睇一次。</p></section>`;
   }
 
   let indexCache = null, indexTs = 0;
@@ -107,16 +110,16 @@
         <div class="pk-tags">${num(p.rvol) != null ? `<span class="pk-rvol ${p.rvol >= 2 ? 'ok' : 'low'}" title="盤前相對成交量（同時段）">RVOL ${F(p.rvol, 1)}×</span>` : ''}${p.grade ? `<span class="pk-grade g-${esc(p.grade)}">${esc(p.grade)} 級</span>` : ''}${p.beginner ? `<span class="pk-beg ${BEGIN[p.beginner] || 'mid'}">${esc(p.beginner)}</span>` : ''}${p.direction ? `<span class="pk-dir">${esc(p.direction)}</span>` : ''}</div>
       </header>
       <div class="pk-nums">
-        <div><span>盤前價</span><b>$${F(p.price)}</b></div>
-        <div><span>較昨收（Change from Close）</span><b class="${cls(p.gapPct)}">${P(p.gapPct)}</b></div>
-        <div><span>盤前成交</span><b>${big(p.pmVolume)}</b></div>
-        <div><span>平均成交</span><b>${big(p.avgVolume)}</b></div>
-        <div><span>盤前量佔日均</span><b>${num(p.pmVolPct) == null ? '—' : F(p.pmVolPct, 1) + '%'}</b></div>
-        <div><span>RVOL（盤前同時段）</span><b class="${num(p.rvol) != null && p.rvol >= 2 ? 'pos' : ''}">${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</b></div>
-        <div><span>買賣差價</span><b>${num(p.spread) == null ? '—' : '$' + F(p.spread)}</b></div>
-        <div><span>ATR</span><b>${num(p.atr) == null ? '—' : '$' + F(p.atr)}</b></div>
-        <div><span>市值</span><b>${num(p.mktCapB) == null ? '—' : F(p.mktCapB, 1) + 'B'}</b></div>
-        <div><span>流通股</span><b>${num(p.floatM) == null ? '—' : big(p.floatM * 1e6)}</b></div>
+        <div><span>Pre-Market Price</span><b>$${F(p.price)}</b></div>
+        <div><span>Gap %（vs Prior Close）</span><b class="${cls(p.gapPct)}">${P(p.gapPct)}</b></div>
+        <div><span>Pre-Market Volume</span><b>${big(p.pmVolume)}</b></div>
+        <div><span>Avg Volume（20D）</span><b>${big(p.avgVolume)}</b></div>
+        <div><span>PM Vol % of Avg</span><b>${num(p.pmVolPct) == null ? '—' : F(p.pmVolPct, 1) + '%'}</b></div>
+        <div><span>RVOL</span><b class="${num(p.rvol) != null && p.rvol >= 2 ? 'pos' : ''}">${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</b></div>
+        <div><span>Bid-Ask Spread</span><b>${num(p.spread) == null ? '—' : '$' + F(p.spread)}${num(p.spreadPct) != null ? ` <small>(${F(p.spreadPct, 2)}%)</small>` : ''}</b></div>
+        <div><span>ATR（14D）</span><b>${num(p.atr) == null ? '—' : '$' + F(p.atr)}${num(p.atrPct) != null ? ` <small>(${F(p.atrPct, 1)}%)</small>` : ''}</b></div>
+        <div><span>Market Cap</span><b>${num(p.mktCapB) == null ? '—' : F(p.mktCapB, 1) + 'B'}</b></div>
+        <div><span>Float</span><b>${num(p.floatM) == null ? '—' : big(p.floatM * 1e6)}</b></div>
       </div>
       ${indicatorsHTML(p, R, early)}
       ${(p.lists || []).length ? `<div class="pk-lists">${p.lists.map((x) => `<span>📌 ${esc(x)}</span>`).join('')}</div>` : ''}
@@ -197,17 +200,18 @@
       ${d.lesson ? `<section class="card tip-card"><div class="card-h">💡 新手提示</div><p>${esc(d.lesson)}</p></section>` : ''}
       ${reviewHTML(d.review)}
       <details class="card pk-method"><summary><b>🔍 選股方法（點樣由幾千隻縮到 5 隻）</b></summary>
-        <p>盤前揀股同入市技術（支持阻力、K 線、成交量、VWAP）係兩樣唔同嘅技能：盤前先解決「今日應該集中睇邊 3–7 隻」，開市後先用技術搵入場位。所以盤前唔靠 RSI、MACD，而係睇以下 8 個指標。</p>
-        <div class="tbl-scroll"><table class="mini-tbl wide"><tr><th>#</th><th>指標</th><th>作用</th><th>新手起步條件</th></tr>
-        <tr><td>1</td><td>跳空 %（盤前現價較昨收）</td><td>今日有冇明顯異動</td><td>絕對值 ≥ ${R.gapAbs}%</td></tr>
-        <tr><td>2</td><td>RVOL（盤前同時段相對成交量）</td><td>今日成交係咪異常活躍</td><td><b>≥ ${R.rvol} 倍（硬性規則）</b></td></tr>
-        <tr><td>3</td><td>盤前成交量</td><td>有冇足夠人參與</td><td>≥ ${big(R.pmVolume)} 股（08:30 前 ≥ ${big(R.pmVolumeEarly)}）</td></tr>
-        <tr><td>4</td><td>催化劑（Catalyst）</td><td>點解今日會郁</td><td>業績、指引、重大新聞、公告</td></tr>
-        <tr><td>5</td><td>流通股（Float）</td><td>容唔容易急升急跌</td><td>新手優先 ≥ ${R.floatM}M</td></tr>
-        <tr><td>6</td><td>ATR %</td><td>平日波幅夠唔夠做</td><td>≥ ${R.atrPct}%</td></tr>
-        <tr><td>7</td><td>買賣差價（Spread）</td><td>入出市隱藏成本</td><td>≤ ${R.spreadPct}%</td></tr>
-        <tr><td>8</td><td>相對強弱（Relative Strength，唔係 RSI）</td><td>係咪跑贏／跑輸大市</td><td>升嘅強過 QQQ、跌嘅弱過 QQQ</td></tr></table></div>
-        <p><b>點計：</b>跳空 % =（盤前現價 − 昨收）÷ 昨收。RVOL = 今日 04:00 至最後一支已完成 K 線嘅盤前成交 ÷ 之前 10 個交易日同一段時間嘅平均（唔係 TradingView 嗰個只計正常時段嘅 Relative Volume）。ATR % = 14 日 ATR ÷ 昨收。相對強弱 = 個股跳空 % − QQQ 跳空 %。</p>
+        <p>盤前揀股同入市技術（支持阻力、K 線、成交量、VWAP）係兩樣唔同嘅技能：盤前先解決「今日應該集中睇邊 3–7 隻」，開市後先用技術搵入場位。所以盤前唔靠 RSI、MACD，而係睇以下 9 個指標（頭 8 個係揀股，EMA 9 睇短線趨勢）。</p>
+        <div class="tbl-scroll"><table class="mini-tbl wide"><tr><th>#</th><th>Indicator</th><th>作用</th><th>新手參考條件</th></tr>
+        <tr><td>1</td><td><b>Gap %</b> 盤前漲跌幅</td><td>今日有冇明顯異動</td><td>|Gap| ≥ ${R.gapAbs}%</td></tr>
+        <tr><td>2</td><td><b>Relative Volume (RVOL)</b> 相對成交量</td><td>今日成交係咪異常活躍</td><td><b>≥ ${R.rvol}×（硬性規則）</b></td></tr>
+        <tr><td>3</td><td><b>Pre-Market Volume</b> 盤前成交量</td><td>有冇足夠人參與</td><td>≥ ${big(R.pmVolume)}（08:30 前 ≥ ${big(R.pmVolumeEarly)}）</td></tr>
+        <tr><td>4</td><td><b>Catalyst</b> 消息催化劑</td><td>點解今日會郁</td><td>Earnings、Guidance、重大新聞、公告</td></tr>
+        <tr><td>5</td><td><b>Float</b> 流通股數</td><td>容唔容易急升急跌</td><td>新手優先 ≥ ${R.floatM}M</td></tr>
+        <tr><td>6</td><td><b>ATR / ATR %</b> 波幅</td><td>平日波幅夠唔夠做</td><td>ATR % ≥ ${R.atrPct}%</td></tr>
+        <tr><td>7</td><td><b>Bid-Ask Spread</b> 買賣差價</td><td>入出市隱藏成本</td><td>≤ ${R.spreadPct}%</td></tr>
+        <tr><td>8</td><td><b>Relative Strength</b> 相對大市強弱（唔係 RSI）</td><td>係咪跑贏／跑輸大市</td><td>Long 強過 QQQ、Short 弱過 QQQ</td></tr>
+        <tr><td>9</td><td><b>EMA 9</b>（5-minute，包盤前）</td><td>短線趨勢／動能</td><td>Long 價格喺 EMA 9 之上、Short 喺之下</td></tr></table></div>
+        <p><b>點計：</b>跳空 % =（盤前現價 − 昨收）÷ 昨收。RVOL = 今日 04:00 至最後一支已完成 K 線嘅盤前成交 ÷ 之前 10 個交易日同一段時間嘅平均（唔係 TradingView 嗰個只計正常時段嘅 Relative Volume）。ATR % = 14 日 ATR ÷ 昨收。Relative Strength = 個股 Gap % − QQQ Gap %。EMA 9 = 5 分鐘 K 線（包盤前）嘅 9 期指數移動平均，表入面顯示現價距離 EMA 9 幾多 %。</p>
         <p><b>常見陷阱：</b>TradingView 嘅「Pre-market Gap %」係用盤前第一個價計，「Pre-market Change %」先係對比昨收；盤前流動性低，差價會闊過開市後；$2 股票成交 100 萬股同 $100 股票成交 100 萬股，金額差好遠；跳空大唔等於一定繼續（Gap &amp; Go），亦可能回吐（Gap Fade）。</p>
         <p><b>五大分析：</b>① 大環境（指數、期貨、VIX、板塊）② 日內基本面（點解郁、消息新唔新、夠唔夠重大）③ 技術分析（日線趨勢、PDH／PDL、PMH／PML、有冇位放止蝕同目標）④ 睇盤（盤前成交分佈、差價同掛單、開市首幾分鐘成交）⑤ 直覺（綜合判斷同信心）。</p>
         <p><b>主力 Setup：開市推動（Opening Drive）</b>—— 開市後股價順住跳空方向突破開市區間（例如首 5 分鐘高位），同時成交明顯放大，先順勢入場；Stop 放開市區間另一邊或者 VWAP 下方。其他：開市區間突破（ORB）、突破後回踩、假突破。唔好見跳空就追。</p>

@@ -19,27 +19,31 @@ The report is laid out as: **data first** (8-indicator scan table for every cand
    previous ~10 sessions. No RVOL number → not a pick (put it in `watch` with the reason).
    RVOL comes from the collector (Alpaca → Yahoo) or IBKR + `calc.mjs`. **Do not depend on
    one source**: if one fails, use the next (section 3).
-2. **The 8 pre-market indicators** are checked and shown for every candidate (`scan` table and
-   each pick). Starting thresholds (beginner watchlist conditions, *not* proven profit edges):
+2. **The 9 pre-market indicators** are checked and shown for every candidate (`scan` table and
+   each pick). **Use the English indicator names in the report** (the reader doesn't follow the
+   Chinese terms); Chinese can follow in brackets. Starting thresholds (beginner watchlist
+   conditions, *not* proven profit edges):
 
    | # | Indicator | Field | Threshold |
    |---|---|---|---|
    | 1 | Gap % (pre-market price vs prior close) | `gapPct` | \|gap\| ≥ 3% |
-   | 2 | RVOL (same-time pre-market) | `rvol` | ≥ 2 (**hard rule**) |
-   | 3 | Pre-market volume | `pmVolume` | ≥ 200K (≥ 100K before 08:30 ET) |
+   | 2 | Relative Volume (RVOL, same-time pre-market) | `rvol` | ≥ 2 (**hard rule**) |
+   | 3 | Pre-Market Volume | `pmVolume` | ≥ 200K (≥ 100K before 08:30 ET) |
    | 4 | Catalyst | `catalyst` + news | earnings, guidance, deal, FDA, upgrade/downgrade, filing |
    | 5 | Float | `floatM` (millions) | ≥ 30M for beginners |
-   | 6 | ATR % (14-day ATR ÷ prior close) | `atrPct` | ≥ 2% |
-   | 7 | Bid-ask spread % | `spreadPct` | ≤ 0.1% |
-   | 8 | Relative strength vs QQQ (not RSI) | `rsQqq` = gapPct − QQQ gap | same sign as the trade (longs stronger than QQQ, shorts weaker) |
+   | 6 | ATR / ATR % (14-day ATR ÷ prior close) | `atr`, `atrPct` | ≥ 2% |
+   | 7 | Bid-Ask Spread | `spread`, `spreadPct` | ≤ 0.1% |
+   | 8 | Relative Strength vs QQQ (not RSI) | `rsQqq` = gapPct − QQQ gap | same sign as the trade (longs stronger than QQQ, shorts weaker) |
+   | 9 | EMA 9 (5-minute bars incl. pre-market) | `ema9`, `ema9Pct` = (price − EMA 9) ÷ EMA 9 | longs above EMA 9, shorts below |
 
    Extra beginner filters: price $10–150, average volume ≥ 1M. Only RVOL is a hard gate; a pick
    that fails another indicator is allowed only if `why`/`risks` explain it (build.mjs warns).
+   Also copy `ema9Step` and `ema9Daily` (daily EMA 9, a reference level) from the collector.
 3. **Aim for 5–7 picks** (max 8). Widen the search (more movers, earnings names, sectors) before
    giving up. If fewer than 5 pass RVOL ≥ 2, publish what passes and write `fewPicksReason`.
    Never lower the bar.
 4. **Every pick needs** all numbers (price, prevClose, gapPct, pmVolume, avgVolume, rvol, spread,
-   spreadPct, atr, atrPct, floatM, rsQqq, PMH/PML/PDH/PDL/PDC), a catalyst with at least one news
+   spreadPct, atr, atrPct, floatM, rsQqq, ema9, ema9Pct, PMH/PML/PDH/PDL/PDC), a catalyst with at least one news
    link (or `newsNote`), the five-pillar analysis and a numeric trade plan. `build.mjs` enforces it.
 5. **Multiple sources, cross-checked.** Price/gap from at least two sources when possible
    (collector's `xcheckPct` = StockAnalysis vs Alpaca/Yahoo; IBKR snapshot). If they disagree by
@@ -121,7 +125,7 @@ yesterday after the close, core liquid names, `--symbols`), then:
 - **Calendar**: ForexFactory (exact dates/times, impact) + Nasdaq (actual values; its `date`
   parameter is off by one day, the collector matches it against ForexFactory).
 
-It prints the source status line and a table with the 8 indicators (✅/❌/・), writes
+It prints the source status line and a table with the 9 indicators (✅/❌/・), writes
 `/tmp/picks/gather.json` and a ready `scanDraft` (fill `verdict` and `note`). If no index data
 is available, pass `--base spy=<chg>,qqq=<chg>` from trader-alerts or IBKR so RS can be computed.
 
@@ -197,7 +201,7 @@ record it. Never use trader-budget / trader-risk / trader-broker / trader-alerts
 |---|---|
 | `bigPicture` | Futures / SPY / QQQ, VIX, sector ETF, today's data releases — helps or hurts? Quote RS numbers. |
 | `fundamentals` | Why it is moving (news, earnings numbers, guidance, filings) and catalyst strength. |
-| `technical` | Daily trend (20/50-day), gap vs PDH/PDL/20-day high, PMH/PML, breakout price, room to target. |
+| `technical` | Daily trend (20/50-day, daily EMA 9), gap vs PDH/PDL/20-day high, PMH/PML, 5-minute EMA 9, breakout price, room to target. |
 | `tape` | Pre-market volume pattern, RVOL, spread and size, holding near PMH or fading; volume needed at the open. |
 | `intuition` | Overall judgment and confidence (高／中／低) and what would change your mind. |
 
@@ -234,14 +238,14 @@ failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never cha
               "indices": [{ "sym": "QQQ", "last": 0, "chgPct": 0, "note": "" }],
               "events": [{ "time": "08:30 ET", "name": "", "impact": "高", "note": "" }], "earnings": [{ "sym": "", "when": "盤前", "note": "" }] },
   "scan": [{ "sym": "", "price": 0, "gapPct": 0, "rvol": 0, "pmVolume": 0, "avgVolume": 0, "floatM": 0,
-             "atrPct": 0, "spreadPct": 0, "rsQqq": 0, "catalyst": "一句（≤ 300 字）", "verdict": "pick", "note": "" }],
+             "atrPct": 0, "spreadPct": 0, "rsQqq": 0, "ema9Pct": 0, "catalyst": "一句（≤ 300 字）", "verdict": "pick", "note": "" }],
   "focus": "（可選）TSLA 今日真係值得做先寫",
   "fewPicksReason": "（可選）少過 5 隻時必填",
   "picks": [{
     "sym": "", "name": "", "grade": "A", "beginner": "中等", "direction": "Long", "score": 80,
     "price": 0, "prevClose": 0, "gapPct": 0, "pmVolume": 0, "pmVolPct": 0, "avgVolume": 0,
     "rvol": 2.4, "spread": 0, "spreadPct": 0, "atr": 0, "atrPct": 0, "mktCapB": null, "floatM": 0, "floatNote": "（floatM 係 null 先寫）",
-    "rsQqq": 0, "rsSpy": 0,
+    "rsQqq": 0, "rsSpy": 0, "ema9": 0, "ema9Pct": 0, "ema9Step": "5m", "ema9Daily": 0,
     "levels": { "pmh": 0, "pml": 0, "pdh": 0, "pdl": 0, "pdc": 0, "other": [{ "label": "突破價", "price": 0 }] },
     "why": "", "catalyst": "", "technical": "", "setup": "開市推動（Opening Drive）",
     "pillars": { "bigPicture": "", "fundamentals": "", "technical": "", "tape": "", "intuition": "" },
