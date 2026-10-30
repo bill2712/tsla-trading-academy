@@ -1,6 +1,59 @@
 {
- "updated": "2026-10-29T21:21:28.112Z",
+ "updated": "2026-10-30T12:21:33.603Z",
  "days": [
+  {
+   "date": "2026-10-30",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏淡",
+   "headline": "Amazon、Intel 業績差拖低科技股：Nasdaq-100 期貨 −2.5%、半導體 −5%。6 隻 RVOL ≥ 2：沽空 AMZN、MSTR、INTC、COIN、RBLX",
+   "n": 6,
+   "top": [
+    {
+     "sym": "AMZN",
+     "gapPct": -6.69,
+     "rvol": 4.34,
+     "beginner": "適合新手",
+     "grade": "A"
+    },
+    {
+     "sym": "MSTR",
+     "gapPct": -6.95,
+     "rvol": 2.18,
+     "beginner": "中等",
+     "grade": "A"
+    },
+    {
+     "sym": "INTC",
+     "gapPct": -25.2,
+     "rvol": 8.88,
+     "beginner": "高風險",
+     "grade": "B"
+    },
+    {
+     "sym": "COIN",
+     "gapPct": -6.28,
+     "rvol": 4.09,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "RBLX",
+     "gapPct": -16.76,
+     "rvol": 32.75,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "AZN",
+     "gapPct": 5.39,
+     "rvol": 3.8,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-10-29",
    "version": 3,

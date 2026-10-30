@@ -1,0 +1,1380 @@
+{
+ "version": 3,
+ "date": "2026-10-30",
+ "generatedAt": "2026-10-30T12:21:33Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "07:55",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1,
+  "avgVolume": 1000000,
+  "priceMin": 10,
+  "priceMax": 150
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH/PML、EMA 9）",
+   "ok": true,
+   "note": "數據延遲 16 分鐘，截至 07:55–08:00 ET"
+  },
+  {
+   "name": "Alpaca SIP 報價（Bid-Ask Spread）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca 異動榜／最活躍",
+   "ok": true
+  },
+  {
+   "name": "Alpaca／Benzinga 新聞",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "Finviz（Float、行業）",
+   "ok": true,
+   "note": "2 隻 ETF 冇資料"
+  },
+  {
+   "name": "Google News",
+   "ok": true
+  },
+  {
+   "name": "Seeking Alpha",
+   "ok": true
+  },
+  {
+   "name": "MarketWatch／Investing.com RSS",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory + Nasdaq 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TopBreakoutStocks",
+   "ok": true,
+   "note": "今日候選唔喺佢嘅名單"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true
+  },
+  {
+   "name": "TradeThatSwing 本週名單（10/26 週）",
+   "ok": true,
+   "note": "INTC 喺名單"
+  },
+  {
+   "name": "Yahoo Finance（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇繞過；今日唔需要"
+  },
+  {
+   "name": "IBKR",
+   "ok": false,
+   "note": "冇用（Alpaca 已經夠）"
+  }
+ ],
+ "headline": "Amazon、Intel 業績差拖低科技股：Nasdaq-100 期貨 −2.5%、半導體 −5%。6 隻 RVOL ≥ 2：沽空 AMZN、MSTR、INTC、COIN、RBLX，做多 AZN。",
+ "market": {
+  "bias": "偏淡",
+  "summary": "Amazon（業績遜預期、現金流轉負）同 Intel（第四季指引差，跌 25%）拖低科技股，QQQ −2.54%、SMH −5.03%、XLK −3.6%；Binance 大型黑客事件令加密貨幣股受壓。資金轉去防守板塊：XLP +2.3%、XLV +1.6%、XLE +1.5%（Exxon、Chevron 業績好）。CNBC 指今日可能係 Nasdaq 本週最差一日。策略：弱勢科技／加密股跌穿盤前低先沽空，強勢防守股只揀業績好、成交夠嘅做多。週五收市前減倉，唔好揸過週末。",
+  "base": {
+   "spy": -1.06,
+   "qqq": -2.54
+  },
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 761.22,
+    "chgPct": -1.06,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 697.14,
+    "chgPct": -2.54,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "IWM",
+    "last": 282.54,
+    "chgPct": -0.52,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "DIA",
+    "last": 523.07,
+    "chgPct": 0.07,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "SMH",
+    "last": 533.42,
+    "chgPct": -5.03,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLK",
+    "last": 181.94,
+    "chgPct": -3.6,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLY",
+    "last": 114.66,
+    "chgPct": -1.33,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLV",
+    "last": 186.9,
+    "chgPct": 1.55,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLP",
+    "last": 90.17,
+    "chgPct": 2.26,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLE",
+    "last": 69.75,
+    "chgPct": 1.51,
+    "note": "07:55 ET（Alpaca SIP）"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "Employment Cost Index（第三季）",
+    "impact": "中",
+    "note": "共識 0.8%，上次 0.9%"
+   },
+   {
+    "time": "09:45 ET",
+    "name": "Chicago PMI",
+    "impact": "低",
+    "note": "共識 55.8"
+   },
+   {
+    "time": "12:00／12:30 ET",
+    "name": "Fed 官員 Daly、Musalem 講話",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "收市",
+    "name": "週五：唔好揸倉過週末",
+    "impact": "中",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "AMZN",
+    "when": "昨日盤後",
+    "note": "遜預期"
+   },
+   {
+    "sym": "INTC",
+    "when": "昨日盤後",
+    "note": "指引差"
+   },
+   {
+    "sym": "RDDT",
+    "when": "昨日盤後",
+    "note": "訪客警告"
+   },
+   {
+    "sym": "RBLX",
+    "when": "昨日盤後",
+    "note": ""
+   },
+   {
+    "sym": "TWLO",
+    "when": "昨日盤後",
+    "note": ""
+   },
+   {
+    "sym": "XOM",
+    "when": "盤前",
+    "note": "勝預期、加回購"
+   },
+   {
+    "sym": "CVX",
+    "when": "盤前",
+    "note": "淨利潤急升"
+   },
+   {
+    "sym": "AZN",
+    "when": "盤前",
+    "note": "勝預期"
+   },
+   {
+    "sym": "ABBV",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "CL",
+    "when": "盤前",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "AMZN",
+   "price": 227.47,
+   "gapPct": -6.69,
+   "rvol": 4.34,
+   "pmVolume": 1725421,
+   "avgVolume": 38161339,
+   "floatM": 9820,
+   "atrPct": 2.87,
+   "spreadPct": 0.15,
+   "rsQqq": -4.15,
+   "ema9Pct": -0.01,
+   "catalyst": "Q3 業績遜預期、現金流轉負",
+   "verdict": "pick",
+   "note": "Spread 0.15%"
+  },
+  {
+   "sym": "MSTR",
+   "price": 131.78,
+   "gapPct": -6.95,
+   "rvol": 2.18,
+   "pmVolume": 1163267,
+   "avgVolume": 18482803,
+   "floatM": 401.33,
+   "atrPct": 6.62,
+   "spreadPct": 0.08,
+   "rsQqq": -4.49,
+   "ema9Pct": -0.37,
+   "catalyst": "收入遜預期 + 加密貨幣黑客事件",
+   "verdict": "pick",
+   "note": ""
+  },
+  {
+   "sym": "INTC",
+   "price": 68.87,
+   "gapPct": -25.2,
+   "rvol": 8.88,
+   "pmVolume": 17760734,
+   "avgVolume": 98372299,
+   "floatM": 4550,
+   "atrPct": 5.52,
+   "spreadPct": 0.1,
+   "rsQqq": -22.66,
+   "ema9Pct": 0.24,
+   "catalyst": "第四季指引遜預期",
+   "verdict": "pick",
+   "note": "Gap 25%、價格略高過 EMA 9"
+  },
+  {
+   "sym": "COIN",
+   "price": 150.5,
+   "gapPct": -6.28,
+   "rvol": 4.09,
+   "pmVolume": 416841,
+   "avgVolume": 7809356,
+   "floatM": 215.78,
+   "atrPct": 5.7,
+   "spreadPct": 0.26,
+   "rsQqq": -3.82,
+   "ema9Pct": -0.45,
+   "catalyst": "Binance 黑客事件、分析師降目標價",
+   "verdict": "pick",
+   "note": "Spread 0.26%"
+  },
+  {
+   "sym": "RBLX",
+   "price": 43.67,
+   "gapPct": -16.76,
+   "rvol": 32.75,
+   "pmVolume": 344746,
+   "avgVolume": 9819804,
+   "floatM": 633.66,
+   "atrPct": 4.65,
+   "spreadPct": 0.37,
+   "rsQqq": -14.22,
+   "ema9Pct": 0.09,
+   "catalyst": "Q3 業績後急跌",
+   "verdict": "pick",
+   "note": "Spread 0.37%"
+  },
+  {
+   "sym": "AZN",
+   "price": 183.8,
+   "gapPct": 5.39,
+   "rvol": 3.8,
+   "pmVolume": 68751,
+   "avgVolume": 2976014,
+   "floatM": 1500,
+   "atrPct": 2.37,
+   "spreadPct": 0.07,
+   "rsQqq": 7.93,
+   "ema9Pct": 0.2,
+   "catalyst": "Q3 業績勝預期",
+   "verdict": "pick",
+   "note": "Pre-Market Volume 6.9 萬"
+  },
+  {
+   "sym": "RDDT",
+   "price": 102.5,
+   "gapPct": -20.91,
+   "rvol": 47.53,
+   "pmVolume": 1201396,
+   "avgVolume": 4938806,
+   "floatM": 141.27,
+   "atrPct": 6.35,
+   "spreadPct": 0.98,
+   "rsQqq": -18.37,
+   "ema9Pct": -0.58,
+   "catalyst": "CEO 警告第四季訪客大跌",
+   "verdict": "watch",
+   "note": "Spread 0.98% 太闊"
+  },
+  {
+   "sym": "RIVN",
+   "price": 12.15,
+   "gapPct": 6.11,
+   "rvol": 12.59,
+   "pmVolume": 1753391,
+   "avgVolume": 26399801,
+   "floatM": 942.87,
+   "atrPct": 4.19,
+   "spreadPct": 0.16,
+   "rsQqq": 8.57,
+   "ema9Pct": -0.24,
+   "catalyst": "Q3 勝預期、Jefferies 升級",
+   "verdict": "watch",
+   "note": "價格喺 EMA 9 之下；PMH 係尖峰，入場位太遠"
+  },
+  {
+   "sym": "SNY",
+   "price": 44.63,
+   "gapPct": 3.48,
+   "rvol": 11.06,
+   "pmVolume": 187549,
+   "avgVolume": 3453846,
+   "floatM": 2380,
+   "atrPct": 2.02,
+   "spreadPct": 0.07,
+   "rsQqq": 6.02,
+   "ema9Pct": -0.1,
+   "catalyst": "Regeneron 合作藥銷售強",
+   "verdict": "watch",
+   "note": "價格喺 EMA 9 之下"
+  },
+  {
+   "sym": "NWG",
+   "price": 15.64,
+   "gapPct": -8,
+   "rvol": 3.36,
+   "pmVolume": 224085,
+   "avgVolume": 4739018,
+   "floatM": 3950,
+   "atrPct": 2.41,
+   "spreadPct": 0.19,
+   "rsQqq": -5.46,
+   "ema9Pct": -0.23,
+   "catalyst": "Q3 業績（英國銀行 ADR）",
+   "verdict": "watch",
+   "note": "Spread 0.19%、細波幅"
+  },
+  {
+   "sym": "AMD",
+   "price": 520.53,
+   "gapPct": -8.1,
+   "rvol": 1.98,
+   "pmVolume": 582299,
+   "avgVolume": 19558393,
+   "floatM": 1620,
+   "atrPct": 5.02,
+   "spreadPct": 0.38,
+   "rsQqq": -5.64,
+   "ema9Pct": 0.39,
+   "catalyst": "晶片股跟跌",
+   "verdict": "watch",
+   "note": "RVOL 1.98，未夠 2"
+  },
+  {
+   "sym": "ARM",
+   "price": 208.53,
+   "gapPct": -8.85,
+   "rvol": 1.84,
+   "pmVolume": 101737,
+   "avgVolume": 4623329,
+   "floatM": 1060,
+   "atrPct": 5.72,
+   "spreadPct": 1.04,
+   "rsQqq": -6.39,
+   "ema9Pct": 0.48,
+   "catalyst": "晶片股跟跌",
+   "verdict": "watch",
+   "note": "RVOL 1.84、Spread 1%"
+  },
+  {
+   "sym": "NVDA",
+   "price": 207.19,
+   "gapPct": -3.03,
+   "rvol": 1.46,
+   "pmVolume": 2058037,
+   "avgVolume": 100116057,
+   "floatM": 23190,
+   "atrPct": 2.78,
+   "spreadPct": 0.05,
+   "rsQqq": -0.57,
+   "ema9Pct": 0.02,
+   "catalyst": "晶片股跟跌",
+   "verdict": "watch",
+   "note": "RVOL 1.46，未夠 2"
+  },
+  {
+   "sym": "MU",
+   "price": 882.02,
+   "gapPct": -5.59,
+   "rvol": 1.37,
+   "pmVolume": 808856,
+   "avgVolume": 25988228,
+   "floatM": 1130,
+   "atrPct": 5.29,
+   "spreadPct": 0.16,
+   "rsQqq": -3.13,
+   "ema9Pct": 0.11,
+   "catalyst": "晶片股跟跌",
+   "verdict": "watch",
+   "note": "RVOL 1.37"
+  },
+  {
+   "sym": "HOOD",
+   "price": 85.68,
+   "gapPct": -6.45,
+   "rvol": 1.21,
+   "pmVolume": 475822,
+   "avgVolume": 19581775,
+   "floatM": 760.94,
+   "atrPct": 5.76,
+   "spreadPct": 0.2,
+   "rsQqq": -3.99,
+   "ema9Pct": -0.02,
+   "catalyst": "加密貨幣黑客事件",
+   "verdict": "watch",
+   "note": "RVOL 1.21"
+  },
+  {
+   "sym": "TWLO",
+   "price": 195.64,
+   "gapPct": -19.12,
+   "rvol": 27.69,
+   "pmVolume": 59570,
+   "avgVolume": 4228829,
+   "floatM": 153.03,
+   "atrPct": 6.42,
+   "spreadPct": 1.97,
+   "rsQqq": -16.66,
+   "ema9Pct": -1.19,
+   "catalyst": "業績後急跌",
+   "verdict": "watch",
+   "note": "Spread 1.97%、Pre-Market Volume 6 萬"
+  },
+  {
+   "sym": "PINS",
+   "price": 18.5,
+   "gapPct": -7.13,
+   "rvol": 27.69,
+   "pmVolume": 138059,
+   "avgVolume": 13229455,
+   "floatM": 483.01,
+   "atrPct": 4.82,
+   "spreadPct": 1.24,
+   "rsQqq": -4.67,
+   "ema9Pct": 0.82,
+   "catalyst": "Q3 業績遜色",
+   "verdict": "watch",
+   "note": "Spread 1.24%"
+  },
+  {
+   "sym": "CPRI",
+   "price": 17.4,
+   "gapPct": 8.34,
+   "rvol": 66.92,
+   "pmVolume": 156589,
+   "avgVolume": 3107446,
+   "floatM": 110.75,
+   "atrPct": 4.42,
+   "spreadPct": 1.61,
+   "rsQqq": 10.88,
+   "ema9Pct": 0.98,
+   "catalyst": "Jimmy Choo 業績好",
+   "verdict": "watch",
+   "note": "Spread 1.61%"
+  },
+  {
+   "sym": "XOM",
+   "price": 186.96,
+   "gapPct": 2,
+   "rvol": 3.55,
+   "pmVolume": 109600,
+   "avgVolume": 11505920,
+   "floatM": 4100,
+   "atrPct": 2.19,
+   "spreadPct": 0.22,
+   "rsQqq": 4.54,
+   "ema9Pct": 0.16,
+   "catalyst": "業績勝預期、增派息 + 200 億回購",
+   "verdict": "watch",
+   "note": "Gap 2%，未夠 3%"
+  },
+  {
+   "sym": "CVX",
+   "price": 235.43,
+   "gapPct": 1.72,
+   "rvol": 2.94,
+   "pmVolume": 50562,
+   "avgVolume": 7266093,
+   "floatM": 1970,
+   "atrPct": 2.03,
+   "spreadPct": 0.2,
+   "rsQqq": 4.26,
+   "ema9Pct": 0.15,
+   "catalyst": "淨利潤急升",
+   "verdict": "watch",
+   "note": "Gap 1.7%，未夠 3%"
+  },
+  {
+   "sym": "TSLA",
+   "price": 395.49,
+   "gapPct": -1.94,
+   "rvol": 0.57,
+   "pmVolume": 564185,
+   "avgVolume": 37258038,
+   "floatM": 2820,
+   "atrPct": 3.36,
+   "spreadPct": 0.11,
+   "rsQqq": 0.52,
+   "ema9Pct": 0.27,
+   "catalyst": "冇重大消息",
+   "verdict": "skip",
+   "note": "RVOL 0.57"
+  },
+  {
+   "sym": "ATEC",
+   "price": 7.74,
+   "gapPct": -31.93,
+   "rvol": 3.73,
+   "pmVolume": 66782,
+   "avgVolume": 2780816,
+   "floatM": 120.78,
+   "atrPct": 4.84,
+   "spreadPct": 2.21,
+   "rsQqq": -29.39,
+   "ema9Pct": 0.68,
+   "catalyst": "急跌 32%",
+   "verdict": "avoid",
+   "note": "Spread 2.2%、成交少"
+  },
+  {
+   "sym": "BURU",
+   "price": 0.54,
+   "gapPct": 45.95,
+   "rvol": 142.76,
+   "pmVolume": 119575028,
+   "avgVolume": 51443432,
+   "floatM": 12.48,
+   "atrPct": 37.66,
+   "spreadPct": 0.04,
+   "rsQqq": 48.49,
+   "ema9Pct": -2.18,
+   "catalyst": "細價股急升",
+   "verdict": "avoid",
+   "note": "$0.54、Float 1,200 萬"
+  }
+ ],
+ "picks": [
+  {
+   "sym": "AMZN",
+   "name": "Amazon",
+   "grade": "A",
+   "beginner": "適合新手",
+   "direction": "Short",
+   "score": 78,
+   "price": 227.47,
+   "prevClose": 243.79,
+   "gapPct": -6.69,
+   "pmVolume": 1725421,
+   "pmVolPct": 4.52,
+   "avgVolume": 38161339,
+   "rvol": 4.34,
+   "spread": 0.35,
+   "spreadPct": 0.15,
+   "atr": 7,
+   "atrPct": 2.87,
+   "mktCapB": 2459.02,
+   "floatM": 9820,
+   "rsQqq": -4.15,
+   "rsSpy": -5.63,
+   "ema9": 227.49,
+   "ema9Pct": -0.01,
+   "ema9Step": "5m",
+   "ema9Daily": 251.87,
+   "levels": {
+    "pmh": 232.9,
+    "pml": 225.01,
+    "pdh": 249.14,
+    "pdl": 241.24,
+    "pdc": 243.79,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 241.24
+     },
+     {
+      "label": "20 日高",
+      "price": 265.34
+     },
+     {
+      "label": "20 日線",
+      "price": 254.95
+     }
+    ]
+   },
+   "why": "全市場最大成交之一，Gap −6.7%、RVOL 4.3、Float 98 億股、ATR 2.9%，Relative Strength −4.2（弱過 QQQ），價格貼住 5 分鐘 EMA 9 之下；Bid-Ask Spread 0.15% 略闊過 0.1%，開市後通常收窄。",
+   "catalyst": "Q3 收入同盈利都低過預期，維持 2026 年 2,200 億資本開支，自由現金流連續第二季轉負（CNBC）；市場擔心 AI 開支冇回報。",
+   "technical": "日線跌勢（低過 20、50 日線，Daily EMA 9 251.9）；跳空跌穿 20 日低 241.2，盤前區間 225.0–232.9，現價 227.5 喺區間下半部。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "QQQ −2.54%、SPY −1.06%、XLY −1.3%：大科技股全面受壓，大環境支持沽空。今日冇高影響經濟數據（08:30 ECI 中等影響）。",
+    "fundamentals": "業績失望 + 資本開支唔減，屬重大新消息；有分析師即時發文唱好 AWS，開市可能有承接。",
+    "technical": "跌穿 20 日低之後下面冇近期支持；跌穿盤前低 225.0 先確認，2R 目標 219.4。",
+    "tape": "盤前成交 173 萬股（日均 4.5%）、RVOL 4.3；平時開市首 5 分鐘約 199 萬股，要見 ≥ 397 萬股。",
+    "intuition": "信心中至高。最適合新手嘅一隻：流動性最好、跳空 < 10%。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（225.01），首 5 分鐘成交 ≥ 平時 2 倍（約 3972K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 224.95,
+    "stop": 227.75,
+    "target1": 219.35,
+    "target2": 216.55,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "企穩 232.9（盤前高）之上 = 沽壓消化，唔好沽，新手唔好轉做多。",
+    "short": "跌穿 224.95 兼放量 → 沽空，Stop 227.75，T1 219.35，T2 216.55。",
+    "noTrade": "09:35 已經低過 222.15（> 0.4 ATR）唔追；首 5 分鐘量不足；價格返上 VWAP。 後備 5 分鐘 ORB：如果 09:35 已經穿咗入場價太遠，改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 3.5 元），Target 2R。"
+   },
+   "risks": [
+    "大型股急跌後開市可能有抄底盤",
+    "Bid-Ask Spread 0.15% 略闊",
+    "分析師唱好 AWS 可能令跌勢放慢"
+   ],
+   "news": [
+    {
+     "title": "Incyte To Rally More Than 23%? Here Are 10 Top Analyst Forecasts For Friday",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62734910/incyte-to-rally-more-than-23-here-are-10-top-analyst-forecasts-for-friday",
+     "time": "2026-10-30 12:10 UTC"
+    },
+    {
+     "title": "Amazon Has Just Shared A Game-Changing Guidance For Its Cloud Business (Upgrade)",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4960126-amazon-has-just-shared-a-game-changing-guidance-for-its-cloud-business-upgrade?source=feed_symbol_AMZN",
+     "time": "2026-10-30 12:05 UTC"
+    },
+    {
+     "title": "Pinterest Posts Downbeat Q3 Results, Joins Intel, Roblox, Twilio And Other Big Stocks Moving Lower In Friday’s Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62734634/pinterest-posts-downbeat-q3-results-joins-intel-roblox-twilio-and-other-big-stocks-moving-lower-in-fridays-pre-market-session",
+     "time": "2026-10-30 12:04 UTC"
+    },
+    {
+     "title": "Mizuho Maintains Outperform on Amazon.com, Raises Price Target to $335",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/10/62733292/mizuho-maintains-outperform-amazon-com-raises-price-target-335",
+     "time": "2026-10-30 11:25 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動",
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "MSTR",
+   "name": "Strategy",
+   "grade": "A",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 76,
+   "price": 131.78,
+   "prevClose": 141.62,
+   "gapPct": -6.95,
+   "pmVolume": 1163267,
+   "pmVolPct": 6.29,
+   "avgVolume": 18482803,
+   "rvol": 2.18,
+   "spread": 0.1,
+   "spreadPct": 0.08,
+   "atr": 9.38,
+   "atrPct": 6.62,
+   "mktCapB": 55.58,
+   "floatM": 401.33,
+   "rsQqq": -4.49,
+   "rsSpy": -5.94,
+   "ema9": 132.27,
+   "ema9Pct": -0.37,
+   "ema9Step": "5m",
+   "ema9Daily": 144.11,
+   "levels": {
+    "pmh": 137.02,
+    "pml": 131,
+    "pdh": 144.76,
+    "pdl": 138.88,
+    "pdc": 141.62,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 133.6
+     },
+     {
+      "label": "20 日高",
+      "price": 170.17
+     },
+     {
+      "label": "20 日線",
+      "price": 148.82
+     }
+    ]
+   },
+   "why": "9 個 Indicator 全部合格：Gap −7.0%、RVOL 2.2、Pre-Market Volume 116 萬、Float 4 億、ATR 6.6%、Spread 0.08%、Relative Strength −4.5、價格喺 EMA 9 之下；加密貨幣板塊今日有明確壞消息。",
+   "catalyst": "收入遜預期兼宣布 CFO 交接；同時 Binance 報告史上最大型加密貨幣盜竊之一（約 63 億美元受影響），加密貨幣股全線受壓（CNBC）。",
+   "technical": "日線跌勢；跳空跌穿 20 日低 133.6，盤前低 131.0 係最後支持。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "科技股大跌、加密貨幣受黑客事件打擊：兩個逆風一齊。",
+    "fundamentals": "公司自身業績遜色 + 行業性壞消息，催化劑夠強；比特幣走勢會直接影響佢。",
+    "technical": "跌穿 20 日低，下面冇近期支持；上面盤前高 137.0 同 VWAP 係阻力。",
+    "tape": "盤前 116 萬股（日均 6%）、RVOL 2.2（剛好合格）；平時開市首 5 分鐘約 56 萬股，要見 ≥ 112 萬股。",
+    "intuition": "信心中。ATR 大（9.4 元），Stop 3.3 元，股數要計細；比特幣反彈會令佢急升。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（131），首 5 分鐘成交 ≥ 平時 2 倍（約 1124K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 130.9,
+    "stop": 134.2,
+    "target1": 124.3,
+    "target2": 121.0,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "比特幣急速反彈、MSTR 返上 137 = 唔好沽。",
+    "short": "跌穿 130.90 兼放量 → 沽空，Stop 134.20，T1 124.30，T2 121.00。",
+    "noTrade": "09:35 已經低過 127.6 唔追；RVOL 只係 2.2，如果開市成交唔夠就放棄。 後備 5 分鐘 ORB：如果 09:35 已經穿咗入場價太遠，改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 4.7 元），Target 2R。"
+   },
+   "risks": [
+    "同比特幣價格高度掛鈎，波動大",
+    "RVOL 2.2 啱啱過門檻",
+    "CFO 交接可能有後續消息"
+   ],
+   "news": [
+    {
+     "title": "MSTR Stock Price Falls 3% as Strategy Revenue Misses Q3 Estimates",
+     "source": "KuCoin（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQLVAyeGx0QWxkOUZRU3poQ3BqaVBsOW5aTldLaWNYSTVITTlTa09ibFBnQXRrVUFLWFcwRk9sX2dYNDlZdkhBak03R1JCSDBZR3NMNGw2Zm1RdEFKazlnLUozQUFSUHprRVU0MnhFSWVybDVKZ0tCUC1vNWdibXNBUE01aU1HTzZfVHJzckF0aDNsUks5ZmlGeUw3MThEWHc?oc=5",
+     "time": "2026-10-30 11:25 UTC"
+    },
+    {
+     "title": "Strategy Stock Pulls Back Following Revenue Miss, CFO Transition",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62733281/strategy-stock-pulls-back-following-revenue-miss-cfo-transition",
+     "time": "2026-10-30 11:25 UTC"
+    },
+    {
+     "title": "BTIG Reiterates Buy on Strategy, Maintains $250 Price Target",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/10/62729990/btig-reiterates-buy-strategy-maintains-250-price-target",
+     "time": "2026-10-30 09:59 UTC"
+    },
+    {
+     "title": "Strategy Inc 2026 Q3 - Results - Earnings Call Presentation",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4960007-strategy-inc-2026-q3-results-earnings-call-presentation?source=feed_symbol_MSTR",
+     "time": "2026-10-30 06:32 UTC"
+    }
+   ],
+   "lists": [
+    "Benzinga 盤前異動"
+   ]
+  },
+  {
+   "sym": "INTC",
+   "name": "Intel",
+   "grade": "B",
+   "beginner": "高風險",
+   "direction": "Short",
+   "score": 72,
+   "price": 68.87,
+   "prevClose": 92.07,
+   "gapPct": -25.2,
+   "pmVolume": 17760734,
+   "pmVolPct": 18.05,
+   "avgVolume": 98372299,
+   "rvol": 8.88,
+   "spread": 0.07,
+   "spreadPct": 0.1,
+   "atr": 5.08,
+   "atrPct": 5.52,
+   "mktCapB": 363.58,
+   "floatM": 4550,
+   "rsQqq": -22.66,
+   "rsSpy": -24.14,
+   "ema9": 68.7,
+   "ema9Pct": 0.24,
+   "ema9Step": "5m",
+   "ema9Daily": 93.11,
+   "levels": {
+    "pmh": 71.58,
+    "pml": 66.85,
+    "pdh": 93.5,
+    "pdl": 90.84,
+    "pdc": 92.07,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 84.65
+     },
+     {
+      "label": "20 日高",
+      "price": 126
+     },
+     {
+      "label": "20 日線",
+      "price": 99.07
+     }
+    ]
+   },
+   "why": "Gap −25.2%、RVOL 8.9、Pre-Market Volume 1,776 萬股（日均 18%）、Spread 0.10%：今日最大嘅「In Play」股；但跳空超過 20% 屬高風險，而且盤前價略高過 5 分鐘 EMA 9（+0.24%），沽壓暫時放緩。",
+   "catalyst": "第四季指引遜預期：經調整 EPS 0.25 美元、收入 150–160 億，PC 市場疲弱（CNBC）；KGI 反而升級至 Outperform、目標價 95。",
+   "technical": "跳空跌穿 20 日低 84.65 同所有均線；盤前區間 66.85–71.58，現價 68.87 喺中間。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "SMH −5.0%、QQQ −2.5%：半導體係今日最弱板塊。",
+    "fundamentals": "指引差係重大新消息，但跌 25% 已經反映好多；有分析師逆向升級。",
+    "technical": "跌穿盤前低 66.85 先有空間；上面阻力盤前高 71.6。",
+    "tape": "盤前 1,776 萬股，RVOL 8.9；Spread 0.07 元。價格喺 EMA 9 之上少少，沽壓喺盤前後段放緩。平時開市首 5 分鐘約 362 萬股，要見 ≥ 725 萬股。",
+    "intuition": "信心中低。跌咗 25% 嘅股開市好容易急速反彈，只喺跌穿盤前低兼放量先做，細注。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（66.85），首 5 分鐘成交 ≥ 平時 2 倍（約 7247K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 66.8,
+    "stop": 68.83,
+    "target1": 62.74,
+    "target2": 60.71,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "開市企穩 71.6 之上 = 反彈，新手唔好搏。",
+    "short": "跌穿 66.80 兼放量 → 沽空，Stop 68.83，T1 62.74，T2 60.71。",
+    "noTrade": "價格企喺 EMA 9 同 VWAP 之上；09:35 已經低過 64.8 唔追；量不足。 後備 5 分鐘 ORB：如果 09:35 已經穿咗入場價太遠，改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 2.5 元），Target 2R。"
+   },
+   "risks": [
+    "跳空 25%，急速反彈風險高",
+    "價格略高過 5 分鐘 EMA 9",
+    "有分析師升級，可能吸引抄底"
+   ],
+   "news": [
+    {
+     "title": "KGI Securities Upgrades Intel to Outperform, Announces $95 Price Target",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/10/62734995/kgi-securities-upgrades-intel-outperform-announces-95-price-target",
+     "time": "2026-10-30 12:13 UTC"
+    },
+    {
+     "title": "Incyte To Rally More Than 23%? Here Are 10 Top Analyst Forecasts For Friday",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62734910/incyte-to-rally-more-than-23-here-are-10-top-analyst-forecasts-for-friday",
+     "time": "2026-10-30 12:10 UTC"
+    },
+    {
+     "title": "12 Information Technology Stocks Moving In Friday's Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62734791/12-information-technology-stocks-moving-friday-s-pre-market-session",
+     "time": "2026-10-30 12:05 UTC"
+    },
+    {
+     "title": "Pinterest Posts Downbeat Q3 Results, Joins Intel, Roblox, Twilio And Other Big Stocks Moving Lower In Friday’s Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62734634/pinterest-posts-downbeat-q3-results-joins-intel-roblox-twilio-and-other-big-stocks-moving-lower-in-fridays-pre-market-session",
+     "time": "2026-10-30 12:04 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動",
+    "StockAnalysis 盤前跌幅榜",
+    "Alpaca 最活躍",
+    "TradeThatSwing 本週名單"
+   ]
+  },
+  {
+   "sym": "COIN",
+   "name": "Coinbase",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 70,
+   "price": 150.5,
+   "prevClose": 160.59,
+   "gapPct": -6.28,
+   "pmVolume": 416841,
+   "pmVolPct": 5.34,
+   "avgVolume": 7809356,
+   "rvol": 4.09,
+   "spread": 0.39,
+   "spreadPct": 0.26,
+   "atr": 9.16,
+   "atrPct": 5.7,
+   "mktCapB": 39.88,
+   "floatM": 215.78,
+   "rsQqq": -3.82,
+   "rsSpy": -5.27,
+   "ema9": 151.18,
+   "ema9Pct": -0.45,
+   "ema9Step": "5m",
+   "ema9Daily": 165.78,
+   "levels": {
+    "pmh": 155.13,
+    "pml": 150.31,
+    "pdh": 163.6,
+    "pdl": 157.59,
+    "pdc": 160.59,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 155.31
+     },
+     {
+      "label": "20 日高",
+      "price": 200.35
+     },
+     {
+      "label": "20 日線",
+      "price": 173.62
+     }
+    ]
+   },
+   "why": "Gap −6.3%、RVOL 4.1、Pre-Market Volume 42 萬、ATR 5.7%、價格喺 EMA 9 之下（−0.45%）；加密貨幣股今日有明確壞消息。Spread 0.26% 偏闊。",
+   "catalyst": "Binance 報告大型黑客事件（約 63 億美元受影響），加密貨幣股盤前跌超過 4%（CNBC）；Mizuho 目標價降至 145、Needham 降至 197。",
+   "technical": "日線跌勢；跳空跌穿 20 日低 155.3，盤前區間 150.3–155.1，現價貼近盤前低。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "大市偏淡 + 加密貨幣事件，兩樣都對沽空有利。",
+    "fundamentals": "行業性壞消息，屬新消息，但唔係 Coinbase 本身出事；有分析師降目標價。",
+    "technical": "跌穿 150.3 盤前低就破位；上面阻力 155 同 VWAP。",
+    "tape": "盤前 42 萬股（日均 5%）、RVOL 4.1；Spread 0.39 元偏闊，要用限價盤。要見首 5 分鐘 ≥ 46 萬股。",
+    "intuition": "信心中。消息係行業性，如果比特幣企穩，沽壓可能好快完。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（150.31），首 5 分鐘成交 ≥ 平時 2 倍（約 457K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 150.2,
+    "stop": 153.4,
+    "target1": 143.8,
+    "target2": 140.6,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "比特幣反彈、COIN 返上 155 = 唔好沽。",
+    "short": "跌穿 150.20 兼放量 → 沽空，Stop 153.40，T1 143.80，T2 140.60。",
+    "noTrade": "Spread 闊過 0.4%；09:35 已經低過 147 唔追；量不足。 後備 5 分鐘 ORB：如果 09:35 已經穿咗入場價太遠，改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 4.6 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.26% 偏闊",
+    "受比特幣走勢左右",
+    "壞消息唔係公司本身"
+   ],
+   "news": [
+    {
+     "title": "Needham Maintains Buy on Coinbase Global, Lowers Price Target to $197",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/10/62734937/needham-maintains-buy-coinbase-global-lowers-price-target-197",
+     "time": "2026-10-30 12:11 UTC"
+    },
+    {
+     "title": "Mizuho Maintains Neutral on Coinbase Global, Lowers Price Target to $145",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/10/62734633/mizuho-maintains-neutral-coinbase-global-lowers-price-target-145",
+     "time": "2026-10-30 12:04 UTC"
+    },
+    {
+     "title": "Binance Founder CZ Tells Elon Musk ‘Bad Time to Troll’ as Hack Draws FTX Comparison",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/crypto/cryptocurrency/26/10/62734284/binance-founder-cz-tells-elon-musk-bad-time-to-troll-as-hack-draws-ftx-comparison",
+     "time": "2026-10-30 11:54 UTC"
+    },
+    {
+     "title": "JPMorgan and Mizuho Adjust Price Targets for Coinbase Global",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.fidelity.com/news/article/default/202610300612MIDNIGHTUSEQUITY_A3739958",
+     "time": "2026-10-30 11:32 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動"
+   ]
+  },
+  {
+   "sym": "RBLX",
+   "name": "Roblox",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 68,
+   "price": 43.67,
+   "prevClose": 52.46,
+   "gapPct": -16.76,
+   "pmVolume": 344746,
+   "pmVolPct": 3.51,
+   "avgVolume": 9819804,
+   "rvol": 32.75,
+   "spread": 0.16,
+   "spreadPct": 0.37,
+   "atr": 2.44,
+   "atrPct": 4.65,
+   "mktCapB": 31.3,
+   "floatM": 633.66,
+   "rsQqq": -14.22,
+   "rsSpy": -15.7,
+   "ema9": 43.63,
+   "ema9Pct": 0.09,
+   "ema9Step": "5m",
+   "ema9Daily": 52.56,
+   "levels": {
+    "pmh": 44.6,
+    "pml": 42.12,
+    "pdh": 54.61,
+    "pdl": 50.8,
+    "pdc": 52.46,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 42.4
+     },
+     {
+      "label": "20 日高",
+      "price": 56.08
+     },
+     {
+      "label": "20 日線",
+      "price": 49.93
+     }
+    ]
+   },
+   "why": "Gap −16.8%、RVOL 32.8、Pre-Market Volume 34 萬、Float 6.3 億、ATR 4.7%；但 Spread 0.37% 偏闊，而且價格啱啱喺 5 分鐘 EMA 9 之上（+0.09%）。",
+   "catalyst": "Q3 業績後股價急跌，盤後已經大跌（CNBC 盤後異動名單）；Needham 維持 Buy、目標價 55。",
+   "technical": "日線本身升勢（20 日線高過 50 日線），今日跳空跌穿 20 日低 42.4；盤前低 42.12 就係關鍵。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "大市偏淡，通訊服務 XLC −0.85%。",
+    "fundamentals": "業績失望（詳情要開市前再睇新聞），屬新消息；分析師仍有唱好。",
+    "technical": "42.1 同 20 日低 42.4 係雙重支持，跌穿先有空間到 40.1。",
+    "tape": "盤前 34 萬股（日均 3.5%）、RVOL 32.8；Spread 0.16 元（0.37%）偏闊。要見首 5 分鐘 ≥ 32 萬股。",
+    "intuition": "信心中低。日線原本升勢，跌到支持位可能有承接，等跌穿先做。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（42.12），首 5 分鐘成交 ≥ 平時 2 倍（約 321K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 42.05,
+    "stop": 43.03,
+    "target1": 40.09,
+    "target2": 39.11,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "守住 42.1 兼返上 44.6 = 支持有效，唔好沽。",
+    "short": "跌穿 42.05 兼放量 → 沽空，Stop 43.03，T1 40.09，T2 39.11。",
+    "noTrade": "Spread 闊過 0.5%；09:35 已經低過 41.1 唔追；價格企喺 EMA 9 之上。 後備 5 分鐘 ORB：如果 09:35 已經穿咗入場價太遠，改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 1.2 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.37% 偏闊",
+    "日線原本升勢，支持位有承接",
+    "價格略高過 EMA 9"
+   ],
+   "news": [
+    {
+     "title": "Needham Reiterates Buy on Roblox, Maintains $55 Price Target",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/10/62734978/needham-reiterates-buy-roblox-maintains-55-price-target",
+     "time": "2026-10-30 12:13 UTC"
+    },
+    {
+     "title": "Incyte To Rally More Than 23%? Here Are 10 Top Analyst Forecasts For Friday",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/10/62734910/incyte-to-rally-more-than-23-here-are-10-top-analyst-forecasts-for-friday",
+     "time": "2026-10-30 12:10 UTC"
+    },
+    {
+     "title": "8 Communication Services Stocks Moving In Friday's Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62734794/8-communication-services-stocks-moving-friday-s-pre-market-session",
+     "time": "2026-10-30 12:05 UTC"
+    },
+    {
+     "title": "Pinterest Posts Downbeat Q3 Results, Joins Intel, Roblox, Twilio And Other Big Stocks Moving Lower In Friday’s Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/10/62734634/pinterest-posts-downbeat-q3-results-joins-intel-roblox-twilio-and-other-big-stocks-moving-lower-in-fridays-pre-market-session",
+     "time": "2026-10-30 12:04 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤後異動",
+    "StockAnalysis 盤前跌幅榜"
+   ]
+  },
+  {
+   "sym": "AZN",
+   "name": "AstraZeneca",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 66,
+   "price": 183.8,
+   "prevClose": 174.4,
+   "gapPct": 5.39,
+   "pmVolume": 68751,
+   "pmVolPct": 2.31,
+   "avgVolume": 2976014,
+   "rvol": 3.8,
+   "spread": 0.12,
+   "spreadPct": 0.07,
+   "atr": 4.14,
+   "atrPct": 2.37,
+   "mktCapB": 285.88,
+   "floatM": 1500,
+   "rsQqq": 7.93,
+   "rsSpy": 6.45,
+   "ema9": 183.44,
+   "ema9Pct": 0.2,
+   "ema9Step": "5m",
+   "ema9Daily": 169.88,
+   "levels": {
+    "pmh": 183.94,
+    "pml": 175.11,
+    "pdh": 175.35,
+    "pdl": 172.87,
+    "pdc": 174.4,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 154
+     },
+     {
+      "label": "20 日高",
+      "price": 175.35
+     },
+     {
+      "label": "20 日線",
+      "price": 164.49
+     }
+    ]
+   },
+   "why": "今日少數業績好、逆市升（Gap +5.4%、RVOL 3.8、Relative Strength +7.9）嘅大型股，Spread 0.07%、價格喺 EMA 9 之上；不過 Pre-Market Volume 只有 6.9 萬股（ADR 盤前成交少），未夠 10 萬門檻。",
+   "catalyst": "Q3 經調整 EPS 2.79 美元、收入 162.1 億勝預期 2.1 億，癌症藥銷售帶動，重申 2026 全年指引（CNBC、Seeking Alpha）。",
+   "technical": "日線升勢；跳空升穿 20 日高 175.35，創近期新高；盤前高 183.94 就喺現價附近。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "大市偏淡，但資金流入防守板塊：XLV 醫療 +1.55%、XLP +2.3%。",
+    "fundamentals": "業績勝預期係實在催化劑；冇上調指引，延續力中等。",
+    "technical": "突破 20 日高，上面冇近期阻力；升穿 184 先入，2R 目標 187.3。",
+    "tape": "盤前成交 6.9 萬股（日均 2.3%）偏少，RVOL 3.8；Spread 0.12 元。平時開市首 5 分鐘約 12 萬股，要見 ≥ 24 萬股。",
+    "intuition": "信心中低。大市急跌時強勢股都可能被拖低；成交唔夠就唔做。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（183.94），首 5 分鐘成交 ≥ 平時 2 倍（約 244K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 184.0,
+    "stop": 182.34,
+    "target1": 187.32,
+    "target2": 188.98,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "升穿 184.00 兼放量 → 做多，Stop 182.34，T1 187.32，T2 188.98。",
+    "short": "跌穿 180 = 跳空回吐，唔好沽空，觀望。",
+    "noTrade": "開市首 5 分鐘成交 < 24 萬股；09:35 已經高過 185.7 唔追；大市急跌拖累。 後備 5 分鐘 ORB：如果 09:35 已經穿咗入場價太遠，改做首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 2.1 元），Target 2R。"
+   },
+   "risks": [
+    "Pre-Market Volume 偏少",
+    "大市急跌可能拖累",
+    "ADR，主要成交喺倫敦"
+   ],
+   "news": [
+    {
+     "title": "Stock Market Today: Dow Jones, S&P 500 Futures Trade Mixed as AMZN, INTC Slide After Q3 Earnings—DELL, LLY, AZN in Focus",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/10/62729872/stock-market-today-dow-jones-sp-500-futures-trade-mixed-as-amzn-intc-slide-after-q3-earnings-dell-lly-azn-in-focus",
+     "time": "2026-10-30 09:44 UTC"
+    },
+    {
+     "title": "AstraZeneca Q3 profit beats estimates as cancer drug sales drive growth",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/AZN/news?source=feed_symbol_AZN",
+     "time": "2026-10-30 08:57 UTC"
+    },
+    {
+     "title": "AstraZeneca PLC Non-GAAP EPS of $2.79, revenue of $16.21B beats by $210M; reaffirms FY2026 outlook",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/AZN/news?source=feed_symbol_AZN",
+     "time": "2026-10-30 08:45 UTC"
+    },
+    {
+     "title": "AstraZeneca Shares Rise After Q3 Earnings Beat, Reaffirmed 2026 Outlook",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/10/62728759/astrazeneca-shares-rise-after-q3-earnings-beat-reaffirmed-2026-outlook",
+     "time": "2026-10-30 07:47 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "RDDT",
+   "why": "Spread 0.98% 太闊（CEO 警告第四季訪客大跌）"
+  },
+  {
+   "sym": "RIVN",
+   "why": "價格喺 EMA 9 之下；PMH 係尖峰，入場位太遠（Q3 勝預期、Jefferies 升級）"
+  },
+  {
+   "sym": "SNY",
+   "why": "價格喺 EMA 9 之下（Regeneron 合作藥銷售強）"
+  },
+  {
+   "sym": "NWG",
+   "why": "Spread 0.19%、細波幅（Q3 業績（英國銀行 ADR））"
+  },
+  {
+   "sym": "AMD",
+   "why": "RVOL 1.98，未夠 2（晶片股跟跌）"
+  },
+  {
+   "sym": "ARM",
+   "why": "RVOL 1.84、Spread 1%（晶片股跟跌）"
+  },
+  {
+   "sym": "NVDA",
+   "why": "RVOL 1.46，未夠 2（晶片股跟跌）"
+  },
+  {
+   "sym": "MU",
+   "why": "RVOL 1.37（晶片股跟跌）"
+  },
+  {
+   "sym": "HOOD",
+   "why": "RVOL 1.21（加密貨幣黑客事件）"
+  },
+  {
+   "sym": "TWLO",
+   "why": "Spread 1.97%、Pre-Market Volume 6 萬（業績後急跌）"
+  },
+  {
+   "sym": "PINS",
+   "why": "Spread 1.24%（Q3 業績遜色）"
+  },
+  {
+   "sym": "CPRI",
+   "why": "Spread 1.61%（Jimmy Choo 業績好）"
+  },
+  {
+   "sym": "XOM",
+   "why": "Gap 2%，未夠 3%（業績勝預期、增派息 + 200 億回購）"
+  },
+  {
+   "sym": "CVX",
+   "why": "Gap 1.7%，未夠 3%（淨利潤急升）"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "ATEC",
+   "why": "急跌 32%；Spread 2.2%、成交少"
+  },
+  {
+   "sym": "BURU",
+   "why": "細價股急升；$0.54、Float 1,200 萬"
+  }
+ ],
+ "news": [
+  {
+   "title": "Stocks making the biggest moves premarket: Intel, Amazon, Reddit, Chevron & more",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/30/stocks-making-the-biggest-moves-premarket-intc-amzn-rddt-cvx.html",
+   "time": "2026-10-30",
+   "tickers": [
+    "INTC",
+    "AMZN",
+    "RDDT",
+    "CVX",
+    "AZN",
+    "COIN"
+   ]
+  },
+  {
+   "title": "Amazon falls 7%, Intel plunges 25% in premarket trading, as pressure mounts after earnings",
+   "source": "CNBC",
+   "url": "https://cnbc.com/2026/10/30/amazon-intel-earnings-big-tech-ai-spending-concerns.html",
+   "time": "2026-10-30",
+   "tickers": [
+    "AMZN",
+    "INTC"
+   ]
+  },
+  {
+   "title": "Tech scare trade hits Nasdaq futures while crypto reels from its biggest-ever hack",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/30/tech-trade-nasdaq-futures-crypto-hack.html",
+   "time": "2026-10-30",
+   "tickers": [
+    "COIN",
+    "MSTR",
+    "HOOD"
+   ]
+  },
+  {
+   "title": "Stocks making the biggest moves after hours: Amazon, Intel, Twilio, Reddit, Roblox & more",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/29/stocks-making-the-biggest-moves-after-hours-amzn-intc-twlo-rddt.html",
+   "time": "2026-10-29",
+   "tickers": [
+    "AMZN",
+    "INTC",
+    "TWLO",
+    "RDDT",
+    "RBLX"
+   ]
+  }
+ ],
+ "lesson": "昨日測試學到：盤前價位去到開市會過時。今日每隻都有後備 5 分鐘 ORB 計劃——09:35 價格已經過咗入場價太遠，就唔好追，改睇首 5 分鐘高低位。週五仲要記住收市前平倉。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，數據延遲 16 分鐘，可能有錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
