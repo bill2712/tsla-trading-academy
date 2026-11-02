@@ -1,6 +1,38 @@
 {
- "updated": "2026-10-30T12:21:33.603Z",
+ "updated": "2026-11-02T13:45:37.590Z",
  "days": [
+  {
+   "date": "2026-11-02",
+   "version": 3,
+   "status": "premarket",
+   "bias": "中性偏好",
+   "headline": "⏰ 遲咗 33 分鐘先開始（08:40 ET）。週一大市小升（QQQ +0.6%），晶片股反彈；3 隻 RVOL ≥ 2：沽空 MRVL（收購 Lumentum），做多 RIVN（",
+   "n": 3,
+   "top": [
+    {
+     "sym": "MRVL",
+     "gapPct": -3.04,
+     "rvol": 5,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "RIVN",
+     "gapPct": 3.29,
+     "rvol": 4.09,
+     "beginner": "適合新手",
+     "grade": "B"
+    },
+    {
+     "sym": "EL",
+     "gapPct": 2.81,
+     "rvol": 465.7,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-10-30",
    "version": 3,
@@ -52,7 +84,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-10-29",

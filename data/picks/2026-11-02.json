@@ -1,0 +1,978 @@
+{
+ "version": 3,
+ "date": "2026-11-02",
+ "generatedAt": "2026-11-02T13:45:29Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "08:20",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1,
+  "avgVolume": 1000000,
+  "priceMin": 10,
+  "priceMax": 150
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH/PML、EMA 9）",
+   "ok": true,
+   "note": "延遲 16 分鐘，截至約 08:20 ET"
+  },
+  {
+   "name": "Alpaca SIP 報價（Bid-Ask Spread）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca 異動榜／最活躍",
+   "ok": true
+  },
+  {
+   "name": "Alpaca／Benzinga 新聞",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "Finviz（Float、行業）",
+   "ok": true
+  },
+  {
+   "name": "Google News",
+   "ok": true
+  },
+  {
+   "name": "Seeking Alpha",
+   "ok": true
+  },
+  {
+   "name": "MarketWatch／Investing.com RSS",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory + Nasdaq 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TopBreakoutStocks",
+   "ok": true,
+   "note": "今日候選唔喺佢嘅名單"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true
+  },
+  {
+   "name": "Yahoo Finance（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇繞過；今日唔需要"
+  },
+  {
+   "name": "IBKR",
+   "ok": false,
+   "note": "冇用（Alpaca 已經夠）"
+  }
+ ],
+ "headline": "⏰ 遲咗 33 分鐘先開始（08:40 ET）。週一大市小升（QQQ +0.6%），晶片股反彈；3 隻 RVOL ≥ 2：沽空 MRVL（收購 Lumentum），做多 RIVN（UBS 升級）、EL（業績）。",
+ "market": {
+  "bias": "中性偏好",
+  "summary": "上週五大跌後，期貨小幅反彈（SPY +0.35%、QQQ +0.61%、SMH +1.05%），晶片同記憶體股帶頭；油價因中東談判消息急跌超過 4%，能源股（XLE −1.27%）受壓。本週大事多：今晚 Apple、Palantir 業績，週二美國中期選舉，週五非農就業數據。今日盤前異動股少，大部分係細價股或者 Spread 好闊，所以只揀 3 隻。10:00 ISM 製造業 PMI 可能令大市轉向。",
+  "base": {
+   "spy": 0.35,
+   "qqq": 0.61
+  },
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 758.33,
+    "chgPct": 0.35,
+    "note": "08:20 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 694.72,
+    "chgPct": 0.61,
+    "note": "08:20 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "IWM",
+    "last": 280.81,
+    "chgPct": 0.53,
+    "note": "08:20 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "DIA",
+    "last": 519.38,
+    "chgPct": 0.44,
+    "note": "08:20 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "SMH",
+    "last": 527.99,
+    "chgPct": 1.05,
+    "note": "08:20 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLK",
+    "last": 180.68,
+    "chgPct": 0.65,
+    "note": "08:20 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLE",
+    "last": 69.13,
+    "chgPct": -1.27,
+    "note": "08:20 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLY",
+    "last": 116.09,
+    "chgPct": 0.62,
+    "note": "08:20 ET（Alpaca SIP）"
+   }
+  ],
+  "events": [
+   {
+    "time": "09:45 ET",
+    "name": "S&P Global Manufacturing PMI（終值）",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "10:00 ET",
+    "name": "ISM Manufacturing PMI",
+    "impact": "中",
+    "note": "開市後半個鐘，可能令大市轉向"
+   },
+   {
+    "time": "收市後",
+    "name": "Apple、Palantir 業績",
+    "impact": "高",
+    "note": "唔好揸過夜"
+   },
+   {
+    "time": "週二",
+    "name": "美國中期選舉",
+    "impact": "中",
+    "note": ""
+   },
+   {
+    "time": "週五",
+    "name": "非農就業數據",
+    "impact": "高",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "EL",
+    "when": "盤前",
+    "note": "勝預期、上調指引"
+   },
+   {
+    "sym": "MAR",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "TEM",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "CHKP",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "IDXX",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "AAPL",
+    "when": "盤後",
+    "note": ""
+   },
+   {
+    "sym": "PLTR",
+    "when": "盤後",
+    "note": ""
+   }
+  ]
+ },
+ "fewPicksReason": "今日只有 3 隻流動性夠、RVOL ≥ 2 兼有清楚催化劑：其他 RVOL ≥ 2 嘅異動股多數係 $5 以下細價股（INO、EVGO、CLRO）或者 Bid-Ask Spread 闊過 0.7%（TEM、CHKP、MAR）；大型股（NVDA、TSLA、AAPL、CRWD 等）RVOL 都未夠 2。唔降低標準，其餘放觀察名單。",
+ "scan": [
+  {
+   "sym": "MRVL",
+   "price": 190.43,
+   "gapPct": -3.04,
+   "rvol": 5,
+   "pmVolume": 2747350,
+   "avgVolume": 23023306,
+   "floatM": 872.33,
+   "atrPct": 9.55,
+   "spreadPct": 0.18,
+   "rsQqq": -3.66,
+   "ema9Pct": -1.32,
+   "catalyst": "宣布收購 Lumentum（全股票）",
+   "verdict": "pick",
+   "note": "Spread 0.18%"
+  },
+  {
+   "sym": "RIVN",
+   "price": 12.56,
+   "gapPct": 3.29,
+   "rvol": 4.09,
+   "pmVolume": 1405868,
+   "avgVolume": 26495031,
+   "floatM": 942.87,
+   "atrPct": 4.11,
+   "spreadPct": 0.24,
+   "rsQqq": 2.67,
+   "ema9Pct": -0.06,
+   "catalyst": "UBS 升級至 Buy",
+   "verdict": "pick",
+   "note": "Spread 0.24%、價格貼住 EMA 9"
+  },
+  {
+   "sym": "EL",
+   "price": 112.3,
+   "gapPct": 2.81,
+   "rvol": 465.7,
+   "pmVolume": 494108,
+   "avgVolume": 3195598,
+   "floatM": 247.45,
+   "atrPct": 3.29,
+   "spreadPct": 0.79,
+   "rsQqq": 2.19,
+   "ema9Pct": 0.13,
+   "catalyst": "業績勝預期、上調指引",
+   "verdict": "pick",
+   "note": "Spread 0.79%、Gap 2.8%"
+  },
+  {
+   "sym": "LITE",
+   "price": 788.51,
+   "gapPct": -6.21,
+   "rvol": 4.29,
+   "pmVolume": 688426,
+   "avgVolume": 5216711,
+   "floatM": 89.09,
+   "atrPct": 8.54,
+   "spreadPct": 0.19,
+   "rsQqq": -6.83,
+   "ema9Pct": -2.97,
+   "catalyst": "被 Marvell 收購（全股票）",
+   "verdict": "watch",
+   "note": "併購目標，股價跟 MRVL 換股比例走"
+  },
+  {
+   "sym": "COIN",
+   "price": 140.4,
+   "gapPct": -2.19,
+   "rvol": 3.02,
+   "pmVolume": 469269,
+   "avgVolume": 8213287,
+   "floatM": 216.68,
+   "atrPct": 7.2,
+   "spreadPct": 0.2,
+   "rsQqq": -2.81,
+   "ema9Pct": -0.36,
+   "catalyst": "Morgan Stanley 降級至 Underweight",
+   "verdict": "watch",
+   "note": "Gap −2.2% 未夠 3%；昨日低 136.9 支持太近，R:R 唔夠"
+  },
+  {
+   "sym": "TEM",
+   "price": 74.8,
+   "gapPct": 3.57,
+   "rvol": 10.72,
+   "pmVolume": 520594,
+   "avgVolume": 6439489,
+   "floatM": 109.31,
+   "atrPct": 7.63,
+   "spreadPct": 0.72,
+   "rsQqq": 2.95,
+   "ema9Pct": -0.11,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Spread 0.72% 太闊、價格喺 EMA 9 之下"
+  },
+  {
+   "sym": "CRWD",
+   "price": 257.14,
+   "gapPct": 2.68,
+   "rvol": 1,
+   "pmVolume": 116710,
+   "avgVolume": 9006880,
+   "floatM": 991.64,
+   "atrPct": 5.44,
+   "spreadPct": 0.3,
+   "rsQqq": 2.06,
+   "ema9Pct": -0.15,
+   "catalyst": "Deutsche Bank 升級至 Buy",
+   "verdict": "watch",
+   "note": "RVOL 1.0，未夠 2"
+  },
+  {
+   "sym": "CHKP",
+   "price": 143,
+   "gapPct": -5.99,
+   "rvol": 25.49,
+   "pmVolume": 24823,
+   "avgVolume": 1385848,
+   "floatM": 76.95,
+   "atrPct": 3.6,
+   "spreadPct": 1.19,
+   "rsQqq": -6.6,
+   "ema9Pct": 0.28,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Pre-Market Volume 2.5 萬、Spread 1.2%"
+  },
+  {
+   "sym": "MAR",
+   "price": 413.5,
+   "gapPct": 3.56,
+   "rvol": 5.98,
+   "pmVolume": 14958,
+   "avgVolume": 1427567,
+   "floatM": 206.85,
+   "atrPct": 2.15,
+   "spreadPct": 0.48,
+   "rsQqq": 2.95,
+   "ema9Pct": 0.45,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Pre-Market Volume 1.5 萬、Spread 0.48%"
+  },
+  {
+   "sym": "TSEM",
+   "price": 167.27,
+   "gapPct": 0.47,
+   "rvol": 4.33,
+   "pmVolume": 162516,
+   "avgVolume": 2572617,
+   "floatM": 105.66,
+   "atrPct": 9,
+   "spreadPct": 0.47,
+   "rsQqq": -0.14,
+   "ema9Pct": -1.25,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Gap 0.5%"
+  },
+  {
+   "sym": "SNDK",
+   "price": 1156.03,
+   "gapPct": 0.45,
+   "rvol": 1.06,
+   "pmVolume": 378150,
+   "avgVolume": 8725194,
+   "floatM": 142.63,
+   "atrPct": 8.57,
+   "spreadPct": 0.06,
+   "rsQqq": -0.17,
+   "ema9Pct": -0.57,
+   "catalyst": "記憶體股反彈",
+   "verdict": "watch",
+   "note": "RVOL 1.06"
+  },
+  {
+   "sym": "MU",
+   "price": 893.62,
+   "gapPct": 1,
+   "rvol": 0.67,
+   "pmVolume": 548668,
+   "avgVolume": 26173373,
+   "floatM": 1130,
+   "atrPct": 5.76,
+   "spreadPct": 0.04,
+   "rsQqq": 0.39,
+   "ema9Pct": -0.44,
+   "catalyst": "記憶體股反彈",
+   "verdict": "watch",
+   "note": "RVOL 0.7"
+  },
+  {
+   "sym": "PLTR",
+   "price": 187.69,
+   "gapPct": 1.94,
+   "rvol": 1.81,
+   "pmVolume": 408904,
+   "avgVolume": 23094358,
+   "floatM": 2210,
+   "atrPct": 5,
+   "spreadPct": 0.12,
+   "rsQqq": 1.33,
+   "ema9Pct": 0.35,
+   "catalyst": "今晚收市後業績",
+   "verdict": "watch",
+   "note": "RVOL 1.8"
+  },
+  {
+   "sym": "AAPL",
+   "price": 344.63,
+   "gapPct": 0,
+   "rvol": 0.6,
+   "pmVolume": 356433,
+   "avgVolume": 40568906,
+   "floatM": 14580,
+   "atrPct": 1.94,
+   "spreadPct": 0.05,
+   "rsQqq": -0.62,
+   "ema9Pct": 0,
+   "catalyst": "今晚收市後業績",
+   "verdict": "watch",
+   "note": "Gap 0%、RVOL 0.6"
+  },
+  {
+   "sym": "XOM",
+   "price": 184.81,
+   "gapPct": -1.3,
+   "rvol": 1.03,
+   "pmVolume": 49356,
+   "avgVolume": 12033258,
+   "floatM": 4100,
+   "atrPct": 2.21,
+   "spreadPct": 0.14,
+   "rsQqq": -1.92,
+   "ema9Pct": -0.01,
+   "catalyst": "油價跌 4%",
+   "verdict": "watch",
+   "note": "Gap −1.3%、RVOL 1.0"
+  },
+  {
+   "sym": "TSLA",
+   "price": 402.5,
+   "gapPct": 0.67,
+   "rvol": 0.61,
+   "pmVolume": 521319,
+   "avgVolume": 36583774,
+   "floatM": 2820,
+   "atrPct": 3.6,
+   "spreadPct": 0.01,
+   "rsQqq": 0.06,
+   "ema9Pct": -0.04,
+   "catalyst": "冇重大消息",
+   "verdict": "skip",
+   "note": "RVOL 0.6"
+  },
+  {
+   "sym": "INO",
+   "price": 2.15,
+   "gapPct": 258.33,
+   "rvol": 104.77,
+   "pmVolume": 43205230,
+   "avgVolume": 8350802,
+   "floatM": 103.01,
+   "atrPct": 23.24,
+   "spreadPct": 0.46,
+   "rsQqq": 257.72,
+   "ema9Pct": -0.34,
+   "catalyst": "細價股急升 258%",
+   "verdict": "avoid",
+   "note": "$2、Spread 0.46%"
+  },
+  {
+   "sym": "EVGO",
+   "price": 1.8,
+   "gapPct": 42.86,
+   "rvol": 3035.63,
+   "pmVolume": 22214738,
+   "avgVolume": 3065215,
+   "floatM": 133.71,
+   "atrPct": 6.35,
+   "spreadPct": 0.55,
+   "rsQqq": 42.25,
+   "ema9Pct": 3.23,
+   "catalyst": "細價股急升 43%",
+   "verdict": "avoid",
+   "note": "$1.8"
+  },
+  {
+   "sym": "PGEN",
+   "price": 5.03,
+   "gapPct": -27.52,
+   "rvol": 351.01,
+   "pmVolume": 941054,
+   "avgVolume": 4885574,
+   "floatM": 164.24,
+   "atrPct": 6.2,
+   "spreadPct": 0.6,
+   "rsQqq": -28.13,
+   "ema9Pct": 0.45,
+   "catalyst": "急跌 27.5%",
+   "verdict": "avoid",
+   "note": "$5、Spread 0.6%"
+  },
+  {
+   "sym": "CLRO",
+   "price": 5.85,
+   "gapPct": 71.55,
+   "rvol": 4.67,
+   "pmVolume": 10504094,
+   "avgVolume": 7737584,
+   "floatM": 0.71,
+   "atrPct": 29.62,
+   "spreadPct": 0.85,
+   "rsQqq": 70.94,
+   "ema9Pct": -0.35,
+   "catalyst": "細價股急升 72%",
+   "verdict": "avoid",
+   "note": "Float 100 萬"
+  }
+ ],
+ "picks": [
+  {
+   "sym": "MRVL",
+   "name": "Marvell Technology",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 70,
+   "price": 190.43,
+   "prevClose": 196.4,
+   "gapPct": -3.04,
+   "pmVolume": 2747350,
+   "pmVolPct": 11.93,
+   "avgVolume": 23023306,
+   "rvol": 5,
+   "spread": 0.34,
+   "spreadPct": 0.18,
+   "atr": 18.76,
+   "atrPct": 9.55,
+   "mktCapB": 170.39,
+   "floatM": 872.33,
+   "rsQqq": -3.66,
+   "rsSpy": -3.38,
+   "ema9": 192.98,
+   "ema9Pct": -1.32,
+   "ema9Step": "5m",
+   "ema9Daily": 229.2,
+   "levels": {
+    "pmh": 205.8,
+    "pml": 189,
+    "pdh": 207.61,
+    "pdl": 190.15,
+    "pdc": 196.4,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 190.15
+     },
+     {
+      "label": "20 日高",
+      "price": 301.27
+     },
+     {
+      "label": "20 日線",
+      "price": 247.99
+     }
+    ]
+   },
+   "why": "RVOL 5、Pre-Market Volume 275 萬股（日均 12%）、Float 8.7 億、ATR 9.6% 波幅大，Relative Strength −3.7（大市升佢跌），價格喺 5 分鐘 EMA 9 之下 1.3%；Bid-Ask Spread 0.18% 略闊。",
+   "catalyst": "正式宣布以全股票方式收購 Lumentum（作價約 1,150 億美元，預計 2028 年上半年完成）。收購方用股票付款，股價通常受壓。注意：CNBC 較早時報 Marvell 盤前升約 3%，但 08:25 全市場數據顯示 −3.0%，盤前已經由升轉跌。",
+   "technical": "日線跌勢（低過 20、50 日線，Daily EMA 9 229.2）；盤前低 189.0 貼住昨日低 190.15，亦即 20 日低，跌穿就係破位；上面阻力盤前高 205.8。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "大市小升（SPY +0.35%、QQQ +0.61%、SMH +1.05%），晶片股反彈；MRVL 逆市跌，係個股消息主導，但大市向上對沽空唔算有利。",
+    "fundamentals": "大型併購屬重大新消息；市場對攤薄同作價有疑慮。CEO 話合併後會成為五大 AI 晶片公司之一，可能有人逢低吸納。",
+    "technical": "189–190 係三重支持（盤前低、昨日低、20 日低），跌穿先有空間到 177.7。",
+    "tape": "盤前 275 萬股、RVOL 5；價格由盤前高 205.8 一路跌到 190 附近，沽壓持續，喺 EMA 9 之下。平時開市首 5 分鐘約 90 萬股，要見 ≥ 180 萬股。",
+    "intuition": "信心中。晶片板塊反彈可能托住佢；一定要等跌穿 189 兼放量。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（189），首 5 分鐘成交 ≥ 平時 2 倍（約 1796K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 188.9,
+    "stop": 194.5,
+    "target1": 177.7,
+    "target2": 172.1,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "守住 189 兼返上 EMA 9 / 196 = 支持有效，唔好沽，新手唔好搏反彈。",
+    "short": "跌穿 188.90 兼放量 → 沽空，Stop 194.50，T1 177.70，T2 172.10。",
+    "noTrade": "09:35 已經低過 183.3 唔追；首 5 分鐘量不足；SMH 大升帶起晶片股。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 9.4 元），Target 2R。"
+   },
+   "risks": [
+    "晶片板塊反彈可能托底",
+    "Bid-Ask Spread 0.18% 略闊",
+    "ATR 大（18.8 元），每股風險 5.6 元，股數要計細"
+   ],
+   "news": [
+    {
+     "title": "Marvell Technology CEO Says Expect Combined Entity With Lumentum To Become One Of Top Five Largest AI Infrastructure Semiconductor Companies",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/62777535/marvell-technology-ceo-says-expect-combined-entity-lumentum-become-one-top-five-largest-ai-infrastru",
+     "time": "2026-11-02 13:42 UTC"
+    },
+    {
+     "title": "MRVL Stock Pulls Back As Traders Eye Rich Valuation",
+     "source": "www.timothysykes.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQZlFlaGxxMHV6c1JIb1BZYTlfNzVXVWxkcjdZbGpFLWJrSTFxZ2RVcXctb1h6MnVkWEt5OElRd1MzUDRVQlpYVTBEZ09JTWFBYVBjTjQzR1FKTVlvQnFJQ3JHa2hQOUw0Ml8zNWQ3VXd2U3BxY2VXNThsRkp3ZVI4TmZmMUU?oc=5",
+     "time": "2026-11-02 13:19 UTC"
+    },
+    {
+     "title": "Marvell Technology to Acquire Lumentum in $115 Billion All-Stock Transaction",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.businesswire.com/newsroom/industry/technology",
+     "time": "2026-11-02 12:31 UTC"
+    },
+    {
+     "title": "Marvell announces $115B all-stock deal for Lumentum",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/MRVL/news?source=feed_symbol_MRVL",
+     "time": "2026-11-02 12:17 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動",
+    "Benzinga 盤前異動股"
+   ]
+  },
+  {
+   "sym": "RIVN",
+   "name": "Rivian Automotive",
+   "grade": "B",
+   "beginner": "適合新手",
+   "direction": "Long",
+   "score": 68,
+   "price": 12.56,
+   "prevClose": 12.16,
+   "gapPct": 3.29,
+   "pmVolume": 1405868,
+   "pmVolPct": 5.31,
+   "avgVolume": 26495031,
+   "rvol": 4.09,
+   "spread": 0.03,
+   "spreadPct": 0.24,
+   "atr": 0.5,
+   "atrPct": 4.11,
+   "mktCapB": 18.43,
+   "floatM": 942.87,
+   "rsQqq": 2.67,
+   "rsSpy": 2.95,
+   "ema9": 12.57,
+   "ema9Pct": -0.06,
+   "ema9Step": "5m",
+   "ema9Daily": 12.03,
+   "levels": {
+    "pmh": 12.75,
+    "pml": 12.25,
+    "pdh": 12.27,
+    "pdl": 11.53,
+    "pdc": 12.16,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 11.38
+     },
+     {
+      "label": "20 日高",
+      "price": 14.83
+     },
+     {
+      "label": "20 日線",
+      "price": 12.83
+     }
+    ]
+   },
+   "why": "Gap +3.3%、RVOL 4.1、Pre-Market Volume 141 萬股、Float 9.4 億、ATR 4.1%、強過 QQQ 2.7；股價 $12.6 每股風險細，適合新手細注。Bid-Ask Spread 0.24%（$0.03）偏闊，價格啱啱喺 EMA 9 之下少少（−0.06%）。",
+   "catalyst": "UBS 由中性升級至 Buy（目標價 17 美元），上週五 Jefferies 都升級至 Buy；上週 Q3 業績勝預期（CNBC）。",
+   "technical": "日線跌勢中反彈（低過 20、50 日線，20 日線 12.83 係頭頂阻力）；盤前區間 12.25–12.75，已經升穿昨日高 12.27。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "大市小升、IWM +0.53%，對做多中性偏好。",
+    "fundamentals": "連續兩間大行升級，屬新消息，但係分析師意見，唔係公司基本面變化，延續力中等。",
+    "technical": "升穿盤前高 12.75 後，第一個阻力係 20 日線 12.83，之後 13.17（2R）。",
+    "tape": "盤前 141 萬股（日均 5%）、RVOL 4.1；價格貼住 EMA 9。平時開市首 5 分鐘約 97 萬股，要見 ≥ 195 萬股。",
+    "intuition": "信心中低。20 日線就喺上面，可能升穿 12.75 後即遇阻；要見放量先做。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（12.75），首 5 分鐘成交 ≥ 平時 2 倍（約 1949K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 12.77,
+    "stop": 12.57,
+    "target1": 13.17,
+    "target2": 13.37,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "升穿 12.77 兼放量 → 做多，Stop 12.57，T1 13.17，T2 13.37。",
+    "short": "跌穿 12.25（盤前低）= 升級消息被沽，唔好做多，觀望。",
+    "noTrade": "09:35 已經高過 12.97 唔追；首 5 分鐘量不足；企唔穩 12.83（20 日線）。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 0.25 元），Target 2R。"
+   },
+   "risks": [
+    "20 日線 12.83 係近距離阻力",
+    "分析師升級消息延續力有限",
+    "Bid-Ask Spread 0.24% 偏闊"
+   ],
+   "news": [
+    {
+     "title": "Rivian Automotive (NASDAQ:RIVN) Stock Moved Up to Buy by UBS Group",
+     "source": "MarketBeat（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPQlV5M1pqZGZyWUlrSFVaRTNlVFZQZ3pYajlmZDVqNVBuZmVvam5YS25zV3drNEFHM295M1ZXSHBaRnIxVE1XbW40R1d2WVFSUElEUWRlMk5POV83MkVsTnBmTml6VlNxckdvQklHV0ZvRlUtY2hHR0R3emwyaWs3ZGNTc1Q2VjRvaGpULXp1eExtUTBOaTl1WVJBa0lGbXRCbnREemRNclN5dnNWcUF1UXdfcmZhcEtKbnJVMWtiNVRON2Zk?oc=5",
+     "time": "2026-11-02 13:42 UTC"
+    },
+    {
+     "title": "UBS Upgrades Rivian Automotive to Buy, Maintains Price Target to $17",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/62773377/ubs-upgrades-rivian-automotive-buy-maintains-price-target-17",
+     "time": "2026-11-02 12:10 UTC"
+    },
+    {
+     "title": "Gary Black Says Tesla Is Losing EV Share to ‘No-Name’ Rivals Despite ‘Huge First-Mover Advantage’—Warns TSLA Needs Better Marketing",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/11/62767855/gary-black-says-tesla-is-losing-ev-share-to-no-name-rivals-despite-huge-first-mover-advantage-warns-tsla-needs-better-marketing",
+     "time": "2026-11-02 05:35 UTC"
+    },
+    {
+     "title": "Consumer Tech (Oct 26-30): Meta Donation Sparks Backlash, Nvidia Deal Draws DOJ Scrutiny, Chipmakers Report Earnings",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/10/62763700/consumer-tech-oct-26-30-meta-donation-sparks-backlash-nvidia-deal-draws-doj-scrutiny-chipmakers-report-earnings",
+     "time": "2026-10-31 14:11 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動"
+   ]
+  },
+  {
+   "sym": "EL",
+   "name": "Estée Lauder",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 66,
+   "price": 112.3,
+   "prevClose": 109.23,
+   "gapPct": 2.81,
+   "pmVolume": 494108,
+   "pmVolPct": 15.46,
+   "avgVolume": 3195598,
+   "rvol": 465.7,
+   "spread": 0.89,
+   "spreadPct": 0.79,
+   "atr": 3.59,
+   "atrPct": 3.29,
+   "mktCapB": 40.71,
+   "floatM": 247.45,
+   "rsQqq": 2.19,
+   "rsSpy": 2.47,
+   "ema9": 112.15,
+   "ema9Pct": 0.13,
+   "ema9Step": "5m",
+   "ema9Daily": 107.57,
+   "levels": {
+    "pmh": 114.01,
+    "pml": 106,
+    "pdh": 111,
+    "pdl": 105.44,
+    "pdc": 109.23,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 92.78
+     },
+     {
+      "label": "20 日高",
+      "price": 111.33
+     },
+     {
+      "label": "20 日線",
+      "price": 103.15
+     }
+    ]
+   },
+   "why": "業績勝預期兼上調全年盈利指引（CNBC），RVOL 465（平時盤前幾乎冇成交）、Pre-Market Volume 49 萬股、Float 2.5 億、價格喺 EMA 9 之上；但 Gap 只係 +2.8%（未夠 3%），Bid-Ask Spread 0.79% 好闊，開市後收窄先做。",
+   "catalyst": "第一財季業績勝預期，上調全年盈利指引，派息 0.35 美元（CNBC、Benzinga、Seeking Alpha）。",
+   "technical": "日線升勢（高過 20、50 日線）；盤前已經升穿昨日高 111.0 同 20 日高 111.33；盤前高 114.0 係下一個關口。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "大市小升，XLP 必需消費 +0.4%，對做多中性偏好。",
+    "fundamentals": "業績 + 上調指引係最強類型催化劑。",
+    "technical": "突破 20 日高後，升穿 114 冇近期阻力，2R 目標 116.9。",
+    "tape": "盤前 49 萬股（日均 15%），但 Spread 0.89 元（0.79%）好闊，代表盤前掛單少。平時開市首 5 分鐘約 7.4 萬股，要見 ≥ 15 萬股。",
+    "intuition": "信心中低。最大問題係 Spread：開市後 Spread 唔收窄到 0.3% 以下就唔做。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（114.01），首 5 分鐘成交 ≥ 平時 2 倍（約 149K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 114.05,
+    "stop": 112.61,
+    "target1": 116.93,
+    "target2": 118.37,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "升穿 114.05 兼放量、Spread ≤ 0.3% → 做多，Stop 112.61，T1 116.93，T2 118.37。",
+    "short": "跌穿 111（昨日高）= 突破失敗，觀望。",
+    "noTrade": "開市後 Spread 仍然闊過 0.3%；09:35 已經高過 115.5 唔追；量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 1.8 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.79% 好闊",
+    "Gap 2.8% 未夠 3% 門檻",
+    "盤前高 114 可能係單一尖峰"
+   ],
+   "news": [
+    {
+     "title": "Estée Lauder Turns Up the Glamour With Strong Earnings, Higher Outlook",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/earnings/26/11/62776622/estee-lauder-turns-up-the-glamour-with-strong-earnings-higher-outlook",
+     "time": "2026-11-02 13:22 UTC"
+    },
+    {
+     "title": "Why Is Estée Lauder Stock Gaining Monday? - Estee Lauder Cos (NYSE:EL)",
+     "source": "Benzinga（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQYWlBS28ta2x3dm9ldmV6aXBPYjhfeVVZaVAtc1ExTHNwYkVLOUdpWUI5TFl3S0U1UTFaYVZSN1p3aDNocjBXMmRXZXMxcGJpVmJRTWZQZ2gxb2x0TEpyQ19nZktHSDdZTFFWalJmSWRTWTZlZmV6RVBsNVlhcE9Xbk5ZbWdxYTdZdTI3LVkwLVU5blY4cklfMnR6MXM5YVg2b0d0LXkxcUhWUnphZk4yOEFKcVRTZkJOVU9zeXg2VktRSUo5?oc=5",
+     "time": "2026-11-02 13:22 UTC"
+    },
+    {
+     "title": "Estee Lauder declares $0.35 dividend",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/EL/news?source=feed_symbol_EL",
+     "time": "2026-11-02 13:13 UTC"
+    },
+    {
+     "title": "Leonardo Maria Del Vecchio Reportedly Secures Financing for Delfin Buyout",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.marketscreener.com/news/late-essilorluxottica-founder-s-son-reportedly-gets-eur22-billion-citi-financing-for-delfin-buyout-ce785fd8de80f224",
+     "time": "2026-11-02 13:02 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "LITE",
+   "why": "併購目標，股價跟 MRVL 換股比例走（被 Marvell 收購（全股票））"
+  },
+  {
+   "sym": "COIN",
+   "why": "Gap −2.2% 未夠 3%；昨日低 136.9 支持太近，R:R 唔夠（Morgan Stanley 降級至 Underweight）"
+  },
+  {
+   "sym": "TEM",
+   "why": "Spread 0.72% 太闊、價格喺 EMA 9 之下（Q3 業績）"
+  },
+  {
+   "sym": "CRWD",
+   "why": "RVOL 1.0，未夠 2（Deutsche Bank 升級至 Buy）"
+  },
+  {
+   "sym": "CHKP",
+   "why": "Pre-Market Volume 2.5 萬、Spread 1.2%（Q3 業績）"
+  },
+  {
+   "sym": "MAR",
+   "why": "Pre-Market Volume 1.5 萬、Spread 0.48%（Q3 業績）"
+  },
+  {
+   "sym": "TSEM",
+   "why": "Gap 0.5%（Q3 業績）"
+  },
+  {
+   "sym": "SNDK",
+   "why": "RVOL 1.06（記憶體股反彈）"
+  },
+  {
+   "sym": "MU",
+   "why": "RVOL 0.7（記憶體股反彈）"
+  },
+  {
+   "sym": "PLTR",
+   "why": "RVOL 1.8（今晚收市後業績）"
+  },
+  {
+   "sym": "AAPL",
+   "why": "Gap 0%、RVOL 0.6（今晚收市後業績）"
+  },
+  {
+   "sym": "XOM",
+   "why": "Gap −1.3%、RVOL 1.0（油價跌 4%）"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "INO",
+   "why": "細價股急升 258%；$2、Spread 0.46%"
+  },
+  {
+   "sym": "EVGO",
+   "why": "細價股急升 43%；$1.8"
+  },
+  {
+   "sym": "PGEN",
+   "why": "急跌 27.5%；$5、Spread 0.6%"
+  },
+  {
+   "sym": "CLRO",
+   "why": "細價股急升 72%；Float 100 萬"
+  }
+ ],
+ "news": [
+  {
+   "title": "Stocks making the biggest moves premarket: CrowdStrike, Rivian, Micron & more",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/02/stocks-making-the-biggest-moves-premarket-crwd-rivn-mu.html",
+   "time": "2026-11-02",
+   "tickers": [
+    "CRWD",
+    "RIVN",
+    "MU",
+    "EL",
+    "MRVL",
+    "LITE"
+   ]
+  },
+  {
+   "title": "Here are Monday's biggest analyst calls: Nvidia, SpaceX, Apple, Rivian, Amazon, CrowdStrike, Broadcom & more",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/02/biggest-stocks-by-analyst-calls-on-wall-street.html",
+   "time": "2026-11-02",
+   "tickers": [
+    "RIVN",
+    "CRWD",
+    "NVDA",
+    "AAPL"
+   ]
+  },
+  {
+   "title": "Coinbase stock downgraded by Morgan Stanley to underweight",
+   "source": "CNBC",
+   "url": "https://cnbc.com/2026/11/02/coinbase-stock-morgan-stanley-downgrade.html",
+   "time": "2026-11-02",
+   "tickers": [
+    "COIN"
+   ]
+  },
+  {
+   "title": "Crude prices slide as investors brace for a big week",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/02/crude-prices-crater-investors-brace-for-big-week.html",
+   "time": "2026-11-02",
+   "tickers": [
+    "XOM",
+    "CVX"
+   ]
+  }
+ ],
+ "lesson": "上週五覆盤：主計劃得 INTC、RBLX 觸發（合計約 −1.2R），後備 ORB 3 次都輸。大跌日開市頭 15 分鐘經常有急速反彈，ORB 嘅 Stop 容易被掃。今日異動少，寧願少做：冇好機會就唔做，都係一個決定。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，數據延遲 16 分鐘，可能有錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
