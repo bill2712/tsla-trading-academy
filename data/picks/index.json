@@ -1,6 +1,45 @@
 {
- "updated": "2026-11-02T13:45:37.590Z",
+ "updated": "2026-11-03T13:12:09.211Z",
  "days": [
+  {
+   "date": "2026-11-03",
+   "version": 3,
+   "status": "premarket",
+   "bias": "中性",
+   "headline": "中期選舉日：Apple 指引差拖低道指（期貨 −0.7%），晶片股反而 +2.5%。4 隻 RVOL ≥ 2：沽空 AAPL、PLTR、SHOP，做多 FISV。",
+   "n": 4,
+   "top": [
+    {
+     "sym": "AAPL",
+     "gapPct": -3.78,
+     "rvol": 5.03,
+     "beginner": "適合新手",
+     "grade": "A"
+    },
+    {
+     "sym": "PLTR",
+     "gapPct": -6.47,
+     "rvol": 15.87,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "SHOP",
+     "gapPct": -16.04,
+     "rvol": 50.36,
+     "beginner": "高風險",
+     "grade": "B"
+    },
+    {
+     "sym": "FISV",
+     "gapPct": 7.63,
+     "rvol": 75.57,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-11-02",
    "version": 3,
@@ -31,7 +70,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-10-30",

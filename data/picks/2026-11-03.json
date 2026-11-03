@@ -1,0 +1,1081 @@
+{
+ "version": 3,
+ "date": "2026-11-03",
+ "generatedAt": "2026-11-03T13:12:09Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "07:50",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1,
+  "avgVolume": 1000000,
+  "priceMin": 10,
+  "priceMax": 150
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH/PML、EMA 9）",
+   "ok": true,
+   "note": "延遲 16 分鐘，截至約 07:50 ET"
+  },
+  {
+   "name": "Alpaca SIP 報價（Bid-Ask Spread）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca 異動榜／最活躍",
+   "ok": true
+  },
+  {
+   "name": "Alpaca／Benzinga 新聞",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "Finviz（Float、行業）",
+   "ok": true
+  },
+  {
+   "name": "Google News",
+   "ok": true
+  },
+  {
+   "name": "Seeking Alpha",
+   "ok": true
+  },
+  {
+   "name": "MarketWatch／Investing.com RSS",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory + Nasdaq 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TopBreakoutStocks",
+   "ok": true,
+   "note": "今日候選唔喺佢嘅名單"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true
+  },
+  {
+   "name": "Yahoo Finance（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇繞過；今日唔需要"
+  },
+  {
+   "name": "IBKR",
+   "ok": false,
+   "note": "冇用（Alpaca 已經夠）"
+  }
+ ],
+ "headline": "中期選舉日：Apple 指引差拖低道指（期貨 −0.7%），晶片股反而 +2.5%。4 隻 RVOL ≥ 2：沽空 AAPL、PLTR、SHOP，做多 FISV。",
+ "market": {
+  "bias": "中性",
+  "summary": "大市分化：Apple 毛利率指引失望、Palantir 業績好但股價跌，道指期貨 −0.7%、SPY −0.07%；晶片股繼續反彈（SMH +2.48%）托住 QQQ（+0.33%）。伊朗格什姆島遇襲令油價上升。今日美國中期選舉，預測市場估民主黨贏參議院機會近 75%，結果今晚至明日先出，盤中可能有消息炒作。10:00 JOLTS 職位空缺。軟件股今日弱（PLTR、SHOP、DT），晶片股強。",
+  "base": {
+   "spy": -0.07,
+   "qqq": 0.33
+  },
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 751.57,
+    "chgPct": -0.07,
+    "note": "07:50 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 683.37,
+    "chgPct": 0.33,
+    "note": "07:50 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "IWM",
+    "last": 279.32,
+    "chgPct": 0.06,
+    "note": "07:50 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "DIA",
+    "last": 516.16,
+    "chgPct": -0.61,
+    "note": "07:50 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "SMH",
+    "last": 520.9,
+    "chgPct": 2.48,
+    "note": "07:50 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLK",
+    "last": 174.82,
+    "chgPct": 0.34,
+    "note": "07:50 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLE",
+    "last": 67.7,
+    "chgPct": 0.67,
+    "note": "07:50 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLF",
+    "last": 57.28,
+    "chgPct": -0.49,
+    "note": "07:50 ET（Alpaca SIP）"
+   }
+  ],
+  "events": [
+   {
+    "time": "全日",
+    "name": "美國中期選舉",
+    "impact": "高",
+    "note": "結果今晚先出，唔好揸倉過夜"
+   },
+   {
+    "time": "10:00 ET",
+    "name": "JOLTS Job Openings",
+    "impact": "中",
+    "note": ""
+   },
+   {
+    "time": "10:00 ET",
+    "name": "Factory Orders",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "週五",
+    "name": "非農就業數據",
+    "impact": "高",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "AAPL",
+    "when": "昨日盤後",
+    "note": "指引差"
+   },
+   {
+    "sym": "PLTR",
+    "when": "昨日盤後",
+    "note": "勝預期但股價跌"
+   },
+   {
+    "sym": "SHOP",
+    "when": "盤前",
+    "note": "GMV 輕微遜色"
+   },
+   {
+    "sym": "FISV",
+    "when": "盤前",
+    "note": "勝預期"
+   },
+   {
+    "sym": "PFE",
+    "when": "盤前",
+    "note": "勝預期"
+   },
+   {
+    "sym": "DT",
+    "when": "盤前",
+    "note": "指引分歧"
+   },
+   {
+    "sym": "YUM",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "RVTY",
+    "when": "盤前",
+    "note": "上調指引"
+   },
+   {
+    "sym": "ZBRA",
+    "when": "盤前",
+    "note": ""
+   }
+  ]
+ },
+ "fewPicksReason": "今日只有 4 隻流動性夠、RVOL ≥ 2 兼有清楚催化劑：晶片股（MU、INTC、AMD、NVDA）升 2–4% 但 RVOL 都未夠 2；其他 RVOL ≥ 2 嘅業績股盤前成交太少（RVTY、ZBRA）、Spread 太闊（DT）或者係細價股（BLZE、VCIG、RDAC）。唔降低標準。",
+ "scan": [
+  {
+   "sym": "AAPL",
+   "price": 325.53,
+   "gapPct": -3.78,
+   "rvol": 5.03,
+   "pmVolume": 2104256,
+   "avgVolume": 42088078,
+   "floatM": 14580,
+   "atrPct": 2.01,
+   "spreadPct": 0.04,
+   "rsQqq": -4.11,
+   "ema9Pct": 0.18,
+   "catalyst": "毛利率指引令人失望",
+   "verdict": "pick",
+   "note": "價格略高過 EMA 9"
+  },
+  {
+   "sym": "PLTR",
+   "price": 166.8,
+   "gapPct": -6.47,
+   "rvol": 15.87,
+   "pmVolume": 2912894,
+   "avgVolume": 24068372,
+   "floatM": 2210,
+   "atrPct": 5.34,
+   "spreadPct": 0.3,
+   "rsQqq": -6.8,
+   "ema9Pct": 0.3,
+   "catalyst": "業績好但估值高，股價跌",
+   "verdict": "pick",
+   "note": "Spread 0.30%"
+  },
+  {
+   "sym": "SHOP",
+   "price": 131.17,
+   "gapPct": -16.04,
+   "rvol": 50.36,
+   "pmVolume": 889104,
+   "avgVolume": 8233193,
+   "floatM": 1200,
+   "atrPct": 5.18,
+   "spreadPct": 0.58,
+   "rsQqq": -16.37,
+   "ema9Pct": -1.58,
+   "catalyst": "GMV 輕微遜預期",
+   "verdict": "pick",
+   "note": "Spread 0.58%"
+  },
+  {
+   "sym": "FISV",
+   "price": 55.89,
+   "gapPct": 7.63,
+   "rvol": 75.57,
+   "pmVolume": 276504,
+   "avgVolume": 5642020,
+   "floatM": 529.43,
+   "atrPct": 2.83,
+   "spreadPct": 0.54,
+   "rsQqq": 7.3,
+   "ema9Pct": 1.14,
+   "catalyst": "Q3 勝預期、上調成本節省目標",
+   "verdict": "pick",
+   "note": "Spread 0.54%"
+  },
+  {
+   "sym": "DT",
+   "price": 47.41,
+   "gapPct": -14,
+   "rvol": 78.4,
+   "pmVolume": 320194,
+   "avgVolume": 7832510,
+   "floatM": 286.73,
+   "atrPct": 4.52,
+   "spreadPct": 1.36,
+   "rsQqq": -14.33,
+   "ema9Pct": 0.36,
+   "catalyst": "指引分歧，股價急跌",
+   "verdict": "watch",
+   "note": "Spread 1.36% 太闊"
+  },
+  {
+   "sym": "BLZE",
+   "price": 10.02,
+   "gapPct": 35.41,
+   "rvol": 36.69,
+   "pmVolume": 292835,
+   "avgVolume": 2264279,
+   "floatM": 58.57,
+   "atrPct": 12.97,
+   "spreadPct": 0.2,
+   "rsQqq": 35.08,
+   "ema9Pct": 0.64,
+   "catalyst": "細價股急升 35%",
+   "verdict": "watch",
+   "note": "市值 6 億、Gap 35% 屬高風險"
+  },
+  {
+   "sym": "RVTY",
+   "price": 166.1,
+   "gapPct": 9.56,
+   "rvol": 9.5,
+   "pmVolume": 9030,
+   "avgVolume": 1785266,
+   "floatM": 111.06,
+   "atrPct": 4.31,
+   "spreadPct": 0.96,
+   "rsQqq": 9.23,
+   "ema9Pct": 1.05,
+   "catalyst": "上調全年指引",
+   "verdict": "watch",
+   "note": "Pre-Market Volume 9 千"
+  },
+  {
+   "sym": "ZBRA",
+   "price": 315,
+   "gapPct": -12.77,
+   "rvol": 10.62,
+   "pmVolume": 5182,
+   "avgVolume": 528893,
+   "floatM": 46.85,
+   "atrPct": 3.74,
+   "spreadPct": 1.31,
+   "rsQqq": -13.1,
+   "ema9Pct": -2.25,
+   "catalyst": "業績勝預期但股價跌",
+   "verdict": "watch",
+   "note": "Pre-Market Volume 5 千、Spread 1.3%"
+  },
+  {
+   "sym": "MU",
+   "price": 866.2,
+   "gapPct": 3.91,
+   "rvol": 1.31,
+   "pmVolume": 717504,
+   "avgVolume": 26756448,
+   "floatM": 1130,
+   "atrPct": 6.14,
+   "spreadPct": 0.08,
+   "rsQqq": 3.58,
+   "ema9Pct": 0.54,
+   "catalyst": "晶片股反彈",
+   "verdict": "watch",
+   "note": "RVOL 1.3，未夠 2"
+  },
+  {
+   "sym": "INTC",
+   "price": 62.19,
+   "gapPct": 3.7,
+   "rvol": 1.25,
+   "pmVolume": 4726802,
+   "avgVolume": 123957754,
+   "floatM": 4550,
+   "atrPct": 11.64,
+   "spreadPct": 0.05,
+   "rsQqq": 3.37,
+   "ema9Pct": 0.63,
+   "catalyst": "晶片股反彈",
+   "verdict": "watch",
+   "note": "RVOL 1.3"
+  },
+  {
+   "sym": "AMD",
+   "price": 481.57,
+   "gapPct": 3.16,
+   "rvol": 1.56,
+   "pmVolume": 460406,
+   "avgVolume": 21476857,
+   "floatM": 1620,
+   "atrPct": 7.07,
+   "spreadPct": 0.1,
+   "rsQqq": 2.83,
+   "ema9Pct": 0.32,
+   "catalyst": "晶片股反彈",
+   "verdict": "watch",
+   "note": "RVOL 1.6"
+  },
+  {
+   "sym": "NVDA",
+   "price": 205.75,
+   "gapPct": 1.83,
+   "rvol": 1.12,
+   "pmVolume": 1542913,
+   "avgVolume": 101374407,
+   "floatM": 23190,
+   "atrPct": 3.34,
+   "spreadPct": 0.01,
+   "rsQqq": 1.5,
+   "ema9Pct": 0.17,
+   "catalyst": "晶片股反彈",
+   "verdict": "watch",
+   "note": "Gap 1.8%、RVOL 1.1"
+  },
+  {
+   "sym": "GRAB",
+   "price": 3.15,
+   "gapPct": 10.14,
+   "rvol": 27.9,
+   "pmVolume": 6271439,
+   "avgVolume": 59637949,
+   "floatM": 2770,
+   "atrPct": 3.5,
+   "spreadPct": 0.32,
+   "rsQqq": 9.81,
+   "ema9Pct": -0.29,
+   "catalyst": "業績",
+   "verdict": "watch",
+   "note": "股價 $3"
+  },
+  {
+   "sym": "TEVA",
+   "price": 41.65,
+   "gapPct": 2.33,
+   "rvol": 7.47,
+   "pmVolume": 246659,
+   "avgVolume": 6601009,
+   "floatM": 1110,
+   "atrPct": 2.8,
+   "spreadPct": 0.26,
+   "rsQqq": 2,
+   "ema9Pct": 0.36,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Gap 2.3%、Spread 0.26%"
+  },
+  {
+   "sym": "PFE",
+   "price": 30.61,
+   "gapPct": -0.2,
+   "rvol": 9.92,
+   "pmVolume": 979416,
+   "avgVolume": 30705427,
+   "floatM": 5690,
+   "atrPct": 2.05,
+   "spreadPct": 0.9,
+   "rsQqq": -0.53,
+   "ema9Pct": -0.24,
+   "catalyst": "Q3 勝預期",
+   "verdict": "watch",
+   "note": "Gap −0.2%"
+  },
+  {
+   "sym": "XOM",
+   "price": 180.4,
+   "gapPct": 0.41,
+   "rvol": 0.97,
+   "pmVolume": 38162,
+   "avgVolume": 12232655,
+   "floatM": 4100,
+   "atrPct": 2.49,
+   "spreadPct": 0.16,
+   "rsQqq": 0.08,
+   "ema9Pct": -0.12,
+   "catalyst": "油價升",
+   "verdict": "watch",
+   "note": "Gap 0.4%、RVOL 1.0"
+  },
+  {
+   "sym": "TSLA",
+   "price": 403.71,
+   "gapPct": -0.03,
+   "rvol": 0.61,
+   "pmVolume": 437183,
+   "avgVolume": 36629321,
+   "floatM": 2820,
+   "atrPct": 3.74,
+   "spreadPct": 0.03,
+   "rsQqq": -0.36,
+   "ema9Pct": 0.08,
+   "catalyst": "冇重大消息",
+   "verdict": "skip",
+   "note": "Gap 0%、RVOL 0.6"
+  },
+  {
+   "sym": "BDMD",
+   "price": 0.1,
+   "gapPct": -28.57,
+   "rvol": 115.07,
+   "pmVolume": 4057234,
+   "avgVolume": 9137890,
+   "floatM": 6.08,
+   "atrPct": 79.71,
+   "spreadPct": 0.1,
+   "rsQqq": -28.9,
+   "ema9Pct": -1.37,
+   "catalyst": "細價股",
+   "verdict": "avoid",
+   "note": "$0.10"
+  },
+  {
+   "sym": "VCIG",
+   "price": 5.26,
+   "gapPct": -35.54,
+   "rvol": 24.07,
+   "pmVolume": 235526,
+   "avgVolume": 979302,
+   "floatM": 0.05,
+   "atrPct": 16.05,
+   "spreadPct": 2.07,
+   "rsQqq": -35.87,
+   "ema9Pct": -0.66,
+   "catalyst": "急跌 35%",
+   "verdict": "avoid",
+   "note": "Float < 100 萬"
+  },
+  {
+   "sym": "RDAC",
+   "price": 10.99,
+   "gapPct": 115.49,
+   "rvol": 5746,
+   "pmVolume": 6039050,
+   "avgVolume": 6848,
+   "floatM": 1.74,
+   "atrPct": 6.67,
+   "spreadPct": 0.45,
+   "rsQqq": 115.16,
+   "ema9Pct": -0.22,
+   "catalyst": "急升 115%",
+   "verdict": "avoid",
+   "note": "Float 200 萬"
+  }
+ ],
+ "picks": [
+  {
+   "sym": "AAPL",
+   "name": "Apple",
+   "grade": "A",
+   "beginner": "適合新手",
+   "direction": "Short",
+   "score": 78,
+   "price": 325.53,
+   "prevClose": 338.32,
+   "gapPct": -3.78,
+   "pmVolume": 2104256,
+   "pmVolPct": 5,
+   "avgVolume": 42088078,
+   "rvol": 5.03,
+   "spread": 0.13,
+   "spreadPct": 0.04,
+   "atr": 6.8,
+   "atrPct": 2.01,
+   "mktCapB": 4739.9,
+   "floatM": 14580,
+   "rsQqq": -4.11,
+   "rsSpy": -3.71,
+   "ema9": 324.96,
+   "ema9Pct": 0.18,
+   "ema9Step": "5m",
+   "ema9Daily": 343.72,
+   "levels": {
+    "pmh": 330.77,
+    "pml": 321,
+    "pdh": 343.8,
+    "pdl": 335.82,
+    "pdc": 338.32,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 330.62
+     },
+     {
+      "label": "20 日高",
+      "price": 351.73
+     },
+     {
+      "label": "20 日線",
+      "price": 342.35
+     }
+    ]
+   },
+   "why": "全市場最高流動性：Gap −3.8%、RVOL 5.0、Pre-Market Volume 210 萬、Bid-Ask Spread 0.04%、ATR 2.0%、Relative Strength −4.1（大市升佢跌）；唯一唔合係價格略高過 5 分鐘 EMA 9（+0.18%），盤前沽壓喺後段放緩。",
+   "catalyst": "第四財季 EPS 2.10 美元勝預期 1.99、收入都勝預期，但毛利率指引令人失望，iPad 銷售遜預期（CNBC）。",
+   "technical": "跳空跌穿 20 日低 330.6 同昨日低 335.8；20 日線 342.4、Daily EMA 9 343.7 都喺上面。盤前區間 321.0–330.8，現價 325.5 喺中間。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "大市分化：QQQ +0.33%（晶片 SMH +2.5% 托住），DIA −0.61%、SPY −0.07%。今日中期選舉，10:00 JOLTS 職位空缺。",
+    "fundamentals": "業績本身唔差，但「指引差」係市場最睇重嘅部分；Nasdaq-100 已經跌入調整區（距高位 > 10%）。",
+    "technical": "跌穿 20 日低之後，321（盤前低）係最後支持；跌穿先有空間到 315.5（2R）。",
+    "tape": "盤前 210 萬股（日均 5%）、RVOL 5.0；Spread 0.13 元。價格略高過 EMA 9。平時開市首 5 分鐘約 204 萬股，要見 ≥ 407 萬股。",
+    "intuition": "信心中至高。大型股業績後通常有抄底盤，等跌穿 321 先做，唔好開市即沽。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（321），首 5 分鐘成交 ≥ 平時 2 倍（約 4075K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 320.9,
+    "stop": 323.62,
+    "target1": 315.46,
+    "target2": 312.74,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "企穩 330.8（盤前高）之上 = 跳空回補，唔好沽，新手唔好轉做多。",
+    "short": "跌穿 320.90 兼放量 → 沽空，Stop 323.62，T1 315.46，T2 312.74。",
+    "noTrade": "09:35 已經低過 318.2（> 0.4 ATR）唔追；首 5 分鐘量不足；價格返上 VWAP。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 3.4 元），Target 2R。"
+   },
+   "risks": [
+    "大型股業績後開市可能有抄底盤",
+    "價格略高過 5 分鐘 EMA 9",
+    "晶片股強勢可能托起科技股"
+   ],
+   "news": [
+    {
+     "title": "Dan Ives Calls Tech Selloff a 'Gut Check' — Names His Top Stocks to Own for the Next 5 Years",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/11/62816418/dan-ives-calls-tech-selloff-a-gut-check-names-his-top-stocks-to-own-for-the-next-5-years",
+     "time": "2026-11-03 13:02 UTC"
+    },
+    {
+     "title": "Adeia Posts Downbeat Q3 Earnings, Joins Bioventus, Apple And Other Big Stocks Moving Lower In Tuesday’s Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62816416/adeia-posts-downbeat-q3-earnings-joins-bioventus-apple-and-other-big-stocks-moving-lower-in-tuesdays-pre-market-session",
+     "time": "2026-11-03 13:02 UTC"
+    },
+    {
+     "title": "Wall Street Breakfast Podcast: Apple's Margin Worry",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4961421-wall-street-breakfast-podcast-apples-margin-worry?source=feed_symbol_AAPL",
+     "time": "2026-11-03 12:58 UTC"
+    },
+    {
+     "title": "Apple: analysts see strong iPhone demand, but margin worries persist",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/AAPL/news?source=feed_symbol_AAPL",
+     "time": "2026-11-03 12:53 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動",
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "PLTR",
+   "name": "Palantir",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 72,
+   "price": 166.8,
+   "prevClose": 178.34,
+   "gapPct": -6.47,
+   "pmVolume": 2912894,
+   "pmVolPct": 12.1,
+   "avgVolume": 24068372,
+   "rvol": 15.87,
+   "spread": 0.5,
+   "spreadPct": 0.3,
+   "atr": 9.52,
+   "atrPct": 5.34,
+   "mktCapB": 403.69,
+   "floatM": 2210,
+   "rsQqq": -6.8,
+   "rsSpy": -6.4,
+   "ema9": 166.3,
+   "ema9Pct": 0.3,
+   "ema9Step": "5m",
+   "ema9Daily": 191.34,
+   "levels": {
+    "pmh": 171.75,
+    "pml": 162,
+    "pdh": 187.55,
+    "pdl": 178.13,
+    "pdc": 178.34,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 178.13
+     },
+     {
+      "label": "20 日高",
+      "price": 212.94
+     },
+     {
+      "label": "20 日線",
+      "price": 196.69
+     }
+    ]
+   },
+   "why": "Gap −6.5%、RVOL 15.9、Pre-Market Volume 291 萬（日均 12%）、ATR 5.3%、Relative Strength −6.8；Bid-Ask Spread 0.30% 偏闊，價格略高過 EMA 9（+0.30%）。",
+   "catalyst": "Q3 業績勝預期，美國商業收入急升 148% 至 9.84 億美元，全年收入指引約 85.3 億；但股價仍然跌近 8%，市場嫌估值太高（CNBC）。",
+   "technical": "跳空跌穿 20 日低 178.1 同昨日低；盤前區間 162.0–171.8，現價 166.8 喺中間。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "科技股分化，軟件股弱（SHOP、DT 都大跌），晶片強。",
+    "fundamentals": "「好業績但股價跌」：估值同預期太高，沽壓可以持續；分析師陸續調整目標價。",
+    "technical": "盤前低 162 係關鍵，跌穿先有空間到 155。",
+    "tape": "盤前成交大、RVOL 15.9；Spread 0.50 元偏闊，要用限價盤。平時開市首 5 分鐘約 91 萬股，要見 ≥ 181 萬股。",
+    "intuition": "信心中。散戶喜愛嘅股，開市可能有人抄底，Stop 一定要跟。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（162），首 5 分鐘成交 ≥ 平時 2 倍（約 1811K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 161.9,
+    "stop": 165.23,
+    "target1": 155.24,
+    "target2": 151.91,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "企穩 171.8 之上 = 唔好沽。",
+    "short": "跌穿 161.90 兼放量 → 沽空，Stop 165.23，T1 155.24，T2 151.91。",
+    "noTrade": "Spread 闊過 0.4%；09:35 已經低過 158.6 唔追；量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 4.8 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.30% 偏闊",
+    "價格略高過 EMA 9",
+    "散戶抄底盤可能好強"
+   ],
+   "news": [
+    {
+     "title": "Dan Ives Calls Tech Selloff a 'Gut Check' — Names His Top Stocks to Own for the Next 5 Years",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/11/62816418/dan-ives-calls-tech-selloff-a-gut-check-names-his-top-stocks-to-own-for-the-next-5-years",
+     "time": "2026-11-03 13:02 UTC"
+    },
+    {
+     "title": "Adeia Posts Downbeat Q3 Earnings, Joins Bioventus, Apple And Other Big Stocks Moving Lower In Tuesday’s Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62816416/adeia-posts-downbeat-q3-earnings-joins-bioventus-apple-and-other-big-stocks-moving-lower-in-tuesdays-pre-market-session",
+     "time": "2026-11-03 13:02 UTC"
+    },
+    {
+     "title": "These Analysts Revise Their Forecasts On Palantir After Q3 Results",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/11/62814908/these-analysts-revise-their-forecasts-on-palantir-after-q3-results",
+     "time": "2026-11-03 12:20 UTC"
+    },
+    {
+     "title": "Cantor Fitzgerald Reiterates Neutral on Palantir Technologies, Maintains $207 Price Target",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/62811779/cantor-fitzgerald-reiterates-neutral-palantir-technologies-maintains-207-price-target",
+     "time": "2026-11-03 11:43 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動"
+   ]
+  },
+  {
+   "sym": "SHOP",
+   "name": "Shopify",
+   "grade": "B",
+   "beginner": "高風險",
+   "direction": "Short",
+   "score": 68,
+   "price": 131.17,
+   "prevClose": 156.22,
+   "gapPct": -16.04,
+   "pmVolume": 889104,
+   "pmVolPct": 10.8,
+   "avgVolume": 8233193,
+   "rvol": 50.36,
+   "spread": 0.76,
+   "spreadPct": 0.58,
+   "atr": 8.09,
+   "atrPct": 5.18,
+   "mktCapB": 169.17,
+   "floatM": 1200,
+   "rsQqq": -16.37,
+   "rsSpy": -15.97,
+   "ema9": 133.27,
+   "ema9Pct": -1.58,
+   "ema9Step": "5m",
+   "ema9Daily": 164.3,
+   "levels": {
+    "pmh": 158.55,
+    "pml": 125,
+    "pdh": 160.88,
+    "pdl": 153.33,
+    "pdc": 156.22,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 153.33
+     },
+     {
+      "label": "20 日高",
+      "price": 180.88
+     },
+     {
+      "label": "20 日線",
+      "price": 169.05
+     }
+    ]
+   },
+   "why": "Gap −16.0%、RVOL 50、Pre-Market Volume 89 萬、Float 12 億、ATR 5.2%、價格喺 EMA 9 之下（−1.6%），沽壓持續；但 Bid-Ask Spread 0.58% 好闊，開市後收窄到 0.3% 以下先做。",
+   "catalyst": "Q3 業績：商戶解決方案增長超過 30%，但 GMV（商品交易總額）輕微遜預期，市場即時沽貨（Seeking Alpha、GlobeNewswire）。",
+   "technical": "日線本身升勢（20 日線高過 50 日線），今日跳空跌穿 20 日低 153.3；盤前由 158.6 跌到最低 125.0，現價 131.2。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "軟件股今日弱（PLTR、DT 一齊跌）。",
+    "fundamentals": "GMV 輕微遜預期，屬「高估值股小失望」，跌幅可能已經過大。",
+    "technical": "盤前低 125 係關鍵；上面 EMA 9 133.3 係第一阻力。",
+    "tape": "盤前 89 萬股、RVOL 50，價格持續喺 EMA 9 之下；Spread 0.76 元好闊。平時開市首 5 分鐘約 24 萬股，要見 ≥ 49 萬股。",
+    "intuition": "信心中低。跌 16% 之後反彈風險大，而且 Spread 闊；只適合有經驗嘅人細注。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（125），首 5 分鐘成交 ≥ 平時 2 倍（約 488K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 124.9,
+    "stop": 128.14,
+    "target1": 118.42,
+    "target2": 115.18,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "返上 133.3（EMA 9）之上 = 沽壓減弱，唔好沽。",
+    "short": "跌穿 124.90 兼放量、Spread ≤ 0.3% → 沽空，Stop 128.14，T1 118.42，T2 115.18。",
+    "noTrade": "開市後 Spread 仍然闊過 0.3%；09:35 已經低過 121.7 唔追；量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 4.0 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.58% 好闊",
+    "跌 16% 後反彈風險大",
+    "日線原本升勢"
+   ],
+   "news": [
+    {
+     "title": "Shopify Reports Financial Results for Third Quarter 2026",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.globenewswire.com/news-release/2026/11/03/3394077/0/en/shopify-sustains-rapid-growth-with-revenue-up-32-and-free-cash-flow-margin-of-22.html",
+     "time": "2026-11-03 12:31 UTC"
+    },
+    {
+     "title": "Shopify in Charts: Merchant solutions sustain over 30% growth in Q3",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/SHOP/news?source=feed_symbol_SHOP",
+     "time": "2026-11-03 12:29 UTC"
+    },
+    {
+     "title": "Shopify slides in early investor reaction to a slight GMV miss",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/SHOP/news?source=feed_symbol_SHOP",
+     "time": "2026-11-03 12:16 UTC"
+    },
+    {
+     "title": "12 Information Technology Stocks Moving In Tuesday's Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62813712/12-information-technology-stocks-moving-tuesday-s-pre-market-session",
+     "time": "2026-11-03 12:05 UTC"
+    }
+   ],
+   "lists": [
+    "StockAnalysis 盤前跌幅榜"
+   ]
+  },
+  {
+   "sym": "FISV",
+   "name": "Fiserv",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 66,
+   "price": 55.89,
+   "prevClose": 51.93,
+   "gapPct": 7.63,
+   "pmVolume": 276504,
+   "pmVolPct": 4.9,
+   "avgVolume": 5642020,
+   "rvol": 75.57,
+   "spread": 0.3,
+   "spreadPct": 0.54,
+   "atr": 1.47,
+   "atrPct": 2.83,
+   "mktCapB": 29.91,
+   "floatM": 529.43,
+   "rsQqq": 7.3,
+   "rsSpy": 7.7,
+   "ema9": 55.26,
+   "ema9Pct": 1.14,
+   "ema9Step": "5m",
+   "ema9Daily": 49.22,
+   "levels": {
+    "pmh": 56.35,
+    "pml": 51.68,
+    "pdh": 52.33,
+    "pdl": 50.21,
+    "pdc": 51.93,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 44.74
+     },
+     {
+      "label": "20 日高",
+      "price": 52.33
+     },
+     {
+      "label": "20 日線",
+      "price": 47.74
+     }
+    ]
+   },
+   "why": "Gap +7.6%、RVOL 75.6、Pre-Market Volume 28 萬、Float 5.3 億、ATR 2.8%、強過 QQQ 7.3、價格喺 EMA 9 之上（+1.1%）；Bid-Ask Spread 0.54% 偏闊，要收窄先做。",
+   "catalyst": "Q3 業績勝預期，上調成本節省目標（Seeking Alpha、GlobeNewswire）。",
+   "technical": "日線本身弱（低過 50 日線），今日跳空升穿 20 日高 52.33 同昨日高；盤前高 56.35 係下一關口。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "大市分化，金融股 XLF −0.49%，對做多冇幫助；靠個股消息。",
+    "fundamentals": "業績勝預期係實在催化劑，不過係大跌後嘅修復性反彈。",
+    "technical": "突破 20 日高，升穿 56.4 冇近期阻力，2R 目標 57.6。",
+    "tape": "盤前 28 萬股（日均 5%）、RVOL 75.6；價格穩企 EMA 9 之上。Spread 0.30 元偏闊。平時開市首 5 分鐘約 12 萬股，要見 ≥ 24 萬股。",
+    "intuition": "信心中低。Spread 闊兼大市唔幫手，量不足就唔做。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（56.35），首 5 分鐘成交 ≥ 平時 2 倍（約 240K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 56.4,
+    "stop": 55.81,
+    "target1": 57.58,
+    "target2": 58.17,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "升穿 56.40 兼放量、Spread ≤ 0.3% → 做多，Stop 55.81，T1 57.58，T2 58.17。",
+    "short": "跌穿 54.5 = 跳空回吐，觀望。",
+    "noTrade": "開市後 Spread 仍然闊過 0.3%；09:35 已經高過 57.0 唔追；量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 0.75 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.54% 偏闊",
+    "金融板塊偏弱",
+    "大跌後反彈，延續力未知"
+   ],
+   "news": [
+    {
+     "title": "(FISV) Fiserv Expects 2026 Adjusted EPS Range $7.20 to $7.40, vs. FactSet Est of $7.24",
+     "source": "www.marketscreener.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQb1pfVTQyTEdUUjVzZ2ZmWWVVdUpFZ3JDSk03a3Z3eGY2bHAwaUFsLS1IUnpYQ3N0UWJVaWNYWnlMOVE4WlBnb3haS3FPeWNGNjVscUVRZWZIdDVZcmk5LS03WVM1X2dWTUVvQ2Z5Q1VvVUdBeXNmX2pKVWlaWnVvS0wzX2dwTm0weTVKRExGRk5KTWFIMG0yQXJxVzNkN3RNV21VZDFfbFJUWm9tc1NDbWhJekZfVXlBZHBneTFTSENOOWhoN29VTnVKbVI?oc=5",
+     "time": "2026-11-03 13:00 UTC"
+    },
+    {
+     "title": "Fiserv stock climbs as Q3 earnings beat, cost savings guidance revised up",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/FISV/news?source=feed_symbol_FISV",
+     "time": "2026-11-03 12:48 UTC"
+    },
+    {
+     "title": "Fiserv, Inc. Reports Third Quarter 2026 Financial Results",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.globenewswire.com/news-release/2026/11/03/3394038/0/en/fiserv-reports-third-quarter-2026-results.html",
+     "time": "2026-11-03 12:31 UTC"
+    },
+    {
+     "title": "Fiserv Completes Student Loan Servicing Sale & MoneyPass JV Formation",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/quote/FISV",
+     "time": "2026-11-03 12:11 UTC"
+    }
+   ],
+   "lists": [
+    "Benzinga 盤前異動股"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "DT",
+   "why": "Spread 1.36% 太闊（指引分歧，股價急跌）"
+  },
+  {
+   "sym": "BLZE",
+   "why": "市值 6 億、Gap 35% 屬高風險（細價股急升 35%）"
+  },
+  {
+   "sym": "RVTY",
+   "why": "Pre-Market Volume 9 千（上調全年指引）"
+  },
+  {
+   "sym": "ZBRA",
+   "why": "Pre-Market Volume 5 千、Spread 1.3%（業績勝預期但股價跌）"
+  },
+  {
+   "sym": "MU",
+   "why": "RVOL 1.3，未夠 2（晶片股反彈）"
+  },
+  {
+   "sym": "INTC",
+   "why": "RVOL 1.3（晶片股反彈）"
+  },
+  {
+   "sym": "AMD",
+   "why": "RVOL 1.6（晶片股反彈）"
+  },
+  {
+   "sym": "NVDA",
+   "why": "Gap 1.8%、RVOL 1.1（晶片股反彈）"
+  },
+  {
+   "sym": "GRAB",
+   "why": "股價 $3（業績）"
+  },
+  {
+   "sym": "TEVA",
+   "why": "Gap 2.3%、Spread 0.26%（Q3 業績）"
+  },
+  {
+   "sym": "PFE",
+   "why": "Gap −0.2%（Q3 勝預期）"
+  },
+  {
+   "sym": "XOM",
+   "why": "Gap 0.4%、RVOL 1.0（油價升）"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "BDMD",
+   "why": "細價股；$0.10"
+  },
+  {
+   "sym": "VCIG",
+   "why": "急跌 35%；Float < 100 萬"
+  },
+  {
+   "sym": "RDAC",
+   "why": "急升 115%；Float 200 萬"
+  }
+ ],
+ "news": [
+  {
+   "title": "Stocks making the biggest moves premarket: Pfizer, Apple, Palantir, Zebra Technologies & more",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/03/stocks-making-the-biggest-moves-premarket-pfe-pltr-aapl-zbra.html",
+   "time": "2026-11-03",
+   "tickers": [
+    "AAPL",
+    "PLTR",
+    "PFE",
+    "ZBRA",
+    "RVTY",
+    "YUM"
+   ]
+  },
+  {
+   "title": "Dow futures drop 300 points on Election Day as Apple declines, oil jumps: Live updates",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/02/stock-market-today-live-updates.html",
+   "time": "2026-11-03",
+   "tickers": [
+    "AAPL"
+   ]
+  },
+  {
+   "title": "Apple margin outlook pressures tech as reported U.S. strike lifts oil",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/03/apple-margin-oil-iran.html",
+   "time": "2026-11-03",
+   "tickers": [
+    "AAPL"
+   ]
+  },
+  {
+   "title": "Palantir (PLTR) earnings Q3 2026",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/02/palantir-pltr-earnings-q3-2026.html",
+   "time": "2026-11-02",
+   "tickers": [
+    "PLTR"
+   ]
+  }
+ ],
+ "lesson": "昨日覆盤：MRVL 跌穿盤前低兼放量，按計劃沽空到 Target 1（+1.47R）——跌穿關鍵支持 + 價格喺 EMA 9 之下 + 大成交，係最理想嘅 Opening Drive。EL 冇觸發，之後跌 6.6%：冇觸發就唔做，都保護到你。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，數據延遲 16 分鐘，可能有錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
