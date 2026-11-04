@@ -1,0 +1,1335 @@
+{
+ "version": 3,
+ "date": "2026-11-04",
+ "generatedAt": "2026-11-04T13:19:12Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "08:00",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1,
+  "avgVolume": 1000000,
+  "priceMin": 10,
+  "priceMax": 150
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH/PML、EMA 9）",
+   "ok": true,
+   "note": "延遲 16 分鐘，截至約 08:00 ET"
+  },
+  {
+   "name": "Alpaca SIP 報價（Bid-Ask Spread）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca 異動榜／最活躍",
+   "ok": true
+  },
+  {
+   "name": "Alpaca／Benzinga 新聞",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "Finviz（Float、行業）",
+   "ok": true
+  },
+  {
+   "name": "Google News",
+   "ok": true
+  },
+  {
+   "name": "Seeking Alpha",
+   "ok": true
+  },
+  {
+   "name": "MarketWatch／Investing.com RSS",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory + Nasdaq 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TopBreakoutStocks",
+   "ok": true,
+   "note": "今日候選唔喺佢嘅名單"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true,
+   "note": "今日盤前異動文章未出，用選舉同期貨報道"
+  },
+  {
+   "name": "TradeThatSwing 本週名單",
+   "ok": true,
+   "note": "TSLA 喺名單（上週名單）"
+  },
+  {
+   "name": "Yahoo Finance（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇繞過；今日唔需要"
+  },
+  {
+   "name": "IBKR",
+   "ok": false,
+   "note": "冇用（Alpaca 已經夠）"
+  }
+ ],
+ "headline": "民主黨贏國會：道指期貨 +900 點，但 AI 股、Tesla 受壓（QQQ −0.1%）。6 隻 RVOL ≥ 2：沽空 TSLA、ORCL、PLTR、DDOG，做多 NVO、AMZN。",
+ "market": {
+  "bias": "偏好（分化）",
+  "summary": "中期選舉民主黨大勝、控制國會，市場視為「政治僵局」利好：DIA +1.62%、IWM +1.4%、SPY +0.74%，醫療（XLV +2.2%）、金融（XLF +1.6%）、原材料同再生能源股升；但 AI／數據中心股擔心新國會限制建設，SMH −1.64%、QQQ −0.1%，Tesla、SpaceX、國防股受「Trump trade」退潮打擊。國債孳息下跌、金價升。今日適合：做多醫療／非科技強勢股，沽空 AI／Trump trade 弱勢股。10:00 ISM 服務業 PMI。",
+  "base": {
+   "spy": 0.74,
+   "qqq": -0.1
+  },
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 759.96,
+    "chgPct": 0.74,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 684.59,
+    "chgPct": -0.1,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "IWM",
+    "last": 283.71,
+    "chgPct": 1.4,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "DIA",
+    "last": 525.45,
+    "chgPct": 1.62,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "SMH",
+    "last": 510.04,
+    "chgPct": -1.64,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLV",
+    "last": 188,
+    "chgPct": 2.16,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLF",
+    "last": 58.12,
+    "chgPct": 1.63,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLB",
+    "last": 53.68,
+    "chgPct": 2.07,
+    "note": "08:00 ET（Alpaca SIP）"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:15 ET",
+    "name": "ADP 私人就業",
+    "impact": "中",
+    "note": ""
+   },
+   {
+    "time": "10:00 ET",
+    "name": "ISM Services PMI",
+    "impact": "中",
+    "note": ""
+   },
+   {
+    "time": "10:30 ET",
+    "name": "原油庫存",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "全日",
+    "name": "選舉結果：部分議席仲未點票完",
+    "impact": "中",
+    "note": "德州、內布拉斯加結果可能影響 AI 數據中心股"
+   },
+   {
+    "time": "週五",
+    "name": "非農就業數據",
+    "impact": "高",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "NVO",
+    "when": "盤前",
+    "note": "上調指引"
+   },
+   {
+    "sym": "DDOG",
+    "when": "盤前",
+    "note": "指引只符合預期"
+   },
+   {
+    "sym": "FIS",
+    "when": "盤前",
+    "note": "急跌、CFO 辭職"
+   },
+   {
+    "sym": "UBER",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "CVS",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "MCD",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "KHC",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "DOX",
+    "when": "昨日盤後",
+    "note": "急跌"
+   }
+  ]
+ },
+ "focus": "TSLA 今日值得做：Gap −5.3%、RVOL 3.9、Pre-Market Volume 293 萬，Bid-Ask Spread 只係 0.07%，8／9 個 Indicator 合格。原因係選舉結果打擊「Trump trade」（Tesla、SpaceX 同國防股一齊跌），屬政策消息而唔係業績。關鍵價位：盤前低 373.5、50 日線 371.4（好近嘅支持）、20 日低 349.3；上面 20 日線 382.8、昨日低 396.5。計劃：跌穿 373.4 兼放量（最好連 50 日線都穿）先沽，Stop 379.4，T1 361.4；守住 50 日線就唔做。",
+ "scan": [
+  {
+   "sym": "TSLA",
+   "price": 377.49,
+   "gapPct": -5.27,
+   "rvol": 3.91,
+   "pmVolume": 2925984,
+   "avgVolume": 36574354,
+   "floatM": 2820,
+   "atrPct": 3.76,
+   "spreadPct": 0.07,
+   "rsQqq": -5.23,
+   "ema9Pct": 0.25,
+   "catalyst": "選舉結果打擊 Trump trade",
+   "verdict": "pick",
+   "note": "價格略高過 EMA 9"
+  },
+  {
+   "sym": "NVO",
+   "price": 42.77,
+   "gapPct": 6.42,
+   "rvol": 16.35,
+   "pmVolume": 2490346,
+   "avgVolume": 10264700,
+   "floatM": 3350,
+   "atrPct": 1.92,
+   "spreadPct": 0.02,
+   "rsQqq": 6.46,
+   "ema9Pct": 0.06,
+   "catalyst": "Q3 業績、上調全年指引",
+   "verdict": "pick",
+   "note": "ATR 1.9%"
+  },
+  {
+   "sym": "AMZN",
+   "price": 259.28,
+   "gapPct": 3.43,
+   "rvol": 4.71,
+   "pmVolume": 2736223,
+   "avgVolume": 42891710,
+   "floatM": 9840,
+   "atrPct": 3.33,
+   "spreadPct": 0.04,
+   "rsQqq": 3.47,
+   "ema9Pct": -0.02,
+   "catalyst": "業績大跌後反彈",
+   "verdict": "pick",
+   "note": "冇新催化劑"
+  },
+  {
+   "sym": "ORCL",
+   "price": 120.1,
+   "gapPct": -4.83,
+   "rvol": 2.58,
+   "pmVolume": 2375051,
+   "avgVolume": 36952179,
+   "floatM": 1860,
+   "atrPct": 6.29,
+   "spreadPct": 0.25,
+   "rsQqq": -4.79,
+   "ema9Pct": -0.42,
+   "catalyst": "取消 70 億騰訊合約",
+   "verdict": "pick",
+   "note": "Spread 0.25%"
+  },
+  {
+   "sym": "PLTR",
+   "price": 165.42,
+   "gapPct": -5.69,
+   "rvol": 3,
+   "pmVolume": 1427510,
+   "avgVolume": 25839234,
+   "floatM": 2210,
+   "atrPct": 5.58,
+   "spreadPct": 0.23,
+   "rsQqq": -5.65,
+   "ema9Pct": -0.94,
+   "catalyst": "國防／政府股受壓",
+   "verdict": "pick",
+   "note": "Spread 0.23%"
+  },
+  {
+   "sym": "DDOG",
+   "price": 180,
+   "gapPct": -18.37,
+   "rvol": 72.43,
+   "pmVolume": 749288,
+   "avgVolume": 3291030,
+   "floatM": 329.36,
+   "atrPct": 7.99,
+   "spreadPct": 0.28,
+   "rsQqq": -18.33,
+   "ema9Pct": -1.79,
+   "catalyst": "第四季指引只符合預期",
+   "verdict": "pick",
+   "note": "Spread 0.28%"
+  },
+  {
+   "sym": "FIS",
+   "price": 31.81,
+   "gapPct": -18.41,
+   "rvol": 465.02,
+   "pmVolume": 1365761,
+   "avgVolume": 6056864,
+   "floatM": 514.91,
+   "atrPct": 3.59,
+   "spreadPct": 0.31,
+   "rsQqq": -18.37,
+   "ema9Pct": -7.17,
+   "catalyst": "業績後急跌、CFO 辭職",
+   "verdict": "watch",
+   "note": "價格離 EMA 9 太遠（−7%），ATR 細，Stop 難放"
+  },
+  {
+   "sym": "FSLR",
+   "price": 198.5,
+   "gapPct": 6.78,
+   "rvol": 49.63,
+   "pmVolume": 292198,
+   "avgVolume": 2238978,
+   "floatM": 101.54,
+   "atrPct": 3.93,
+   "spreadPct": 0.7,
+   "rsQqq": 6.82,
+   "ema9Pct": 0.01,
+   "catalyst": "選舉利好再生能源",
+   "verdict": "watch",
+   "note": "Spread 0.70%"
+  },
+  {
+   "sym": "ENPH",
+   "price": 31.5,
+   "gapPct": 3.55,
+   "rvol": 9.37,
+   "pmVolume": 930683,
+   "avgVolume": 7250881,
+   "floatM": 128.28,
+   "atrPct": 7,
+   "spreadPct": 0.64,
+   "rsQqq": 3.59,
+   "ema9Pct": 0.2,
+   "catalyst": "選舉利好再生能源",
+   "verdict": "watch",
+   "note": "Spread 0.64%"
+  },
+  {
+   "sym": "HCA",
+   "price": 491,
+   "gapPct": 6.08,
+   "rvol": 18.71,
+   "pmVolume": 20525,
+   "avgVolume": 1294501,
+   "floatM": 139.59,
+   "atrPct": 3.38,
+   "spreadPct": 0.8,
+   "rsQqq": 6.12,
+   "ema9Pct": 0.39,
+   "catalyst": "選舉利好醫院股",
+   "verdict": "watch",
+   "note": "Pre-Market Volume 2 萬、Spread 0.8%"
+  },
+  {
+   "sym": "UNH",
+   "price": 395.83,
+   "gapPct": -2.13,
+   "rvol": 9.94,
+   "pmVolume": 193655,
+   "avgVolume": 6029422,
+   "floatM": 895.45,
+   "atrPct": 2.8,
+   "spreadPct": 0.22,
+   "rsQqq": -2.09,
+   "ema9Pct": -0.17,
+   "catalyst": "選舉 + 回購",
+   "verdict": "watch",
+   "note": "Gap −2.1%、Spread 0.22%"
+  },
+  {
+   "sym": "NVDA",
+   "price": 202.78,
+   "gapPct": -1.89,
+   "rvol": 2.48,
+   "pmVolume": 3580466,
+   "avgVolume": 100879369,
+   "floatM": 23190,
+   "atrPct": 3.2,
+   "spreadPct": 0.06,
+   "rsQqq": -1.79,
+   "ema9Pct": -1.33,
+   "catalyst": "AI 股受壓",
+   "verdict": "watch",
+   "note": "Gap −1.9% 未夠 3%"
+  },
+  {
+   "sym": "AMD",
+   "price": 477.79,
+   "gapPct": -1.26,
+   "rvol": 8.59,
+   "pmVolume": 2828524,
+   "avgVolume": 22027088,
+   "floatM": 1620,
+   "atrPct": 6.7,
+   "spreadPct": 0.15,
+   "rsQqq": -1.16,
+   "ema9Pct": -1.75,
+   "catalyst": "AI 股受壓",
+   "verdict": "watch",
+   "note": "Gap −1.3%"
+  },
+  {
+   "sym": "MU",
+   "price": 832.8,
+   "gapPct": -2.61,
+   "rvol": 2.35,
+   "pmVolume": 1376831,
+   "avgVolume": 26731265,
+   "floatM": 1130,
+   "atrPct": 5.97,
+   "spreadPct": 0.11,
+   "rsQqq": -2.51,
+   "ema9Pct": -0.79,
+   "catalyst": "AI 股受壓",
+   "verdict": "watch",
+   "note": "Gap −2.6%"
+  },
+  {
+   "sym": "MSFT",
+   "price": 529.9,
+   "gapPct": 1.71,
+   "rvol": 2.63,
+   "pmVolume": 533203,
+   "avgVolume": 22590381,
+   "floatM": 7310,
+   "atrPct": 2.5,
+   "spreadPct": 0.08,
+   "rsQqq": 1.81,
+   "ema9Pct": -0.23,
+   "catalyst": "大市",
+   "verdict": "watch",
+   "note": "Gap 1.7%"
+  },
+  {
+   "sym": "UBER",
+   "price": 67.5,
+   "gapPct": 1.35,
+   "rvol": 10.82,
+   "pmVolume": 794996,
+   "avgVolume": 16582340,
+   "floatM": 1960,
+   "atrPct": 2.48,
+   "spreadPct": null,
+   "rsQqq": 1.45,
+   "ema9Pct": 0.4,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Gap 1.4%"
+  },
+  {
+   "sym": "CVS",
+   "price": 89.36,
+   "gapPct": -2.24,
+   "rvol": 44.99,
+   "pmVolume": 197018,
+   "avgVolume": 8677325,
+   "floatM": 1280,
+   "atrPct": 2.37,
+   "spreadPct": 0.83,
+   "rsQqq": -2.14,
+   "ema9Pct": -0.05,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Gap −2.2%、Spread 0.83%"
+  },
+  {
+   "sym": "NEE",
+   "price": 86.49,
+   "gapPct": 2.56,
+   "rvol": 6.84,
+   "pmVolume": 75765,
+   "avgVolume": 11729233,
+   "floatM": 2090,
+   "atrPct": 1.98,
+   "spreadPct": 0.1,
+   "rsQqq": 2.6,
+   "ema9Pct": 0.13,
+   "catalyst": "選舉利好公用／再生能源",
+   "verdict": "watch",
+   "note": "Gap 2.6%、Pre-Market Volume 7.6 萬"
+  },
+  {
+   "sym": "DOX",
+   "price": 38.97,
+   "gapPct": -37.58,
+   "rvol": 353.89,
+   "pmVolume": 217994,
+   "avgVolume": 992907,
+   "floatM": 106.26,
+   "atrPct": 2.59,
+   "spreadPct": 0.39,
+   "rsQqq": -37.48,
+   "ema9Pct": 2.01,
+   "catalyst": "業績差，急跌 38%",
+   "verdict": "avoid",
+   "note": "價格離 EMA 9 太遠、Spread 0.39%"
+  },
+  {
+   "sym": "PARA",
+   "price": 1.12,
+   "gapPct": -58.82,
+   "rvol": 11.81,
+   "pmVolume": 2725125,
+   "avgVolume": 5637605,
+   "floatM": 0.43,
+   "atrPct": 55.15,
+   "spreadPct": 0.87,
+   "rsQqq": -58.72,
+   "ema9Pct": -7.43,
+   "catalyst": "急跌 59%",
+   "verdict": "avoid",
+   "note": "$1.1"
+  },
+  {
+   "sym": "CRIS",
+   "price": 1.59,
+   "gapPct": 123.94,
+   "rvol": 5380.24,
+   "pmVolume": 67866392,
+   "avgVolume": 3206455,
+   "floatM": 5.54,
+   "atrPct": 21.01,
+   "spreadPct": 0.63,
+   "rsQqq": 124.04,
+   "ema9Pct": -5.42,
+   "catalyst": "細價股急升 124%",
+   "verdict": "avoid",
+   "note": "$1.6、Float 600 萬"
+  }
+ ],
+ "picks": [
+  {
+   "sym": "TSLA",
+   "name": "Tesla",
+   "grade": "A",
+   "beginner": "適合新手",
+   "direction": "Short",
+   "score": 80,
+   "price": 377.49,
+   "prevClose": 398.5,
+   "gapPct": -5.27,
+   "pmVolume": 2925984,
+   "pmVolPct": 8,
+   "avgVolume": 36574354,
+   "rvol": 3.91,
+   "spread": 0.28,
+   "spreadPct": 0.07,
+   "atr": 14.99,
+   "atrPct": 3.76,
+   "mktCapB": 1496.51,
+   "floatM": 2820,
+   "rsQqq": -5.23,
+   "rsSpy": -6.01,
+   "ema9": 376.53,
+   "ema9Pct": 0.25,
+   "ema9Step": "5m",
+   "ema9Daily": 395.32,
+   "levels": {
+    "pmh": 397.5,
+    "pml": 373.5,
+    "pdh": 406.5,
+    "pdl": 396.53,
+    "pdc": 398.5,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 349.33
+     },
+     {
+      "label": "20 日高",
+      "price": 414.23
+     },
+     {
+      "label": "20 日線",
+      "price": 382.84
+     },
+     {
+      "label": "50 日線",
+      "price": 371.41
+     }
+    ]
+   },
+   "why": "Gap −5.3%、RVOL 3.9、Pre-Market Volume 293 萬、Bid-Ask Spread 0.07%、ATR 3.8%、Relative Strength −5.2：8／9 個 Indicator 合格，只係盤前價略高過 5 分鐘 EMA 9（+0.25%）。流動性極好，今日方向清楚。",
+   "catalyst": "民主黨贏得國會控制權，打擊「Trump trade」：SpaceX、Tesla 同國防股盤前下跌（Benzinga、CNBC）；另外韓國指控 Tesla FSD 廣告誤導。屬政治／政策消息，唔係公司業績。",
+   "technical": "跳空跌穿昨日低 396.5 同 20 日線 382.8；下面 50 日線 371.4 係第一個支持，再落 20 日低 349.3。盤前區間 373.5–397.5，現價 377.5 貼近盤前低。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "大市分化：DIA +1.6%、IWM +1.4%、SPY +0.74%，但 QQQ −0.1%、SMH −1.6%——資金由 AI／Trump trade 轉去細價股、醫療、金融。對 TSLA 沽空有利。",
+    "fundamentals": "政策風險（電動車補貼、監管）重新定價，消息新而且重大；但唔係基本面變差，抄底盤可能出現。",
+    "technical": "跌穿盤前低 373.5 後，第一阻擋係 50 日線 371.4（好近），跌穿先有空間到 361.4（2R）。",
+    "tape": "盤前 293 萬股（日均 8%）、RVOL 3.9；Spread 0.28 元。平時開市首 5 分鐘約 216 萬股，要見 ≥ 432 萬股。",
+    "intuition": "信心中至高。如果開市即跌穿 371.4（50 日線）兼放量，係最好嘅訊號；守住 50 日線就唔好沽。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（373.5），首 5 分鐘成交 ≥ 平時 2 倍（約 4319K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 373.4,
+    "stop": 379.4,
+    "target1": 361.4,
+    "target2": 355.4,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "守住 371.4（50 日線）兼返上 383（20 日線）= 支持有效，唔好沽，新手唔好轉做多。",
+    "short": "跌穿 373.40 兼放量，最好連 50 日線 371.4 都跌穿 → 沽空，Stop 379.40，T1 361.40，T2 355.40。",
+    "noTrade": "09:35 已經低過 367.4（> 0.4 ATR）唔追；守住 50 日線；首 5 分鐘量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 7.5 元），Target 2R。"
+   },
+   "risks": [
+    "50 日線 371.4 就喺入場價下面，可能有承接",
+    "政治消息炒作可能好快反轉",
+    "價格略高過 5 分鐘 EMA 9"
+   ],
+   "news": [
+    {
+     "title": "Midterms' Blue Sweep Hits the 'Trump Trade': SpaceX, Tesla and Defense Stocks Sink",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/politics/26/11/62862271/midterm-blue-sweep-trump-trade-spacex-tesla-defense-stocks",
+     "time": "2026-11-04 13:12 UTC"
+    },
+    {
+     "title": "Tesla Accused of Misleading Marketing of Full Self-Driving in South Korea",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.marketscreener.com/news/tesla-accused-of-misleading-marketing-of-full-self-driving-in-south-korea-ce785fdfd989f424",
+     "time": "2026-11-04 13:02 UTC"
+    },
+    {
+     "title": "Amdocs Posts Downbeat Q4 Earnings, Joins Skyworks Solutions, Tesla And Other Big Stocks Moving Lower In Wednesday’s Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62861600/amdocs-posts-downbeat-q4-earnings-joins-skyworks-solutions-tesla-and-other-big-stocks-moving-lower-in-wednesdays-pre-market-session",
+     "time": "2026-11-04 13:02 UTC"
+    },
+    {
+     "title": "Tesla Shares Decline Amidst US Midterm Election Results",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.moomoo.com/news/post/1003472279/market-chatter-tesla-spacex-shares-fall-after-democrats-midterm-gains",
+     "time": "2026-11-04 12:31 UTC"
+    }
+   ],
+   "lists": [
+    "CNBC 盤前異動",
+    "TradeThatSwing 本週名單"
+   ]
+  },
+  {
+   "sym": "NVO",
+   "name": "Novo Nordisk",
+   "grade": "A",
+   "beginner": "適合新手",
+   "direction": "Long",
+   "score": 76,
+   "price": 42.77,
+   "prevClose": 40.19,
+   "gapPct": 6.42,
+   "pmVolume": 2490346,
+   "pmVolPct": 24.26,
+   "avgVolume": 10264700,
+   "rvol": 16.35,
+   "spread": 0.01,
+   "spreadPct": 0.02,
+   "atr": 0.77,
+   "atrPct": 1.92,
+   "mktCapB": 141.97,
+   "floatM": 3350,
+   "rsQqq": 6.46,
+   "rsSpy": 5.68,
+   "ema9": 42.75,
+   "ema9Pct": 0.06,
+   "ema9Step": "5m",
+   "ema9Daily": 39.52,
+   "levels": {
+    "pmh": 43.31,
+    "pml": 40.21,
+    "pdh": 40.63,
+    "pdl": 39.96,
+    "pdc": 40.19,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 37.51
+     },
+     {
+      "label": "20 日高",
+      "price": 40.78
+     },
+     {
+      "label": "20 日線",
+      "price": 38.95
+     },
+     {
+      "label": "50 日線",
+      "price": 40.97
+     }
+    ]
+   },
+   "why": "Gap +6.4%、RVOL 16.4、Pre-Market Volume 249 萬（日均 24%）、Bid-Ask Spread 0.02%、強過 QQQ 6.5、價格喺 EMA 9 之上；唯一唔合係 ATR 1.9%（略低過 2%），所以目標要細。",
+   "catalyst": "Q3 業績公布兼上調全年指引（MarketWatch、Seeking Alpha）；醫療股今日受選舉結果支持（XLV +2.2%）。",
+   "technical": "日線本身弱（低過 50 日線 40.97），今日跳空升穿 20 日高 40.78 同 50 日線；盤前高 43.31 係下一關口。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "XLV 醫療 +2.16%、DIA +1.6%：大市同板塊都支持做多。",
+    "fundamentals": "上調指引係強催化劑，屬新消息；股價之前跌咗好多，有修復空間。",
+    "technical": "升穿 43.31 後冇近期阻力；2R 目標 43.95。",
+    "tape": "盤前成交大（249 萬股、RVOL 16.4），Spread 0.01 元，好流動。平時開市首 5 分鐘約 40 萬股，要見 ≥ 80 萬股。",
+    "intuition": "信心中至高。ATR 細，每股風險得 0.31 元，股數可以多啲但總風險要一樣。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（43.31），首 5 分鐘成交 ≥ 平時 2 倍（約 800K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 43.33,
+    "stop": 43.02,
+    "target1": 43.95,
+    "target2": 44.26,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "升穿 43.33 兼放量 → 做多，Stop 43.02，T1 43.95，T2 44.26。",
+    "short": "跌穿 41.5 = 跳空回吐，觀望。",
+    "noTrade": "09:35 已經高過 43.64 唔追；首 5 分鐘量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 0.4 元），Target 2R。"
+   },
+   "risks": [
+    "ATR 細，利潤空間有限",
+    "ADR，主要成交喺丹麥",
+    "跳空後可能先回吐"
+   ],
+   "news": [
+    {
+     "title": "Novo Nordisk A/S 2026 Q3 - Results - Earnings Call Presentation",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4962124-novo-nordisk-a-s-2026-q3-results-earnings-call-presentation?source=feed_symbol_NVO",
+     "time": "2026-11-04 13:04 UTC"
+    },
+    {
+     "title": "Stock Market Today: Dow Jones, S&P 500 Futures Rise as Democrats Take Control of Congress—AMD, AMGN, NVO in Focus",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/11/62854452/stock-market-today-dow-jones-sp-500-futures-rise-as-democrats-take-control-of-congress-amd-amgn-nvo-in-focus",
+     "time": "2026-11-04 10:17 UTC"
+    },
+    {
+     "title": "Novo Nordisk Reports Q3 2026 Results and Raises Full-Year Guidance",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.morningstar.com/news/marketwatch/2026110498/beleaguered-novo-offers-relief-to-investors-thanks-to-wegovy-pill",
+     "time": "2026-11-04 10:01 UTC"
+    },
+    {
+     "title": "Novo improves outlook on continued demand for Wegovy pill, Ozempic",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/NVO/news?source=feed_symbol_NVO",
+     "time": "2026-11-04 09:00 UTC"
+    }
+   ],
+   "lists": [
+    "Benzinga 盤前異動股"
+   ]
+  },
+  {
+   "sym": "AMZN",
+   "name": "Amazon",
+   "grade": "B",
+   "beginner": "適合新手",
+   "direction": "Long",
+   "score": 70,
+   "price": 259.28,
+   "prevClose": 250.69,
+   "gapPct": 3.43,
+   "pmVolume": 2736223,
+   "pmVolPct": 6.38,
+   "avgVolume": 42891710,
+   "rvol": 4.71,
+   "spread": 0.11,
+   "spreadPct": 0.04,
+   "atr": 8.35,
+   "atrPct": 3.33,
+   "mktCapB": 2811.52,
+   "floatM": 9840,
+   "rsQqq": 3.47,
+   "rsSpy": 2.69,
+   "ema9": 259.34,
+   "ema9Pct": -0.02,
+   "ema9Step": "5m",
+   "ema9Daily": 249.16,
+   "levels": {
+    "pmh": 260.35,
+    "pml": 246.7,
+    "pdh": 252.45,
+    "pdl": 245.88,
+    "pdc": 250.69,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 229.36
+     },
+     {
+      "label": "20 日高",
+      "price": 265.34
+     },
+     {
+      "label": "20 日線",
+      "price": 253.82
+     },
+     {
+      "label": "50 日線",
+      "price": 253.79
+     }
+    ]
+   },
+   "why": "Gap +3.4%、RVOL 4.7、Pre-Market Volume 274 萬、Bid-Ask Spread 0.04%、強過 QQQ 3.5；價格貼住 EMA 9（−0.02%）。上週五業績後大跌，今日反彈。",
+   "catalyst": "冇新嘅公司消息，屬上週業績大跌後嘅反彈，加上選舉後大市向好；催化劑較弱，所以只係 B 級。",
+   "technical": "返上 20 日線 253.8 同 50 日線 253.8 之上；盤前高 260.35，上面 20 日高 265.34 係阻力，所以 T1 定喺 265.2。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "SPY +0.74%、XLY +1.2%，大市支持；但科技股（QQQ −0.1%）唔強。",
+    "fundamentals": "冇新催化劑，係技術性反彈，延續力要靠開市成交確認。",
+    "technical": "升穿盤前高 260.4 後，到 265.3（20 日高）前冇阻力。",
+    "tape": "盤前 274 萬股（日均 6%）、RVOL 4.7；Spread 0.11 元。平時開市首 5 分鐘約 232 萬股，要見 ≥ 464 萬股。",
+    "intuition": "信心中。冇消息嘅反彈容易失敗，一定要等放量突破。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（260.35），首 5 分鐘成交 ≥ 平時 2 倍（約 4637K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 260.4,
+    "stop": 257.9,
+    "target1": 265.2,
+    "target2": 267.9,
+    "rr": 1.92
+   },
+   "plan": {
+    "long": "升穿 260.40 兼放量 → 做多，Stop 257.90，T1 265.20，T2 267.90。",
+    "short": "跌穿 253.8 = 反彈失敗，觀望。",
+    "noTrade": "09:35 已經高過 263.7 唔追；首 5 分鐘量不足；QQQ 急跌。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 4.2 元），Target 2R。"
+   },
+   "risks": [
+    "冇新催化劑",
+    "20 日高 265.3 阻力好近",
+    "科技股今日唔強"
+   ],
+   "news": [
+    {
+     "title": "Alphabet's Search Scare Is A Buying Chance - Amazon's Cash Problem Isn't",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4962085-alphabet-search-scare-is-a-buying-chance-amazon-cash-problem-isnt?source=feed_symbol_AMZN",
+     "time": "2026-11-04 12:52 UTC"
+    },
+    {
+     "title": "Amazon Reports AWS Financials and Strategic AI Updates",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.tradingview.com/news/tradingview:6c3ae0732efe1:0-key-facts-aws-revenue-46b-220b-capex-chip-commitments-up-20x/",
+     "time": "2026-11-04 12:31 UTC"
+    },
+    {
+     "title": "Amazon, Pfizer, Eaton And A Financial Stock On CNBC’s ‘Final Trades’",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/11/62856724/amazon-pfizer-eaton-and-a-financial-stock-cnbc-final-trades",
+     "time": "2026-11-04 11:37 UTC"
+    },
+    {
+     "title": "AWS Launches 'Semarak AI Malaysia' National Program",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.manilatimes.net/2026/11/04/tmt-newswire/pr-newswire/aws-launches-semarak-ai-malaysia-a-national-program-to-bring-ai-tools-to-government-officers-students-and-local-software-companies/2461421/amp",
+     "time": "2026-11-04 11:31 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "ORCL",
+   "name": "Oracle",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 70,
+   "price": 120.1,
+   "prevClose": 126.19,
+   "gapPct": -4.83,
+   "pmVolume": 2375051,
+   "pmVolPct": 6.43,
+   "avgVolume": 36952179,
+   "rvol": 2.58,
+   "spread": 0.3,
+   "spreadPct": 0.25,
+   "atr": 7.94,
+   "atrPct": 6.29,
+   "mktCapB": 364.06,
+   "floatM": 1860,
+   "rsQqq": -4.79,
+   "rsSpy": -5.57,
+   "ema9": 120.61,
+   "ema9Pct": -0.42,
+   "ema9Step": "5m",
+   "ema9Daily": 129.69,
+   "levels": {
+    "pmh": 127.5,
+    "pml": 118.91,
+    "pdh": 128.14,
+    "pdl": 121.35,
+    "pdc": 126.19,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 118.43
+     },
+     {
+      "label": "20 日高",
+      "price": 148.48
+     },
+     {
+      "label": "20 日線",
+      "price": 132.64
+     },
+     {
+      "label": "50 日線",
+      "price": 140.93
+     }
+    ]
+   },
+   "why": "Gap −4.8%、RVOL 2.6、Pre-Market Volume 238 萬、ATR 6.3%、價格喺 EMA 9 之下（−0.42%）、Relative Strength −4.8；Bid-Ask Spread 0.25% 偏闊。",
+   "catalyst": "Oracle 取消同騰訊嘅 70 億美元 AI 晶片租賃合約（報道指係白宮壓力）；AI 股今日受選舉結果拖累。",
+   "technical": "日線跌勢（低過 20、50 日線）；盤前低 118.91 同 20 日低 118.43 好近，跌穿 118.3 = 破位。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "AI／數據中心股今日最弱（SMH −1.6%），對沽空有利。",
+    "fundamentals": "取消大額合約屬重大新消息，直接影響收入預期。",
+    "technical": "跌穿 118.4（20 日低）後下面冇近期支持，2R 目標 112.7。",
+    "tape": "盤前 238 萬股（日均 6%）、RVOL 2.6；Spread 0.30 元偏闊。平時開市首 5 分鐘約 148 萬股，要見 ≥ 297 萬股。",
+    "intuition": "信心中。RVOL 只係 2.6，開市成交唔夠就放棄。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（118.91），首 5 分鐘成交 ≥ 平時 2 倍（約 2967K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 118.3,
+    "stop": 121.08,
+    "target1": 112.74,
+    "target2": 109.96,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "守住 118.4 兼返上 122 = 支持有效，唔好沽。",
+    "short": "跌穿 118.30 兼放量 → 沽空，Stop 121.08，T1 112.74，T2 109.96。",
+    "noTrade": "Spread 闊過 0.4%；09:35 已經低過 115.5 唔追；量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 4.0 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.25% 偏闊",
+    "20 日低有承接盤",
+    "RVOL 只係 2.6"
+   ],
+   "news": [
+    {
+     "title": "Oracle Cancels $7 Billion Tencent AI Chip-Leasing Deal",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.marketscreener.com/news/oracle-axes-7-billion-tencent-chip-leasing-deal-amid-white-house-pressure-ce785fdfd989f121",
+     "time": "2026-11-04 12:31 UTC"
+    },
+    {
+     "title": "Oracle Cancels $7 Billion Chip-Leasing Deal with Tencent",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.finanzen.at/nachrichten/aktien/oracle-reportedly-cancels-$7-bln-chip-leasing-deal-with-tencent-amid-u-s-pressure-1036713741",
+     "time": "2026-11-04 11:31 UTC"
+    },
+    {
+     "title": "Jim Cramer Sees These 'Non-Magnificent' Tech Stocks Emerging as Market Leaders While Nvidia, Microsoft Struggle: 'It's Just Not The Tech That's Led Us'",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/11/62854558/jim-cramer-sees-these-non-magnificent-tech-stocks-emerging-as-market-leaders-while-nvidia-microsoft-struggle-its-just-not-the-tech-thats-led-us",
+     "time": "2026-11-04 10:27 UTC"
+    },
+    {
+     "title": "AI stocks tied to Texas data center in focus after Hinojosa win",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/ORCL/news?source=feed_symbol_ORCL",
+     "time": "2026-11-04 08:09 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "PLTR",
+   "name": "Palantir",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 66,
+   "price": 165.42,
+   "prevClose": 175.4,
+   "gapPct": -5.69,
+   "pmVolume": 1427510,
+   "pmVolPct": 5.52,
+   "avgVolume": 25839234,
+   "rvol": 3,
+   "spread": 0.38,
+   "spreadPct": 0.23,
+   "atr": 9.78,
+   "atrPct": 5.58,
+   "mktCapB": 399.83,
+   "floatM": 2210,
+   "rsQqq": -5.65,
+   "rsSpy": -6.43,
+   "ema9": 166.99,
+   "ema9Pct": -0.94,
+   "ema9Step": "5m",
+   "ema9Daily": 188.15,
+   "levels": {
+    "pmh": 174.96,
+    "pml": 164.36,
+    "pdh": 176.54,
+    "pdl": 165.25,
+    "pdc": 175.4,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 165.25
+     },
+     {
+      "label": "20 日高",
+      "price": 212.94
+     },
+     {
+      "label": "20 日線",
+      "price": 195.86
+     },
+     {
+      "label": "50 日線",
+      "price": 186.86
+     }
+    ]
+   },
+   "why": "Gap −5.7%、RVOL 3.0、Pre-Market Volume 143 萬、ATR 5.6%、價格喺 EMA 9 之下（−0.94%）；Bid-Ask Spread 0.23% 偏闊。注意：昨日 PLTR 同樣跳空低開，但開市後反彈 4.5%，沽空冇觸發。",
+   "catalyst": "選舉結果打擊國防／政府相關股（Benzinga：Trump trade 受壓）；業績後估值憂慮持續。",
+   "technical": "跌穿昨日低 165.25（亦係 20 日低）；盤前低 164.36。跌穿 164.25 = 破位。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "國防同 AI 股今日弱，對沽空有利。",
+    "fundamentals": "政府合約股受新國會政策風險影響，屬新消息。",
+    "technical": "164–165 係雙重支持，跌穿先有空間到 157.4。",
+    "tape": "盤前 143 萬股（日均 6%）、RVOL 3.0；Spread 0.38 元。平時開市首 5 分鐘約 126 萬股，要見 ≥ 251 萬股。",
+    "intuition": "信心中低。昨日已經示範咗散戶抄底力量，一定等跌穿兼放量。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（164.36），首 5 分鐘成交 ≥ 平時 2 倍（約 2514K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 164.25,
+    "stop": 167.67,
+    "target1": 157.41,
+    "target2": 154.0,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "守住 164 兼返上 EMA 9 / 170 = 唔好沽。",
+    "short": "跌穿 164.25 兼放量 → 沽空，Stop 167.67，T1 157.41，T2 154.00。",
+    "noTrade": "09:35 已經低過 160.3 唔追；量不足；價格返上 VWAP。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 4.9 元），Target 2R。"
+   },
+   "risks": [
+    "昨日同樣低開後反彈 4.5%",
+    "Bid-Ask Spread 0.23% 偏闊",
+    "散戶抄底盤強"
+   ],
+   "news": [
+    {
+     "title": "Midterms' Blue Sweep Hits the 'Trump Trade': SpaceX, Tesla and Defense Stocks Sink",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/politics/26/11/62862271/midterm-blue-sweep-trump-trade-spacex-tesla-defense-stocks",
+     "time": "2026-11-04 13:12 UTC"
+    },
+    {
+     "title": "Palantir Announces Partnership with Changshin",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://natlawreview.com/press-releases/changshin-and-palantir-partner-connect-footwear-development-and-factory",
+     "time": "2026-11-04 12:31 UTC"
+    },
+    {
+     "title": "AMD’s $17 Billion Answer, Apple's AI Bill And Next 3 Trading Days",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/opinion/26/11/62857349/amd-17-billion-answer-apple-ai-bill-jobs-test-next",
+     "time": "2026-11-04 11:50 UTC"
+    },
+    {
+     "title": "PLTR Stock Could Deliver 423% Upside, Says Tom Nash — Here's Why He's Bullish on Palantir",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/11/62853659/pltr-stock-to-917-tom-nash-sees-422-8-upside-in-his-base-case-as-palantirs-growth-defies-valuation-bears",
+     "time": "2026-11-04 08:49 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "DDOG",
+   "name": "Datadog",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 66,
+   "price": 180,
+   "prevClose": 220.52,
+   "gapPct": -18.37,
+   "pmVolume": 749288,
+   "pmVolPct": 22.77,
+   "avgVolume": 3291030,
+   "rvol": 72.43,
+   "spread": 0.5,
+   "spreadPct": 0.28,
+   "atr": 17.63,
+   "atrPct": 7.99,
+   "mktCapB": 64.76,
+   "floatM": 329.36,
+   "rsQqq": -18.33,
+   "rsSpy": -19.11,
+   "ema9": 183.28,
+   "ema9Pct": -1.79,
+   "ema9Step": "5m",
+   "ema9Daily": 247.69,
+   "levels": {
+    "pmh": 230.7,
+    "pml": 176,
+    "pdh": 222.43,
+    "pdl": 211.65,
+    "pdc": 220.52,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 211.65
+     },
+     {
+      "label": "20 日高",
+      "price": 300.68
+     },
+     {
+      "label": "20 日線",
+      "price": 264.31
+     },
+     {
+      "label": "50 日線",
+      "price": 250.77
+     }
+    ]
+   },
+   "why": "Gap −18.4%、RVOL 72、Pre-Market Volume 75 萬、ATR 8.0%、價格喺 EMA 9 之下（−1.8%），沽壓持續；Bid-Ask Spread 0.28% 偏闊。",
+   "catalyst": "Q3 業績後，第四季收入指引只係符合預期，股價跌 18%（Seeking Alpha）。",
+   "technical": "跳空跌穿 20 日低 211.7、20 日線同 50 日線；盤前由 230.7 跌到最低 176.0。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "軟件股弱，QQQ 唔強。",
+    "fundamentals": "「指引只係符合預期」對高估值股係失望，屬新消息。",
+    "technical": "盤前低 176 係關鍵；上面 EMA 9 183.3 係第一阻力。",
+    "tape": "盤前 75 萬股（日均 23%）、RVOL 72，價格持續喺 EMA 9 之下；Spread 0.50 元。平時開市首 5 分鐘約 11 萬股，要見 ≥ 22 萬股。",
+    "intuition": "信心中低。跌 18% 之後反彈風險大，細注。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（176），首 5 分鐘成交 ≥ 平時 2 倍（約 219K 股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 175.8,
+    "stop": 181.1,
+    "target1": 165.2,
+    "target2": 159.9,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "返上 183.3（EMA 9）之上 = 沽壓減弱，唔好沽。",
+    "short": "跌穿 175.80 兼放量 → 沽空，Stop 181.10，T1 165.20，T2 159.90。",
+    "noTrade": "Spread 闊過 0.4%；09:35 已經低過 170.5 唔追；量不足。 後備 5 分鐘 ORB：09:35 已經穿咗入場價太遠，就改做首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 8.8 元），Target 2R。"
+   },
+   "risks": [
+    "跌 18% 後反彈風險大",
+    "Bid-Ask Spread 0.28% 偏闊",
+    "ATR 大，每股風險 5.3 元"
+   ],
+   "news": [
+    {
+     "title": "Datadog Reports Third Quarter 2026 Financial Results",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.manilatimes.net/2026/11/04/tmt-newswire/globenewswire/datadog-announces-third-quarter-2026-financial-results/2461619",
+     "time": "2026-11-04 13:01 UTC"
+    },
+    {
+     "title": "Earnings Flash (DDOG) Datadog, Inc. Posts Q3 Adjusted EPS $0.81 per Share, vs. FactSet Est of $0.64",
+     "source": "marketscreener.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNR3pmZVRPc0l1b3d2YlZtdk5sOUxuTmlKZEc3a3JnaXVLLTZZY2JVTG9WTmk4cVZlX2tpUExOOXhVZlFfM1FLRTdCQy1fRlVCMENUQmRwY0VpUkNYQ3JNQ0hPcWI1QV9pMnd2dGUwOTlPZTRrUjFjM3dsYk41TWdDWTQxTTdiem9PeElMN2MyYmJ0QlNMMjJXRlBuMXFhWWdRODdIVFVia1ptbVkwN0ZnX3UwbDJ6RFhUSVBJTTVrbXgtSVdFM2dqZWYzYUE5SlJkUEpyYy04R2lyTDJn?oc=5",
+     "time": "2026-11-04 12:50 UTC"
+    },
+    {
+     "title": "Datadog shares fall 18% after in-line fourth-quarter revenue outlook",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/DDOG/news?source=feed_symbol_DDOG",
+     "time": "2026-11-04 12:46 UTC"
+    },
+    {
+     "title": "Datadog Q3 Free Cash Flow $251M; Operating Cash Flow $290M",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/quote/DDOG",
+     "time": "2026-11-04 12:24 UTC"
+    }
+   ],
+   "lists": [
+    "StockAnalysis 盤前跌幅榜"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "FIS",
+   "why": "價格離 EMA 9 太遠（−7%），ATR 細，Stop 難放（業績後急跌、CFO 辭職）"
+  },
+  {
+   "sym": "FSLR",
+   "why": "Spread 0.70%（選舉利好再生能源）"
+  },
+  {
+   "sym": "ENPH",
+   "why": "Spread 0.64%（選舉利好再生能源）"
+  },
+  {
+   "sym": "HCA",
+   "why": "Pre-Market Volume 2 萬、Spread 0.8%（選舉利好醫院股）"
+  },
+  {
+   "sym": "UNH",
+   "why": "Gap −2.1%、Spread 0.22%（選舉 + 回購）"
+  },
+  {
+   "sym": "NVDA",
+   "why": "Gap −1.9% 未夠 3%（AI 股受壓）"
+  },
+  {
+   "sym": "AMD",
+   "why": "Gap −1.3%（AI 股受壓）"
+  },
+  {
+   "sym": "MU",
+   "why": "Gap −2.6%（AI 股受壓）"
+  },
+  {
+   "sym": "MSFT",
+   "why": "Gap 1.7%（大市）"
+  },
+  {
+   "sym": "UBER",
+   "why": "Gap 1.4%（Q3 業績）"
+  },
+  {
+   "sym": "CVS",
+   "why": "Gap −2.2%、Spread 0.83%（Q3 業績）"
+  },
+  {
+   "sym": "NEE",
+   "why": "Gap 2.6%、Pre-Market Volume 7.6 萬（選舉利好公用／再生能源）"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "DOX",
+   "why": "業績差，急跌 38%；價格離 EMA 9 太遠、Spread 0.39%"
+  },
+  {
+   "sym": "PARA",
+   "why": "急跌 59%；$1.1"
+  },
+  {
+   "sym": "CRIS",
+   "why": "細價股急升 124%；$1.6、Float 600 萬"
+  }
+ ],
+ "news": [
+  {
+   "title": "Dow futures surge 900 points after decisive win by Democrats in U.S. midterms: Live updates",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/03/stock-market-today-live-updates.html",
+   "time": "2026-11-04",
+   "tickers": [
+    "TSLA",
+    "DIA"
+   ]
+  },
+  {
+   "title": "2026 midterm election results: House, Senate live updates",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/04/2026-midterm-election-results-live-updates.html",
+   "time": "2026-11-04",
+   "tickers": []
+  },
+  {
+   "title": "Gold, silver and precious metals prices jump, dollar dips as Democrats take control of Congress",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/04/gold-silver-platinum-dollar-midterms.html",
+   "time": "2026-11-04",
+   "tickers": []
+  },
+  {
+   "title": "Texas race results could kick AI trade while it's already down",
+   "source": "CNBC",
+   "url": "https://cnbc.com/2026/11/03/texas-election-could-pressure-ai-data-center-trade.html",
+   "time": "2026-11-03",
+   "tickers": [
+    "ORCL",
+    "NVDA"
+   ]
+  }
+ ],
+ "lesson": "昨日覆盤：AAPL、PLTR、SHOP 三隻跳空低開嘅沽空都冇觸發，開市後全部反彈 2–5%——「壞消息出盡」好常見。所以一定要等價格真係跌穿盤前低兼放量先入場；冇觸發就唔做，保護咗你。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，數據延遲 16 分鐘，可能有錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

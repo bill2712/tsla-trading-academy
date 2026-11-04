@@ -1,6 +1,59 @@
 {
- "updated": "2026-11-03T13:12:09.211Z",
+ "updated": "2026-11-04T13:19:12.099Z",
  "days": [
+  {
+   "date": "2026-11-04",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏好（分化）",
+   "headline": "民主黨贏國會：道指期貨 +900 點，但 AI 股、Tesla 受壓（QQQ −0.1%）。6 隻 RVOL ≥ 2：沽空 TSLA、ORCL、PLTR、DDOG，做多 NVO、A",
+   "n": 6,
+   "top": [
+    {
+     "sym": "TSLA",
+     "gapPct": -5.27,
+     "rvol": 3.91,
+     "beginner": "適合新手",
+     "grade": "A"
+    },
+    {
+     "sym": "NVO",
+     "gapPct": 6.42,
+     "rvol": 16.35,
+     "beginner": "適合新手",
+     "grade": "A"
+    },
+    {
+     "sym": "AMZN",
+     "gapPct": 3.43,
+     "rvol": 4.71,
+     "beginner": "適合新手",
+     "grade": "B"
+    },
+    {
+     "sym": "ORCL",
+     "gapPct": -4.83,
+     "rvol": 2.58,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "PLTR",
+     "gapPct": -5.69,
+     "rvol": 3,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "DDOG",
+     "gapPct": -18.37,
+     "rvol": 72.43,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-11-03",
    "version": 3,
@@ -38,7 +91,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-11-02",
