@@ -1,6 +1,52 @@
 {
- "updated": "2026-11-04T13:19:12.099Z",
+ "updated": "2026-11-05T13:20:56.445Z",
  "days": [
+  {
+   "date": "2026-11-05",
+   "version": 3,
+   "status": "premarket",
+   "bias": "中性（分化）",
+   "headline": "道指昨日大升 1,500 點後，今日晶片股再跌（SMH −3.4%）。5 隻 RVOL ≥ 2：沽空 QCOM、MU、ARM，做多 APP、RUN（兩隻都係高風險）。後備 ORB ",
+   "n": 5,
+   "top": [
+    {
+     "sym": "QCOM",
+     "gapPct": -10.46,
+     "rvol": 7.09,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "MU",
+     "gapPct": -4.45,
+     "rvol": 2.14,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "ARM",
+     "gapPct": -6.67,
+     "rvol": 3.39,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "APP",
+     "gapPct": 21.62,
+     "rvol": 17.62,
+     "beginner": "高風險",
+     "grade": "B"
+    },
+    {
+     "sym": "RUN",
+     "gapPct": 21.96,
+     "rvol": 14.78,
+     "beginner": "高風險",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-11-04",
    "version": 3,
@@ -52,7 +98,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-11-03",
