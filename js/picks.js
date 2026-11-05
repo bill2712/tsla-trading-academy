@@ -124,6 +124,7 @@
       ${indicatorsHTML(p, R, early)}
       ${(p.lists || []).length ? `<div class="pk-lists">${p.lists.map((x) => `<span>📌 ${esc(x)}</span>`).join('')}</div>` : ''}
       <div class="pk-levels">${lvl('PMH', L.pmh)}${lvl('PML', L.pml)}${lvl('PDH', L.pdh)}${lvl('PDL', L.pdl)}${lvl('昨收', L.pdc)}${(L.other || []).map((o) => lvl(esc(o.label), o.price)).join('')}</div>
+      ${profileHTML(p.profile)}
       ${p.why ? `<p class="pk-why"><b>點解適合今日 Day Trade：</b>${esc(p.why)}</p>` : ''}
       ${p.catalyst ? `<p><b>📰 催化劑：</b>${esc(p.catalyst)}</p>` : ''}
       ${p.technical ? `<p><b>📈 技術面：</b>${esc(p.technical)}</p>` : ''}
@@ -143,6 +144,11 @@
     </article>`;
   }
 
+  const DAYTYPE = { trend: 'Trend Day（趨勢日）', balance: 'Balance Day（平衡日）', neutral_trend: 'Neutral Trend', normal: 'Normal Day（正常日）', normal_var: 'Normal Variation（雙向延伸）' };
+  function profileHTML(m) {
+    if (!m || num(m.vah) == null) return '';
+    return `<p class="pk-prof"><b>📊 Market Profile（${esc(m.session || '昨日')}）：</b>${esc(DAYTYPE[m.dayType] || m.dayType || '')}｜VAH $${F(m.vah)}｜POC $${F(m.vpoc)}｜VAL $${F(m.val)}${m.migration ? `｜價值區${esc(m.migration)}` : ''}${m.note ? `<small>${esc(m.note)}</small>` : ''}<small class="muted">（TradingCalc 計算）</small></p>`;
+  }
   function tradeHTML(t) {
     if (!t || num(t.entry) == null) return '';
     const L = t.side !== 'Short';
@@ -150,7 +156,7 @@
     return `<div class="pk-trade ${L ? 'long' : 'short'}">
       <div class="pk-trade-h"><b>${L ? '📈 Long' : '📉 Short'} 交易計劃</b>${num(t.rr) != null ? `<span class="pk-rr">R:R ${F(t.rr, 2)}</span>` : ''}</div>
       ${t.trigger ? `<p class="pk-trig"><b>入場條件：</b>${esc(t.trigger)}</p>` : ''}
-      <div class="pk-trade-g"><div><span>Entry</span><b>$${F(t.entry)}</b></div><div class="neg"><span>Stop</span><b>$${F(t.stop)}</b>${pct(t.stop)}</div><div class="pos"><span>Target 1</span><b>$${F(t.target1)}</b>${pct(t.target1)}</div>${num(t.target2) != null ? `<div class="pos"><span>Target 2</span><b>$${F(t.target2)}</b>${pct(t.target2)}</div>` : ''}<div><span>每股風險</span><b>$${F(Math.abs(t.entry - t.stop))}</b></div></div>
+      <div class="pk-trade-g"><div><span>Entry</span><b>$${F(t.entry)}</b></div><div class="neg"><span>Stop</span><b>$${F(t.stop)}</b>${pct(t.stop)}</div><div class="pos"><span>Target 1</span><b>$${F(t.target1)}</b>${pct(t.target1)}</div>${num(t.target2) != null ? `<div class="pos"><span>Target 2</span><b>$${F(t.target2)}</b>${pct(t.target2)}</div>` : ''}<div><span>每股風險</span><b>$${F(Math.abs(t.entry - t.stop))}</b></div>${(() => { const r = Math.abs(t.entry - t.stop); const n = r > 0 ? Math.floor(100 / r) : 0; return `<div><span>每 $100 風險</span><b>${n ? n + ' 股' : '—'}</b>${n ? `<small>≈ $${Math.round(n * t.entry).toLocaleString()} 本金</small>` : ''}</div>`; })()}</div>
     </div>`;
   }
   const PILLARS = [['bigPicture', '🌍', '大環境'], ['fundamentals', '📰', '日內基本面'], ['technical', '📈', '技術分析'], ['tape', '📜', '睇盤（Tape）'], ['intuition', '🧭', '直覺／經驗判斷']];

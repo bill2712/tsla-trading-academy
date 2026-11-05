@@ -1257,3 +1257,36 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .pk-cat { max-width: 180px; overflow: hidden; text-overflow: ellipsis; font-size: .85em; }
 .pk-ind-g span em { display: block; font-style: normal; font-weight: 400; font-size: .92em; }
 .pk-scan-t thead th small { display: block; font-weight: 400; font-size: .72em; color: var(--muted); }
+
+.pk-prof { font-size: .9em; padding: 6px 10px; border-radius: 10px; background: var(--bg-soft); }
+.pk-prof small { display: block; }
+.pk-trade-g small { display: block; color: var(--muted); font-size: .75em; }
+
+/* Level 10 圖表示範 */
+.l10-w { display: grid; gap: 8px; }
+.l10-bar { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: .88em; padding: 8px 10px; border-radius: 12px; background: var(--bg-soft); }
+.l10-bar label { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.l10-bar select, .l10-form input, .l10-form select { height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); padding: 0 8px; }
+.l10-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; font-size: .88em; }
+.l10-form label { display: grid; gap: 4px; }
+.chart-svg .l10-pre { fill: #f59e0b; opacity: .1; }
+.chart-svg .l10-post { fill: #3b82f6; opacity: .1; }
+.chart-svg .l10-break { stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.chart-svg .l10-daytag { font-weight: 700; fill: var(--text); }
+.chart-svg .l10-ema { fill: none; stroke: #8b5cf6; stroke-width: 2; }
+.chart-svg .l10-ema-label { fill: #8b5cf6; font-size: 12px; font-weight: 700; }
+.chart-svg .l10-rw { fill: var(--up); opacity: .18; }
+.chart-svg .l10-rk { fill: var(--down); opacity: .18; }
+.chart-svg .l10-boxt { fill: var(--text); font-size: 14px; font-weight: 700; }
+.l10-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; font-size: .8em; color: var(--muted); }
+.l10-sw { display: inline-block; width: 18px; height: 10px; border-radius: 3px; margin-right: 2px; vertical-align: middle; }
+.l10-sw.pre { background: rgba(245, 158, 11, .35); } .l10-sw.post { background: rgba(59, 130, 246, .35); }
+.l10-sw.brk { border-left: 2px dashed var(--muted); width: 2px; height: 14px; border-radius: 0; }
+.l10-sw.vw { background: var(--vwap); height: 3px; } .l10-sw.em { background: #8b5cf6; height: 3px; }
+.l10-read { margin: 0; font-size: .88em; padding: 8px 10px; border-radius: 10px; border: 1px dashed var(--border); }
+.l10-tvbox { height: 520px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); display: grid; place-items: center; }
+.l10-tvbox > .tradingview-widget-container { align-self: stretch; justify-self: stretch; }
+@media (max-width: 600px) { .l10-tvbox { height: 420px; } }
+.l10-form input, .l10-form select { width: 100%; min-width: 0; box-sizing: border-box; }
+.l10-form { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+.chart-svg .l10-lg { paint-order: stroke; stroke: var(--card); stroke-width: 4px; }

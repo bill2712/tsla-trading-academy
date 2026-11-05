@@ -126,6 +126,12 @@ function checkPickV3(f, w, p, rules) {
   ['atrPct', 'spreadPct', 'rsQqq', 'ema9', 'ema9Pct'].forEach((k) => { if (!req(p[k])) err(f, `${w}.${k} 一定要有數字（9 大指標）`); });
   if (p.floatM == null && !nonEmpty(p.floatNote, 200)) err(f, `${w}.floatM（流通股，百萬）冇數字就要寫 floatNote 解釋`);
   if (p.rsSpy !== undefined && !isNum(p.rsSpy)) err(f, `${w}.rsSpy 要係數字或 null`);
+  if (p.profile != null) {
+    const m = p.profile;
+    ['vah', 'val', 'vpoc'].forEach((k) => { if (!req(m[k])) err(f, `${w}.profile.${k} 要係數字（TradingCalc Market Profile）`); });
+    ['dayType', 'session', 'migration', 'note'].forEach((k) => { if (!optStr(m[k], 300)) err(f, `${w}.profile.${k} 要係字串`); });
+    if (req(m.vah) && req(m.val) && m.vah < m.val) err(f, `${w}.profile：VAH 要 ≥ VAL`);
+  }
   const side = p.trade && p.trade.side === 'Short' ? -1 : 1;
   const miss = [];
   if (req(p.gapPct) && Math.abs(p.gapPct) < R.gapAbs) miss.push(`跳空 ${p.gapPct}%（< ${R.gapAbs}%）`);

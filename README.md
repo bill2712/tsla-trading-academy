@@ -1,6 +1,6 @@
 # 📈 TSLA Day Trading 學院
 
-由 Level 1 到 Level 9 嘅美股 Day Trading **互動學習平台**（廣東話）。內容整理自自己生成嘅 Level 1–5 課程筆記同實戰問答，再加上進階 Level 6–8、VCP 專題 Level 9、補充章節、互動計算器、模擬交易練習場、K 線重播、訓練場、測驗、錯題本同交易日誌。
+由 Level 1 到 Level 10 嘅美股 Day Trading **互動學習平台**（廣東話）。內容整理自自己生成嘅 Level 1–5 課程筆記同實戰問答，再加上進階 Level 6–8、VCP 專題 Level 9、圖表設定 Level 10、補充章節、互動計算器、模擬交易練習場、K 線重播、訓練場、測驗、錯題本同交易日誌。
 
 > ⚠️ 所有 TSLA 價格、成交量同交易例子都係**教學模擬**，唔係即時行情、唔係投資建議、亦唔係已驗證嘅盈利策略。
 
@@ -8,7 +8,7 @@
 
 | 類別 | 功能 |
 |---|---|
-| 📚 內容 | **Level 1** 六樣工具（K 線、Volume、PDH/PDL、S/R、VWAP、LuxAlgo）、**Level 2** Price Action 實戰（結構、Bias、K 線深度、Volume、VWAP、六個 TSLA 情境、WAIT/PLAN/SKIP）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發；進階 **Level 6** 市場環境（多時間框架、Gap、Opening Range、相對強弱、時段、事件、日類型）、**Level 7** 進階交易管理（R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性、Kelly）、**Level 8** 交易者表現系統（計劃書、Routine、檢討、偏誤與 Tilt、升級階梯、策略衰退、可持續交易、畢業專題）、**Level 9** VCP 波幅收縮形態（Mark Minervini 方法：T1/T2/T3、Volume Dry-Up、Pivot、Stage 2 同 Trend Template、三種 Entry、Stop 同股數、日內 5 分鐘 VCP、真假 VCP、TradingView 設定、回測）、💡 實戰問答，共 121 章 |
+| 📚 內容 | **Level 1** 六樣工具（K 線、Volume、PDH/PDL、S/R、VWAP、LuxAlgo）、**Level 2** Price Action 實戰（結構、Bias、K 線深度、Volume、VWAP、六個 TSLA 情境、WAIT/PLAN/SKIP）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發；進階 **Level 6** 市場環境（多時間框架、Gap、Opening Range、相對強弱、時段、事件、日類型）、**Level 7** 進階交易管理（R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性、Kelly）、**Level 8** 交易者表現系統（計劃書、Routine、檢討、偏誤與 Tilt、升級階梯、策略衰退、可持續交易、畢業專題）、**Level 9** VCP 波幅收縮形態（Mark Minervini 方法：T1/T2/T3、Volume Dry-Up、Pivot、Stage 2 同 Trend Template、三種 Entry、Stop 同股數、日內 5 分鐘 VCP、真假 VCP、TradingView 設定、回測）、**Level 10** 圖表點用（TradingView：New York 時區、Extended Hours 同盤前背景、Session Breaks、時間框架、VWAP／EMA 9／Relative Volume at Time、畫 PMH／PDH、Long／Short Position 工具、警報、Bar Replay；互動示範圖同真實 TradingView 嵌入圖）、💡 實戰問答，共 133 章 |
 | 🗺️ 目錄 | 側欄完整目錄、🗺️ 學習地圖（每章進度格、預計完成日期）、每個 Level 概覽頁、完整課程目錄頁、右邊「本章目錄」 |
 | 🎓 證書 | 讀完一個 Level + 期末測驗 80% 或以上，就可以攞可列印嘅結業證書 |
 | 🧭 建議下一步 | 主頁按你嘅進度自動建議：溫錯題、繼續讀、做未完成測驗、攞證書、試訓練場 |
@@ -17,7 +17,7 @@
 | 🏋️ 訓練場 | 隨機生成、可以無限重玩：K 線形態、市場結構、情境決策（WAIT / PLAN / SKIP）、日類型辨識、讀 Tape（訂單流）、認出心理偏誤、VCP 定唔係 VCP（隨機生成真假形態）、60 秒風險速算 |
 | 📕 錯題本 | 測驗答錯自動收集，按間隔重溫（1、3、7、14 日）再考，答啱 4 次當掌握 |
 | 🎯 每日任務 | 每日 3 個小任務（讀小節、答題、訓練、溫習、筆記、重播、日誌），完成全部有額外 XP；📅 學習日曆熱圖 |
-| 📋 每日選股 | 每個美股交易日開市前約一小時（美東 08:30）由排程任務自動更新：大市指數同期貨、經濟數據、新聞、「盤前掃描總表」（8 大指標：跳空 %、盤前同時段 RVOL、盤前成交、催化劑、流通股、ATR %、買賣差價、相對 QQQ 強弱）、候選股（RVOL ≥ 2 先入選；五大分析、PMH/PML/PDH/PDL、Entry／Stop／Target／R:R、新手適合程度）、避開名單、TSLA 今日狀態；第二日自動加「收市後回顧」。每隻股票可以記錄有冇睇／做、結果幾多 R 同筆記（雲端同步，家人睇到）。數據：Alpaca（主要，SIP K 線計 RVOL）、Yahoo（後備）、IBKR（只讀核對）、StockAnalysis、Finviz、TopBreakoutStocks、Nasdaq／ForexFactory 日曆、多個新聞來源同 SEC 公告。收集器：`scripts/picks/gather.mjs`。操作手冊：`scripts/picks/INSTRUCTIONS.md` |
+| 📋 每日選股 | 每個美股交易日開市前約一小時（美東 08:30）由排程任務自動更新：大市指數同期貨、經濟數據、新聞、「盤前掃描總表」（8 大指標：跳空 %、盤前同時段 RVOL、盤前成交、催化劑、流通股、ATR %、買賣差價、相對 QQQ 強弱）、候選股（RVOL ≥ 2 先入選；五大分析、PMH/PML/PDH/PDL、Entry／Stop／Target／R:R、新手適合程度）、避開名單、TSLA 今日狀態；第二日自動加「收市後回顧」。每隻股票可以記錄有冇睇／做、結果幾多 R 同筆記（雲端同步，家人睇到）。數據：Alpaca（主要，SIP K 線計 RVOL）、Yahoo（後備）、IBKR（只讀核對）、StockAnalysis、Finviz、TopBreakoutStocks、Nasdaq／ForexFactory 日曆、多個新聞來源同 SEC 公告；TradingCalc 計 Market Profile（昨日 VAH／POC／VAL）同核對 R:R。收集器：`scripts/picks/gather.mjs`。操作手冊：`scripts/picks/INSTRUCTIONS.md` |
 | 🔬 真實數據回測實驗室 | 用 Alpaca（美股／ETF，2016 年至今）或 Binance（加密貨幣）真實 5 分鐘 K 線回測：ORB、昨日高位突破 + 回測、VWAP 回調、日內 VCP 突破（收縮比例、量縮比例可調）；20 日線篩選、RVOL、時段；結構 Stop + R 目標或者 ATR20 出場；計埋滑價同佣金；前 70% 調規則、後 30% 樣本外驗證；「加 vs 唔加 20 日線」A/B 比較；數據存喺瀏覽器 IndexedDB |
 | 🧪 研究板 | 測試前先登記假設同成功標準，規則鎖定（防止事後調參數）；附加回測結果；全組評審討論（雲端同步） |
 | 📊 我有冇 Edge？ | 由交易日誌或回測計：期望值 95% 可信範圍、期望值 > 0 機率（bootstrap）、打和勝率、遵守率、違規成本、樣本外、滾動期望值，再老實講而家喺邊一級 |
@@ -93,6 +93,7 @@ content/level6.js       Level 6 市場環境與多時間框架
 content/level7.js       Level 7 進階交易管理與訂單流
 content/level8.js       Level 8 交易者表現系統
 content/level9.js       Level 9 VCP 波幅收縮形態（章節、示意圖、真假 VCP 生成器）
+content/level10.js      Level 10 圖表點用（TradingView 設定、互動示範圖、Position 工具、TradingView 嵌入圖）
 content/level3.js       Level 3 課程內容
 content/level4.js       Level 4 課程內容
 content/level5.js       Level 5 課程內容

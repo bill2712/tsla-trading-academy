@@ -175,6 +175,28 @@ Being on several lists raises confidence but never replaces RVOL ≥ 2.
 Export `SEC_USER_AGENT` (3a) in the same shell first. If SEC answers 403, use `--no-sec` and
 record it. Never use trader-budget / trader-risk / trader-broker / trader-alerts `add`.
 
+### 3f. TradingCalc skill (Market Profile levels + trade-math check)
+
+The `tradingcalc` MCP tools are deterministic calculators (results are signed and reproducible).
+Use them for every pick after the shortlist is final:
+
+1. **Yesterday's Market Profile.** Build the candles with
+   `NODE_USE_ENV_PROXY=1 node --no-warnings scripts/picks/profile-candles.mjs SYM <yesterday> <day before> 30Min`
+   and pass `candles`, `prev_candles`, `session_date` (= yesterday), `timeframe` `30m`, `instrument` SYM,
+   `venue` `binance` (ignored when candles are supplied) to `workflow.run_session_structure`.
+   Put the result in the pick as
+   `"profile": { "session": "11/04", "dayType": "<structure>", "vah": 0, "val": 0, "vpoc": 0, "migration": "向上移／向下移／重疊", "note": "一句" }`
+   and add VAH/VAL/POC to `levels.other`. Use the day type and value migration in `pillars.technical`
+   (e.g. price gapping below yesterday's VAL = trading outside value). Never invent these numbers:
+   if the tool fails, omit `profile` and say so in `sources`.
+2. **Trade math check.** For each `trade`, call `workflow.run_risk_reward` with `side`, `entry_price`,
+   `stop_loss`, `take_profit` (= target1), `account_balance` 10000, `risk_pct` 1, `leverage` 1,
+   `fee_open_pct` 0, `fee_close_pct` 0, and check the returned R:R matches `trade.rr` (±0.05).
+   Fix the plan if it doesn't. The app shows shares per $100 of risk automatically.
+3. Record `{ "name": "TradingCalc（Market Profile + R:R 核對）", "ok": true }` in `sources`.
+   Skills that need the user's authorisation (e.g. S&P Global earnings preview / tear sheet) are
+   skipped unless they work; never ask for credentials in the report.
+
 ### 3e. News check
 
 - Web search (several queries in one turn): `stock market futures premarket <Month D, YYYY>`,
@@ -246,6 +268,7 @@ failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never cha
     "price": 0, "prevClose": 0, "gapPct": 0, "pmVolume": 0, "pmVolPct": 0, "avgVolume": 0,
     "rvol": 2.4, "spread": 0, "spreadPct": 0, "atr": 0, "atrPct": 0, "mktCapB": null, "floatM": 0, "floatNote": "（floatM 係 null 先寫）",
     "rsQqq": 0, "rsSpy": 0, "ema9": 0, "ema9Pct": 0, "ema9Step": "5m", "ema9Daily": 0,
+    "profile": { "session": "MM/DD", "dayType": "normal_var", "vah": 0, "val": 0, "vpoc": 0, "migration": "向上移", "note": "" },
     "levels": { "pmh": 0, "pml": 0, "pdh": 0, "pdl": 0, "pdc": 0, "other": [{ "label": "突破價", "price": 0 }] },
     "why": "", "catalyst": "", "technical": "", "setup": "開市推動（Opening Drive）",
     "pillars": { "bigPicture": "", "fundamentals": "", "technical": "", "tape": "", "intuition": "" },
