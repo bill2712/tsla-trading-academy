@@ -94,7 +94,7 @@ It replays the day with Alpaca 5-minute bars and fills
 `review.items[]` = `{sym, open, high, low, close, chgFromOpenPct, hitPmh, verdict, note}`:
 whether the entry triggered after 09:35, whether Target 1 or the Stop came first (same bar =
 Stop, conservative), the "don't chase" rule (open already > 0.3 ATR past the entry), and the
-backup 5-minute ORB result. Without Alpaca, use IBKR `get_price_history` FIVE_MINS bars.
+backup 5-minute ORB result (record only, see section 6). Without Alpaca, use IBKR `get_price_history` FIVE_MINS bars.
 In `verdict`, judge the **plan**: did the trigger happen? would Target 1 or Stop have hit first
 (use 5-min bars if needed)? Summarise honestly in `review.summary`.
 
@@ -242,6 +242,13 @@ failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never cha
   0.3 ATR past the entry, don't chase — switch to a 5-minute ORB in the same direction: break of
   the first 5-minute high (long) / low (short), Stop at the other side of that range (max 0.5 ATR),
   Target 2R.
+  **Status: record only (user decision 2026-11-06).** From 10/29 to 11/05 the backup ORB lost about
+  −8.4R (opening chop kept hitting the stop). Keep writing it in `plan.noTrade` with the note
+  「⚠️ 只作記錄，唔好用真錢做」 and keep measuring it with `review.mjs`, but never present it as a
+  trade to take. In every `review.summary`, give the backup ORB result for that day **and** the
+  running total since 2026-10-29 (trades, wins, total R). Review point: after 20 trading days
+  (around 2026-11-25) or 20 ORB trades, whichever comes later, report the totals in the chat
+  summary and ask the user whether to keep, change or drop it.
 - `plan.long` / `plan.short` / `plan.noTrade`: short If–Then text, including when **not** to trade.
 - `risks`: 2–4 items.
 
