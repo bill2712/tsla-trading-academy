@@ -1306,3 +1306,34 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .l11-item { display: flex; gap: 8px; align-items: flex-start; padding: 4px 0; font-size: .92em; }
 .l11-item input { margin-top: 4px; flex: none; }
 .l11-gaps { margin: 4px 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: .92em; }
+
+/* ---------- Level 12：睇圖實戰 ---------- */
+.l12-chart { border-radius: 12px; border: 1px solid var(--border); background: var(--card); overflow: hidden; }
+.chart-svg .l12-future { fill: var(--bg-soft); opacity: .75; }
+.chart-svg.l12-pick { cursor: crosshair; touch-action: manipulation; }
+.chart-svg .l12-line { stroke-width: 2.2; fill: none; }
+.chart-svg .l12-line.me { stroke: #7c3aed; }
+.chart-svg .l12-line.ai { stroke: var(--zone); stroke-dasharray: 7 5; }
+.chart-svg .l12-pt { fill: #7c3aed; stroke: var(--card); stroke-width: 1.5; }
+.chart-svg .l12-pt.ai { fill: var(--zone); }
+.chart-svg .l12-mark { font-size: 11px; font-weight: 700; }
+.chart-svg .l12-mark.h { fill: var(--down); } .chart-svg .l12-mark.l { fill: var(--up); } .chart-svg .l12-mark.dot { fill: var(--muted); }
+.l12-hint { margin: 0; font-size: .88em; color: var(--muted); }
+.l12-quiz { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .92em; }
+.l12-gapinfo { font-size: .9em; padding: 6px 10px; border-radius: 10px; background: var(--bg-soft); }
+.l12-tablewrap { overflow-x: auto; }
+.l12-t { width: 100%; border-collapse: collapse; font-size: .86em; }
+.l12-t th, .l12-t td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
+.l12-t th[scope="row"] { font-weight: 600; min-width: 150px; }
+.l12-t td { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.l12-t td small { color: var(--muted); font-size: .85em; }
+.l12-stack { display: flex; width: 140px; height: 10px; border-radius: 5px; overflow: hidden; background: var(--bg-soft); margin-bottom: 2px; }
+.l12-stack i, .l12-legend i { display: block; height: 100%; }
+.l12-stack .go, .l12-legend .go { background: var(--up); } .l12-stack .flat, .l12-legend .flat { background: var(--muted); opacity: .6; } .l12-stack .fade, .l12-legend .fade { background: var(--down); }
+.l12-legend { margin: 0; font-size: .8em; color: var(--muted); display: flex; gap: 6px 12px; align-items: center; flex-wrap: wrap; }
+.l12-legend i { display: inline-block; width: 14px; height: 8px; border-radius: 3px; vertical-align: middle; margin-right: 3px; }
+.l12-sig { margin: 4px 0; padding-left: 18px; }
+.l12-prog { height: 10px; border-radius: 5px; background: var(--bg-soft); overflow: hidden; margin: 8px 0; }
+.l12-prog i { display: block; height: 100%; background: #7c3aed; }
+.l12-log { margin: 6px 0; padding-left: 18px; font-size: .88em; }
+.l12-log li { margin: 3px 0; }

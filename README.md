@@ -1,6 +1,6 @@
 # 📈 TSLA Day Trading 學院
 
-由 Level 1 到 Level 11 嘅美股 Day Trading **互動學習平台**（廣東話）。內容整理自自己生成嘅 Level 1–5 課程筆記同實戰問答，再加上進階 Level 6–8、VCP 專題 Level 9、圖表設定 Level 10、真錢之前實務 Level 11、補充章節、互動計算器、模擬交易練習場、K 線重播、訓練場、測驗、錯題本同交易日誌。
+由 Level 1 到 Level 12 嘅美股 Day Trading **互動學習平台**（廣東話）。內容整理自自己生成嘅 Level 1–5 課程筆記同實戰問答，再加上進階 Level 6–8、VCP 專題 Level 9、圖表設定 Level 10、真錢之前實務 Level 11、睇圖實戰 Level 12、補充章節、互動計算器、模擬交易練習場、K 線重播、訓練場、測驗、錯題本同交易日誌。
 
 > ⚠️ 所有 TSLA 價格、成交量同交易例子都係**教學模擬**，唔係即時行情、唔係投資建議、亦唔係已驗證嘅盈利策略。
 
@@ -8,7 +8,7 @@
 
 | 類別 | 功能 |
 |---|---|
-| 📚 內容 | **Level 1** 六樣工具（K 線、Volume、PDH/PDL、S/R、VWAP、LuxAlgo）、**Level 2** Price Action 實戰（結構、Bias、K 線深度、Volume、VWAP、六個 TSLA 情境、WAIT/PLAN/SKIP）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發；進階 **Level 6** 市場環境（多時間框架、Gap、Opening Range、相對強弱、時段、事件、日類型）、**Level 7** 進階交易管理（R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性、Kelly）、**Level 8** 交易者表現系統（計劃書、Routine、檢討、偏誤與 Tilt、升級階梯、策略衰退、可持續交易、畢業專題）、**Level 9** VCP 波幅收縮形態（Mark Minervini 方法：T1/T2/T3、Volume Dry-Up、Pivot、Stage 2 同 Trend Template、三種 Entry、Stop 同股數、日內 5 分鐘 VCP、真假 VCP、TradingView 設定、回測）、**Level 10** 圖表點用（TradingView：New York 時區、Extended Hours 同盤前背景、Session Breaks、時間框架、VWAP／EMA 9／Relative Volume at Time、畫 PMH／PDH、Long／Short Position 工具、警報、Bar Replay；互動示範圖同真實 TradingView 嵌入圖）、**Level 11** 真錢之前（研究數字同每日報告真實成績表、香港券商同投資者保障、W-8BEN／股息預扣／香港稅／美國遺產稅、成本計成 R、實時數據同斷線後備、盤前同開市落單、Cash 戶口做唔做到 Short 同 SSR、停牌、騙局紅旗、點用每日報告、準備度自我評估同第一個月計劃）、💡 實戰問答，共 145 章 |
+| 📚 內容 | **Level 1** 六樣工具（K 線、Volume、PDH/PDL、S/R、VWAP、LuxAlgo）、**Level 2** Price Action 實戰（結構、Bias、K 線深度、Volume、VWAP、六個 TSLA 情境、WAIT/PLAN/SKIP）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發；進階 **Level 6** 市場環境（多時間框架、Gap、Opening Range、相對強弱、時段、事件、日類型）、**Level 7** 進階交易管理（R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性、Kelly）、**Level 8** 交易者表現系統（計劃書、Routine、檢討、偏誤與 Tilt、升級階梯、策略衰退、可持續交易、畢業專題）、**Level 9** VCP 波幅收縮形態（Mark Minervini 方法：T1/T2/T3、Volume Dry-Up、Pivot、Stage 2 同 Trend Template、三種 Entry、Stop 同股數、日內 5 分鐘 VCP、真假 VCP、TradingView 設定、回測）、**Level 10** 圖表點用（TradingView：New York 時區、Extended Hours 同盤前背景、Session Breaks、時間框架、VWAP／EMA 9／Relative Volume at Time、畫 PMH／PDH、Long／Short Position 工具、警報、Bar Replay；互動示範圖同真實 TradingView 嵌入圖）、**Level 11** 真錢之前（研究數字同每日報告真實成績表、香港券商同投資者保障、W-8BEN／股息預扣／香港稅／美國遺產稅、成本計成 R、實時數據同斷線後備、盤前同開市落單、Cash 戶口做唔做到 Short 同 SSR、停牌、騙局紅旗、點用每日報告、準備度自我評估同第一個月計劃）、**Level 12** 睇圖實戰（Swing 點同市場結構、斜線點畫、Lower High 沽空、突破同 Retest、水平位、用真實數據計 Gap 延續率、開市頭 30 分鐘三個訊號、K 線同成交量、睇圖流程、100 張圖練習同揀師傅；練習圖同真實 Alpaca 圖都得）、💡 實戰問答，共 157 章 |
 | 🗺️ 目錄 | 側欄完整目錄、🗺️ 學習地圖（每章進度格、預計完成日期）、每個 Level 概覽頁、完整課程目錄頁、右邊「本章目錄」 |
 | 🎓 證書 | 讀完一個 Level + 期末測驗 80% 或以上，就可以攞可列印嘅結業證書 |
 | 🧭 建議下一步 | 主頁按你嘅進度自動建議：溫錯題、繼續讀、做未完成測驗、攞證書、試訓練場 |
@@ -95,6 +95,8 @@ content/level8.js       Level 8 交易者表現系統
 content/level9.js       Level 9 VCP 波幅收縮形態（章節、示意圖、真假 VCP 生成器）
 content/level10.js      Level 10 圖表點用（TradingView 設定、互動示範圖、Position 工具、TradingView 嵌入圖）
 content/level11.js      Level 11 真錢之前（報告成績表、成本計算器、準備度自我評估）
+content/level12.js      Level 12 睇圖實戰（結構、畫斜線、Gap 統計、Gap 預測、練習紀錄）
+scripts/research/       研究腳本（gap-stats.mjs：用 Alpaca 計 Gap 延續率，輸出 data/research/gap-stats.json）
 content/level3.js       Level 3 課程內容
 content/level4.js       Level 4 課程內容
 content/level5.js       Level 5 課程內容
