@@ -1,6 +1,52 @@
 {
- "updated": "2026-11-05T17:48:28.575Z",
+ "updated": "2026-11-06T13:19:48.315Z",
  "days": [
+  {
+   "date": "2026-11-06",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏好（晶片反彈，但等非農）",
+   "headline": "⚠️ 數據截至 07:55，係 08:30 非農就業數據之前，開市前要重新睇價。昨日 Nasdaq 大跌 5.5% 後，今日晶片股盤前反彈（SMH +4.8%）。5 隻：做多 NV",
+   "n": 5,
+   "top": [
+    {
+     "sym": "NVDA",
+     "gapPct": 4.02,
+     "rvol": 3.67,
+     "beginner": "適合新手",
+     "grade": "A"
+    },
+    {
+     "sym": "MU",
+     "gapPct": 7.46,
+     "rvol": 3.21,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "AMD",
+     "gapPct": 7.76,
+     "rvol": 2.45,
+     "beginner": "中等",
+     "grade": "C"
+    },
+    {
+     "sym": "NET",
+     "gapPct": 20.65,
+     "rvol": 10,
+     "beginner": "高風險",
+     "grade": "C"
+    },
+    {
+     "sym": "DKNG",
+     "gapPct": -24.53,
+     "rvol": 46.34,
+     "beginner": "高風險",
+     "grade": "C"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-11-05",
    "version": 3,
@@ -45,7 +91,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-11-04",

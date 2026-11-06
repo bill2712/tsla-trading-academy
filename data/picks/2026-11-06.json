@@ -1,0 +1,1378 @@
+{
+ "version": 3,
+ "date": "2026-11-06",
+ "generatedAt": "2026-11-06T13:25:00Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "07:55",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1,
+  "avgVolume": 1000000,
+  "priceMin": 10,
+  "priceMax": 150
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH/PML、EMA 9）",
+   "ok": true,
+   "note": "延遲 16 分鐘，截至約 07:55 ET（非農數據之前）"
+  },
+  {
+   "name": "Alpaca SIP 報價（Bid-Ask Spread）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca 異動榜／最活躍",
+   "ok": true
+  },
+  {
+   "name": "Alpaca／Benzinga 新聞",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "Finviz（Float、行業）",
+   "ok": true
+  },
+  {
+   "name": "Google News",
+   "ok": true
+  },
+  {
+   "name": "Seeking Alpha",
+   "ok": true
+  },
+  {
+   "name": "MarketWatch／Investing.com RSS",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory + Nasdaq 經濟日曆",
+   "ok": true,
+   "note": "Nasdaq 日期錯開一日，已經用 ForexFactory 核對"
+  },
+  {
+   "name": "TopBreakoutStocks",
+   "ok": true,
+   "note": "今日候選唔喺佢嘅名單"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true,
+   "note": "今日盤前異動文章未出，用非農預覽同期貨報道"
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": true,
+   "note": "5 隻 pick 嘅 R:R 全部核對一致"
+  },
+  {
+   "name": "Yahoo Finance（後備）",
+   "ok": false,
+   "note": "今日唔需要"
+  },
+  {
+   "name": "IBKR",
+   "ok": false,
+   "note": "冇用（Alpaca 已經夠）"
+  }
+ ],
+ "headline": "⚠️ 數據截至 07:55，係 08:30 非農就業數據之前，開市前要重新睇價。昨日 Nasdaq 大跌 5.5% 後，今日晶片股盤前反彈（SMH +4.8%）。5 隻：做多 NVDA（9/9 全合格）、MU、AMD，高風險做多 NET、沽空 DKNG。後備 ORB 只作觀察。",
+ "market": {
+  "bias": "偏好（晶片反彈，但等非農）",
+  "summary": "昨日 Nasdaq 跌 5.5%（19 個月最差），今日盤前科技股反彈：QQQ +1.51%、SMH +4.84%、XLK +2.46%；但道指期貨弱（DIA −1.04%），防守股（XLP −1.85%）偏弱，SPY 只係 +0.17%。08:30 公布 10 月非農就業（預期 +6.5 萬，上次 +2.9 萬；失業率預期 4.2%），10:00 密歇根消費者信心。數據可以令盤前價位全部改變，所以開市前一定要重新核對。今日策略：只做晶片反彈入面最強、量最大嘅股，等突破盤前高先入；跌市後第一日反彈好多時開市後回落，唔好預早買。",
+  "base": {
+   "spy": 0.17,
+   "qqq": 1.51
+  },
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 734.24,
+    "chgPct": 0.17,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 656.8,
+    "chgPct": 1.51,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "IWM",
+    "last": 271.37,
+    "chgPct": 0.14,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "DIA",
+    "last": 508.91,
+    "chgPct": -1.04,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "SMH",
+    "last": 469.4,
+    "chgPct": 4.84,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLK",
+    "last": 166.38,
+    "chgPct": 2.46,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLC",
+    "last": 103.77,
+    "chgPct": -0.55,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLY",
+    "last": 118,
+    "chgPct": 0.31,
+    "note": "07:55 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLP",
+    "last": 89.56,
+    "chgPct": -1.85,
+    "note": "07:55 ET（Alpaca SIP）"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "Average Hourly Earnings m/m",
+    "impact": "高",
+    "note": "預期 0.3%，上次 0.1%"
+   },
+   {
+    "time": "08:30 ET",
+    "name": "Non-Farm Employment Change",
+    "impact": "高",
+    "note": "預期 65K，上次 29K"
+   },
+   {
+    "time": "08:30 ET",
+    "name": "Unemployment Rate",
+    "impact": "高",
+    "note": "預期 4.2%，上次 4.2%"
+   },
+   {
+    "time": "10:00 ET",
+    "name": "Prelim UoM Consumer Sentiment",
+    "impact": "中",
+    "note": "預期 48.1，上次 46.3"
+   },
+   {
+    "time": "10:00 ET",
+    "name": "Prelim UoM Inflation Expectations",
+    "impact": "中",
+    "note": "，上次 4.7%"
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "NVDA",
+   "price": 188.9,
+   "gapPct": 4.02,
+   "rvol": 3.67,
+   "pmVolume": 6446700,
+   "avgVolume": 113396864,
+   "floatM": 23190,
+   "atrPct": 4.11,
+   "spreadPct": 0.07,
+   "rsQqq": 2.51,
+   "ema9Pct": 0.05,
+   "catalyst": "晶片股超賣反彈",
+   "verdict": "pick",
+   "note": "9/9 全部合格"
+  },
+  {
+   "sym": "DKNG",
+   "price": 17.75,
+   "gapPct": -24.53,
+   "rvol": 46.34,
+   "pmVolume": 639674,
+   "avgVolume": 12313168,
+   "floatM": 412.2,
+   "atrPct": 4.08,
+   "spreadPct": 0.56,
+   "rsQqq": -26.04,
+   "ema9Pct": -2.52,
+   "catalyst": "業績雙差 + 下調指引",
+   "verdict": "pick",
+   "note": "Spread 0.56%；高風險、可能有 SSR"
+  },
+  {
+   "sym": "NET",
+   "price": 294.99,
+   "gapPct": 20.65,
+   "rvol": 10,
+   "pmVolume": 218172,
+   "avgVolume": 3597810,
+   "floatM": 319.57,
+   "atrPct": 8.27,
+   "spreadPct": 0.34,
+   "rsQqq": 19.14,
+   "ema9Pct": 0.04,
+   "catalyst": "Q3 業績好（分析師降目標價）",
+   "verdict": "pick",
+   "note": "Spread 0.34%；高風險"
+  },
+  {
+   "sym": "DVLT",
+   "price": 0.07,
+   "gapPct": 16.67,
+   "rvol": 8.02,
+   "pmVolume": 35414598,
+   "avgVolume": 63165421,
+   "floatM": 661.98,
+   "atrPct": 33.78,
+   "spreadPct": 0.16,
+   "rsQqq": 15.16,
+   "ema9Pct": 0.48,
+   "catalyst": "解僱 CEO",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "MU",
+   "price": 705.33,
+   "gapPct": 7.46,
+   "rvol": 3.21,
+   "pmVolume": 2462326,
+   "avgVolume": 29328967,
+   "floatM": 1130,
+   "atrPct": 8.74,
+   "spreadPct": 0.06,
+   "rsQqq": 5.95,
+   "ema9Pct": -0.64,
+   "catalyst": "晶片股超賣反彈",
+   "verdict": "pick",
+   "note": "低過 EMA 9"
+  },
+  {
+   "sym": "CHTR",
+   "price": 118,
+   "gapPct": -6.25,
+   "rvol": 53.28,
+   "pmVolume": 124615,
+   "avgVolume": 2737135,
+   "floatM": 142.18,
+   "atrPct": 4.12,
+   "spreadPct": 1.53,
+   "rsQqq": -7.76,
+   "ema9Pct": -0.61,
+   "catalyst": "業績：寬頻客戶流失擴大",
+   "verdict": "watch",
+   "note": "Spread 1.53%、盤前量 12 萬"
+  },
+  {
+   "sym": "VST",
+   "price": 119.6,
+   "gapPct": 5.94,
+   "rvol": 2.66,
+   "pmVolume": 234714,
+   "avgVolume": 7071893,
+   "floatM": 332.5,
+   "atrPct": 7.33,
+   "spreadPct": 1.43,
+   "rsQqq": 4.43,
+   "ema9Pct": 0.88,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Spread 1.43%"
+  },
+  {
+   "sym": "CIIT",
+   "price": 2.69,
+   "gapPct": 73.55,
+   "rvol": 15442.98,
+   "pmVolume": 14253874,
+   "avgVolume": 369085,
+   "floatM": 0.73,
+   "atrPct": 9.68,
+   "spreadPct": 0.36,
+   "rsQqq": 72.04,
+   "ema9Pct": 4.18,
+   "catalyst": "細價股異動",
+   "verdict": "avoid",
+   "note": "$2.69 細價股，RVOL 異常"
+  },
+  {
+   "sym": "VSA",
+   "price": 2.19,
+   "gapPct": 42.21,
+   "rvol": 13619.71,
+   "pmVolume": 11985343,
+   "avgVolume": 21518,
+   "floatM": 2.76,
+   "atrPct": 7.79,
+   "spreadPct": 0.48,
+   "rsQqq": 40.7,
+   "ema9Pct": 4.87,
+   "catalyst": "細價股異動",
+   "verdict": "avoid",
+   "note": "$2.19 細價股"
+  },
+  {
+   "sym": "SHFS",
+   "price": 0.04,
+   "gapPct": 33.33,
+   "rvol": 21.08,
+   "pmVolume": 371193201,
+   "avgVolume": 154829685,
+   "floatM": 85.51,
+   "atrPct": 263.16,
+   "spreadPct": 0.28,
+   "rsQqq": 31.82,
+   "ema9Pct": -2.33,
+   "catalyst": "細價股異動",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "SOXL",
+   "price": 47.69,
+   "gapPct": 16.69,
+   "rvol": 3.17,
+   "pmVolume": 49111800,
+   "avgVolume": 139285202,
+   "floatM": null,
+   "atrPct": 33.67,
+   "spreadPct": 0.02,
+   "rsQqq": 15.18,
+   "ema9Pct": -0.85,
+   "catalyst": "3 倍槓桿晶片 ETF",
+   "verdict": "skip",
+   "note": "3 倍槓桿 ETF"
+  },
+  {
+   "sym": "IREN",
+   "price": 20.86,
+   "gapPct": 15.7,
+   "rvol": 3.5,
+   "pmVolume": 7314302,
+   "avgVolume": 62572837,
+   "floatM": 355,
+   "atrPct": 14.7,
+   "spreadPct": 0.24,
+   "rsQqq": 14.19,
+   "ema9Pct": -1.09,
+   "catalyst": "晶片／AI 反彈；Cantor 降目標價",
+   "verdict": "watch",
+   "note": "低過 EMA 9（−1.09%）"
+  },
+  {
+   "sym": "LABT",
+   "price": 0.47,
+   "gapPct": -12.96,
+   "rvol": 3.52,
+   "pmVolume": 13144645,
+   "avgVolume": 40409503,
+   "floatM": 1.58,
+   "atrPct": 22.2,
+   "spreadPct": 1.68,
+   "rsQqq": -14.47,
+   "ema9Pct": -1.13,
+   "catalyst": "細價股異動",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "AMD",
+   "price": 435.8,
+   "gapPct": 7.76,
+   "rvol": 2.45,
+   "pmVolume": 1582938,
+   "avgVolume": 25991031,
+   "floatM": 1620,
+   "atrPct": 8.88,
+   "spreadPct": 0.16,
+   "rsQqq": 6.25,
+   "ema9Pct": -0.17,
+   "catalyst": "業績後急跌再反彈",
+   "verdict": "pick",
+   "note": "Spread 0.16%、低過 EMA 9"
+  },
+  {
+   "sym": "MRNA",
+   "price": 251.12,
+   "gapPct": 4,
+   "rvol": 4.85,
+   "pmVolume": 1064626,
+   "avgVolume": 17255072,
+   "floatM": 365.2,
+   "atrPct": 9.53,
+   "spreadPct": 0.39,
+   "rsQqq": 2.49,
+   "ema9Pct": -0.85,
+   "catalyst": "Q3 業績好 + 上調收入指引",
+   "verdict": "watch",
+   "note": "Spread 0.39%、低過 EMA 9"
+  },
+  {
+   "sym": "IREZ",
+   "price": 23.2,
+   "gapPct": -31.38,
+   "rvol": 5.92,
+   "pmVolume": 194218,
+   "avgVolume": 1622202,
+   "floatM": null,
+   "atrPct": 13.46,
+   "spreadPct": 1.54,
+   "rsQqq": -32.89,
+   "ema9Pct": 3.6,
+   "catalyst": "槓桿 ETF",
+   "verdict": "skip",
+   "note": "槓桿 ETF"
+  },
+  {
+   "sym": "BDMD",
+   "price": 0.11,
+   "gapPct": -31.25,
+   "rvol": 12.14,
+   "pmVolume": 8926523,
+   "avgVolume": 29540791,
+   "floatM": 6.08,
+   "atrPct": 57.14,
+   "spreadPct": 0.2,
+   "rsQqq": -32.76,
+   "ema9Pct": 1.61,
+   "catalyst": "細價股異動",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "SNXX",
+   "price": 3.69,
+   "gapPct": 19.42,
+   "rvol": 2.49,
+   "pmVolume": 19203039,
+   "avgVolume": 69879111,
+   "floatM": null,
+   "atrPct": 44.98,
+   "spreadPct": 0.27,
+   "rsQqq": 17.91,
+   "ema9Pct": -1.49,
+   "catalyst": "槓桿 ETF",
+   "verdict": "skip",
+   "note": "槓桿 ETF"
+  },
+  {
+   "sym": "SNDU",
+   "price": 5.51,
+   "gapPct": 19.26,
+   "rvol": 4.01,
+   "pmVolume": 2593020,
+   "avgVolume": 6364502,
+   "floatM": null,
+   "atrPct": 46.1,
+   "spreadPct": 0.36,
+   "rsQqq": 17.75,
+   "ema9Pct": -1.15,
+   "catalyst": "槓桿 ETF",
+   "verdict": "skip",
+   "note": "槓桿 ETF"
+  },
+  {
+   "sym": "NTCL",
+   "price": 0.26,
+   "gapPct": -18.75,
+   "rvol": 170.56,
+   "pmVolume": 1499602,
+   "avgVolume": 8790505,
+   "floatM": 1.96,
+   "atrPct": 46.3,
+   "spreadPct": 0.12,
+   "rsQqq": -20.26,
+   "ema9Pct": 2.46,
+   "catalyst": "細價股異動",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "AXTX",
+   "price": 6.96,
+   "gapPct": 17.57,
+   "rvol": 2.03,
+   "pmVolume": 1095843,
+   "avgVolume": 6224581,
+   "floatM": null,
+   "atrPct": 66.55,
+   "spreadPct": 1,
+   "rsQqq": 16.06,
+   "ema9Pct": -1.38,
+   "catalyst": "冇明確消息",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "FLYE",
+   "price": 2.03,
+   "gapPct": -9.38,
+   "rvol": 35.49,
+   "pmVolume": 136257,
+   "avgVolume": 3735847,
+   "floatM": 1.56,
+   "atrPct": 11.16,
+   "spreadPct": 1.48,
+   "rsQqq": -10.89,
+   "ema9Pct": 0.95,
+   "catalyst": "細價股異動",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "DFNS",
+   "price": 2.1,
+   "gapPct": -8.3,
+   "rvol": 31.93,
+   "pmVolume": 204685,
+   "avgVolume": 832129,
+   "floatM": null,
+   "atrPct": 20.96,
+   "spreadPct": 0.96,
+   "rsQqq": -9.81,
+   "ema9Pct": -0.18,
+   "catalyst": "冇明確消息",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "HMC",
+   "price": 35,
+   "gapPct": -3.47,
+   "rvol": 3.9,
+   "pmVolume": 7032,
+   "avgVolume": 806331,
+   "floatM": 1300,
+   "atrPct": 1.79,
+   "spreadPct": 0.14,
+   "rsQqq": -4.98,
+   "ema9Pct": -0.23,
+   "catalyst": "業績（未公布）",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "BAM",
+   "price": 53.9,
+   "gapPct": 2.74,
+   "rvol": 2.16,
+   "pmVolume": 1511,
+   "avgVolume": 2838045,
+   "floatM": 428.35,
+   "atrPct": 3.16,
+   "spreadPct": 4.95,
+   "rsQqq": 1.23,
+   "ema9Pct": 1.85,
+   "catalyst": "業績（盤前）",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "PAA",
+   "price": 23.91,
+   "gapPct": -2.53,
+   "rvol": 4.91,
+   "pmVolume": 6730,
+   "avgVolume": 2600011,
+   "floatM": 456.9,
+   "atrPct": 2.41,
+   "spreadPct": null,
+   "rsQqq": -4.04,
+   "ema9Pct": -1.42,
+   "catalyst": "業績（盤前）",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "BEN",
+   "price": 32.8,
+   "gapPct": 1.83,
+   "rvol": 3,
+   "pmVolume": 700,
+   "avgVolume": 3784137,
+   "floatM": 267.84,
+   "atrPct": 2.83,
+   "spreadPct": null,
+   "rsQqq": 0.32,
+   "ema9Pct": 1.18,
+   "catalyst": "業績（盤前）",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "VCYT",
+   "price": 23.88,
+   "gapPct": -0.5,
+   "rvol": 5.63,
+   "pmVolume": 40596,
+   "avgVolume": 1845803,
+   "floatM": 78.92,
+   "atrPct": 18.38,
+   "spreadPct": null,
+   "rsQqq": -2.01,
+   "ema9Pct": -0.87,
+   "catalyst": "業績後異動",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "PENU",
+   "price": 8.65,
+   "gapPct": 19.81,
+   "rvol": 4.74,
+   "pmVolume": 5665,
+   "avgVolume": 54937,
+   "floatM": null,
+   "atrPct": 49.03,
+   "spreadPct": 8.94,
+   "rsQqq": 18.3,
+   "ema9Pct": 0.43,
+   "catalyst": "冇明確消息",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／數據唔齊"
+  },
+  {
+   "sym": "RAYA",
+   "price": 1.09,
+   "gapPct": 11.22,
+   "rvol": 4330.98,
+   "pmVolume": 7531573,
+   "avgVolume": 14972,
+   "floatM": null,
+   "atrPct": 13.24,
+   "spreadPct": 0.91,
+   "rsQqq": 9.71,
+   "ema9Pct": -2.32,
+   "catalyst": "細價股異動",
+   "verdict": "avoid",
+   "note": "$1.09 細價股"
+  }
+ ],
+ "picks": [
+  {
+   "sym": "NVDA",
+   "name": "NVIDIA",
+   "grade": "A",
+   "beginner": "適合新手",
+   "direction": "Long",
+   "score": 82,
+   "price": 188.9,
+   "prevClose": 181.6,
+   "gapPct": 4.02,
+   "pmVolume": 6446700,
+   "pmVolPct": 5.69,
+   "avgVolume": 113396864,
+   "rvol": 3.67,
+   "spread": 0.13,
+   "spreadPct": 0.07,
+   "atr": 7.46,
+   "atrPct": 4.11,
+   "mktCapB": 4551.39,
+   "floatM": 23190,
+   "rsQqq": 2.51,
+   "rsSpy": 3.85,
+   "ema9": 188.8,
+   "ema9Pct": 0.05,
+   "ema9Step": "5m",
+   "ema9Daily": 203.18,
+   "profile": {
+    "session": "11/05",
+    "dayType": "normal",
+    "vah": 187.55,
+    "val": 182.15,
+    "vpoc": 182.5,
+    "migration": "向下移",
+    "note": "今日盤前價喺昨日價值區之上；190.8–196.25 係單一價位區（成交少，可以行得快）。"
+   },
+   "levels": {
+    "pmh": 190.94,
+    "pml": 183.81,
+    "pdh": 196.25,
+    "pdl": 181.46,
+    "pdc": 181.6,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 187.55
+     },
+     {
+      "label": "昨日 POC",
+      "price": 182.5
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 182.15
+     },
+     {
+      "label": "20 日線",
+      "price": 213.68
+     }
+    ]
+   },
+   "why": "Gap +4.0%、RVOL 3.7、Pre-Market Volume 645 萬、Bid-Ask Spread 0.07%、ATR 4.1%、Relative Strength +2.5（強過 QQQ）、價格喺 EMA 9 之上（+0.05%）。9 個指標全部合格，今日最乾淨嘅一隻。",
+   "catalyst": "昨日 Nasdaq 跌 5.5%（19 個月最差）後，今日 AI／晶片股盤前反彈（Seeking Alpha、Benzinga）；另外有新聞話 NVIDIA 加強東南亞晶片追蹤、黃仁勳受國會關注。",
+   "technical": "日線跌勢（低過 20、50 日線，Daily EMA 9 203.2）；今日喺昨日低位 181.5 附近反彈，盤前高 190.94，昨日高 196.25。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "晶片板塊今日最強（SMH +4.8%），QQQ +1.5%。但 08:30 非農數據可能改變方向。",
+    "fundamentals": "冇公司本身嘅新催化劑，主要係超賣後反彈；11/17 先出業績。",
+    "technical": "TradingCalc：昨日係 Normal Day，價值區向下移（VAH 187.55／VAL 182.15）。今日盤前 188.9 已經喺昨日價值區之上；190.8–196.25 係昨日嘅單一價位區（Single Prints），成交少，突破後可以行得快。",
+    "tape": "盤前 645 萬股（日均 5.7%）、RVOL 3.7；Spread 0.13 元。平時開市首 5 分鐘約 498 萬股，要見 ≥ 996 萬股。",
+    "intuition": "信心中高。最大風險係「死貓彈」——跌市後第一日反彈好多時開市後回落，所以一定要等突破盤前高先入。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（190.94），首 5 分鐘成交 ≥ 平時 2 倍（約 996 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 191.0,
+    "stop": 188.76,
+    "target1": 195.48,
+    "target2": 197.72,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 191.00 兼放量 → 做多，Stop 188.76，T1 195.48，T2 197.72（中間有昨日高 196.25 阻力）。",
+    "short": "跌返昨日 VAH 187.55 之下 = 反彈失敗，唔好做多；呢個報告唔建議沽空 NVDA。",
+    "noTrade": "09:35 已經高過 193.24（> 0.3 ATR）唔追；首 5 分鐘量不足唔做。後備 5 分鐘 ORB（⚠️ 過去 6 個交易日後備 ORB 累計約 −8R，暫時只作觀察，唔建議用真錢做）：首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 3.73 元），Target 2R。"
+   },
+   "risks": [
+    "跌市後第一日反彈，開市後可能回落（死貓彈）",
+    "08:30 非農數據可能令盤前價位全部改變",
+    "昨日高 196.25 喺 T1 同 T2 之間，有阻力"
+   ],
+   "news": [
+    {
+     "title": "NVIDIA Enhances AI Chip Tracking in Southeast Asia",
+     "source": "fiscal.ai（經 Alpaca）",
+     "url": "https://www.marketscreener.com/news/nvidia-tightens-ai-chip-tracking-in-southeast-asia-amid-smuggling-concerns-ce785fd2d988f32d",
+     "time": "2026-11-06 12:32 UTC"
+    },
+    {
+     "title": "AI and chip stocks rebound in premarket after steep selloff",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+     "time": "2026-11-06 12:10 UTC"
+    },
+    {
+     "title": "Nvidia CEO Jensen Huang Faces Congressional Scrutiny Over Alleged Chinese Spy Links as Republicans Warn of ‘Significant National Security Concerns’",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/11/62970670/nvidia-ceo-jensen-huang-faces-congressional-scrutiny-over-alleged-chinese-spy-links-as-republicans-warn-of-significant-national-security-concerns",
+     "time": "2026-11-06 11:48 UTC"
+    },
+    {
+     "title": "Nasdaq’s 5.5% Wipeout And AI's Next Reality Check—IRS' New Tax Brackets",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/opinion/26/11/62970305/nasdaq-wipeout-ai-next-reality-check-irs-new-tax-brackets",
+     "time": "2026-11-06 11:38 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "MU",
+   "name": "Micron Technology",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 70,
+   "price": 705.33,
+   "prevClose": 656.39,
+   "gapPct": 7.46,
+   "pmVolume": 2462326,
+   "pmVolPct": 8.4,
+   "avgVolume": 29328967,
+   "rvol": 3.21,
+   "spread": 0.44,
+   "spreadPct": 0.06,
+   "atr": 57.39,
+   "atrPct": 8.74,
+   "mktCapB": 790.77,
+   "floatM": 1130,
+   "rsQqq": 5.95,
+   "rsSpy": 7.29,
+   "ema9": 709.86,
+   "ema9Pct": -0.64,
+   "ema9Step": "5m",
+   "ema9Daily": 830.24,
+   "profile": {
+    "session": "11/05",
+    "dayType": "normal",
+    "vah": 708,
+    "val": 667,
+    "vpoc": 675,
+    "migration": "向下移",
+    "note": "今日盤前價啱啱喺昨日 VAH 之下；717–762 係單一價位區。"
+   },
+   "levels": {
+    "pmh": 721.75,
+    "pml": 677.57,
+    "pdh": 761.81,
+    "pdl": 650,
+    "pdc": 656.39,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 708
+     },
+     {
+      "label": "昨日 POC",
+      "price": 675
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 667
+     },
+     {
+      "label": "20 日低",
+      "price": 650
+     }
+    ]
+   },
+   "why": "Gap +7.5%、RVOL 3.2、Pre-Market Volume 246 萬、Bid-Ask Spread 0.06%、ATR 8.7%、Relative Strength +6.0；但價格低過 EMA 9（−0.64%），9 個指標 8 個合格。股價 $705、ATR 57 元，每股風險大，股數要計細。",
+   "catalyst": "昨日急跌 12.5% 後今日盤前大幅反彈（Benzinga：「Micron Technology Stock Is Surging Friday」），跟晶片板塊一齊回升。",
+   "technical": "日線跌勢（低過 20、50 日線，Daily EMA 9 830.2）；昨日低 650 係 20 日低；盤前高 721.75、盤前低 677.57。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "晶片板塊今日最強（SMH +4.8%）。",
+    "fundamentals": "冇新基本面消息，主要係超賣反彈。",
+    "technical": "TradingCalc：昨日 Normal Day，價值區向下移（VAH 708／VAL 667／POC 675）。今日 705 啱啱喺昨日 VAH 之下；企穩 708 之上先算返入價值區上面。717–762 係單一價位區。",
+    "tape": "盤前 246 萬股（日均 8.4%）、RVOL 3.2；Spread 0.44 元。平時開市首 5 分鐘約 121 萬股，要見 ≥ 241 萬股。",
+    "intuition": "信心中。價格仲低過 EMA 9，要先企返 EMA 9 同 VWAP 之上，再升穿盤前高先做。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（721.75），首 5 分鐘成交 ≥ 平時 2 倍（約 241 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 722.0,
+    "stop": 704.78,
+    "target1": 756.44,
+    "target2": 773.66,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 722.00 兼放量 → 做多，Stop 704.78，T1 756.44，T2 773.66（昨日高 761.81 喺中間）。",
+    "short": "跌穿盤前低 677.57 = 反彈失敗，唔好做多。",
+    "noTrade": "09:35 已經高過 739.22 唔追；價格仲喺 EMA 9 之下唔做。後備 5 分鐘 ORB（⚠️ 過去 6 個交易日後備 ORB 累計約 −8R，暫時只作觀察，唔建議用真錢做）：首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 28.70 元），Target 2R。"
+   },
+   "risks": [
+    "每股風險 17.2 元，股數要好細",
+    "價格低過 EMA 9（−0.64%）",
+    "昨日跌 12.5%，反彈可能好快完"
+   ],
+   "news": [
+    {
+     "title": "AI and chip stocks rebound in premarket after steep selloff",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/MU/news?source=feed_symbol_MU",
+     "time": "2026-11-06 12:10 UTC"
+    },
+    {
+     "title": "Micron Technology Stock Is Surging Friday: What's Going On?",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/11/62971493/micron-technology-stock-is-surging-friday-whats-going-on",
+     "time": "2026-11-06 12:04 UTC"
+    },
+    {
+     "title": "AMD Shares Rebound 7% Premarket After 17% Rout: Here's What's Happening",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/11/62969487/amd-shares-jump-5-percent-premarket-after-strong-quarterly-results",
+     "time": "2026-11-06 11:08 UTC"
+    },
+    {
+     "title": "AI Bubble About to Burst? Top Tech Investor Warns Most Neocloud Players Could Go to Zero",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/11/62968934/ai-bubble-about-to-burst-top-tech-investor-warns-most-neocloud-players-could-go-to-zero",
+     "time": "2026-11-06 10:56 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "AMD",
+   "name": "Advanced Micro Devices",
+   "grade": "C",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 60,
+   "price": 435.8,
+   "prevClose": 404.4,
+   "gapPct": 7.76,
+   "pmVolume": 1582938,
+   "pmVolPct": 6.09,
+   "avgVolume": 25991031,
+   "rvol": 2.45,
+   "spread": 0.7,
+   "spreadPct": 0.16,
+   "atr": 35.9,
+   "atrPct": 8.88,
+   "mktCapB": 710.98,
+   "floatM": 1620,
+   "rsQqq": 6.25,
+   "rsSpy": 7.59,
+   "ema9": 436.53,
+   "ema9Pct": -0.17,
+   "ema9Step": "5m",
+   "ema9Daily": 492.14,
+   "profile": {
+    "session": "11/05",
+    "dayType": "normal",
+    "vah": 430.4,
+    "val": 411.6,
+    "vpoc": 413,
+    "migration": "向下移",
+    "note": "今日盤前價喺昨日價值區之上；昨日高 456.2 係阻力。"
+   },
+   "levels": {
+    "pmh": 439.5,
+    "pml": 418.42,
+    "pdh": 456.2,
+    "pdl": 402.1,
+    "pdc": 404.4,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 430.4
+     },
+     {
+      "label": "昨日 POC",
+      "price": 413
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 411.6
+     },
+     {
+      "label": "20 日低",
+      "price": 402.1
+     }
+    ]
+   },
+   "why": "Gap +7.8%、RVOL 2.5、Pre-Market Volume 158 萬、ATR 8.9%、Relative Strength +6.3；但 Bid-Ask Spread 0.16%（超過 0.1%）同價格低過 EMA 9（−0.17%），9 個指標 7 個合格。",
+   "catalyst": "連續兩日跌合共約 17% 後今日盤前反彈 7%（Benzinga）；11/03 業績同投資者日之後市場分歧大。",
+   "technical": "日線跌勢（低過 20、50 日線，Daily EMA 9 492.1）；昨日低 402.1 係 20 日低；盤前高 439.5，昨日高 456.2。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "晶片板塊今日最強（SMH +4.8%）。",
+    "fundamentals": "業績後兩日大跌，今日係超賣反彈，冇新消息。",
+    "technical": "TradingCalc：昨日 Normal Day，價值區向下移（VAH 430.4／VAL 411.6／POC 413）。今日 435.8 喺昨日價值區之上；431.6–456.2 係單一價位區，但昨日高 456.2 係明顯阻力，所以 T1 設喺 455.90（1.5R）。",
+    "tape": "盤前 158 萬股（日均 6.1%）、RVOL 2.5；Spread 0.70 元（偏闊）。平時開市首 5 分鐘約 136 萬股，要見 ≥ 272 萬股。",
+    "intuition": "信心中低。Spread 闊同 EMA 9 未企穩，只係後備選擇；NVDA 同 MU 冇觸發先考慮。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（439.5），首 5 分鐘成交 ≥ 平時 2 倍（約 272 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 439.75,
+    "stop": 428.98,
+    "target1": 455.9,
+    "target2": 461.29,
+    "rr": 1.5
+   },
+   "plan": {
+    "long": "升穿 439.75 兼放量 → 做多，Stop 428.98，T1 455.90（昨日高之前），T2 461.29。",
+    "short": "跌返昨日 VAH 430.4 之下 = 反彈失敗，唔好做多。",
+    "noTrade": "09:35 已經高過 450.52 唔追；Spread 開市後仲係 > 0.1% 唔做。後備 5 分鐘 ORB（⚠️ 過去 6 個交易日後備 ORB 累計約 −8R，暫時只作觀察，唔建議用真錢做）：首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 17.95 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.16%，成本較高",
+    "T1 只有 1.5R（昨日高 456.2 阻力）",
+    "價格低過 EMA 9"
+   ],
+   "news": [
+    {
+     "title": "AI and chip stocks rebound in premarket after steep selloff",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/AMD/news?source=feed_symbol_AMD",
+     "time": "2026-11-06 12:10 UTC"
+    },
+    {
+     "title": "NVIDIA Claws Back Losses After $400 Billion Bloodbath, but the AI Scare Isn't Over",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/11/62969899/nvidia-claws-back-losses-after-400-billion-bloodbath-but-the-ai-scare-isnt-over",
+     "time": "2026-11-06 11:26 UTC"
+    },
+    {
+     "title": "AMD Shares Rebound 7% Premarket After 17% Rout: Here's What's Happening",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/11/62969487/amd-shares-jump-5-percent-premarket-after-strong-quarterly-results",
+     "time": "2026-11-06 11:08 UTC"
+    },
+    {
+     "title": "Is AMD Stock a Buy After the Spectacular Investor Update?",
+     "source": "The Globe and Mail（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQcllpZm9XWl9qOG5CdGRXaEZ1UHZyMGtiM2xHNDZJSXZUV0JpMDVUZWtCbXNxY2Y2RmN2WEZMTWVsdEx1SEdwbUhMQ3hyNkY3c3F2ZGtqR1lIUG12Rm9TbDF6X3VSQUlsSW8wdVRPUmEzMkpCaUVNOFNKQUJZNFJ3dVU3bUQzaTEtZFdCMVJ3WlFOcGJWcTd0NXliOXc0WVZZeHBndFQ0ZXpXVzA2SUFBOXRidHZmbGh5NzdRbUhtMzUwZ1Q5ZFBGQkthaG9zaXdVVE01elh4Yw?oc=5",
+     "time": "2026-11-06 11:06 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "NET",
+   "name": "Cloudflare",
+   "grade": "C",
+   "beginner": "高風險",
+   "direction": "Long",
+   "score": 58,
+   "price": 294.99,
+   "prevClose": 244.51,
+   "gapPct": 20.65,
+   "pmVolume": 218172,
+   "pmVolPct": 6.06,
+   "avgVolume": 3597810,
+   "rvol": 10,
+   "spread": 0.99,
+   "spreadPct": 0.34,
+   "atr": 20.22,
+   "atrPct": 8.27,
+   "mktCapB": 103.45,
+   "floatM": 319.57,
+   "rsQqq": 19.14,
+   "rsSpy": 20.48,
+   "ema9": 294.86,
+   "ema9Pct": 0.04,
+   "ema9Step": "5m",
+   "ema9Daily": 281.02,
+   "profile": {
+    "session": "11/05",
+    "dayType": "normal",
+    "vah": 243.6,
+    "val": 237.5,
+    "vpoc": 238.6,
+    "migration": "向下移",
+    "note": "今日跳空完全離開昨日價值區，昨日水平參考價值低。"
+   },
+   "levels": {
+    "pmh": 299.44,
+    "pml": 273.74,
+    "pdh": 252.44,
+    "pdl": 233.62,
+    "pdc": 244.51,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 243.6
+     },
+     {
+      "label": "昨日 POC",
+      "price": 238.6
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 237.5
+     }
+    ]
+   },
+   "why": "Gap +20.7%、RVOL 10、Pre-Market Volume 22 萬（啱啱過 20 萬）、ATR 8.3%、Relative Strength +19.1、價格喺 EMA 9 之上（+0.04%）；但 Bid-Ask Spread 0.34%（超過 0.1%），9 個指標 8 個合格。高風險。",
+   "catalyst": "Q3 業績後股價大升 15–20%（Benzinga），但同時有幾間分析師下調目標價（Benzinga：「These Analysts Slash Their Forecasts On Cloudflare」）。",
+   "technical": "日線跌勢（低過 20、50 日線，Daily EMA 9 281.0）；今日跳空高過昨日高 252.44 好多；盤前高 299.44、盤前低 273.74。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "科技股今日反彈（XLK +2.5%），但 NET 嘅升幅主要係業績。",
+    "fundamentals": "業績好過預期，但分析師降目標價，意見分歧。",
+    "technical": "TradingCalc：昨日 Normal Day，價值區向下移（VAH 243.6／VAL 237.5）。今日跳空完全離開昨日價值區（高 50 元以上），昨日水平幫唔到手；向下第一個參考係盤前低 273.74。",
+    "tape": "盤前 22 萬股、RVOL 10；Spread 0.99 元（闊）。平時開市首 5 分鐘約 14 萬股，要見 ≥ 28 萬股。",
+    "intuition": "信心低。升 20% 之後追高風險大，ATR 用嘅係舊數，今日實際波幅可能大好多。只適合有經驗、用細注。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（299.44），首 5 分鐘成交 ≥ 平時 2 倍（約 28 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 299.6,
+    "stop": 293.53,
+    "target1": 311.74,
+    "target2": 317.81,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 299.60 兼放量 → 做多，Stop 293.53，T1 311.74，T2 317.81。",
+    "short": "跌穿 VWAP 同盤前低 273.74 = 跳空失敗，唔好做多（新手唔好沽空）。",
+    "noTrade": "09:35 已經高過 305.67 唔追；Spread 開市後仲係 > 0.2% 唔做。後備 5 分鐘 ORB（⚠️ 過去 6 個交易日後備 ORB 累計約 −8R，暫時只作觀察，唔建議用真錢做）：首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 10.11 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.34%，每筆成本約 0.16R",
+    "升 20% 之後追高，ATR 低估今日波幅",
+    "分析師降目標價，好淡爭持"
+   ],
+   "news": [
+    {
+     "title": "These Analysts Slash Their Forecasts On Cloudflare Following Q3 Results",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/price-target/26/11/62973644/these-analysts-slash-their-forecasts-on-cloudflare-following-q3-results",
+     "time": "2026-11-06 13:07 UTC"
+    },
+    {
+     "title": "12 Information Technology Stocks Moving In Friday's Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62971575/12-information-technology-stocks-moving-friday-s-pre-market-session",
+     "time": "2026-11-06 12:05 UTC"
+    },
+    {
+     "title": "Nasdaq’s 5.5% Wipeout And AI's Next Reality Check—IRS' New Tax Brackets",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/opinion/26/11/62970305/nasdaq-wipeout-ai-next-reality-check-irs-new-tax-brackets",
+     "time": "2026-11-06 11:38 UTC"
+    },
+    {
+     "title": "Why Cloudflare Shares Are Trading Higher By Around 15%; Here Are 20 Stocks Moving Premarket",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62968476/why-cloudflare-shares-are-trading-higher-by-around-15-here-are-20-stocks-moving-premarket",
+     "time": "2026-11-06 10:23 UTC"
+    }
+   ],
+   "lists": [
+    "StockAnalysis 盤前升幅榜"
+   ]
+  },
+  {
+   "sym": "DKNG",
+   "name": "DraftKings",
+   "grade": "C",
+   "beginner": "高風險",
+   "direction": "Short",
+   "score": 55,
+   "price": 17.75,
+   "prevClose": 23.52,
+   "gapPct": -24.53,
+   "pmVolume": 639674,
+   "pmVolPct": 5.2,
+   "avgVolume": 12313168,
+   "rvol": 46.34,
+   "spread": 0.1,
+   "spreadPct": 0.56,
+   "atr": 0.96,
+   "atrPct": 4.08,
+   "mktCapB": 15.7,
+   "floatM": 412.2,
+   "rsQqq": -26.04,
+   "rsSpy": -24.7,
+   "ema9": 18.2,
+   "ema9Pct": -2.52,
+   "ema9Step": "5m",
+   "ema9Daily": 21.88,
+   "profile": {
+    "session": "11/05",
+    "dayType": "normal_var",
+    "vah": 23.36,
+    "val": 22.94,
+    "vpoc": 23.015,
+    "migration": "重疊",
+    "note": "今日跳空遠低過昨日價值區。"
+   },
+   "levels": {
+    "pmh": 19,
+    "pml": 17.57,
+    "pdh": 23.69,
+    "pdl": 22.84,
+    "pdc": 23.52,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 23.36
+     },
+     {
+      "label": "昨日 POC",
+      "price": 23.015
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 22.94
+     },
+     {
+      "label": "20 日低",
+      "price": 18.35
+     }
+    ]
+   },
+   "why": "Gap −24.5%、RVOL 46、Pre-Market Volume 64 萬、ATR 4.1%、Relative Strength −26、價格低過 EMA 9（−2.52%）；但 Bid-Ask Spread 0.56%（超過 0.1%），9 個指標 8 個合格。高風險。",
+   "catalyst": "Q3 收入同盈利都差過預期，再下調全年收入指引（Benzinga、GuruFocus）。",
+   "technical": "日線橫行；今日跳空跌穿昨日低 22.84 同 20 日低 18.35；盤前高 19.00、盤前低 17.57。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "個股消息主導，同大市關係細。",
+    "fundamentals": "業績同指引雙差，屬實質壞消息。",
+    "technical": "TradingCalc：昨日 Normal Variation（雙向延伸），價值區同前日部分重疊（VAH 23.36／VAL 22.94）。今日跳空低過昨日價值區超過 5 元，昨日水平參考價值低。",
+    "tape": "盤前 64 萬股、RVOL 46；Spread 0.10 元，相對每股風險 0.29 元好大（約 0.34R）。平時開市首 5 分鐘約 28 萬股，要見 ≥ 55 萬股。",
+    "intuition": "信心低。跌 24% 後好容易反彈；而且跌超過 10% 好可能已觸發 SSR（只可以用高過 Bid 嘅價沽空），跌穿位入場未必成交。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（17.57），首 5 分鐘成交 ≥ 平時 2 倍（約 55 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 17.55,
+    "stop": 17.84,
+    "target1": 16.97,
+    "target2": 16.68,
+    "rr": 2
+   },
+   "plan": {
+    "long": "企穩 VWAP 同 19.00（盤前高）之上 = 唔好沽；新手唔好撈底。",
+    "short": "跌穿 17.55 兼放量 → 沽空，Stop 17.84，T1 16.97，T2 16.68。",
+    "noTrade": "09:35 已經低過 17.26 唔追；Cash 戶口唔可以沽空；借唔到貨或者 SSR 下成交唔到就放棄。後備 5 分鐘 ORB（⚠️ 過去 6 個交易日後備 ORB 累計約 −8R，暫時只作觀察，唔建議用真錢做）：首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 0.48 元），Target 2R。"
+   },
+   "risks": [
+    "Bid-Ask Spread 0.56%，每筆成本約 0.34R",
+    "跌超過 10%，好可能有 SSR 限制，沽空難成交",
+    "Cash 戶口唔可以沽空",
+    "跌 24% 後容易急速反彈"
+   ],
+   "news": [
+    {
+     "title": "DraftKings Stock Plunges After Double Miss, Full-Year Guidance Cut",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62973734/draftkings-stock-plunges-after-double-miss-full-year-guidance-cut",
+     "time": "2026-11-06 13:10 UTC"
+    },
+    {
+     "title": "DraftKings Posts Downbeat Q3 Results, Joins Atlassian, Natera And Other Big Stocks Moving Lower In Friday’s Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62973551/draftkings-posts-downbeat-q3-results-joins-atlassian-natera-and-other-big-stocks-moving-lower-in-fridays-pre-market-session",
+     "time": "2026-11-06 13:03 UTC"
+    },
+    {
+     "title": "DraftKings (DKNG) Lowers 2026 Revenue Guidance, Stock Drops 20%",
+     "source": "GuruFocus（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQWnBtalpqNExJaGFOS2V6UlFxejYtQmdFY1JNeXYtN3ZtVjdlWlFuNHNLQXd6ckdacnZQSEpSZjBjNDE3aWh0WFFDaGlkTGo0TV92WmRERVlGQXF3RzVqRGUxckVFWHFHVi11N2p1U2FINlBkOFU3c2U1NXJhY3VpeW5lQVNJUkN4bkRROVk0VzdJSnlOa2prempwbThmYkU?oc=5",
+     "time": "2026-11-06 12:38 UTC"
+    },
+    {
+     "title": "12 Consumer Discretionary Stocks Moving In Friday's Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62971578/12-consumer-discretionary-stocks-moving-friday-s-pre-market-session",
+     "time": "2026-11-06 12:05 UTC"
+    }
+   ],
+   "lists": [
+    "StockAnalysis 盤前跌幅榜"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "IREN",
+   "why": "+15.7%、RVOL 3.5、盤前 731 萬股，但價格低過 EMA 9（−1.09%）；企返 EMA 9 同 21.66（盤前高）之上先考慮。"
+  },
+  {
+   "sym": "MRNA",
+   "why": "+4%、RVOL 4.9，業績好兼上調收入指引；但 Spread 0.39%、盤前高 274.75 離現價 9%。"
+  },
+  {
+   "sym": "AVGO",
+   "why": "+4.6% 跟晶片反彈，但 RVOL 只係 1.9（未到 2）。"
+  },
+  {
+   "sym": "ARM",
+   "why": "+7%，但 RVOL 2.0 以下、Spread 0.26%。"
+  },
+  {
+   "sym": "TSLA",
+   "why": "+1.6%、RVOL 1.2，冇明確催化劑，今日唔做。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "CHTR",
+   "why": "−6.3%，但 Spread 1.53%、盤前量只有 12 萬。"
+  },
+  {
+   "sym": "CIIT",
+   "why": "$2.69 細價股急升 74%，Float 細、波動極大。"
+  },
+  {
+   "sym": "VSA",
+   "why": "$2.19 細價股急升 42%。"
+  },
+  {
+   "sym": "SOXL",
+   "why": "3 倍槓桿晶片 ETF，波幅同損耗大，唔適合學習階段。"
+  }
+ ],
+ "news": [
+  {
+   "title": "October jobs report preview",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/05/october-jobs-report-preview.html",
+   "time": "2026-11-05",
+   "tickers": []
+  },
+  {
+   "title": "Morning Squawk: blue wave stocks",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/06/morning-squawk-blue-wave-stocks.html",
+   "time": "2026-11-06",
+   "tickers": []
+  },
+  {
+   "title": "Stock market today: Live updates",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/05/stock-market-today-live-updates.html",
+   "time": "2026-11-05",
+   "tickers": [
+    "NVDA",
+    "AMD",
+    "MU"
+   ]
+  },
+  {
+   "title": "AI and chip stocks rebound in premarket after steep selloff",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+   "time": "2026-11-06 12:10 UTC",
+   "tickers": [
+    "NVDA",
+    "AMD",
+    "MU"
+   ]
+  },
+  {
+   "title": "Nasdaq Tumbles 5.5% as AI Stocks Crater: Investor Sentiment Weakens, Fear & Greed Index Moves to ‘Extreme Fear’ Zone",
+   "source": "benzinga（經 Alpaca）",
+   "url": "https://www.benzinga.com/markets/market-summary/26/11/62967148/nasdaq-tumbles-5-5-as-ai-stocks-crater-investor-sentiment-weakens-fear-greed-index-moves-to-extreme-fear-zone",
+   "time": "2026-11-06 07:19 UTC",
+   "tickers": [
+    "QQQ"
+   ]
+  },
+  {
+   "title": "DraftKings Stock Plunges After Double Miss, Full-Year Guidance Cut",
+   "source": "benzinga（經 Alpaca）",
+   "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62973734/draftkings-stock-plunges-after-double-miss-full-year-guidance-cut",
+   "time": "2026-11-06 13:10 UTC",
+   "tickers": [
+    "DKNG"
+   ]
+  },
+  {
+   "title": "Why Cloudflare Shares Are Trading Higher By Around 15%; Here Are 20 Stocks Moving Premarket",
+   "source": "benzinga（經 Alpaca）",
+   "url": "https://www.benzinga.com/trading-ideas/movers/26/11/62968476/why-cloudflare-shares-are-trading-higher-by-around-15-here-are-20-stocks-moving-premarket",
+   "time": "2026-11-06 10:23 UTC",
+   "tickers": [
+    "NET"
+   ]
+  }
+ ],
+ "lesson": "跌市後第一日反彈（例如今日晶片股）好多時「開高走低」——盤前升唔代表開市後會繼續升。所以計劃係等突破盤前高、首 5 分鐘量夠先入，唔好開市前預早買；而且 08:30 非農數據之後，盤前高低位可能已經改變，開市前一定要重新核對。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，數據延遲 16 分鐘，可能有錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
