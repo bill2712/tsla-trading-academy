@@ -18,5 +18,6 @@ window.CLOUD_CONFIG = {
     { email: 'ivantsang24@gmail.com', name: 'Ivan', emoji: '👦', color: '#059669' },
     { email: 'tsangtszman2008@gmail.com', name: 'Man', emoji: '😎', color: '#ea580c' },
     { email: 'patrickfan94@gmail.com', name: '志強', emoji: '🐼', color: '#7c3aed' },
+    { email: 'vincentwkn@gmail.com', name: 'Vincent', emoji: '🦁', color: '#0891b2' },
   ],
 };

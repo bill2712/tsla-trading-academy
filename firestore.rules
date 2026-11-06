@@ -10,7 +10,8 @@ service cloud.firestore {
       return request.auth != null
         && request.auth.token.email_verified == true
         && request.auth.token.email in ['bill27122002@gmail.com', 'ivantsang24@gmail.com',
-                                      'tsangtszman2008@gmail.com', 'patrickfan94@gmail.com'];
+                                      'tsangtszman2008@gmail.com', 'patrickfan94@gmail.com',
+                                      'vincentwkn@gmail.com'];
     }
     // 成員資料（名稱、頭像、顏色）：全家睇到，只可以改自己
     match /academyMembers/{uid} {
