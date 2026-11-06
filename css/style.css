@@ -1290,3 +1290,19 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .l10-form input, .l10-form select { width: 100%; min-width: 0; box-sizing: border-box; }
 .l10-form { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 .chart-svg .l10-lg { paint-order: stroke; stroke: var(--card); stroke-width: 4px; }
+
+/* Level 11 */
+.l11-w { display: grid; gap: 10px; }
+.l11-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+.l11-kpis > div { display: grid; padding: 8px 10px; border-radius: 12px; background: var(--bg-soft); line-height: 1.35; }
+.l11-kpis span { font-size: .75em; color: var(--muted); font-weight: 700; }
+.l11-kpis b { font-size: 1.15em; font-variant-numeric: tabular-nums; }
+.l11-kpis small { color: var(--muted); font-size: .75em; }
+.l11-kpis .pos, .l11-w td.pos { color: var(--up); } .l11-kpis .neg, .l11-w td.neg { color: var(--down); }
+.l11-out { padding: 8px 10px; border-radius: 10px; border: 1px dashed var(--border); }
+.l11-out p { margin: 6px 0; }
+.l11-grp { border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; margin: 0; }
+.l11-grp legend { font-weight: 800; padding: 0 6px; }
+.l11-item { display: flex; gap: 8px; align-items: flex-start; padding: 4px 0; font-size: .92em; }
+.l11-item input { margin-top: 4px; flex: none; }
+.l11-gaps { margin: 4px 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: .92em; }

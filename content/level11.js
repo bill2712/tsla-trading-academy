@@ -1,0 +1,625 @@
+/* Level 11：真錢之前最後一課 —— 香港交易者實務、執行細節、騙局同準備度檢查 */
+window.COURSE = window.COURSE || [];
+window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
+
+(function () {
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const num = (v) => (typeof v === 'number' && isFinite(v) ? v : null);
+
+  /* 由回顧文字攞返 R：「到 Target 1（+1.47R）」「中 Stop（−1R）」「收市計 0.37R」 */
+  function rOf(text) {
+    if (!text) return null;
+    let m = text.match(/Target 1（\+?([\d.]+)R）|到 2R/);
+    if (m) return m[1] ? +m[1] : 2;
+    if (/中 Stop（[−-]1R）/.test(text)) return -1;
+    m = text.match(/收市計 ([−-]?[\d.]+)R/);
+    if (m) return +m[1].replace('−', '-');
+    return null;
+  }
+  function parseReview(items) {
+    const out = [];
+    (items || []).forEach((it) => {
+      const [main, orb] = String(it.verdict || '').split('｜');
+      const trig = /觸發 →/.test(main);
+      const chase = /唔追/.test(main);
+      out.push({ sym: it.sym, main: trig ? rOf(main) : null, trig, chase, orb: orb && /觸發/.test(orb) ? rOf(orb) : null });
+    });
+    return out;
+  }
+
+  /* ① 每日選股真實成績表（由 App 嘅報告同收市後回顧自動計） */
+  window.WIDGETS_EXTRA['l11-scoreboard'] = async (el) => {
+    el.innerHTML = '<div class="l11-w"><p class="muted">載入緊每日報告…</p></div>';
+    try {
+      const idx = await (await fetch('data/picks/index.json', { cache: 'no-cache' })).json();
+      const days = (idx.days || []).filter((d) => d.reviewed).slice(0, 60);
+      const rows = [];
+      for (const d of days) {
+        const j = await (await fetch('data/picks/' + d.date + '.json', { cache: 'no-cache' })).json();
+        const p = parseReview(j.review && j.review.items);
+        const mainR = p.filter((x) => x.main != null).map((x) => x.main), orbR = p.filter((x) => x.orb != null).map((x) => x.orb);
+        rows.push({ date: d.date, test: j.status === 'test', picks: p.length, trig: p.filter((x) => x.trig).length, chase: p.filter((x) => x.chase).length, main: mainR, orb: orbR });
+      }
+      const sum = (a) => a.reduce((s, v) => s + v, 0);
+      const fmt = (v) => (v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(2) + 'R');
+      const allMain = rows.flatMap((r) => r.main), allOrb = rows.flatMap((r) => r.orb);
+      const wins = allMain.filter((v) => v > 0).length;
+      el.innerHTML = `<div class="l11-w">
+        <div class="l11-kpis">
+          <div><span>有回顧嘅日數</span><b>${rows.length}</b></div>
+          <div><span>候選股總數</span><b>${sum(rows.map((r) => r.picks))}</b></div>
+          <div><span>主計劃有觸發</span><b>${allMain.length}</b><small>其餘冇觸發或者唔追</small></div>
+          <div><span>主計劃累計</span><b class="${sum(allMain) >= 0 ? 'pos' : 'neg'}">${fmt(sum(allMain))}</b><small>${allMain.length ? `勝 ${wins}／${allMain.length}` : ''}</small></div>
+          <div><span>後備 ORB 累計</span><b class="${sum(allOrb) >= 0 ? 'pos' : 'neg'}">${fmt(sum(allOrb))}</b><small>${allOrb.length} 次</small></div>
+        </div>
+        <div class="tbl-scroll"><table class="mini-tbl wide"><tr><th>日期</th><th>候選</th><th>觸發</th><th>唔追</th><th>主計劃</th><th>後備 ORB</th></tr>
+        ${rows.map((r) => `<tr><th>${esc(r.date)}${r.test ? ' <small>測試</small>' : ''}</th><td>${r.picks}</td><td>${r.trig}</td><td>${r.chase}</td><td class="${sum(r.main) > 0 ? 'pos' : sum(r.main) < 0 ? 'neg' : ''}">${r.main.length ? fmt(sum(r.main)) : '0'}</td><td class="${sum(r.orb) > 0 ? 'pos' : sum(r.orb) < 0 ? 'neg' : ''}">${r.orb.length ? fmt(sum(r.orb)) : '—'}</td></tr>`).join('')}</table></div>
+        <p class="tool-fine">由每份報告嘅「收市後回顧」自動計：用 5 分鐘 K 線假設按計劃入場，未計佣金同滑價；同一支 K 同時掂 Target 同 Stop 當 Stop（保守）。樣本仲好少，${rows.length < 20 ? '<b>未夠 20 日，唔可以下任何結論</b>。' : '繼續累積。'}</p></div>`;
+    } catch (e) {
+      el.innerHTML = `<div class="l11-w"><p class="muted">載入唔到報告（${esc(e.message)}）。要上網先睇到。</p></div>`;
+    }
+  };
+
+  /* ② 交易成本計算器：成本佔 1R 幾多？ */
+  window.WIDGETS_EXTRA['l11-cost'] = (el) => {
+    const S = { price: 150, risk: 100, stopDist: 1.5, comm: 1, perShare: 0.005, minComm: 1, fx: 0.1, slip: 0.02, trades: 40 };
+    const F = [['price', '股價 $', 0.01], ['risk', '每筆風險 $（1R）', 1], ['stopDist', '每股 Stop 距離 $', 0.01], ['perShare', '佣金每股 $', 0.001], ['minComm', '最低佣金每邊 $', 0.1], ['slip', '滑價每股每邊 $', 0.01], ['fx', '換匯成本 %（入金一次）', 0.01], ['trades', '每月交易次數', 1]];
+    el.innerHTML = `<div class="l11-w"><div class="l10-form">${F.map(([k, t, st]) => `<label>${t}<input type="number" step="${st}" data-k="${k}" value="${S[k]}"></label>`).join('')}</div><div class="l11-out" data-o aria-live="polite"></div>
+      <p class="tool-fine">數字只係例子：佣金、平台費、監管費（SEC fee、FINRA TAF，只喺賣出收）同換匯成本，以你券商收費表為準。</p></div>`;
+    const calc = () => {
+      const { price, risk, stopDist, perShare, minComm, slip, trades } = S;
+      if (![price, risk, stopDist].every((v) => v > 0)) { el.querySelector('[data-o]').textContent = '⚠️ 股價、風險同 Stop 距離要大過 0'; return; }
+      const qty = Math.floor(risk / stopDist);
+      const comm = 2 * Math.max(minComm, qty * perShare);
+      const slipCost = 2 * qty * slip;
+      const per = comm + slipCost;
+      const inR = per / risk;
+      el.querySelector('[data-o]').innerHTML = `<div class="l11-kpis">
+        <div><span>股數</span><b>${qty}</b><small>≈ $${Math.round(qty * price).toLocaleString()} 本金</small></div>
+        <div><span>每筆來回佣金</span><b>$${comm.toFixed(2)}</b></div>
+        <div><span>每筆滑價</span><b>$${slipCost.toFixed(2)}</b></div>
+        <div><span>每筆總成本</span><b>${(inR * 100).toFixed(1)}% R</b><small>$${per.toFixed(2)}</small></div>
+        <div><span>每月成本</span><b>${(inR * trades).toFixed(2)}R</b><small>$${(per * trades).toFixed(0)}</small></div></div>
+        <p>${inR > 0.1 ? '⚠️ 每筆成本超過 0.1R：你嘅策略要每筆平均賺多過呢個數，先開始有錢賺。考慮減少交易次數，或者揀 Stop 距離較大、股數較少嘅設定。' : inR > 0.04 ? '⚠️ 每筆成本 0.04–0.1R：對細 Edge 影響好大（下面例子），一定要計入回測同日誌。' : '每筆成本低過 0.04R，影響較細，但都要計入回測同日誌。'} 例如策略未計成本嘅 Expectancy 係 +0.15R，扣成本後只剩 ${(0.15 - inR).toFixed(2)}R（少咗 ${Math.round(inR / 0.15 * 100)}%）。</p>`;
+    };
+    el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener('input', () => { S[i.dataset.k] = parseFloat(i.value); calc(); }));
+    calc();
+  };
+
+  /* ③ 真錢準備度自我評估（會儲存喺你嘅帳戶） */
+  const READY = [
+    ['知識', [['k1', '講得出今日要用嘅 Setup 嘅入場、Stop、Target 規則（唔使睇筆記）', 'level/l3'], ['k2', '識計股數：風險預算 ÷ 每股風險，同時受現金限制', 'c/l4-c5'], ['k3', '知道自己戶口係 Cash 定 Margin、做唔做到空、PDT／新保證金規則點影響你', 'c/l11-c3'], ['k4', '知道 Limit、Stop、Bracket 單點用，盤前點落單', 'c/l11-c7'], ['k5', '識設定 Chart：ETH、Session Breaks、PMH／PDH 線', 'level/l10']]],
+    ['練習', [['p1', 'Replay／模擬交易做咗至少 50 筆，全部有記錄', 'journal'], ['p2', 'Paper Trading 最少 20 個交易日，跟同一套規則', 'c/l8-c6'], ['p3', '扣成本後 Expectancy 係正數，而且樣本 ≥ 50 筆', 'edge'], ['p4', '最大回撤喺你預設範圍之內', 'c/l5-c9'], ['p5', '跟規則率 ≥ 90%（冇衝動單、冇移 Stop）', 'journal/review']]],
+    ['帳戶同工具', [['a1', '券商係受監管嘅持牌機構，已經核對過', 'c/l11-c3'], ['a2', '有實時報價（知道係咪全市場數據）', 'c/l11-c6'], ['a3', '有斷線／券商故障嘅後備方案', 'c/l11-c6'], ['a4', '已經計過每筆成本佔 1R 幾多', 'c/l11-c5'], ['a5', '填好 W-8BEN，了解股息預扣同稅務', 'c/l11-c4']]],
+    ['風險同心態', [['r1', '寫低每筆最大風險（建議真錢初期 0.25–0.5% 本金）', 'c/l4-c9'], ['r2', '寫低每日最大虧損（例如 −2R）同每日最多交易次數', 'c/l4-c9'], ['r3', '用嚟交易嘅錢係蝕晒都唔影響生活嘅錢', 'c/l8-c8'], ['r4', '有停手規則（連蝕幾多、Tilt 訊號）', 'c/l8-c5'], ['r5', '屋企人知道你喺做咩，作息唔受影響（香港時間半夜）', 'c/l8-c8']]],
+  ];
+  window.WIDGETS_EXTRA['l11-ready'] = (el) => {
+    const u = window.Store && Store.user ? Store.user() : null;
+    const st = (u && u.toolState && u.toolState['l11-ready']) || {};
+    const total = READY.reduce((n, [, items]) => n + items.length, 0);
+    el.innerHTML = `<div class="l11-w">${READY.map(([g, items]) => `<fieldset class="l11-grp"><legend>${g}</legend>${items.map(([id, t]) => `<label class="l11-item"><input type="checkbox" data-id="${id}" ${st[id] ? 'checked' : ''}> ${esc(t)}</label>`).join('')}</fieldset>`).join('')}<div class="l11-out" data-o aria-live="polite"></div></div>`;
+    const show = () => {
+      const on = {}; el.querySelectorAll('[data-id]').forEach((c) => (on[c.dataset.id] = c.checked));
+      const n = Object.values(on).filter(Boolean).length;
+      const crit = ['p3', 'p5', 'r1', 'r2', 'r3', 'a1'];
+      const critOk = crit.every((k) => on[k]);
+      const lvl = n === total ? ['ok', '可以考慮用好細嘅真錢開始（每筆 0.25–0.5% 風險），按第一個月計劃做'] : critOk && n >= total - 4 ? ['mid', '接近：補埋下面未剔嘅項目先用真錢'] : n >= 10 ? ['mid', '繼續 Paper Trading：基本功有，但關鍵項目未齊'] : ['bad', '仲係學習階段：先完成課程練習同模擬交易'];
+      const gaps = READY.flatMap(([, items]) => items.filter(([id]) => !on[id]));
+      el.querySelector('[data-o]').innerHTML = `<p><b>${n} / ${total} 項</b>　<span class="pk-beg ${lvl[0]}">${lvl[1]}</span></p>${critOk ? '' : '<p class="pk-risk">⚠️ 必要項目（扣成本後正 Expectancy、跟規則率、每筆風險、每日虧損上限、閒錢、持牌券商）未齊之前，唔建議用真錢。</p>'}${gaps.length ? `<p><b>未完成：</b></p><ul class="l11-gaps">${gaps.map(([id, t, link]) => `<li>${esc(t)} → <a href="#/${link}">去溫習</a></li>`).join('')}</ul>` : ''}`;
+      if (u) { u.toolState = u.toolState || {}; u.toolState['l11-ready'] = on; Store.save(); }
+    };
+    el.querySelectorAll('[data-id]').forEach((c) => c.addEventListener('change', show));
+    show();
+  };
+})();
+
+window.COURSE.push({
+  id: 'l11',
+  code: 'Level 11',
+  title: '真錢之前：實務、風險同準備度',
+  subtitle: '現實數據、香港帳戶同稅務、成本、數據、盤前落單、做空限制、停牌、騙局、點用每日報告、準備度檢查同第一個月計劃',
+  icon: '🧭',
+  color: '#b45309',
+  question: '我真係準備好用真錢 Day Trade 未？仲欠啲咩？',
+  chapters: [
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c1', num: '1', title: '先講現實：大部分 Day Trader 都蝕錢', mins: 6,
+  summary: '大型研究顯示絕大部分 Day Trader 長期扣成本後蝕錢；我哋每日報告到目前為止嘅成績都仲未證明有優勢。目標係先生存、先收集數據。',
+  keywords: ['現實', 'Edge', '樣本'],
+  md: `
+:::info 呢個 Level 點用
+Level 1–10 教咗你點睇圖、點揀股、點落單、點管理風險。呢個 Level 唔再教新 Setup，而係補**真錢交易之前**最常被忽略嘅實務：帳戶、稅務、成本、數據、落單細節、做空限制、騙局，同埋一個誠實嘅準備度檢查。
+:::
+
+## 1.1 研究數字
+
+| 研究 | 樣本 | 結果 |
+|---|---|---|
+| Barber、Lee、Liu、Odean（台灣） | 台灣所有日內交易者，多年數據 | 扣成本後能夠**持續賺錢**嘅少過 1% |
+| Chague、De-Losso、Giovannetti（巴西，2019） | 堅持日內交易超過 300 日嘅個人 | **97% 蝕錢**，只有約 1% 賺多過當地最低工資 |
+
+呢啲唔代表你一定蝕，但代表：**「學咗技術」同「長期賺錢」之間有好大距離**。大部分人輸喺成本、冇固定規則、倉位太大同情緒，唔係輸喺唔識畫線。
+
+## 1.2 我哋自己嘅數據：每日選股報告成績表
+
+下面由每份報告嘅「收市後回顧」自動計（每日更新）：
+
+[[widget:l11-scoreboard]]
+
+:::key 點睇呢個表
+- **好多日冇觸發**：等確認先入場，即係好多日唔做 —— 呢個係保護，唔係失敗。
+- **後備 ORB 明顯蝕錢**：開市頭 15 分鐘太亂，Stop 成日被掃，所以暫停用真錢。
+- **樣本太少**：最少要 20–30 個交易日、50 筆以上先開始有參考價值（Level 5）。
+- 結論：**而家冇證據證明報告有 Edge**。佢係一個幫你縮窄範圍嘅篩選工具，唔係買賣訊號。
+:::
+
+[[quiz:l11-c1]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c2', num: '2', title: '你嘅知識地圖：已經識同仲欠', mins: 5,
+  summary: '技術分析、Setup、風險管理、統計、心態、圖表已經學過；仲欠嘅主要係實務：帳戶、稅務、成本、數據、落單細節、做空限制、騙局，同真正嘅練習量。',
+  keywords: ['知識地圖', 'Gap Analysis'],
+  md: `
+| 範疇 | 已經學過 | 仲欠（本 Level 補） |
+|---|---|---|
+| 睇圖 | K 線、Volume、S/R、VWAP、結構（L1–L2）、圖表設定（L10） | — |
+| 揀股 | 盤前 9 個 Indicator、Gap、催化劑（L6、每日報告） | 點樣**正確用**每日報告（第 11 章） |
+| Setup | Breakout、Reversal、Failed Breakout、ORB、VCP（L3、L6、L9） | — |
+| 落單 | Market／Limit／Stop／Bracket（L4） | **盤前同開市**落單細節（第 7 章） |
+| 風險 | Position Sizing、每日上限、Drawdown、Kelly（L4、L7） | **成本佔 R 幾多**（第 5 章） |
+| 做空 | 借股、SSR、逼倉（L7） | 你個戶口**做唔做到**報告嘅 Short（第 8 章） |
+| 帳戶 | Cash／Margin、PDT、T+1（L4 第 13 章，加拿大版） | **香港**帳戶、稅務、遺產稅（第 3–4 章） |
+| 數據 | NBBO 概念（L4） | 實時數據、延遲、斷線後備（第 6 章） |
+| 極端行情 | LULD、熔斷（L6–L7） | 持倉中停牌點處理（第 9 章） |
+| 心態 | Tilt、偏誤、Paper → 真錢（L8） | 騙局同喊單群組（第 10 章） |
+| 驗證 | 回測、Walk-forward、Expectancy（L5） | 真錢準備度檢查、第一個月計劃（第 12 章） |
+
+:::warn 最大嘅缺口其實係練習量
+知識你已經有好多。真正嘅缺口係：**有冇用同一套規則做夠 50–100 筆模擬交易、有冇記錄、扣成本後係咪正數**。呢樣冇人可以幫你學，只可以自己做。
+:::
+
+[[quiz:l11-c2]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c3', num: '3', title: '香港交易者：揀券商同戶口', mins: 8,
+  summary: '揀證監會（SFC）持牌、有清晰投資者保障嘅券商；分清 Cash 同 Margin 戶口、新保證金規則；留意入金換匯成本同交易時間（香港半夜）。',
+  keywords: ['SFC', '投資者賠償基金', 'SIPC', 'Cash Account', 'Margin Account'],
+  md: `
+:::info 免責
+以下係一般資料，唔係法律、稅務或投資意見。規則同收費會變，開戶同交易前以券商同監管機構最新資料為準。
+:::
+
+## 3.1 揀券商：先查牌照
+
+| 要核對 | 點做 |
+|---|---|
+| 係咪持牌 | 喺**證監會（SFC）公眾紀錄冊**搜尋公司名，睇有冇第 1 類（證券交易）牌照 |
+| 你個戶口屬邊個實體 | 同一個品牌可能有香港實體同美國實體，保障同規則唔同 |
+| 投資者保障 | 香港：**投資者賠償基金**，每名投資者每間違責中介最高 **HK$500,000**；美國券商：**SIPC** 最高 US$500,000（其中現金 US$250,000） |
+| 收費 | 佣金、平台費、最低收費、換匯、提款費 |
+| 工具 | 盤前盤後交易、Bracket Order、實時數據價錢、穩定性 |
+
+> 保障只係券商倒閉時賠償，**唔包投資虧損**。
+
+:::warn 唔好喺冇牌照嘅平台交易
+特別係社交媒體、WhatsApp／Telegram 群組介紹嘅「交易平台」或者 App（第 10 章）。冇牌照，蝕咗或者被呃都好難追討。
+:::
+
+## 3.2 Cash 戶口定 Margin 戶口
+
+| | Cash 戶口 | Margin 戶口 |
+|---|---|---|
+| 做空 | **唔可以** | 可以（要借到股） |
+| 資金 | 只可以用已交收嘅錢（美股 T+1） | 有購買力，但有被追保證金風險 |
+| 日內交易限制 | 受交收限制，唔可以用未交收資金再買再賣（Good Faith Violation） | 受 PDT／FINRA 新日內保證金規則影響（見 Level 4 第 13 章） |
+| 新手建議 | 先用呢個學 Long | 確定需要做空先考慮 |
+
+[[link:c/l4-c13|📖 溫習：Level 4 第 13 章]]
+
+## 3.3 入金、換匯同交易時間
+
+- 港元換美元有**匯差**；部分券商收換匯費或電匯費 —— 入金一次換夠，唔好每次小額換。
+- 美股時間係**香港半夜**：冬令 22:30–05:00、夏令 21:30–04:00。開市推動喺頭 30 分鐘，即係香港 22:30–23:00（冬令）—— 只做開市頭一個鐘，然後休息，係對健康同家庭最可持續嘅安排（Level 8 第 8 章）。
+
+[[quiz:l11-c3]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c4', num: '4', title: '稅務：W-8BEN、股息預扣、香港稅、美國遺產稅', mins: 7,
+  summary: '開戶填 W-8BEN；美國對香港居民股息預扣 30%；資本增值一般唔使交美國稅；香港冇資本增值稅但頻繁交易有可能被當作業務；持有美國股票有美國遺產稅風險。',
+  keywords: ['W-8BEN', '預扣稅', '利得稅', '美國遺產稅'],
+  md: `
+:::info 免責
+稅務按個人情況而定。以下係一般概念，實際處理請問香港註冊會計師或者稅務顧問。
+:::
+
+| 項目 | 一般情況 | 對 Day Trader 嘅意思 |
+|---|---|---|
+| **W-8BEN** | 開美股戶口時填，證明你唔係美國稅務居民；一般有效到簽署後第三個公曆年年底 | 冇填，券商可能預扣更多稅；到期記得續 |
+| **股息預扣稅** | 美國同香港冇全面稅務協定，股息一般預扣 **30%** | Day Trade 唔過夜，通常收唔到股息；做空過除息日反而要**付**股息 |
+| **美國資本增值稅** | 非美國居民賣股票賺錢，一般**唔使**交美國稅（喺美國逗留 183 日以上等特殊情況除外） | 主要稅務問題喺香港 |
+| **香港稅** | 香港冇資本增值稅；但如果交易頻密到被視為**經營業務**（稅務局睇交易頻率、持有時間、資金來源、組織程度等），利潤有機會要交**利得稅** | 全職、高頻 Day Trade 要問專業意見，同保留完整紀錄 |
+| **美國遺產稅** | 非美國居民持有美國資產（例如美國股票）總值超過 **US$60,000**，身故時有機會要交美國遺產稅，最高 40% | Day Trade 平倉後主要係現金；但如果你長期持有大量美股，要提早了解 |
+
+:::key 紀錄要做足
+App 嘅交易日誌有「匯率」欄：每筆記低日期、股數、價錢、手續費、USD 盈虧同當日匯率。年尾連同券商月結單、年結單一齊保存。
+:::
+
+[[quiz:l11-c4]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c5', num: '5', title: '交易成本：計成 R 先知幾貴', mins: 7,
+  summary: '佣金、平台費、監管費、滑價、換匯、借貨費、數據費加埋，可以食掉細小嘅 Edge。用 R 計：每筆成本佔 1R 幾多？',
+  keywords: ['成本', '佣金', '滑價', 'Expectancy'],
+  md: `
+## 5.1 成本清單
+
+| 成本 | 幾時收 | 備註 |
+|---|---|---|
+| 佣金／平台費 | 每次買、每次賣 | 有最低收費：細單比例好貴 |
+| 監管費（SEC fee、FINRA TAF） | 只喺**賣出**（包括沽空開倉）收 | 金額細，但每筆都有 |
+| **滑價** | 每次入場出場 | 開市頭幾分鐘、Spread 闊嘅股最嚴重 |
+| 借貨費 | 做空過夜（日內通常少，難借股例外） | Hard-to-borrow 可以好貴 |
+| 換匯 | 入金出金 | 一次過換 |
+| 數據費 | 每月 | 實時全市場數據、Level 2 |
+
+## 5.2 試吓計
+
+[[widget:l11-cost]]
+
+:::warn 細戶口嘅陷阱
+每筆風險 $50、最低佣金每邊 $1、滑價每股 $0.02 × 30 股 × 2 邊 —— 成本已經係 $3.20，即係 **6.4% R**。如果你嘅策略每筆平均只賺 0.1R，扣成本後幾乎冇嘢。所以：**少啲交易、揀好嘅交易**，比每日做好多單重要。
+:::
+
+[[quiz:l11-c5]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c6', num: '6', title: '數據、平台同斷線後備', mins: 6,
+  summary: '免費報價好多時唔係全市場數據或者有延遲；報告數據延遲 16 分鐘；落單前以券商實時報價為準；預先準備斷線、券商故障嘅應對方法。',
+  keywords: ['實時數據', 'Consolidated', 'Cboe One', '斷線'],
+  md: `
+## 6.1 你見到嘅價錢係咪真係最新？
+
+| 來源 | 常見情況 |
+|---|---|
+| 每日選股報告 | 全市場 SIP 數據，但**延遲 16 分鐘**（免費 Alpaca 方案） |
+| TradingView 免費版 | 好多時顯示 **Cboe One** 或者部分交易所數據（Level 10 個嵌入圖就係），唔係完整全市場 |
+| 券商免費報價 | 可能係非整合（Non-consolidated）數據；全市場實時報價可能要每月訂閱 |
+| Level 2 | 通常要額外訂閱 |
+
+:::key 規則
+**落單前以券商嘅實時 Bid／Ask 為準**。報告同 TradingView 嘅數字係用嚟計劃，唔係用嚟落單。兩邊差幾仙好正常；差好遠就先停一停，搞清楚原因。
+:::
+
+## 6.2 電腦定手機？
+
+- 開市推動要快：建議用**電腦**落單，手機做後備。
+- 預先喺落單畫面填好股數同 Bracket（Entry + Stop + Target），觸發時只需要確認。
+- 有經驗之後先考慮熱鍵（Hotkeys），新手容易撳錯。
+
+## 6.3 斷線／故障後備
+
+:::steps
+1. 每次入場**即刻**有 Stop 單喺券商伺服器（Bracket），唔好靠自己心算止蝕。
+2. 手機 App 登入好、行動數據開住，電腦斷線即轉手機。
+3. 存低券商電話交易熱線。
+4. 平台出事、報價唔郁：**唔好加倉、唔好開新倉**，先處理現有倉位。
+:::
+
+[[quiz:l11-c6]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c7', num: '7', title: '盤前同開市落單實務', mins: 8,
+  summary: '盤前通常只接受 Limit 單，要剔「盤前盤後／Outside RTH」；Stop 單喺盤前可能唔會觸發；開市頭幾分鐘 Spread 闊、滑價大；入場即刻掛 Bracket。',
+  keywords: ['Outside RTH', 'Limit Order', 'Bracket', 'Opening'],
+  md: `
+## 7.1 盤前落單
+
+| 要留意 | 原因 |
+|---|---|
+| 多數券商盤前**只接受 Limit 單** | 盤前流動性低，Market 單可能成交喺好差嘅價 |
+| 要剔「允許盤前盤後成交」（IBKR：Outside RTH；其他券商叫「盤前盤後」） | 唔剔，張單要等 09:30 先生效 |
+| **Stop 單喺盤前可能唔觸發** | 好多券商嘅 Stop 預設只喺正常時段觸發；盤前持倉即係冇保護 |
+| 數量細啲 | 盤前掛單少，大單會推郁價格 |
+
+:::warn 新手建議：唔做盤前
+我哋嘅主力 Setup 係 **09:35 之後**嘅開市推動，盤前唔需要入場。盤前只係用嚟睇、畫線、計劃。
+:::
+
+## 7.2 開市頭 5 分鐘
+
+- 09:30 開市競價之後，頭一兩分鐘 Spread 好闊、價格亂跳 —— 所以我哋規定 **09:35 之後**先入場。
+- 用 **Limit 單（Marketable Limit）**：例如做多觸發價 $50.00，掛 Limit $50.05，限制最多追 5 仙；成交唔到就放棄。
+- **入場即刻掛 Bracket**：Stop + Target 同時生效。
+
+## 7.3 落單前 30 秒檢查
+
+[[check:l11-order]]
+
+## 7.4 滑價同跳空穿 Stop
+
+Stop 觸發 ≠ 成交喺 Stop 價。急跌、停牌復牌、消息公布時，成交價可以差好遠。所以每筆風險要預留緩衝，唔好將「理論上蝕 1R」當成「最多蝕 1R」。
+
+[[quiz:l11-c7]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c8', num: '8', title: '報告入面嘅 Short：你做唔做到？', mins: 7,
+  summary: 'Cash 戶口唔可以做空；跌 10% 以上嘅股通常觸發 SSR，只可以喺 Bid 之上沽；要借到股、可能有借貨費。新手 Cash 戶口：只做報告入面嘅 Long。',
+  keywords: ['做空', 'SSR', 'Locate', '反向 ETF'],
+  md: `
+每日報告好多時有一半以上係 **Short**（例如大市偏淡、業績差嘅日子）。真錢之前要搞清楚：
+
+| 問題 | 答案 |
+|---|---|
+| Cash 戶口可唔可以做空？ | **唔可以** |
+| Margin 戶口一定做到？ | 要有做空權限，而且券商要**借到股（Locate）**；熱門股通常借到，細價股可能借唔到或者借貨費好貴 |
+| 跳空跌 10% 以上嘅股？ | 通常觸發 **SSR**（Rule 201）：當日同下一個交易日，只可以喺高過最佳買價（Bid）嘅價位沽空 —— 唔可以「追沽」，成交會慢、會差 |
+| 虧損上限？ | 理論上冇上限（股價可以一直升） |
+
+:::key 例子：報告入面嘅大跌股
+例如 QCOM −10.5%、INTC −25%、GOOGL −11% —— 呢類股好大機會受 SSR 限制。報告寫「跌穿盤前低沽空」，但 SSR 下你只可以掛單等反彈成交，可能根本入唔到，或者入到已經唔係計劃嘅價。
+:::
+
+## 8.1 Cash 戶口可以點？
+
+| 方法 | 評估 |
+|---|---|
+| **只做報告入面嘅 Long** | ✅ 最簡單，新手首選 |
+| 反向／槓桿 ETF（例如 SQQQ、單一股票反向 ETF） | ⚠️ 有槓桿同每日重設嘅損耗，走勢同正股唔完全一樣，唔建議新手 |
+| 買 Put 期權 | ⚠️ 期權有時間值、引伸波幅風險，係另一門學問，唔喺本課程範圍 |
+
+[[link:c/l7-c7|📖 溫習：Level 7 第 7 章做空]]
+
+[[quiz:l11-c8]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c9', num: '9', title: '停牌、熔斷同持倉中出事', mins: 6,
+  summary: 'LULD 暫停 5 分鐘、消息停牌可以停好耐、大市熔斷 7%／13%／20%。持倉中停牌：唔好慌，復牌可能跳空；所以倉位要細、唔好揸過夜。',
+  keywords: ['LULD', 'Trading Halt', 'Circuit Breaker', '跳空'],
+  md: `
+| 情況 | 點樣發生 | 要知 |
+|---|---|---|
+| **LULD 暫停** | 股價短時間郁出指定範圍（大型股約 5%、其他約 10%；開市頭 15 分鐘同收市前 25 分鐘範圍加倍） | 暫停大約 5 分鐘，之後重新競價；細價股、急升股成日發生 |
+| **消息停牌** | 公司有重大消息待公布 | 可以停幾分鐘到幾日；復牌價可以差好遠 |
+| **大市熔斷** | S&P 500 由昨收跌 7% 或 13%（15:25 前）暫停 15 分鐘；跌 20% 停市至收市 | 極少發生，但出現時所有股票都停 |
+
+## 9.1 持倉中停牌點算？
+
+:::steps
+1. **唔好慌、唔好亂撳**：停牌期間你嘅單通常唔會成交。
+2. 睇新聞：點解停？好消息定壞消息？
+3. 預咗復牌會跳空：你嘅 Stop 可能以好差嘅價成交。
+4. 復牌頭幾分鐘 Spread 好闊，用 Limit 單出場。
+5. 事後記錄：呢筆蝕咗幾多 R，係咪因為揀咗太細價、太波動嘅股？
+:::
+
+:::warn 預防勝於處理
+避開低流通、細價、急升嘅「Warrior 類」股（報告標「高風險」嗰啲）；Day Trade **一定唔揸過夜**，尤其收市後有業績、週五、假期前。
+:::
+
+[[quiz:l11-c9]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c10', num: '10', title: '騙局、喊單群組同細價股陷阱', mins: 7,
+  summary: '「老師帶單」、WhatsApp／Telegram 群組、保證回報、冇牌平台、細價股 Pump and Dump、增發攤薄。識別紅旗，只用持牌券商，唔跟陌生人入市。',
+  keywords: ['Pump and Dump', '喊單', '冇牌平台', '攤薄'],
+  md: `
+## 10.1 常見騙局
+
+| 騙局 | 點運作 |
+|---|---|
+| **喊單群組／「老師帶單」** | 先用幾單「贏」建立信任，再叫成班人買同一隻細價股，佢哋高位沽出（Pump and Dump） |
+| **冇牌交易平台／App** | 畫面顯示你賺錢，但提唔到款，或者要你再「交稅」「交保證金」先放款 |
+| **投資愛情騙局** | 網上識嘅「朋友」教你用某個平台交易 |
+| **假冒名人／假新聞** | 用名人樣貌或者假新聞截圖推介股票 |
+
+## 10.2 紅旗清單
+
+[[check:l11-scam]]
+
+## 10.3 細價股嘅合法陷阱
+
+就算唔係騙局，細價急升股都有特別風險：
+
+| 風險 | 線索 |
+|---|---|
+| **增發攤薄** | SEC 文件 S-1、S-3、424B（報告會列出）；升完之後公司趁高位發新股 |
+| **ATM 發行** | 公司隨時喺市場賣新股，股價好難升 |
+| **合股（Reverse Split）** | 股價太低先合股，之後經常再跌 |
+| **流通股極少** | 少量買賣就大上大落，Spread 闊、成日停牌 |
+
+:::key 報告點保護你
+報告嘅「避開」名單同「高風險」標籤，就係根據呢啲線索：流通股少過 3,000 萬、$5 以下、Spread 闊、有增發文件。新手**完全唔使掂呢類股**。如果懷疑騙局，可以向證監會或者警方反詐騙熱線查詢。
+:::
+
+[[quiz:l11-c10]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c11', num: '11', title: '點樣正確用每日選股報告', mins: 6,
+  summary: '報告係候選名單，唔係買賣訊號：用券商實時報價核對、等觸發先入場、用自己嘅風險計股數、記錄每一筆、先 Paper 跟 20 個交易日。',
+  keywords: ['每日選股', '候選名單', '記錄'],
+  md: `
+:::steps
+1. **08:40（美東）前**打開報告：先睇大市傾向同事件時間，再睇總表。
+2. **揀 1–2 隻**：優先「適合新手」、Long（Cash 戶口）、9 個 Indicator 合格多嘅。
+3. **畫圖**：PMH／PML／PDH／PDL／PDC，加 Market Profile 位（Level 10 第 12 章）。
+4. **用自己嘅風險計股數**：報告顯示「每 $100 風險幾多股」，按你嘅 R 比例調整。
+5. **設警報**，09:35 前唔郁。
+6. **等觸發條件全部符合**：價格穿位、成交量夠、VWAP／EMA 9 方向啱；唔符合就唔做。
+7. **入場即刻掛 Bracket**。
+8. **收市後記錄**：喺報告每隻股下面揀「📄 模擬做咗」或者「💵 真倉做咗」，填結果 R 同筆記。
+:::
+
+:::warn 唔好做嘅事
+- 見到報告就開市即入（唔等觸發）；
+- 用報告嘅 Entry 價直接掛單，唔核對實時價；
+- 一日做晒全部 picks；
+- 報告寫「唔追」嘅情況仍然追入。
+:::
+
+## 11.1 用報告做 Forward Test
+
+先 **Paper 跟報告 20 個交易日**，每筆都記錄。20 日之後，喺「我的 → 統計」同第 1 章成績表比較：你自己揀嘅（有判斷）同報告全部（冇判斷），邊個好啲？呢個就係你嘅第一份真實數據。
+
+[[link:picks|📋 打開今日選股]]
+
+[[quiz:l11-c11]]
+`},
+/* ------------------------------------------------------------------ */
+{
+  id: 'l11-c12', num: '12', title: '真錢準備度檢查同第一個月計劃', mins: 10,
+  summary: '用 20 項自我評估睇自己欠咩；真錢第一個月：每筆風險 0.25–0.5%、每日最多 2 筆、每日最多蝕 2R、每週檢討、達唔到標準就返去 Paper。',
+  keywords: ['準備度', '第一個月', '風險上限'],
+  md: `
+## 12.1 自我評估（會儲存，隨時返嚟更新）
+
+[[widget:l11-ready]]
+
+## 12.2 第一個月真錢計劃
+
+[[check:l11-first-month]]
+
+## 12.3 升級同退回規則
+
+| 情況 | 做法 |
+|---|---|
+| 第一個月跟規則率 ≥ 90%，而且冇破每日上限 | 第二個月可以將每筆風險加到最多 0.5%（唔好一次加倍） |
+| 連續 2 星期蝕錢，但跟足規則 | 唔加風險；檢討係 Setup 問題定市況問題（Level 8 第 7 章） |
+| 有一次破咗每日上限、移 Stop、報復交易 | 停 2 日，返去 Paper 一星期 |
+| 本金跌 10% | 停真錢，返去 Paper，重新做準備度檢查 |
+
+:::key 最後一句
+Day Trade 嘅第一年，目標唔係賺大錢，而係：**保住本金、建立紀律、收集到足夠數據去知道自己有冇 Edge**。做到呢三樣，先有資格講下一步。
+:::
+
+## 12.4 Level 11 畢業測驗
+
+[[quiz:l11-final]]
+
+[[link:map|🗺️ 睇你嘅學習地圖同證書]]
+`},
+  ],
+});
+
+Object.assign(window.QUIZZES, {
+'l11-c1': { title: '小測：現實檢查', questions: [
+  { q: '台灣大型研究發現，扣成本後能持續賺錢嘅日內交易者大約？', options: ['少過 1%', '大約 30%', '大約一半'], answer: 0, explain: 'Barber、Lee、Liu、Odean 嘅研究。' },
+  { q: '報告好多日「冇觸發」，代表？', options: ['報告失敗', '等確認先入場，冇好機會就唔做', '應該改做開市即入'], answer: 1, explain: '冇觸發即係冇蝕，係保護。' },
+  { q: '6–10 日嘅成績可唔可以證明有 Edge？', options: ['可以', '唔可以，樣本太少', '只要係正數就可以'], answer: 1, explain: '最少 20–30 日、50 筆以上先開始有參考價值。' },
+]},
+'l11-c2': { title: '小測：知識地圖', questions: [
+  { q: '真錢之前最大嘅缺口通常係？', options: ['識多幾個指標', '用同一套規則做夠模擬交易同記錄', '睇多啲新聞'], answer: 1, explain: '知識有，練習量同數據先係關鍵。' },
+  { q: 'Level 4 第 13 章嘅帳戶章節係邊個地方嘅版本？', options: ['香港', '加拿大', '新加坡'], answer: 1, explain: '香港版喺本 Level 第 3–4 章。' },
+]},
+'l11-c3': { title: '小測：券商同戶口', questions: [
+  { q: '點樣核對香港券商有冇牌？', options: ['睇 App 評分', '查證監會（SFC）公眾紀錄冊', '問群組'], answer: 1, explain: '睇有冇第 1 類（證券交易）牌照。' },
+  { q: '香港投資者賠償基金每名投資者最高賠償？', options: ['HK$150,000', 'HK$500,000', '全數'], answer: 1, explain: '只係券商違責時，唔包投資虧損。' },
+  { q: 'Cash 戶口可唔可以做空？', options: ['可以', '唔可以', '盤前可以'], answer: 1, explain: '做空要 Margin 戶口同借到股。' },
+]},
+'l11-c4': { title: '小測：稅務', questions: [
+  { q: '香港居民收美國股息，一般預扣幾多稅？', options: ['0%', '15%', '30%'], answer: 2, explain: '美港冇全面稅務協定。' },
+  { q: '非美國居民持有美國股票超過幾多，有美國遺產稅風險？', options: ['US$60,000', 'US$1,000,000', '冇限制'], answer: 0, explain: '最高 40%，長期持有大量美股要留意。' },
+  { q: '香港有冇資本增值稅？', options: ['有', '冇，但頻繁交易有機會被視為業務要交利得稅', '一定要交利得稅'], answer: 1, explain: '按個別情況，問專業意見。' },
+]},
+'l11-c5': { title: '小測：成本', questions: [
+  { q: '每筆風險 $50，成本 $3.20，等於幾多 R？', options: ['0.064R', '0.64R', '3.2R'], answer: 0, explain: '3.20 ÷ 50 = 6.4% R。' },
+  { q: 'SEC fee 喺幾時收？', options: ['買入', '賣出（包括沽空開倉）', '每日'], answer: 1, explain: '只喺賣出收。' },
+  { q: '細戶口減少成本影響最有效嘅方法？', options: ['多做單', '少做單、揀好嘅單', '用 Market 單'], answer: 1, explain: '最低佣金令細單比例好貴。' },
+]},
+'l11-c6': { title: '小測：數據同後備', questions: [
+  { q: '落單前應該以邊個價錢為準？', options: ['報告', 'TradingView 免費圖', '券商實時 Bid／Ask'], answer: 2, explain: '報告延遲 16 分鐘，免費圖可能唔係全市場數據。' },
+  { q: '電腦突然斷線，第一件事？', options: ['開新倉', '轉手機處理現有倉位', '等佢自己好'], answer: 1, explain: '所以入場時要有 Bracket Stop 喺伺服器。' },
+]},
+'l11-c7': { title: '小測：盤前同開市落單', questions: [
+  { q: '盤前多數券商接受咩單？', options: ['Market', 'Limit', '任何'], answer: 1, explain: '要剔允許盤前盤後成交。' },
+  { q: '盤前持倉，Stop 單一定會觸發？', options: ['一定', '唔一定，好多券商 Stop 只喺正常時段觸發', '只喺週五'], answer: 1, explain: '盤前持倉可能冇保護。' },
+  { q: '做多觸發價 $50.00，Marketable Limit 例子？', options: ['Limit $50.05', 'Market', 'Limit $49.00'], answer: 0, explain: '限制最多追 5 仙，成交唔到就放棄。' },
+]},
+'l11-c8': { title: '小測：做空限制', questions: [
+  { q: '股價由昨收跌 10% 以上，通常會觸發？', options: ['LULD', 'SSR（只可以喺 Bid 之上沽空）', '熔斷'], answer: 1, explain: 'Rule 201：當日同下一個交易日。' },
+  { q: 'Cash 戶口新手，報告入面嘅 Short 點處理？', options: ['用反向 ETF 代替', '只做報告嘅 Long', '借朋友戶口'], answer: 1, explain: '反向／槓桿 ETF 有損耗，唔建議新手。' },
+]},
+'l11-c9': { title: '小測：停牌', questions: [
+  { q: 'LULD 暫停一般幾耐？', options: ['大約 5 分鐘', '一日', '一個鐘'], answer: 0, explain: '之後重新競價。' },
+  { q: '持倉中停牌，復牌時最大風險？', options: ['跳空，Stop 以好差價成交', '冇風險', '一定升'], answer: 0, explain: '所以倉位要細、唔揸過夜。' },
+]},
+'l11-c10': { title: '小測：騙局', questions: [
+  { q: '「老師帶單」叫成班人買同一隻細價股，最可能係？', options: ['慈善', 'Pump and Dump', '正常研究'], answer: 1, explain: '佢哋高位沽出。' },
+  { q: '平台顯示你賺錢，但要你「先交稅」先可以提款？', options: ['正常', '典型騙局紅旗', '要交多啲'], answer: 1, explain: '持牌券商唔會咁做。' },
+  { q: 'SEC 文件 424B 出現喺急升細價股，代表？', options: ['可能增發攤薄', '一定升', '公司派息'], answer: 0, explain: '報告會列出呢類文件。' },
+]},
+'l11-c11': { title: '小測：用報告', questions: [
+  { q: '報告嘅 picks 係？', options: ['買賣訊號', '候選名單，要等觸發', '保證賺錢'], answer: 1, explain: '冇觸發就唔做。' },
+  { q: '用報告之前，建議先？', options: ['即刻真錢', 'Paper 跟 20 個交易日並記錄', '只睇唔記錄'], answer: 1, explain: '呢個係你第一份真實數據。' },
+]},
+'l11-final': { title: 'Level 11 畢業測驗', final: true, questions: [
+  { q: '你有 HK$80,000，想開始真錢 Day Trade。第一個月每筆風險建議？', options: ['本金 0.25–0.5%', '本金 5%', '全倉'], answer: 0, explain: '大約 HK$200–400（約 US$25–50）一筆。' },
+  { q: '報告有 4 隻 Short、1 隻 Long，你係 Cash 戶口。應該？', options: ['做晒 5 隻', '只考慮嗰隻 Long，Short 只觀察', '開 Margin 即做'], answer: 1, explain: 'Cash 戶口唔可以做空。' },
+  { q: 'INTC 跳空跌 25%，報告寫「跌穿盤前低沽空」。Margin 戶口最大執行問題？', options: ['SSR：只可以喺 Bid 之上沽，未必入到', '冇問題', '一定借唔到'], answer: 0, explain: '計劃價同實際成交可能差好遠。' },
+  { q: '每筆風險 $40，來回成本 $2.80，策略未計成本 Expectancy +0.1R。扣成本後？', options: ['+0.03R', '+0.10R', '−0.5R'], answer: 0, explain: '2.80 ÷ 40 = 0.07R；0.1 − 0.07 = 0.03R。' },
+  { q: '盤前 08:00 你想買入，券商唔接 Market 單。應該？', options: ['用 Limit 單兼剔盤前盤後成交——或者乾脆等 09:35', '一直重試 Market', '叫券商改規則'], answer: 0, explain: '主力 Setup 係 09:35 之後。' },
+  { q: '持倉中股票停牌（消息待公布），你應該？', options: ['不停撳賣出', '睇新聞、預咗復牌跳空、復牌用 Limit 出場', '加倉'], answer: 1, explain: '停牌期間單通常唔會成交。' },
+  { q: 'WhatsApp 群組「老師」話保證每月 20% 回報，叫你用佢介紹嘅 App。', options: ['試少少', '典型騙局，唔好參與', '問佢拎截圖'], answer: 1, explain: '保證回報、冇牌平台都係紅旗。' },
+  { q: '你長期持有 US$100,000 美股，最容易忽略嘅稅務風險？', options: ['美國資本增值稅', '美國遺產稅（非美國居民超過 US$60,000）', '香港印花稅'], answer: 1, explain: '問專業意見，提早規劃。' },
+  { q: '跟報告 Paper 咗 8 日，累計 +3R。可唔可以即刻加大真錢？', options: ['可以', '唔可以，樣本太少，繼續到 20 日以上並計成本', '可以加倍'], answer: 1, explain: '短期結果可以係運氣。' },
+  { q: '真錢第一個月破咗每日上限，仲報復交易。按計劃？', options: ['繼續', '停 2 日，返去 Paper 一星期', '加大注碼追返'], answer: 1, explain: '紀律比單日盈虧重要。' },
+]},
+});
+Object.assign(window.CHECKLISTS, {
+'l11-order': { title: '落單前 30 秒檢查', resettable: true, items: [
+  '價格係券商實時報價（唔係報告或者免費圖）',
+  '觸發條件全部符合：穿位、成交量、VWAP／EMA 9 方向',
+  '股數 = 風險 ÷ 每股風險，冇超過現金',
+  '用 Limit（Marketable Limit），寫低最多追幾多',
+  'Bracket：Stop 同 Target 已經填好',
+  '已經 09:35 之後；唔係喺消息公布嗰一刻',
+  '今日未到每日虧損上限同最多交易次數',
+  '心情正常：唔係報復上一筆',
+]},
+'l11-scam': { title: '騙局紅旗', items: [
+  '保證回報、穩賺、「零風險」',
+  '要你喺 WhatsApp／Telegram／Discord 群組跟單',
+  '介紹你用冇聽過嘅交易 App 或者網站',
+  '證監會紀錄冊搵唔到嗰間公司',
+  '提款要先交「稅」「手續費」「保證金」',
+  '催你即刻入市、「名額有限」',
+  '推介細價股、低流通股，話「即將爆升」',
+  '網上新朋友主動教你投資',
+]},
+'l11-first-month': { title: '第一個月真錢計劃', items: [
+  '每筆風險：本金 0.25–0.5%（寫低金額）',
+  '每日最多 2 筆交易',
+  '每日最多蝕 2R，到咗即停',
+  '只做 1 個 Setup（開市推動），只做報告「適合新手」或者 A 級、Long（Cash 戶口）',
+  '只喺 09:35–10:30 交易，之後休息',
+  '每筆入場即刻掛 Bracket',
+  '每筆記錄：截圖、R、有冇跟規則、情緒',
+  '每週日做週檢討（Level 8 第 4 章）',
+  '月尾計：跟規則率、扣成本 Expectancy、最大回撤',
+]},
+});
+window.GLOSSARY.push(
+  { term: 'W-8BEN', zh: '外國人稅務身份表格', def: '非美國人士向美國券商證明稅務身份嘅表格；一般有效到簽署後第三個公曆年年底。', lv: 'l11' },
+  { term: 'Withholding Tax', zh: '預扣稅', def: '美國向非美國居民嘅股息預先扣稅；香港居民一般 30%。', lv: 'l11' },
+  { term: 'US Estate Tax (NRA)', zh: '美國遺產稅（非美國居民）', def: '非美國居民持有美國資產超過 US$60,000，身故時有機會要交美國遺產稅，最高 40%。', lv: 'l11' },
+  { term: 'SFC', zh: '證券及期貨事務監察委員會', def: '香港證券市場監管機構；可以喺佢嘅公眾紀錄冊查券商牌照。', lv: 'l11' },
+  { term: 'Investor Compensation Fund', zh: '投資者賠償基金', def: '香港持牌中介違責時賠償投資者，每名投資者最高 HK$500,000；唔包投資虧損。', lv: 'l11' },
+  { term: 'SIPC', zh: '美國證券投資者保護公司', def: '美國券商倒閉時保障客戶資產，最高 US$500,000（現金 US$250,000）；唔包投資虧損。', lv: 'l11' },
+  { term: 'Good Faith Violation', zh: '未交收資金違規', def: 'Cash 戶口用未交收嘅賣出資金買入，再喺資金交收前賣出；可能被券商限制交易。', lv: 'l11' },
+  { term: 'Outside RTH', zh: '允許盤前盤後成交', def: '落單時嘅設定，容許張單喺 04:00–09:30、16:00–20:00 生效；唔剔就等正常時段。', lv: 'l11' },
+  { term: 'Marketable Limit', zh: '可即時成交嘅限價單', def: '掛喺略高（買）或略低（賣）過現價嘅 Limit 單，限制最大滑價。', lv: 'l11' },
+  { term: 'Locate', zh: '借股確認', def: '做空前券商確認借到股票；細價股、熱門沽空股可能借唔到。', lv: 'l11' },
+  { term: 'Pump and Dump', zh: '谷高散貨', def: '集體推介細價股令股價急升，主事人高位沽出，跟風者被套。', lv: 'l11' },
+  { term: 'ATM Offering', zh: '市價增發', def: 'At-the-market：公司隨時喺市場以市價發行新股，令股價受壓。', lv: 'l11' },
+  { term: 'Reverse Split', zh: '合股', def: '將多股合併成一股，令股價表面上升；常見於股價太低嘅公司。', lv: 'l11' },
+);

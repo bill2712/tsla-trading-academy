@@ -820,6 +820,10 @@ Paper Trading 成交模擬唔一定同真實市場流動性完全一致。歷史
   summary: 'Cash vs Margin、PDT 規則轉變、T+1 結算、報價數據來源、Paper Trading 延遲、加拿大稅務。',
   keywords: ['IBKR', 'PDT', 'T+1', 'NBBO', 'CRA', 'TFSA'],
   md: `
+:::info 香港交易者
+呢章用加拿大做例子。香港戶口、稅務（W-8BEN、股息預扣、美國遺產稅）同投資者保障，請睇 Level 11 第 3–4 章。
+:::
+
 因為你主要研究美股 TSLA，而且考慮使用 IBKR，呢章講實際帳戶層面。呢部分同前面純技術教學唔同，涉及平台規定及稅務，**所以必須根據實際帳戶同最新政策核對**。
 
 ## 13.1 Cash Account 同 Margin Account 有乜分別？

@@ -642,6 +642,8 @@ TradingView Screener 入面嘅「Relative Volume」通常只計正常時段，**
 [[check:l10-grad]]
 
 [[link:picks|📋 去今日選股，用 Chart 準備第一隻]]
+
+[[link:level/l11|➡️ 下一課：Level 11 真錢之前]]
 `},
   ],
 });
