@@ -400,6 +400,7 @@
     l8: '由學生變交易者：計劃書、每日流程、進階檢討、心理偏誤、升級階梯、策略衰退同可持續交易，最後完成畢業專題。',
     l11: '真錢之前最後一課：誠實睇現實數據同每日報告成績，補香港帳戶、稅務、遺產稅、成本、實時數據、盤前落單、做空限制、停牌同騙局，最後做準備度檢查同訂第一個月計劃。',
     l12: '補返「Notes 同真圖差好遠」：用練習圖同真實 Alpaca 圖練 Swing 點、斜線、Lower High 沽空、突破同 Retest；用真實數據睇清楚 Gap 幾多會延續，再練 100 張圖。',
+    l13: '解決「開市要睇咁多嘢、計咁多數」：開市前用計劃表計好股數同警報，開市只核對三樣嘢；學識 IBKR Bracket Order（TWS、IBKR Desktop、手機）、Stop Limit 突破入場、Presets、Hotkeys 同一日交易節奏。',
     l10: '圖表點用：將 TradingView 設定成 Day Trade 用嘅樣 —— New York 時區、Extended Hours 同盤前背景、Session Breaks、日線／15m／5m、VWAP 同 EMA 9、畫 PMH／PDH、Position 工具、警報同 Bar Replay。',
     l9: '進修專題：Mark Minervini 嘅 VCP。睇突破之前嘅收縮 —— T1/T2/T3、量縮、Pivot、Stage 2，再分開研究日線同 5 分鐘版本，最後用真實數據回測。',
     qa: '你曾經問過嘅實戰問題：S/R 點畫、Zone 幾闊、Stop 放邊、點解 Replay 搵唔到 Entry。',

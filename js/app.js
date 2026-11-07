@@ -1340,7 +1340,7 @@
       const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南', sim: '模擬交易練習場', map: '學習地圖', cert: '證書', lab: '回測實驗室', edge: '我有冇 Edge？', research: '研究板' };
       document.title = (titles[r] ? titles[r] + '｜' : '') + 'TSLA Day Trading 學院';
       if (r === 'toc') renderFullTOC();
-      else if (r === 'tools') renderTools(parts[1]);
+      else if (r === 'tools') renderTools(parts[1] && parts[1].split('?')[0]);
       else if (r === 'replay') renderReplay(parts[1]);
       else if (r === 'quiz') renderQuizCenter(parts[1]);
       else if (r === 'cards') renderCards();

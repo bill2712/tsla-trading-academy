@@ -1337,3 +1337,22 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .l12-prog i { display: block; height: 100%; background: #7c3aed; }
 .l12-log { margin: 6px 0; padding-left: 18px; font-size: .88em; }
 .l12-log li { margin: 3px 0; }
+
+/* ---------- Level 13：落盤效率工具 ---------- */
+.tq-set { margin: 0 0 10px; padding: 8px 10px; border-radius: 12px; background: var(--bg-soft); font-size: .9em; }
+.tq-set summary { cursor: pointer; font-weight: 600; }
+.tq-set .tool-grid { margin-top: 8px; }
+.tq-ticket { margin: 10px 0; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); }
+.tq-ticket-h { font-weight: 700; margin-bottom: 6px; }
+.tq-ticket ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.tq-ticket li { line-height: 1.45; overflow-wrap: anywhere; }
+.tq-ticket li > span { display: block; font-size: .78em; color: var(--muted); font-weight: 700; }
+.tq-head { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 6px 0; font-size: .9em; }
+.tq-head select { height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); padding: 0 8px; }
+.tq-hl { font-size: .88em; margin: 4px 0 8px; color: var(--muted); }
+.tq-t td, .tq-t th { white-space: nowrap; }
+.tq-t tr.tq-off { opacity: .45; }
+.tq-pre { white-space: pre-wrap; font-size: .85em; margin: 0 0 6px; padding: 8px; border-radius: 8px; background: var(--bg-soft); overflow-wrap: anywhere; }
+.pk-tk { margin: 8px 0 0; }
+.pk-tk .btn { white-space: normal; max-width: 100%; text-align: left; }
+@media print { .tq-set, .tq-ticket button, .tq-head select { display: none !important; } }
