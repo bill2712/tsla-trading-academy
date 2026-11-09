@@ -1,6 +1,31 @@
 {
- "updated": "2026-11-06T13:19:48.315Z",
+ "updated": "2026-11-09T13:19:27.297Z",
  "days": [
+  {
+   "date": "2026-11-09",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏好（大市升，NVDA 個別弱）",
+   "headline": "大市期貨升約 1%，但 NVDA 盤前跌 4.9%（董事會調查 CEO 黃仁勳），RVOL 9.1、成交最大。今日只有 2 隻合格：沽空 NVDA（Cash 戶口唔做得）、做多 A",
+   "n": 2,
+   "top": [
+    {
+     "sym": "NVDA",
+     "gapPct": -4.91,
+     "rvol": 9.13,
+     "beginner": "高風險",
+     "grade": "B"
+    },
+    {
+     "sym": "AVGO",
+     "gapPct": 3.49,
+     "rvol": 2.34,
+     "beginner": "中等",
+     "grade": "C"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-11-06",
    "version": 3,
@@ -45,7 +70,7 @@
      "grade": "C"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-11-05",
