@@ -1,0 +1,739 @@
+{
+ "generatedAt": "2026-11-10T05:01:24.005Z",
+ "from": "2024-01-01",
+ "to": "2026-11-06",
+ "universe": [
+  "TSLA",
+  "NVDA",
+  "AAPL",
+  "AMD",
+  "META",
+  "AMZN",
+  "MSFT",
+  "GOOGL",
+  "AVGO",
+  "NFLX",
+  "PLTR",
+  "COIN",
+  "MU",
+  "SMCI",
+  "MSTR",
+  "HOOD",
+  "ARM",
+  "INTC",
+  "ORCL",
+  "CRM",
+  "ADBE",
+  "SHOP",
+  "UBER",
+  "ABNB",
+  "SNOW",
+  "CRWD",
+  "PANW",
+  "NET",
+  "DDOG",
+  "MRVL",
+  "QCOM",
+  "LRCX",
+  "AMAT",
+  "ROKU",
+  "PYPL",
+  "RIVN",
+  "SOFI",
+  "AFRM",
+  "UPST",
+  "BABA",
+  "PDD",
+  "DIS",
+  "BA",
+  "NKE",
+  "SBUX",
+  "LLY",
+  "UNH",
+  "CVNA",
+  "DKNG",
+  "RBLX"
+ ],
+ "source": "Alpaca SIP 5 分鐘 K 線（正常交易時段）",
+ "daysAll": 34868,
+ "daysInPlay": 7519,
+ "rules": {
+  "inPlay": "Gap ≥ 2% 或者首 5 分鐘成交 ≥ 過去 20 日平均 2 倍",
+  "exit": "Target 2R；同一支 K 掂 Stop 同 Target 當 Stop；冇到就收市平倉",
+  "cost": "avgRCost = 平均 R 減 0.05R（大約嘅佣金同滑價）",
+  "qqq": "入場訊號嗰刻 QQQ 喺自己嘅 VWAP 同方向（做多：QQQ 喺 VWAP 上面）"
+ },
+ "setups": {
+  "orb15": {
+   "name": "15 分鐘 ORB",
+   "all": {
+    "n": 5396,
+    "win": 46.5,
+    "target": 9.5,
+    "stop": 32.9,
+    "avgR": 0.03,
+    "avgRCost": -0.02
+   },
+   "long": {
+    "n": 2713,
+    "win": 47.1,
+    "target": 9.7,
+    "stop": 32.5,
+    "avgR": 0.04,
+    "avgRCost": -0.01
+   },
+   "short": {
+    "n": 2683,
+    "win": 45.8,
+    "target": 9.3,
+    "stop": 33.3,
+    "avgR": 0.01,
+    "avgRCost": -0.04
+   },
+   "qqqWith": {
+    "n": 3845,
+    "win": 47.4,
+    "target": 9.3,
+    "stop": 31.8,
+    "avgR": 0.04,
+    "avgRCost": -0.01
+   },
+   "qqqAgainst": {
+    "n": 1551,
+    "win": 44.2,
+    "target": 10.1,
+    "stop": 35.7,
+    "avgR": -0.01,
+    "avgRCost": -0.06
+   },
+   "gapWith": {
+    "n": 2629,
+    "win": 44.8,
+    "target": 9.5,
+    "stop": 34.8,
+    "avgR": 0,
+    "avgRCost": -0.05
+   },
+   "gapAgainst": {
+    "n": 2767,
+    "win": 48,
+    "target": 9.5,
+    "stop": 31.1,
+    "avgR": 0.05,
+    "avgRCost": 0
+   },
+   "years": {
+    "2024": {
+     "n": 1512,
+     "win": 45,
+     "target": 8.9,
+     "stop": 35,
+     "avgR": 0,
+     "avgRCost": -0.05
+    },
+    "2025": {
+     "n": 1951,
+     "win": 49.1,
+     "target": 11.8,
+     "stop": 33.6,
+     "avgR": 0.07,
+     "avgRCost": 0.02
+    },
+    "2026": {
+     "n": 1933,
+     "win": 45,
+     "target": 7.8,
+     "stop": 30.7,
+     "avgR": 0,
+     "avgRCost": -0.05
+    }
+   }
+  },
+  "orb30": {
+   "name": "30 分鐘 ORB",
+   "all": {
+    "n": 4330,
+    "win": 47.9,
+    "target": 5.3,
+    "stop": 24.2,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "long": {
+    "n": 2149,
+    "win": 48,
+    "target": 4.7,
+    "stop": 24.2,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "short": {
+    "n": 2181,
+    "win": 47.8,
+    "target": 5.9,
+    "stop": 24.2,
+    "avgR": 0.01,
+    "avgRCost": -0.04
+   },
+   "qqqWith": {
+    "n": 3332,
+    "win": 48.4,
+    "target": 5.2,
+    "stop": 23.4,
+    "avgR": 0.03,
+    "avgRCost": -0.02
+   },
+   "qqqAgainst": {
+    "n": 998,
+    "win": 46,
+    "target": 5.8,
+    "stop": 26.8,
+    "avgR": -0.02,
+    "avgRCost": -0.07
+   },
+   "gapWith": {
+    "n": 2085,
+    "win": 47.1,
+    "target": 5.4,
+    "stop": 25.1,
+    "avgR": 0.01,
+    "avgRCost": -0.04
+   },
+   "gapAgainst": {
+    "n": 2245,
+    "win": 48.6,
+    "target": 5.2,
+    "stop": 23.3,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "years": {
+    "2024": {
+     "n": 1211,
+     "win": 49.9,
+     "target": 5.3,
+     "stop": 23.4,
+     "avgR": 0.06,
+     "avgRCost": 0.01
+    },
+    "2025": {
+     "n": 1567,
+     "win": 50.3,
+     "target": 6.4,
+     "stop": 25.4,
+     "avgR": 0.04,
+     "avgRCost": -0.01
+    },
+    "2026": {
+     "n": 1552,
+     "win": 43.9,
+     "target": 4.2,
+     "stop": 23.6,
+     "avgR": -0.04,
+     "avgRCost": -0.09
+    }
+   }
+  },
+  "flag": {
+   "name": "開市推動後第一次回調（Bull／Bear Flag）",
+   "all": {
+    "n": 1166,
+    "win": 37.1,
+    "target": 27.7,
+    "stop": 59.3,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "long": {
+    "n": 580,
+    "win": 37.9,
+    "target": 28.3,
+    "stop": 59.3,
+    "avgR": 0.03,
+    "avgRCost": -0.02
+   },
+   "short": {
+    "n": 586,
+    "win": 36.3,
+    "target": 27.1,
+    "stop": 59.4,
+    "avgR": 0,
+    "avgRCost": -0.05
+   },
+   "qqqWith": {
+    "n": 803,
+    "win": 36.9,
+    "target": 27.4,
+    "stop": 58.9,
+    "avgR": 0.01,
+    "avgRCost": -0.04
+   },
+   "qqqAgainst": {
+    "n": 363,
+    "win": 37.7,
+    "target": 28.4,
+    "stop": 60.3,
+    "avgR": 0.03,
+    "avgRCost": -0.02
+   },
+   "gapWith": {
+    "n": 569,
+    "win": 36.7,
+    "target": 26.9,
+    "stop": 60.1,
+    "avgR": 0,
+    "avgRCost": -0.05
+   },
+   "gapAgainst": {
+    "n": 597,
+    "win": 37.5,
+    "target": 28.5,
+    "stop": 58.6,
+    "avgR": 0.03,
+    "avgRCost": -0.02
+   },
+   "years": {
+    "2024": {
+     "n": 327,
+     "win": 39.1,
+     "target": 30.3,
+     "stop": 56,
+     "avgR": 0.1,
+     "avgRCost": 0.05
+    },
+    "2025": {
+     "n": 356,
+     "win": 37.9,
+     "target": 27.2,
+     "stop": 59.6,
+     "avgR": 0.01,
+     "avgRCost": -0.04
+    },
+    "2026": {
+     "n": 483,
+     "win": 35.2,
+     "target": 26.3,
+     "stop": 61.5,
+     "avgR": -0.04,
+     "avgRCost": -0.09
+    }
+   }
+  },
+  "vwapPull": {
+   "name": "VWAP 回調（趨勢延續）",
+   "all": {
+    "n": 2301,
+    "win": 37.4,
+    "target": 24.3,
+    "stop": 57.9,
+    "avgR": -0.01,
+    "avgRCost": -0.06
+   },
+   "long": {
+    "n": 1177,
+    "win": 38.5,
+    "target": 23.2,
+    "stop": 56.3,
+    "avgR": 0,
+    "avgRCost": -0.05
+   },
+   "short": {
+    "n": 1124,
+    "win": 36.3,
+    "target": 25.4,
+    "stop": 59.6,
+    "avgR": -0.02,
+    "avgRCost": -0.07
+   },
+   "qqqWith": {
+    "n": 1322,
+    "win": 35.9,
+    "target": 22.8,
+    "stop": 58.5,
+    "avgR": -0.05,
+    "avgRCost": -0.1
+   },
+   "qqqAgainst": {
+    "n": 979,
+    "win": 39.4,
+    "target": 26.3,
+    "stop": 57.1,
+    "avgR": 0.04,
+    "avgRCost": -0.01
+   },
+   "gapWith": {
+    "n": 1112,
+    "win": 36.2,
+    "target": 24.9,
+    "stop": 59.4,
+    "avgR": -0.03,
+    "avgRCost": -0.08
+   },
+   "gapAgainst": {
+    "n": 1189,
+    "win": 38.5,
+    "target": 23.6,
+    "stop": 56.6,
+    "avgR": 0,
+    "avgRCost": -0.05
+   },
+   "years": {
+    "2024": {
+     "n": 650,
+     "win": 39.4,
+     "target": 26.6,
+     "stop": 56.6,
+     "avgR": 0.05,
+     "avgRCost": 0
+    },
+    "2025": {
+     "n": 857,
+     "win": 39.1,
+     "target": 24.6,
+     "stop": 56.6,
+     "avgR": 0.02,
+     "avgRCost": -0.03
+    },
+    "2026": {
+     "n": 794,
+     "win": 34,
+     "target": 21.9,
+     "stop": 60.5,
+     "avgR": -0.1,
+     "avgRCost": -0.15
+    }
+   }
+  },
+  "vwapReclaim": {
+   "name": "VWAP 收復（反轉）",
+   "all": {
+    "n": 3431,
+    "win": 44.1,
+    "target": 13.7,
+    "stop": 41.2,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "long": {
+    "n": 1873,
+    "win": 43.4,
+    "target": 14.1,
+    "stop": 41.6,
+    "avgR": 0,
+    "avgRCost": -0.05
+   },
+   "short": {
+    "n": 1558,
+    "win": 45,
+    "target": 13.3,
+    "stop": 40.8,
+    "avgR": 0.05,
+    "avgRCost": 0
+   },
+   "qqqWith": {
+    "n": 2033,
+    "win": 44.4,
+    "target": 13.9,
+    "stop": 40.8,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "qqqAgainst": {
+    "n": 1398,
+    "win": 43.6,
+    "target": 13.4,
+    "stop": 41.8,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "gapWith": {
+    "n": 1760,
+    "win": 44.3,
+    "target": 14.4,
+    "stop": 41,
+    "avgR": 0.04,
+    "avgRCost": -0.01
+   },
+   "gapAgainst": {
+    "n": 1671,
+    "win": 43.9,
+    "target": 13,
+    "stop": 41.4,
+    "avgR": 0.01,
+    "avgRCost": -0.04
+   },
+   "years": {
+    "2024": {
+     "n": 973,
+     "win": 43.8,
+     "target": 14.2,
+     "stop": 40.6,
+     "avgR": 0.04,
+     "avgRCost": -0.01
+    },
+    "2025": {
+     "n": 1218,
+     "win": 42.9,
+     "target": 14.8,
+     "stop": 44.5,
+     "avgR": 0,
+     "avgRCost": -0.05
+    },
+    "2026": {
+     "n": 1240,
+     "win": 45.6,
+     "target": 12.3,
+     "stop": 38.5,
+     "avgR": 0.03,
+     "avgRCost": -0.02
+    }
+   }
+  },
+  "r2g": {
+   "name": "Red-to-Green／Green-to-Red（穿昨收）",
+   "all": {
+    "n": 749,
+    "win": 51.3,
+    "target": 7.6,
+    "stop": 20.6,
+    "avgR": 0.1,
+    "avgRCost": 0.05
+   },
+   "long": {
+    "n": 340,
+    "win": 46.2,
+    "target": 6.8,
+    "stop": 22.9,
+    "avgR": 0.03,
+    "avgRCost": -0.02
+   },
+   "short": {
+    "n": 409,
+    "win": 55.5,
+    "target": 8.3,
+    "stop": 18.6,
+    "avgR": 0.15,
+    "avgRCost": 0.1
+   },
+   "qqqWith": {
+    "n": 597,
+    "win": 51.1,
+    "target": 7.5,
+    "stop": 19.3,
+    "avgR": 0.11,
+    "avgRCost": 0.06
+   },
+   "qqqAgainst": {
+    "n": 152,
+    "win": 52,
+    "target": 7.9,
+    "stop": 25.7,
+    "avgR": 0.06,
+    "avgRCost": 0.01
+   },
+   "gapWith": {
+    "n": 0
+   },
+   "gapAgainst": {
+    "n": 749,
+    "win": 51.3,
+    "target": 7.6,
+    "stop": 20.6,
+    "avgR": 0.1,
+    "avgRCost": 0.05
+   },
+   "years": {
+    "2024": {
+     "n": 192,
+     "win": 52.1,
+     "target": 6.3,
+     "stop": 22.9,
+     "avgR": 0.09,
+     "avgRCost": 0.04
+    },
+    "2025": {
+     "n": 230,
+     "win": 48.3,
+     "target": 11.7,
+     "stop": 20.9,
+     "avgR": 0.17,
+     "avgRCost": 0.12
+    },
+    "2026": {
+     "n": 327,
+     "win": 52.9,
+     "target": 5.5,
+     "stop": 19,
+     "avgR": 0.05,
+     "avgRCost": 0
+    }
+   }
+  },
+  "gapFade": {
+   "name": "Gap 失敗回落（Gap Fade）",
+   "all": {
+    "n": 1983,
+    "win": 44.3,
+    "target": 17.2,
+    "stop": 43.7,
+    "avgR": 0.05,
+    "avgRCost": 0
+   },
+   "long": {
+    "n": 946,
+    "win": 41.5,
+    "target": 14.7,
+    "stop": 46.1,
+    "avgR": -0.02,
+    "avgRCost": -0.07
+   },
+   "short": {
+    "n": 1037,
+    "win": 46.8,
+    "target": 19.5,
+    "stop": 41.5,
+    "avgR": 0.11,
+    "avgRCost": 0.06
+   },
+   "qqqWith": {
+    "n": 1606,
+    "win": 43.3,
+    "target": 16.3,
+    "stop": 44.8,
+    "avgR": 0.02,
+    "avgRCost": -0.03
+   },
+   "qqqAgainst": {
+    "n": 377,
+    "win": 48.3,
+    "target": 21,
+    "stop": 38.7,
+    "avgR": 0.17,
+    "avgRCost": 0.12
+   },
+   "gapWith": {
+    "n": 0
+   },
+   "gapAgainst": {
+    "n": 1983,
+    "win": 44.3,
+    "target": 17.2,
+    "stop": 43.7,
+    "avgR": 0.05,
+    "avgRCost": 0
+   },
+   "years": {
+    "2024": {
+     "n": 516,
+     "win": 48.4,
+     "target": 16.5,
+     "stop": 39.3,
+     "avgR": 0.1,
+     "avgRCost": 0.05
+    },
+    "2025": {
+     "n": 770,
+     "win": 44.9,
+     "target": 19.1,
+     "stop": 44.9,
+     "avgR": 0.08,
+     "avgRCost": 0.03
+    },
+    "2026": {
+     "n": 697,
+     "win": 40.5,
+     "target": 15.6,
+     "stop": 45.5,
+     "avgR": -0.03,
+     "avgRCost": -0.08
+    }
+   },
+   "fillRate": 52.7
+  },
+  "hodBreak": {
+   "name": "午市整固後突破 HOD／LOD",
+   "all": {
+    "n": 2554,
+    "win": 44.9,
+    "target": 14.3,
+    "stop": 38.4,
+    "avgR": 0.05,
+    "avgRCost": 0
+   },
+   "long": {
+    "n": 1335,
+    "win": 42.1,
+    "target": 11.7,
+    "stop": 40.8,
+    "avgR": -0.02,
+    "avgRCost": -0.07
+   },
+   "short": {
+    "n": 1219,
+    "win": 48.1,
+    "target": 17.1,
+    "stop": 35.8,
+    "avgR": 0.12,
+    "avgRCost": 0.07
+   },
+   "qqqWith": {
+    "n": 2020,
+    "win": 44.7,
+    "target": 14.8,
+    "stop": 37.9,
+    "avgR": 0.05,
+    "avgRCost": 0
+   },
+   "qqqAgainst": {
+    "n": 534,
+    "win": 45.9,
+    "target": 12.4,
+    "stop": 40.3,
+    "avgR": 0.04,
+    "avgRCost": -0.01
+   },
+   "gapWith": {
+    "n": 1256,
+    "win": 45.7,
+    "target": 15.6,
+    "stop": 37.5,
+    "avgR": 0.08,
+    "avgRCost": 0.03
+   },
+   "gapAgainst": {
+    "n": 1298,
+    "win": 44.2,
+    "target": 12.9,
+    "stop": 39.3,
+    "avgR": 0.01,
+    "avgRCost": -0.04
+   },
+   "years": {
+    "2024": {
+     "n": 783,
+     "win": 46,
+     "target": 14.4,
+     "stop": 37,
+     "avgR": 0.07,
+     "avgRCost": 0.02
+    },
+    "2025": {
+     "n": 922,
+     "win": 46.1,
+     "target": 14.6,
+     "stop": 39.9,
+     "avgR": 0.05,
+     "avgRCost": 0
+    },
+    "2026": {
+     "n": 849,
+     "win": 42.8,
+     "target": 13.7,
+     "stop": 38,
+     "avgR": 0.02,
+     "avgRCost": -0.03
+    }
+   }
+  }
+ }
+}

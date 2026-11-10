@@ -1,5 +1,44 @@
 /* Level 13：落盤效率 —— 注意力、開市前計劃、IBKR Bracket Order、Presets 同 Hotkeys、交易節奏 */
 window.COURSE = window.COURSE || [];
+window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
+
+/* 畫面佈局示意圖：MacBook + 2 個 Mon／2 個 Mon／1 個畫面 */
+(function () {
+  const PANES = {
+    chart5: ['📈 5 分鐘主圖', '最大、正前方：VWAP、EMA 9、PMH／PDH 線', 'c'],
+    chart15: ['🕒 15 分鐘圖', '睇結構同大位', 'c2'],
+    qqq: ['🌍 QQQ 5 分鐘', '大市方向', 'q'],
+    order: ['⚡ IBKR 落單窗', 'Order Entry（Bracket）', 'o'],
+    pos: ['📋 持倉同訂單', 'Portfolio／Orders：Stop 有冇喺度', 'o2'],
+    watch: ['👀 Watchlist', '今日 2–3 隻', 'w'],
+    plan: ['🛫 計劃表／每日選股', 'App：股數、Stop、警報價', 'p'],
+    news: ['🔔 警報同新聞', '通知、經濟日曆', 'n'],
+  };
+  const L = {
+    mac2: { name: 'MacBook + 2 個 Mon', screens: [
+      { label: 'Mon 1（正前方，主顯示器）', cols: 3, grid: "'a a b' 'a a c'", panes: { a: 'chart5', b: 'chart15', c: 'qqq' } },
+      { label: 'Mon 2（右邊）', cols: 2, grid: "'a c' 'b c'", panes: { a: 'order', b: 'pos', c: 'watch' } },
+      { label: 'MacBook（左邊或者下面，細屏）', small: true, cols: 1, grid: "'a' 'b'", panes: { a: 'plan', b: 'news' } },
+    ] },
+    two: { name: '只有 2 個 Mon', screens: [
+      { label: 'Mon 1（正前方，主顯示器）', cols: 3, grid: "'a a b' 'a a c'", panes: { a: 'chart5', b: 'chart15', c: 'qqq' } },
+      { label: 'Mon 2（旁邊）', cols: 2, grid: "'a c' 'b d'", panes: { a: 'order', b: 'pos', c: 'watch', d: 'plan' } },
+    ] },
+    one: { name: '1 個畫面（MacBook 或者 1 個 Mon）', screens: [
+      { label: '唯一畫面', cols: 3, grid: "'a a b' 'a a c'", panes: { a: 'chart5', b: 'order', c: 'pos' } },
+    ] },
+  };
+  window.WIDGETS_EXTRA['l13-layout'] = (el) => {
+    let cur = 'mac2';
+    const draw = () => {
+      const X = L[cur];
+      el.innerHTML = `<div class="l13-lay"><div class="l13-tabs" role="tablist">${Object.entries(L).map(([k, v]) => `<button class="btn sm ${k === cur ? 'primary' : ''}" role="tab" aria-selected="${k === cur}" data-l="${k}">${v.name}</button>`).join('')}</div>
+        <div class="l13-desk">${X.screens.map((sc) => `<figure class="l13-scr ${sc.small ? 'small' : ''}"><div class="l13-grid" style="grid-template-areas:${sc.grid};grid-template-columns:repeat(${sc.cols},1fr)">${Object.entries(sc.panes).map(([area, id]) => { const [t, d, c] = PANES[id]; return `<div class="l13-pane ${c}" style="grid-area:${area}"><b>${t}</b><small>${d}</small></div>`; }).join('')}</div><figcaption>${sc.label}</figcaption></figure>`).join('')}</div></div>`;
+      el.querySelectorAll('[data-l]').forEach((b) => b.addEventListener('click', () => { cur = b.dataset.l; draw(); }));
+    };
+    draw();
+  };
+})();
 
 window.COURSE.push({
   id: 'l13',
@@ -85,32 +124,105 @@ window.COURSE.push({
 `},
 /* ------------------------------------------------------------------ */
 {
-  id: 'l13-c3', num: '3', title: '一個 Mon 都夠：畫面點擺', mins: 6,
-  summary: '一個 Mon：左邊 5 分鐘圖（畫好價位），右邊落單窗同持倉。兩個 Mon：多一個大市同警報。唔好開十個窗，越多越亂。',
-  keywords: ['Layout', '畫面', 'TradingView', 'IBKR'],
+  id: 'l13-c3', num: '3', title: '畫面點擺：MacBook + 2 個 Mon、只有 2 個 Mon、1 個畫面', mins: 14,
+  summary: '原則：每個畫面一個任務，最常望嘅嘢擺正前方。MacBook + 2 Mon：Mon 1 圖表、Mon 2 IBKR 落單同持倉、MacBook 擺計劃表同警報。先確認部 Mac 撐唔撐到 2 個外置 Mon，再喺系統設定排好位置、設主顯示器、唔好瞓覺、開專注模式。',
+  keywords: ['Layout', '畫面', 'MacBook', '雙 Mon', 'TradingView', 'IBKR'],
   md: `
-## 3.1 一個 Mon
+## 3.1 四個原則
 
-| 位置 | 擺咩 | 用嚟 |
+1. **最常望嘅擺正前方**：5 分鐘主圖。脖子唔使轉，一眼睇到價同 VWAP
+2. **每個畫面一個任務**：圖表一個、落單一個、資訊一個。唔好將落單窗同新聞混埋
+3. **落單窗要近主圖**：見到觸發，眼同手一秒內去到落單窗
+4. **少即係多**：同時做 1 隻、睇 2–3 隻。10 個圖只會令你更遲決定
+
+## 3.2 三種佈局
+
+撳上面嘅掣轉換：
+
+[[widget:l13-layout]]
+
+## 3.3 MacBook + 2 個 Mon（詳細）
+
+:::card 實體擺位
+- **Mon 1** 擺正前方，頂部同眼睛差唔多高
+- **Mon 2** 擺 Mon 1 右邊（右手用滑鼠，去落單窗最近）
+- **MacBook** 擺左邊或者 Mon 1 下面，用手提電腦架墊高
+- 兩個 Mon 盡量同一型號、同一高度，滑鼠由一個 Mon 過去另一個先唔會「卡位」
+:::
+
+| 畫面 | 擺咩 | 點解 |
 |---|---|---|
-| 左邊大半 | TradingView 5 分鐘圖（VWAP、EMA 9、PMH／PDH 線） | 睇觸發同確認 |
-| 右上 | IBKR 落單窗（Order Entry） | 落單 |
-| 右下 | IBKR 持倉同訂單（Portfolio／Orders） | 睇住 Stop 有冇喺度 |
-| 手機 | 警報通知 | 唔使一直望住 |
+| **Mon 1（主）** | TradingView 5 分鐘主圖（佔 2／3）＋ 15 分鐘圖 ＋ QQQ 5 分鐘圖 | 觸發、結構、大市一齊睇 |
+| **Mon 2** | IBKR：Order Entry（上）、Portfolio／Orders（下）、Watchlist（右） | 落單同睇住 Stop |
+| **MacBook** | App 嘅開市前計劃表／每日選股、經濟日曆、警報通知 | 開市前用得多，開市後少望 |
 
-## 3.2 兩個 Mon
-
-多出嚟嗰個擺：**QQQ／SPY 5 分鐘圖**（大市方向）、**Watchlist**（2–3 隻）、**開市前計劃表**（打印咗都得）。
-
-:::bad 唔好咁做
-- 同時開 10 隻股嘅圖：你一次只可以做好 1 隻
-- 開住新聞台同 Twitter：開市時嘅新聞多數已經反映咗
-- 用手機落 Day Trade 單：細 Mon 易撳錯，Stop 易漏
+:::tip IBKR TWS：將視窗連埋一齊
+TWS 嘅視窗有「連結」（Grouping，一個顏色鏈）功能：Watchlist、Order Entry 同 TWS 圖表揀同一個顏色，喺 Watchlist 撳 NVDA，落單窗同圖表就自動轉做 NVDA，唔使逐個打代號，亦唔會落錯股。排好之後喺 TWS 儲存 Layout（選單名稱視乎版本）。
 :::
 
-:::tip TradingView 佈局
-Level 10 已經教咗點設定時區、Extended Hours、Session Breaks 同畫價位。設好之後 **Save Layout**，每日開返同一個。
+## 3.4 Mac 設定：一步一步
+
+:::steps 第 1 步：確認部 Mac 撐唔撐到 2 個外置 Mon
+1. 撳左上角  → **關於本機**（About This Mac），睇晶片
+2. **M1、M2（普通版）**：官方只支援 **1 個**外置 Mon。想用 2 個，要用 DisplayLink 擴充座同佢嘅軟件，或者 1 個 Mon + MacBook 屏
+3. **M3（普通版）**：要**合埋蓋**先可以接 2 個外置 Mon，咁 MacBook 屏就用唔到，即係變咗下面「只有 2 個 Mon」嘅佈局
+4. **M4、M5（普通版）**：開住蓋都可以接 2 個外置 Mon
+5. **Pro、Max 晶片**：通常可以接 2 個或以上
+6. 唔肯定就去 Apple 網站搵你部機型嘅「技術規格」→ 顯示器支援
 :::
+
+:::steps 第 2 步：排位置同主顯示器
+1. **系統設定 → 顯示器 → 排列**（Arrange）
+2. 拖動畫面圖示，排成同你張枱**一模一樣**嘅位置（左右、高低），滑鼠先會順住移過去
+3. 將**白色選單列**拖去 Mon 1，或者揀 Mon 1 →「用作：**主顯示器**」。新開嘅視窗同通知會喺呢度出
+4. 確認唔係「鏡像」（Mirror）：每個 Mon 要係「延伸顯示器」
+5. 解像度：27 吋 1440p 用預設；27 吋 4K 揀「看起來像 2560 × 1440」，字唔會太細
+:::
+
+:::steps 第 3 步：交易時唔好俾部機瞓覺、唔好彈通知
+1. **系統設定 → 鎖定畫面**：「閒置時關閉顯示器」交易時段揀「永不」（或者 3 小時）
+2. **系統設定 → 電池 → 選項**：剔「使用電源轉換器時，顯示器關閉後防止自動睡眠」，同埋**一定要插住電**
+3. **控制中心 → 專注模式 → 勿擾**：只容許 TradingView、IBKR（同你嘅警報 App）通知
+:::
+
+:::steps 第 4 步：視窗固定位置
+1. 每個 App 拖去佢嘅 Mon，放到最大或者半屏
+2. macOS 15（Sequoia）或之後：將視窗拖去畫面邊（或者撳住 Option 拖）就會自動貼半屏、四分一屏；舊版 macOS 可以用免費 App「Rectangle」
+3. 想 App 每次開都喺同一個 Mon：右撳 Dock 入面個 App → **選項 → 指定給**：呢個桌面
+4. **系統設定 → 桌面與 Dock**：保留「顯示器有獨立的空間」（預設開咗）
+:::
+
+:::warn TradingView 免費版限制
+免費（Basic）版**每個分頁只有 1 個圖**、**每個圖最多 2 個指標**、**最多 3 個價格警報**（2026 年各方資料；計劃會變，以 TradingView 網站為準）。所以：
+- 5 分鐘、15 分鐘、QQQ 用 **3 個瀏覽器視窗**（或者 TradingView Desktop 嘅多個視窗），每個 1 個圖
+- 指標只放 **VWAP + EMA 9**（剛好 2 個）；成交量通常內置喺圖底
+- 警報唔夠用：其餘放喺 IBKR（第 4 章）
+- 付費 Essential 版：每個分頁 2 個圖、5 個指標、20 個警報
+:::
+
+## 3.5 只有 2 個 Mon（冇 MacBook 屏，或者 M3 合埋蓋）
+
+| 畫面 | 擺咩 |
+|---|---|
+| **Mon 1（正前方，主）** | 左邊 2／3：5 分鐘主圖；右上：15 分鐘；右下：QQQ |
+| **Mon 2（旁邊）** | 左上：IBKR Order Entry；左下：Portfolio／Orders；右上：Watchlist；右下：App 計劃表（瀏覽器分頁） |
+
+- 兩個 Mon 並排，**Mon 1 擺正前方**，Mon 2 斜少少向住你（大約 20–30 度）
+- 開市前可以將計劃表放大睇，09:25 縮返細
+- 新聞同 Twitter 唔放喺畫面：開市後新聞多數已經反映咗
+
+## 3.6 只有 1 個畫面
+
+左邊 2／3 放 5 分鐘圖，右邊上下放 IBKR 落單窗同持倉。計劃表開市前睇完，記低喺紙上。手機只用嚟收警報、移 Stop（第 7 章）。
+
+:::bad 常見錯誤
+- 同時開 10 隻股嘅圖：你一次只做得好 1 隻
+- 兩個 Mon 時區唔同（TradingView 用香港、IBKR 用美東）：全部設 **New York**（Level 10 第 3 章）
+- 滑鼠由一個 Mon 移去另一個「卡住」：系統設定入面排位唔啱實際位置
+- 部 Mac 開市中途瞓覺或者彈更新：第 3 步要做
+:::
+
+參考：[Apple Silicon 外置顯示器支援整理（Plugable）](https://kb.plugable.com/en_US/understanding-external-display-support-on-apple-m1-m2-m3-and-m4-chips)、[M4 MacBook Air 開蓋接 2 個 Mon（MacRumors）](https://www.macrumors.com/2025/03/05/m4-macbook-air-two-displays-with-lid-open/)、[TradingView 計劃比較](https://www.mindmathmoney.com/articles/tradingview-plans-compared-free-vs-essential-vs-plus-vs-premium-vs-ultimate-2025-guide)
 
 [[link:c/l10-c6|📖 溫習：Level 10 第 6 章 Layout]]
 
@@ -345,6 +457,8 @@ Hotkeys 快，但**撳錯就即刻有倉**。我哋嘅建議：
 
 [[quiz:l13-final]]
 
+[[link:level/l14|➡️ 下一課：Level 14 常用 Setup 實戰]]
+
 [[link:map|🗺️ 睇你嘅學習地圖同證書]]
 `},
   ],
@@ -362,9 +476,11 @@ Object.assign(window.QUIZZES, {
   { q: '新手每筆風險建議？', options: ['本金 0.25–0.5%', '本金 5%', '本金 20%'], answer: 0, explain: 'Level 11 第一個月計劃。' },
 ]},
 'l13-c3': { title: '小測：畫面', questions: [
-  { q: '一個 Mon 最主要擺咩？', options: ['10 隻股嘅圖', '5 分鐘圖 + 落單窗 + 持倉', '新聞台'], answer: 1, explain: '少而精。' },
-  { q: '點解唔建議用手機開 Day Trade 倉？', options: ['手機冇報價', 'Mon 細易撳錯、易漏 Stop', '手機唔准交易'], answer: 1, explain: '手機用嚟收警報同移 Stop。' },
-  { q: '第二個 Mon 可以擺？', options: ['QQQ／SPY 圖同 Watchlist', '遊戲', '更多新聞'], answer: 0, explain: '大市方向同計劃股。' },
+  { q: 'MacBook + 2 個 Mon，正前方嗰個 Mon 應該擺？', options: ['新聞', '5 分鐘主圖（加 15 分鐘同 QQQ）', 'IBKR 戶口結餘'], answer: 1, explain: '最常望嘅擺正前方。' },
+  { q: 'M1／M2 普通版 MacBook 可以直接接幾多個外置 Mon？', options: ['1 個', '2 個', '4 個'], answer: 0, explain: '想多個要用 DisplayLink 擴充座。M3 普通版要合埋蓋先接到 2 個。' },
+  { q: '喺 Mac 點樣將 Mon 1 設做主顯示器？', options: ['系統設定 → 顯示器 → 排列，將白色選單列拖去 Mon 1', '重新開機', '用鏡像'], answer: 0, explain: '或者揀「用作：主顯示器」。' },
+  { q: 'TradingView 免費版每個分頁有幾多個圖？', options: ['1 個', '4 個', '冇限制'], answer: 0, explain: '所以用幾個瀏覽器視窗，每個一個圖。' },
+  { q: 'TWS 嘅視窗連結（Grouping）有咩用？', options: ['揀一隻股，落單窗同圖表自動跟住轉', '自動落單', '加快網速'], answer: 0, explain: '少打代號，少落錯股。' },
 ]},
 'l13-c4': { title: '小測：警報', questions: [
   { q: '每隻計劃股最少設幾多個警報？', options: ['0', '2 個（入場同失效）', '10 個'], answer: 1, explain: '入場價同失效價。' },

@@ -1356,3 +1356,26 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .pk-tk { margin: 8px 0 0; }
 .pk-tk .btn { white-space: normal; max-width: 100%; text-align: left; }
 @media print { .tq-set, .tq-ticket button, .tq-head select { display: none !important; } }
+
+/* ---------- Level 13：畫面佈局示意圖 ---------- */
+.l13-lay { display: grid; gap: 10px; }
+.l13-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.l13-desk { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: center; padding: 12px; border-radius: 14px; background: var(--bg-soft); }
+.l13-scr { margin: 0; flex: 1 1 260px; max-width: 420px; display: grid; gap: 6px; }
+.l13-scr.small { flex: 0 1 200px; max-width: 240px; }
+.l13-scr figcaption { text-align: center; font-size: .8em; font-weight: 700; color: var(--muted); }
+.l13-grid { aspect-ratio: 16 / 10; display: grid; grid-template-columns: 1fr 1fr 1fr; grid-auto-rows: 1fr; gap: 4px; padding: 6px; border-radius: 10px; border: 3px solid var(--text); background: var(--card); }
+.l13-scr.small .l13-grid { grid-template-columns: 1fr; }
+.l13-pane { border-radius: 6px; padding: 5px 6px; display: flex; flex-direction: column; gap: 2px; overflow: hidden; font-size: .74em; line-height: 1.25; }
+.l13-pane small { color: var(--muted); font-size: .9em; }
+.l13-pane.c { background: rgba(124, 58, 237, .16); } .l13-pane.c2 { background: rgba(124, 58, 237, .09); }
+.l13-pane.q { background: rgba(59, 130, 246, .14); }
+.l13-pane.o { background: rgba(22, 163, 74, .16); } .l13-pane.o2 { background: rgba(22, 163, 74, .09); }
+.l13-pane.w { background: rgba(245, 158, 11, .16); } .l13-pane.p { background: rgba(236, 72, 153, .13); } .l13-pane.n { background: rgba(100, 116, 139, .15); }
+
+/* ---------- Level 14：Setup 示意圖 ---------- */
+.chart-svg .l14-box { fill: rgba(124, 58, 237, .12); stroke: rgba(124, 58, 237, .55); stroke-dasharray: 4 3; }
+.chart-svg .l14-mark { font-size: 12px; font-weight: 800; }
+.chart-svg .l14-mark.in { fill: #7c3aed; } .chart-svg .l14-mark.out { fill: var(--text); }
+.btn.l14-wrong { background: var(--down-soft, #fde2e2); border-color: var(--down); }
+.l12-t tr.l14-ref th, .l12-t tr.l14-ref td { color: var(--muted); font-style: italic; }
