@@ -1,0 +1,884 @@
+{
+ "version": 3,
+ "date": "2026-11-10",
+ "generatedAt": "2026-11-10T13:25:00Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "07:55",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1,
+  "avgVolume": 1000000,
+  "priceMin": 10,
+  "priceMax": 150
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH/PML、EMA 9）",
+   "ok": true,
+   "note": "延遲 16 分鐘，截至約 07:55 ET（CPI 之前）"
+  },
+  {
+   "name": "Alpaca SIP 報價（Bid-Ask Spread）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca 異動榜／最活躍",
+   "ok": true
+  },
+  {
+   "name": "Alpaca／Benzinga 新聞",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "Finviz（Float、行業）",
+   "ok": true,
+   "note": "50 隻有 2 隻失敗"
+  },
+  {
+   "name": "Google News",
+   "ok": true
+  },
+  {
+   "name": "Seeking Alpha",
+   "ok": true
+  },
+  {
+   "name": "MarketWatch／Investing.com RSS",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory + Nasdaq 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TopBreakoutStocks",
+   "ok": true,
+   "note": "今日候選唔喺佢嘅名單"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true,
+   "note": "今日盤前異動文章未出，用 CPI 預覽同 NVDA 報道"
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": true,
+   "note": "TTD 嘅 R:R 核對一致"
+  },
+  {
+   "name": "Yahoo Finance（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇繞過；今日唔需要"
+  },
+  {
+   "name": "IBKR",
+   "ok": false,
+   "note": "冇用（Alpaca 已經夠）"
+  }
+ ],
+ "headline": "⚠️ 數據截至 07:55，係 08:30 CPI 通脹數據之前，開市前一定要重新睇價。大市平淡（SPY +0.1%、QQQ −0.4%），今日只有 1 隻合格：TTD 業績後 −5.4%、RVOL 42.8，跌穿 14.06 先沽空（Cash 戶口唔做得，高 Short Float 有 Squeeze 風險）。",
+ "fewPicksReason": "昨日大市大升 2.4% 之後，今日大型股盤前成交好少（AAPL、GOOGL、AMZN、MSFT 嘅 RVOL 只係 0.3–0.4，TSLA 0.5）。RVOL 高嘅多數係業績股但 Spread 太闊（SE 1.38%、GFL 0.71%、ONON 0.59%、VG 0.98%）或者細價股。按規則唔降低標準，所以只有 1 隻。",
+ "market": {
+  "bias": "中性（等 CPI）",
+  "summary": "昨日道指升 1,100 點（+2.2%）、S&P 500 +2.4%、Nasdaq +2.7%，今日盤前回軟：SPY +0.11%、QQQ −0.37%、晶片 SMH −0.97%。08:30 公布 10 月 CPI：預期按月 +0.3%（上次 +0.6%），核心 CPI 預期 +0.2%（上次 +0.3%）。Fed 理事 Waller 話「傾向」12 月加息，市場已經大致反映加 0.25 厘。CPI 高過預期 = 加息憂慮、科技股受壓；低過預期 = 利好。策略：等 CPI 同開市頭 5 分鐘，唔好預早落注；今日合格股少，冇交易都係好選擇。",
+  "base": {
+   "spy": 0.11,
+   "qqq": -0.37
+  },
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 753.52,
+    "chgPct": 0.11,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 676.85,
+    "chgPct": -0.37,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "IWM",
+    "last": 282.76,
+    "chgPct": 0.09,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "DIA",
+    "last": 525.47,
+    "chgPct": 0.41,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "SMH",
+    "last": 482.7,
+    "chgPct": -0.97,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLK",
+    "last": 170.11,
+    "chgPct": -0.45,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLC",
+    "last": 107.81,
+    "chgPct": 0.42,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLE",
+    "last": 61.4,
+    "chgPct": -0.87,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLF",
+    "last": 58.41,
+    "chgPct": 0.72,
+    "note": "08:00 ET（Alpaca SIP）"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "CPI 按月",
+    "impact": "高",
+    "note": "預期 0.3%，上次 0.6%"
+   },
+   {
+    "time": "08:30 ET",
+    "name": "核心 CPI 按月",
+    "impact": "高",
+    "note": "預期 0.2%，上次 0.3%"
+   },
+   {
+    "time": "10:50 ET",
+    "name": "Fed 官員 Logan 講話",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "13:01 ET",
+    "name": "10 年期國債拍賣",
+    "impact": "低",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "JBI",
+   "price": 3.8,
+   "gapPct": -20.17,
+   "rvol": 81.48,
+   "pmVolume": 145120,
+   "avgVolume": 2145125,
+   "floatM": 125.64,
+   "atrPct": 4.83,
+   "spreadPct": 10.95,
+   "rsQqq": -19.8,
+   "ema9Pct": -1.93,
+   "catalyst": "業績",
+   "verdict": "avoid",
+   "note": "$3.8、Spread 11%"
+  },
+  {
+   "sym": "TTD",
+   "price": 14.13,
+   "gapPct": -5.36,
+   "rvol": 42.81,
+   "pmVolume": 3647884,
+   "avgVolume": 18750016,
+   "floatM": 418.43,
+   "atrPct": 4.69,
+   "spreadPct": 0.14,
+   "rsQqq": -4.99,
+   "ema9Pct": -0.6,
+   "catalyst": "Q3 業績後下跌（加回購、分析師升目標價）",
+   "verdict": "pick",
+   "note": "Spread 0.14%；Cash 戶口唔沽空"
+  },
+  {
+   "sym": "SMX",
+   "price": 15.93,
+   "gapPct": 70.37,
+   "rvol": 146.73,
+   "pmVolume": 8958907,
+   "avgVolume": 778895,
+   "floatM": 0.31,
+   "atrPct": 11.55,
+   "spreadPct": 0.19,
+   "rsQqq": 70.74,
+   "ema9Pct": 2.17,
+   "catalyst": "細價股急升",
+   "verdict": "avoid",
+   "note": "Float 細、急升 70%"
+  },
+  {
+   "sym": "RUBI",
+   "price": 1.41,
+   "gapPct": -23.37,
+   "rvol": 1808.08,
+   "pmVolume": 11634976,
+   "avgVolume": 405294,
+   "floatM": 0,
+   "atrPct": 26.63,
+   "spreadPct": 0.71,
+   "rsQqq": -23,
+   "ema9Pct": -0.73,
+   "catalyst": "細價股",
+   "verdict": "avoid",
+   "note": "$1.4 細價股"
+  },
+  {
+   "sym": "APPS",
+   "price": 8.67,
+   "gapPct": -23.27,
+   "rvol": 50.74,
+   "pmVolume": 312476,
+   "avgVolume": 2981076,
+   "floatM": 107.47,
+   "atrPct": 7.88,
+   "spreadPct": 1.16,
+   "rsQqq": -22.9,
+   "ema9Pct": 0.93,
+   "catalyst": "業績後急跌",
+   "verdict": "avoid",
+   "note": "$8.7、Spread 1.16%"
+  },
+  {
+   "sym": "QMCO",
+   "price": 19.84,
+   "gapPct": 16.77,
+   "rvol": 16.99,
+   "pmVolume": 107734,
+   "avgVolume": 1641690,
+   "floatM": 24.45,
+   "atrPct": 11.54,
+   "spreadPct": 0.85,
+   "rsQqq": 17.14,
+   "ema9Pct": 0.13,
+   "catalyst": "業績後急升",
+   "verdict": "avoid",
+   "note": "Float 24M、Spread 0.85%"
+  },
+  {
+   "sym": "GFL",
+   "price": 39.4,
+   "gapPct": -14.12,
+   "rvol": 204.68,
+   "pmVolume": 471993,
+   "avgVolume": 5160299,
+   "floatM": 318.93,
+   "atrPct": 2.96,
+   "spreadPct": 0.71,
+   "rsQqq": -13.75,
+   "ema9Pct": 0.56,
+   "catalyst": "拒絕私有化收購建議",
+   "verdict": "watch",
+   "note": "Spread 0.71%、價格高過 EMA 9"
+  },
+  {
+   "sym": "WFF",
+   "price": 1.23,
+   "gapPct": 13.89,
+   "rvol": 12.85,
+   "pmVolume": 5916940,
+   "avgVolume": 5610003,
+   "floatM": 38.48,
+   "atrPct": 37.04,
+   "spreadPct": 0.82,
+   "rsQqq": 14.26,
+   "ema9Pct": -1.37,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "BW",
+   "price": 4.06,
+   "gapPct": 7.12,
+   "rvol": 22.04,
+   "pmVolume": 206822,
+   "avgVolume": 4481867,
+   "floatM": 143.61,
+   "atrPct": 10.03,
+   "spreadPct": 1.97,
+   "rsQqq": 7.49,
+   "ema9Pct": -0.47,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "ONON",
+   "price": 35.64,
+   "gapPct": -5.04,
+   "rvol": 7.03,
+   "pmVolume": 290017,
+   "avgVolume": 10515758,
+   "floatM": 225.2,
+   "atrPct": 4.16,
+   "spreadPct": 0.59,
+   "rsQqq": -4.67,
+   "ema9Pct": 0.87,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Spread 0.59%、價格高過 EMA 9"
+  },
+  {
+   "sym": "SE",
+   "price": 74.61,
+   "gapPct": -4.3,
+   "rvol": 32.86,
+   "pmVolume": 992667,
+   "avgVolume": 8158190,
+   "floatM": 553.28,
+   "atrPct": 4.37,
+   "spreadPct": 1.38,
+   "rsQqq": -3.93,
+   "ema9Pct": 2.39,
+   "catalyst": "Q3 盈利差過預期",
+   "verdict": "watch",
+   "note": "Spread 1.38%、價格高過 EMA 9"
+  },
+  {
+   "sym": "VG",
+   "price": 12.21,
+   "gapPct": 3.47,
+   "rvol": 11.96,
+   "pmVolume": 661792,
+   "avgVolume": 17562269,
+   "floatM": 518.83,
+   "atrPct": 6.86,
+   "spreadPct": 0.98,
+   "rsQqq": 3.84,
+   "ema9Pct": -0.18,
+   "catalyst": "Q3 業績",
+   "verdict": "watch",
+   "note": "Spread 0.98%"
+  },
+  {
+   "sym": "SOC",
+   "price": 0.87,
+   "gapPct": -1.14,
+   "rvol": 33.08,
+   "pmVolume": 2383739,
+   "avgVolume": 19981698,
+   "floatM": 169.7,
+   "atrPct": 37.5,
+   "spreadPct": 0.16,
+   "rsQqq": -0.77,
+   "ema9Pct": -3.08,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "NVDA",
+   "price": 177.48,
+   "gapPct": -0.67,
+   "rvol": 2.03,
+   "pmVolume": 9020972,
+   "avgVolume": 138026747,
+   "floatM": 23190,
+   "atrPct": 4.91,
+   "spreadPct": 0.05,
+   "rsQqq": -0.3,
+   "ema9Pct": 0.04,
+   "catalyst": "CEO 事件後續",
+   "verdict": "watch",
+   "note": "Gap 只有 −0.7%"
+  },
+  {
+   "sym": "CISS",
+   "price": 2.23,
+   "gapPct": 27.43,
+   "rvol": 2707.17,
+   "pmVolume": 7109040,
+   "avgVolume": 227651,
+   "floatM": 0.29,
+   "atrPct": 20.57,
+   "spreadPct": 0.45,
+   "rsQqq": 27.8,
+   "ema9Pct": -1.19,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "FGL",
+   "price": 1.15,
+   "gapPct": -17.27,
+   "rvol": 43.95,
+   "pmVolume": 272395,
+   "avgVolume": 908977,
+   "floatM": null,
+   "atrPct": 24.46,
+   "spreadPct": 1.72,
+   "rsQqq": -16.9,
+   "ema9Pct": -1.25,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "WCT",
+   "price": 3.81,
+   "gapPct": -14.77,
+   "rvol": 1028.26,
+   "pmVolume": 1007693,
+   "avgVolume": 940140,
+   "floatM": null,
+   "atrPct": 14.09,
+   "spreadPct": 0.52,
+   "rsQqq": -14.4,
+   "ema9Pct": -2.1,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "AMIX",
+   "price": 1.83,
+   "gapPct": 7.65,
+   "rvol": 2836.96,
+   "pmVolume": 5367528,
+   "avgVolume": 70362,
+   "floatM": null,
+   "atrPct": 10.59,
+   "spreadPct": 0.54,
+   "rsQqq": 8.02,
+   "ema9Pct": 0.63,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "ASTN",
+   "price": 34.03,
+   "gapPct": 6.24,
+   "rvol": 6.92,
+   "pmVolume": 15755,
+   "avgVolume": 199582,
+   "floatM": null,
+   "atrPct": 24.32,
+   "spreadPct": 1.62,
+   "rsQqq": 6.61,
+   "ema9Pct": 2.78,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "FMFC",
+   "price": 2.67,
+   "gapPct": -3.96,
+   "rvol": 50.28,
+   "pmVolume": 112726,
+   "avgVolume": 156491,
+   "floatM": null,
+   "atrPct": 20.5,
+   "spreadPct": 4.97,
+   "rsQqq": -3.59,
+   "ema9Pct": -6.4,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "SRRK",
+   "price": 49.7,
+   "gapPct": -3.59,
+   "rvol": 7.13,
+   "pmVolume": 35528,
+   "avgVolume": 1674458,
+   "floatM": 100.76,
+   "atrPct": 4.15,
+   "spreadPct": 4.08,
+   "rsQqq": -3.22,
+   "ema9Pct": 3.02,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "HIMZ",
+   "price": 14.05,
+   "gapPct": -3.17,
+   "rvol": 3.03,
+   "pmVolume": 30373,
+   "avgVolume": 337818,
+   "floatM": null,
+   "atrPct": 22.12,
+   "spreadPct": 1.83,
+   "rsQqq": -2.8,
+   "ema9Pct": -0.77,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "LEGN",
+   "price": 23.7,
+   "gapPct": -2.43,
+   "rvol": 2.38,
+   "pmVolume": 7301,
+   "avgVolume": 2084872,
+   "floatM": 184.85,
+   "atrPct": 5.27,
+   "spreadPct": 2.24,
+   "rsQqq": -2.06,
+   "ema9Pct": -0.01,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "TLS",
+   "price": 7.04,
+   "gapPct": -1.81,
+   "rvol": 6.98,
+   "pmVolume": 6875,
+   "avgVolume": 968349,
+   "floatM": 52.52,
+   "atrPct": 7.39,
+   "spreadPct": 1.83,
+   "rsQqq": -1.44,
+   "ema9Pct": -0.01,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "VOD",
+   "price": 15.58,
+   "gapPct": -0.7,
+   "rvol": 4.65,
+   "pmVolume": 109094,
+   "avgVolume": 3612367,
+   "floatM": 2320,
+   "atrPct": 2.1,
+   "spreadPct": null,
+   "rsQqq": -0.33,
+   "ema9Pct": 0.17,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "COHQ",
+   "price": 32.46,
+   "gapPct": 7.09,
+   "rvol": 4.97,
+   "pmVolume": 11295,
+   "avgVolume": 38794,
+   "floatM": null,
+   "atrPct": 27.95,
+   "spreadPct": 1.65,
+   "rsQqq": 7.46,
+   "ema9Pct": 1.27,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "JANX",
+   "price": 13.04,
+   "gapPct": 2.19,
+   "rvol": 13.45,
+   "pmVolume": 3283,
+   "avgVolume": 911788,
+   "floatM": 57.87,
+   "atrPct": 10.34,
+   "spreadPct": 0.69,
+   "rsQqq": 2.56,
+   "ema9Pct": -0.04,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "NVD",
+   "price": 5.7,
+   "gapPct": 1.42,
+   "rvol": 2.97,
+   "pmVolume": 3671939,
+   "avgVolume": 127097785,
+   "floatM": null,
+   "atrPct": 6.94,
+   "spreadPct": 0.18,
+   "rsQqq": 1.79,
+   "ema9Pct": -0.02,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "OMH",
+   "price": 26.04,
+   "gapPct": 0.77,
+   "rvol": 6,
+   "pmVolume": 3486564,
+   "avgVolume": 7441688,
+   "floatM": 2.11,
+   "atrPct": 31.15,
+   "spreadPct": 35.11,
+   "rsQqq": 1.14,
+   "ema9Pct": -4.8,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "FLYT",
+   "price": 4.75,
+   "gapPct": -4.62,
+   "rvol": 2.19,
+   "pmVolume": 26573,
+   "avgVolume": 257277,
+   "floatM": null,
+   "atrPct": 12.65,
+   "spreadPct": 2.16,
+   "rsQqq": -4.25,
+   "ema9Pct": 0.46,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  }
+ ],
+ "picks": [
+  {
+   "sym": "TTD",
+   "name": "The Trade Desk",
+   "grade": "C",
+   "beginner": "高風險",
+   "direction": "Short",
+   "score": 58,
+   "price": 14.13,
+   "prevClose": 14.93,
+   "gapPct": -5.36,
+   "pmVolume": 3647884,
+   "pmVolPct": 19.46,
+   "avgVolume": 18750016,
+   "rvol": 42.81,
+   "spread": 0.02,
+   "spreadPct": 0.14,
+   "atr": 0.7,
+   "atrPct": 4.69,
+   "mktCapB": 6.62,
+   "floatM": 418.43,
+   "rsQqq": -4.99,
+   "rsSpy": -5.47,
+   "ema9": 14.22,
+   "ema9Pct": -0.6,
+   "ema9Step": "5m",
+   "ema9Daily": 13.25,
+   "profile": {
+    "session": "11/09",
+    "dayType": "normal",
+    "vah": 15.27,
+    "val": 14.71,
+    "vpoc": 15.06,
+    "migration": "向上移",
+    "note": "今日盤前價已經跌到昨日價值區之下；13.75–14.21 係單一價位區。"
+   },
+   "levels": {
+    "pmh": 15.5,
+    "pml": 14.06,
+    "pdh": 15.29,
+    "pdl": 13.75,
+    "pdc": 14.93,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 15.27
+     },
+     {
+      "label": "昨日 POC",
+      "price": 15.06
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 14.71
+     },
+     {
+      "label": "20 日低",
+      "price": 11.71
+     }
+    ]
+   },
+   "why": "Gap −5.4%、RVOL 42.8、Pre-Market Volume 365 萬（日均 19%）、ATR 4.7%、Relative Strength −5.0、價格低過 EMA 9（−0.60%）；Bid-Ask Spread 0.14%（略超 0.1%），9 個指標 8 個合格。今日唯一合格嘅股。",
+   "catalyst": "Q3 業績後下跌；公司加 7.31 億美元回購，Susquehanna、Rosenblatt 反而上調目標價（Benzinga、Seeking Alpha）——消息好淡參半。業績前一日已經升咗約 15%（12.92 → 14.93）。",
+   "technical": "日線橫行；昨日由 13.75 升到 15.29；盤前高 15.50（業績後一度高開）、盤前低 14.06，之後一路跌；昨日低 13.75 喺 Target 之前。",
+   "setup": "Opening Drive（開市推動）沽空",
+   "pillars": {
+    "bigPicture": "大市平淡（SPY +0.11%、QQQ −0.37%），08:30 CPI 之前；晶片股弱（SMH −0.97%）。TTD 係個股消息主導。",
+    "fundamentals": "業績後市場分歧：股價跌，但分析師升目標價、公司加回購。業績前已經大升 15%，有「好消息出貨」嘅味道。",
+    "technical": "TradingCalc：昨日 Normal Day，價值區大幅向上移（VAH 15.27／VAL 14.71），買方控制。今日盤前 14.13 已經跌到昨日價值區（VAL 14.71）之下；13.75–14.21 係昨日開市急升留低嘅單一價位區，成交少，跌穿 14.06 之後可以行得快，但 13.75（昨日低）係支持。",
+    "tape": "盤前 365 萬股（日均 19%）、RVOL 42.8；Spread 0.02 元，相對每股風險 0.21 元唔細（約 0.1R）。平時開市首 5 分鐘約 53 萬股，要見 ≥ 105 萬股。",
+    "intuition": "信心中低。Short Float 19.9% 好高，跌勢一停就可能出現 Short Squeeze；加上 08:30 CPI 會令開市方向改變，只係細注或者觀察。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低位（14.06），首 5 分鐘成交 ≥ 平時 2 倍（約 105 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之下",
+    "entry": 14.05,
+    "stop": 14.26,
+    "target1": 13.63,
+    "target2": 13.42,
+    "rr": 2
+   },
+   "plan": {
+    "long": "Cash 戶口唔可以沽空：可以留意 Red-to-Green——升穿昨收 14.93 先考慮做多（Level 14 第 7 章），Stop 喺最近低位；而家唔建議預早買。",
+    "short": "跌穿 14.05 兼放量 → 沽空，Stop 14.26，T1 13.63，T2 13.42（中間有昨日低 13.75 支持）。",
+    "noTrade": "09:35 已經低過 13.84（> 0.3 ATR）唔追；企返 VWAP 上面唔做；CPI 後大市急升唔做；Cash 戶口唔可以沽空。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做；由 10/29 起 13 次、贏 2 次、累計約 −8.1R）：首 5 分鐘低位跌穿，Stop 首 5 分鐘高位（最多 0.35 元），Target 2R。"
+   },
+   "risks": [
+    "Cash 戶口唔可以沽空（Level 11 第 8 章）",
+    "Short Float 19.9%，有 Short Squeeze 風險",
+    "昨日低 13.75 喺 Target 之前，係支持位",
+    "08:30 CPI 之後開市方向可能完全改變",
+    "Spread 0.02 元，大約 0.1R 成本"
+   ],
+   "news": [
+    {
+     "title": "Susquehanna Maintains Neutral on Trade Desk, Raises Price Target to $17",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/63085977/susquehanna-maintains-neutral-trade-desk-raises-price-target-17",
+     "time": "2026-11-10 13:08 UTC"
+    },
+    {
+     "title": "Rosenblatt Maintains Neutral on Trade Desk, Raises Price Target to $15",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/63083658/rosenblatt-maintains-neutral-trade-desk-raises-price-target-15",
+     "time": "2026-11-10 12:24 UTC"
+    },
+    {
+     "title": "The Trade Desk adds $731M to buyback authorization after Q3 results",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/TTD/news?source=feed_symbol_TTD",
+     "time": "2026-11-10 11:42 UTC"
+    },
+    {
+     "title": "What's Going On With Trade Desk Stock Tuesday?",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/63080514/whats-going-on-with-trade-desk-stock-tuesday",
+     "time": "2026-11-10 10:20 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "SE",
+   "why": "−4.3%、RVOL 32.9（盈利差過預期），但 Spread 1.38%、價格已經反彈到 EMA 9 之上。"
+  },
+  {
+   "sym": "GFL",
+   "why": "−14.1%、RVOL 205（董事會拒絕私有化收購），但 Spread 0.71%。"
+  },
+  {
+   "sym": "ONON",
+   "why": "−5.0%、RVOL 7（業績、維持全年指引），但 Spread 0.59%、價格高過 EMA 9。"
+  },
+  {
+   "sym": "NVDA",
+   "why": "昨日跳空沽空中 Stop 之後收市反彈；今日 −0.7%、RVOL 2.0，Gap 唔夠 3%。"
+  },
+  {
+   "sym": "TSLA",
+   "why": "−1.2%、RVOL 0.5，冇催化劑，今日唔做。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "SMX",
+   "why": "Float 細，急升 70%。"
+  },
+  {
+   "sym": "QMCO",
+   "why": "+16.8%，但 Float 24M、Spread 0.85%。"
+  },
+  {
+   "sym": "JBI",
+   "why": "$3.8，Spread 11%。"
+  }
+ ],
+ "news": [
+  {
+   "title": "Treasury yields edge higher as traders await CPI inflation data, weigh Fed’s Waller comments",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/10/us-bonds-treasurys-yields.html",
+   "time": "2026-11-10",
+   "tickers": []
+  },
+  {
+   "title": "Stock market today: Live updates",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/09/stock-market-today-live-updates.html",
+   "time": "2026-11-10",
+   "tickers": [
+    "SPY",
+    "QQQ"
+   ]
+  },
+  {
+   "title": "Nvidia stock edges higher as investors weigh potential fallout of CEO’s affair with alleged spy",
+   "source": "CNBC",
+   "url": "https://cnbc.com/2026/11/10/nvidia-nvda-jensen-huang-affair-chinese-spy.html",
+   "time": "2026-11-10",
+   "tickers": [
+    "NVDA"
+   ]
+  },
+  {
+   "title": "GFL Environmental plunges after ending strategic review without sale",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/GFL/news?source=feed_symbol_GFL",
+   "time": "2026-11-10 13:07 UTC",
+   "tickers": [
+    "GFL"
+   ]
+  },
+  {
+   "title": "Sea shares fall as earnings miss despite Q3 revenue beat",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/SE/news?source=feed_symbol_SE",
+   "time": "2026-11-10 12:36 UTC",
+   "tickers": [
+    "SE"
+   ]
+  },
+  {
+   "title": "On Holding Affirms FY2026 Sales Guidance of $4.273B-$4.383B vs $4.270B Est",
+   "source": "benzinga（經 Alpaca）",
+   "url": "https://www.benzinga.com/news/26/11/63081999/holding-affirms-fy2026-sales-guidance-4-273b-4-383b-vs-4-270b-est",
+   "time": "2026-11-10 11:42 UTC",
+   "tickers": [
+    "ONON"
+   ]
+  }
+ ],
+ "lesson": "連續幾日大型股「跳空沽空」都喺開市後反彈中 Stop（11/04、11/06、11/09）。Level 14 嘅數據亦顯示機械 Setup 單獨做差唔多打和。今日合格嘅股得 1 隻、而且 08:30 有 CPI：冇好機會就唔做，保住本金都係一種成績。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，數據延遲 16 分鐘，可能有錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

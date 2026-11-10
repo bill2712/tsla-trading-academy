@@ -1,6 +1,24 @@
 {
- "updated": "2026-11-09T13:19:27.297Z",
+ "updated": "2026-11-10T13:17:34.311Z",
  "days": [
+  {
+   "date": "2026-11-10",
+   "version": 3,
+   "status": "premarket",
+   "bias": "中性（等 CPI）",
+   "headline": "⚠️ 數據截至 07:55，係 08:30 CPI 通脹數據之前，開市前一定要重新睇價。大市平淡（SPY +0.1%、QQQ −0.4%），今日只有 1 隻合格：TTD 業績後 −",
+   "n": 1,
+   "top": [
+    {
+     "sym": "TTD",
+     "gapPct": -5.36,
+     "rvol": 42.81,
+     "beginner": "高風險",
+     "grade": "C"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-11-09",
    "version": 3,
@@ -24,7 +42,7 @@
      "grade": "C"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-11-06",
