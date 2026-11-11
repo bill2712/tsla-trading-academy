@@ -1,0 +1,1116 @@
+{
+ "version": 3,
+ "date": "2026-11-11",
+ "generatedAt": "2026-11-11T13:25:00Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "07:55",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1,
+  "avgVolume": 1000000,
+  "priceMin": 10,
+  "priceMax": 150
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH/PML、EMA 9）",
+   "ok": true,
+   "note": "延遲 16 分鐘，截至約 07:55 ET"
+  },
+  {
+   "name": "Alpaca SIP 報價（Bid-Ask Spread）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca 異動榜／最活躍",
+   "ok": true
+  },
+  {
+   "name": "Alpaca／Benzinga 新聞",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "Finviz（Float、行業）",
+   "ok": true
+  },
+  {
+   "name": "Google News",
+   "ok": true
+  },
+  {
+   "name": "Seeking Alpha",
+   "ok": true
+  },
+  {
+   "name": "MarketWatch／Investing.com RSS",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory + Nasdaq 經濟日曆",
+   "ok": true,
+   "note": "退伍軍人節：債市休市，股市照開"
+  },
+  {
+   "name": "TopBreakoutStocks",
+   "ok": true,
+   "note": "今日候選唔喺佢嘅名單"
+  },
+  {
+   "name": "CNBC（網上搜尋）",
+   "ok": true,
+   "note": "用搜尋結果；cnbc.com 直接讀取喺呢個環境被擋，冇繞過"
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": true,
+   "note": "3 隻 pick 嘅 R:R 核對一致"
+  },
+  {
+   "name": "Yahoo Finance（後備）",
+   "ok": false,
+   "note": "今日唔需要"
+  },
+  {
+   "name": "IBKR",
+   "ok": false,
+   "note": "冇用（Alpaca 已經夠）"
+  }
+ ],
+ "headline": "AI 股大反彈：CoreWeave 業績好兼上調展望，盤前 +15%，晶片 SMH +4.6%、QQQ +1.9%。3 隻做多候選：CRWV（RVOL 5.2）、NVDA（RVOL 3.3，但 Baird 降級）、NBIS（跟升，聽日業績）。MU、AMD 升 6% 但 RVOL 唔夠 2。今日退伍軍人節，債市休市、股市照開。",
+ "fewPicksReason": "AI 股普遍升，但大部分（MU 1.1、AMD 1.4、AVGO 1.6、INTC 0.9）盤前 RVOL 未到 2；RVOL 高嘅其他股多數係細價股或者 Spread 太闊（RSKD 1.15%、FOSL 1.42%）。按規則唔降低標準，所以只有 3 隻。",
+ "market": {
+  "bias": "偏好（AI 股反彈）",
+  "summary": "昨日（11/10）S&P 500 跌 0.38%、道指跌 0.30%。今日期貨轉強：QQQ +1.87%、SPY +0.86%、IWM +0.78%，晶片 SMH +4.57%，由 CoreWeave 業績帶動（收入好過預期兼上調展望，減輕 AI 支出放慢憂慮），NVDA 兩日跌後反彈。今日退伍軍人節：債市休市，股市照常；冇重要經濟數據。策略：做多量大、有催化劑嘅 AI 股，等升穿盤前高兼放量；業績 Gap 只有大約三分一延續，唔好預早追。",
+  "base": {
+   "spy": 0.86,
+   "qqq": 1.87
+  },
+  "indices": [
+   {
+    "sym": "SPY",
+    "last": 756.38,
+    "chgPct": 0.86,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "QQQ",
+    "last": 687.36,
+    "chgPct": 1.87,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "IWM",
+    "last": 282.78,
+    "chgPct": 0.78,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "DIA",
+    "last": 522.51,
+    "chgPct": 0.15,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "SMH",
+    "last": 505.75,
+    "chgPct": 4.57,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLK",
+    "last": 173.69,
+    "chgPct": 2.83,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLC",
+    "last": 107.91,
+    "chgPct": 0.14,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLE",
+    "last": 62.84,
+    "chgPct": 1.01,
+    "note": "08:00 ET（Alpaca SIP）"
+   },
+   {
+    "sym": "XLF",
+    "last": 58.1,
+    "chgPct": -0.33,
+    "note": "08:00 ET（Alpaca SIP）"
+   }
+  ],
+  "events": [
+   {
+    "time": "全日",
+    "name": "退伍軍人節：債市休市，股市照開",
+    "impact": "低",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "SATL",
+   "price": 4.72,
+   "gapPct": 21.03,
+   "rvol": 6.55,
+   "pmVolume": 679024,
+   "avgVolume": 4493835,
+   "floatM": 113.11,
+   "atrPct": 9.49,
+   "spreadPct": 0.21,
+   "rsQqq": 19.16,
+   "ema9Pct": 0.16,
+   "catalyst": "細價股",
+   "verdict": "avoid",
+   "note": "$4.7 細價股"
+  },
+  {
+   "sym": "GEVO",
+   "price": 1.64,
+   "gapPct": 17.99,
+   "rvol": 22.24,
+   "pmVolume": 357164,
+   "avgVolume": 3242033,
+   "floatM": 235.24,
+   "atrPct": 6.47,
+   "spreadPct": 0.61,
+   "rsQqq": 16.12,
+   "ema9Pct": 0.68,
+   "catalyst": "細價股",
+   "verdict": "avoid",
+   "note": "$1.6 細價股"
+  },
+  {
+   "sym": "CRWV",
+   "price": 56.08,
+   "gapPct": 15.08,
+   "rvol": 5.23,
+   "pmVolume": 9669269,
+   "avgVolume": 72760325,
+   "floatM": 349.31,
+   "atrPct": 11.12,
+   "spreadPct": 0.02,
+   "rsQqq": 13.21,
+   "ema9Pct": -0.75,
+   "catalyst": "Q3 業績好 + 上調展望",
+   "verdict": "pick",
+   "note": "低過 EMA 9（−0.75%）"
+  },
+  {
+   "sym": "NNOX",
+   "price": 0.4,
+   "gapPct": 8.11,
+   "rvol": 54.11,
+   "pmVolume": 1409907,
+   "avgVolume": 5397906,
+   "floatM": 72.94,
+   "atrPct": 13.39,
+   "spreadPct": 0.2,
+   "rsQqq": 6.24,
+   "ema9Pct": 0.72,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "NVDA",
+   "price": 175.07,
+   "gapPct": 3.66,
+   "rvol": 3.3,
+   "pmVolume": 17316985,
+   "avgVolume": 155299861,
+   "floatM": 23190,
+   "atrPct": 5.5,
+   "spreadPct": 0.02,
+   "rsQqq": 1.79,
+   "ema9Pct": -0.27,
+   "catalyst": "AI 股反彈；Baird 降級",
+   "verdict": "pick",
+   "note": "低過 EMA 9（−0.27%）"
+  },
+  {
+   "sym": "OMH",
+   "price": 29.11,
+   "gapPct": 75.26,
+   "rvol": 4.17,
+   "pmVolume": 3769580,
+   "avgVolume": 8783651,
+   "floatM": 2.11,
+   "atrPct": 81.91,
+   "spreadPct": 0.03,
+   "rsQqq": 73.39,
+   "ema9Pct": -0.15,
+   "catalyst": "細價股急升",
+   "verdict": "avoid",
+   "note": "Float 2M 細價股"
+  },
+  {
+   "sym": "INLF",
+   "price": 0.86,
+   "gapPct": 56.36,
+   "rvol": 3.21,
+   "pmVolume": 89016295,
+   "avgVolume": 59610607,
+   "floatM": 1.39,
+   "atrPct": 18.35,
+   "spreadPct": 0.28,
+   "rsQqq": 54.49,
+   "ema9Pct": 3.21,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "SHFS",
+   "price": 0.03,
+   "gapPct": 50,
+   "rvol": 21.22,
+   "pmVolume": 1164455434,
+   "avgVolume": 214310922,
+   "floatM": 85.51,
+   "atrPct": 377.36,
+   "spreadPct": 0.65,
+   "rsQqq": 48.13,
+   "ema9Pct": -2.21,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "STAK",
+   "price": 2.47,
+   "gapPct": -49.8,
+   "rvol": 8.11,
+   "pmVolume": 2750235,
+   "avgVolume": 9890516,
+   "floatM": 0,
+   "atrPct": 14.04,
+   "spreadPct": 0.4,
+   "rsQqq": -51.67,
+   "ema9Pct": -2.07,
+   "catalyst": "細價股急跌",
+   "verdict": "avoid",
+   "note": "細價股急跌 50%"
+  },
+  {
+   "sym": "BMGL",
+   "price": 1.25,
+   "gapPct": -35.23,
+   "rvol": 37.38,
+   "pmVolume": 403904,
+   "avgVolume": 2189035,
+   "floatM": 6.2,
+   "atrPct": 27.46,
+   "spreadPct": 3.15,
+   "rsQqq": -37.1,
+   "ema9Pct": -6.37,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "FOSL",
+   "price": 9.9,
+   "gapPct": 25.79,
+   "rvol": 95.02,
+   "pmVolume": 126851,
+   "avgVolume": 849048,
+   "floatM": 56.05,
+   "atrPct": 5.72,
+   "spreadPct": 1.42,
+   "rsQqq": 23.92,
+   "ema9Pct": 0,
+   "catalyst": "Q3 業績 + 上調全年展望",
+   "verdict": "watch",
+   "note": "$9.9、Spread 1.42%"
+  },
+  {
+   "sym": "RSKD",
+   "price": 10.3,
+   "gapPct": 21.46,
+   "rvol": 103.61,
+   "pmVolume": 303162,
+   "avgVolume": 1628323,
+   "floatM": 67.46,
+   "atrPct": 4.72,
+   "spreadPct": 1.15,
+   "rsQqq": 19.59,
+   "ema9Pct": -1.07,
+   "catalyst": "Q3 業績好過預期",
+   "verdict": "watch",
+   "note": "Spread 1.15%"
+  },
+  {
+   "sym": "LWLG",
+   "price": 3.71,
+   "gapPct": -15.49,
+   "rvol": 6.42,
+   "pmVolume": 377481,
+   "avgVolume": 3658207,
+   "floatM": 151.11,
+   "atrPct": 10.25,
+   "spreadPct": 0.27,
+   "rsQqq": -17.36,
+   "ema9Pct": 1.9,
+   "catalyst": "細價股",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "NBIS",
+   "price": 152.09,
+   "gapPct": 13.5,
+   "rvol": 2.86,
+   "pmVolume": 2527705,
+   "avgVolume": 25711020,
+   "floatM": 222.54,
+   "atrPct": 11.78,
+   "spreadPct": 0.27,
+   "rsQqq": 11.63,
+   "ema9Pct": -0.58,
+   "catalyst": "跟 CoreWeave 升；聽日業績",
+   "verdict": "pick",
+   "note": "Spread 0.27%；聽日業績"
+  },
+  {
+   "sym": "DIOD",
+   "price": 91.93,
+   "gapPct": 6,
+   "rvol": 5.64,
+   "pmVolume": 1438,
+   "avgVolume": 578921,
+   "floatM": 44.61,
+   "atrPct": 7.39,
+   "spreadPct": 17.89,
+   "rsQqq": 4.13,
+   "ema9Pct": 4.14,
+   "catalyst": "跟晶片股",
+   "verdict": "watch",
+   "note": "盤前量只有 1K、Spread 17.9%"
+  },
+  {
+   "sym": "YMAT",
+   "price": 1.29,
+   "gapPct": 29,
+   "rvol": 12.35,
+   "pmVolume": 13289418,
+   "avgVolume": 8296371,
+   "floatM": 1.87,
+   "atrPct": 39,
+   "spreadPct": 0.77,
+   "rsQqq": 27.13,
+   "ema9Pct": -0.58,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "NVD",
+   "price": 5.78,
+   "gapPct": -7.22,
+   "rvol": 2.56,
+   "pmVolume": 4029102,
+   "avgVolume": 128575767,
+   "floatM": null,
+   "atrPct": 7.06,
+   "spreadPct": 0.17,
+   "rsQqq": -9.09,
+   "ema9Pct": 0.59,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "RUM",
+   "price": 5.21,
+   "gapPct": 1.96,
+   "rvol": 24.29,
+   "pmVolume": 413150,
+   "avgVolume": 3577123,
+   "floatM": 132.45,
+   "atrPct": 7.24,
+   "spreadPct": 1.52,
+   "rsQqq": 0.09,
+   "ema9Pct": -3.22,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "APPS",
+   "price": 7.39,
+   "gapPct": 1.93,
+   "rvol": 2.82,
+   "pmVolume": 104778,
+   "avgVolume": 3943734,
+   "floatM": 107.47,
+   "atrPct": 16,
+   "spreadPct": 0.14,
+   "rsQqq": 0.06,
+   "ema9Pct": -0.18,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "TTEC",
+   "price": 2.37,
+   "gapPct": -1.25,
+   "rvol": 28.65,
+   "pmVolume": 131554,
+   "avgVolume": 1394729,
+   "floatM": 20.35,
+   "atrPct": 7.5,
+   "spreadPct": 0.42,
+   "rsQqq": -3.12,
+   "ema9Pct": -0.13,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "LGVN",
+   "price": 3,
+   "gapPct": 5.63,
+   "rvol": 3.9,
+   "pmVolume": 2936,
+   "avgVolume": 107957,
+   "floatM": null,
+   "atrPct": 8.1,
+   "spreadPct": 2.06,
+   "rsQqq": 3.76,
+   "ema9Pct": 2.13,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "HIMZ",
+   "price": 10.01,
+   "gapPct": 3.84,
+   "rvol": 6.65,
+   "pmVolume": 83473,
+   "avgVolume": 479566,
+   "floatM": null,
+   "atrPct": 36.2,
+   "spreadPct": 0.8,
+   "rsQqq": 1.97,
+   "ema9Pct": -0.42,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "NCI",
+   "price": 6.24,
+   "gapPct": -3.7,
+   "rvol": 13.48,
+   "pmVolume": 3248,
+   "avgVolume": 56645,
+   "floatM": 0.3,
+   "atrPct": 16.67,
+   "spreadPct": 7.79,
+   "rsQqq": -5.57,
+   "ema9Pct": 4.74,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "FF",
+   "price": 3.12,
+   "gapPct": 0,
+   "rvol": 2.63,
+   "pmVolume": 31129,
+   "avgVolume": 871968,
+   "floatM": null,
+   "atrPct": 12.5,
+   "spreadPct": 35.14,
+   "rsQqq": -1.87,
+   "ema9Pct": 0.25,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "MU",
+   "price": 772.47,
+   "gapPct": 6.53,
+   "rvol": 1.12,
+   "pmVolume": 1153934,
+   "avgVolume": 31004811,
+   "floatM": 1130,
+   "atrPct": 8.36,
+   "spreadPct": 0.04,
+   "rsQqq": 4.66,
+   "ema9Pct": -0.14,
+   "catalyst": "跟 AI 股升",
+   "verdict": "watch",
+   "note": "RVOL 1.1"
+  },
+  {
+   "sym": "AMD",
+   "price": 544.28,
+   "gapPct": 5.64,
+   "rvol": 1.38,
+   "pmVolume": 1301925,
+   "avgVolume": 30897558,
+   "floatM": 1630,
+   "atrPct": 8.28,
+   "spreadPct": 0.09,
+   "rsQqq": 3.77,
+   "ema9Pct": -0.49,
+   "catalyst": "跟 AI 股升",
+   "verdict": "watch",
+   "note": "RVOL 1.4"
+  },
+  {
+   "sym": "SOXS",
+   "price": 46.92,
+   "gapPct": -15.25,
+   "rvol": 1.27,
+   "pmVolume": 14362161,
+   "avgVolume": 88649488,
+   "floatM": null,
+   "atrPct": 17.76,
+   "spreadPct": 0.09,
+   "rsQqq": -17.12,
+   "ema9Pct": 0.51,
+   "catalyst": "3 倍反向 ETF",
+   "verdict": "skip",
+   "note": "3 倍反向 ETF"
+  },
+  {
+   "sym": "SOXL",
+   "price": 64.5,
+   "gapPct": 15.06,
+   "rvol": 1.14,
+   "pmVolume": 26810920,
+   "avgVolume": 168739972,
+   "floatM": null,
+   "atrPct": 24.1,
+   "spreadPct": 0.09,
+   "rsQqq": 13.19,
+   "ema9Pct": -0.39,
+   "catalyst": "3 倍槓桿 ETF",
+   "verdict": "skip",
+   "note": "3 倍槓桿 ETF"
+  },
+  {
+   "sym": "SMX",
+   "price": 17.38,
+   "gapPct": -9.71,
+   "rvol": 0.54,
+   "pmVolume": 565509,
+   "avgVolume": 2309508,
+   "floatM": 0.31,
+   "atrPct": 9.92,
+   "spreadPct": 3.25,
+   "rsQqq": -11.58,
+   "ema9Pct": -1.83,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  },
+  {
+   "sym": "PEPG",
+   "price": 5.01,
+   "gapPct": 8.68,
+   "rvol": 0.29,
+   "pmVolume": 585314,
+   "avgVolume": 6392580,
+   "floatM": 61.8,
+   "atrPct": 10.63,
+   "spreadPct": 0.2,
+   "rsQqq": 6.81,
+   "ema9Pct": -0.09,
+   "catalyst": "",
+   "verdict": "skip",
+   "note": "價格太低／盤前量太少／RVOL 未到 2"
+  }
+ ],
+ "picks": [
+  {
+   "sym": "CRWV",
+   "name": "CoreWeave",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 72,
+   "price": 56.08,
+   "prevClose": 48.73,
+   "gapPct": 15.08,
+   "pmVolume": 9669269,
+   "pmVolPct": 13.29,
+   "avgVolume": 72760325,
+   "rvol": 5.23,
+   "spread": 0.01,
+   "spreadPct": 0.02,
+   "atr": 5.42,
+   "atrPct": 11.12,
+   "mktCapB": 30.79,
+   "floatM": 349.31,
+   "rsQqq": 13.21,
+   "rsSpy": 14.22,
+   "ema9": 56.5,
+   "ema9Pct": -0.75,
+   "ema9Step": "5m",
+   "ema9Daily": 50.75,
+   "profile": {
+    "session": "11/10",
+    "dayType": "normal",
+    "vah": 49.16,
+    "val": 47.26,
+    "vpoc": 47.76,
+    "migration": "重疊",
+    "note": "今日跳空遠高過昨日價值區。"
+   },
+   "levels": {
+    "pmh": 58.11,
+    "pml": 53.5,
+    "pdh": 51.02,
+    "pdl": 47.06,
+    "pdc": 48.73,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 49.16
+     },
+     {
+      "label": "昨日 POC",
+      "price": 47.76
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 47.26
+     },
+     {
+      "label": "20 日線",
+      "price": 56.31
+     }
+    ]
+   },
+   "why": "Gap +15.1%、RVOL 5.2、Pre-Market Volume 967 萬、Bid-Ask Spread 0.02%、ATR 11.1%、Relative Strength +13.2；但價格低過 EMA 9 少少（−0.75%），9 個指標 8 個合格。今日 AI 反彈嘅主角。",
+   "catalyst": "Q3 收入好過預期兼上調全年展望，減輕市場對 AI 支出放慢嘅憂慮（CNBC、Seeking Alpha）；但 Needham、Stifel 維持「持有」，Stifel 仲降目標價到 60。",
+   "technical": "日線跌勢（低過 20、50 日線）；今日跳空高過昨日高 51.02，貼近 20 日線 56.31；盤前高 58.11、盤前低 53.50。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "晶片同 AI 股大反彈（SMH +4.57%、QQQ +1.87%），CRWV 業績係催化劑。",
+    "fundamentals": "業績同指引都好，屬實質好消息；但分析師意見分歧，目標價 60 就喺附近。",
+    "technical": "TradingCalc：昨日 Normal Day（VAH 49.16／VAL 47.26），價值區同前日部分重疊。今日跳空高過昨日價值區超過 6 元，昨日水平參考價值低；20 日線 56.31 同 Stifel 目標價 60 係上面嘅阻力。",
+    "tape": "盤前 967 萬股（日均 13%）、RVOL 5.2；Spread 0.01 元好窄。平時開市首 5 分鐘約 217 萬股，要見 ≥ 435 萬股。Short Float 21%，升穿高位可能有 Short Squeeze 幫手。",
+    "intuition": "信心中。業績股跳空高開，Level 12 數據顯示大約三分一延續：一定要等升穿盤前高兼放量先入。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（58.11），首 5 分鐘成交 ≥ 平時 2 倍（約 435 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 58.15,
+    "stop": 56.52,
+    "target1": 61.41,
+    "target2": 63.04,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 58.15 兼放量 → 做多，Stop 56.52，T1 61.41，T2 63.04（Stifel 目標價 60 係中途阻力）。",
+    "short": "跌穿盤前低 53.50 = Gap 失敗，唔好做多（新手唔好沽空）。",
+    "noTrade": "09:35 已經高過 59.78（> 0.3 ATR）唔追；價格喺 VWAP 下面唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做；由 10/29 起 13 次、贏 2 次、累計約 −8.1R）：首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 2.71 元），Target 2R。"
+   },
+   "risks": [
+    "ATR 11%，波動好大，股數要細",
+    "價格低過 EMA 9（−0.75%）",
+    "Stifel 目標價 60、20 日線 56.31 係阻力",
+    "業績 Gap 只有大約三分一會延續（Level 12）"
+   ],
+   "news": [
+    {
+     "title": "CoreWeave Announces General Availability Of CoreWeave Database, A Managed Database Service Running Alongside Customers’ GPU Workloads",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/quote/CRWV",
+     "time": "2026-11-11 13:04 UTC"
+    },
+    {
+     "title": "Needham Reiterates Hold on CoreWeaveto Hold",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/63135213/needham-reiterates-hold-coreweaveto-hold",
+     "time": "2026-11-11 12:49 UTC"
+    },
+    {
+     "title": "CoreWeave in spotlight as Wall Street praises Q3 results, guidance",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/CRWV/news?source=feed_symbol_CRWV",
+     "time": "2026-11-11 12:40 UTC"
+    },
+    {
+     "title": "Stifel Maintains Hold on CoreWeave, Lowers Price Target to $60",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/63134704/stifel-maintains-hold-coreweave-lowers-price-target-60",
+     "time": "2026-11-11 12:32 UTC"
+    }
+   ],
+   "lists": [
+    "StockAnalysis 盤前升幅榜",
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "NVDA",
+   "name": "NVIDIA",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 66,
+   "price": 175.07,
+   "prevClose": 168.89,
+   "gapPct": 3.66,
+   "pmVolume": 17316985,
+   "pmVolPct": 11.15,
+   "avgVolume": 155299861,
+   "rvol": 3.3,
+   "spread": 0.03,
+   "spreadPct": 0.02,
+   "atr": 9.29,
+   "atrPct": 5.5,
+   "mktCapB": 4214.61,
+   "floatM": 23190,
+   "rsQqq": 1.79,
+   "rsSpy": 2.8,
+   "ema9": 175.54,
+   "ema9Pct": -0.27,
+   "ema9Step": "5m",
+   "ema9Daily": 190.28,
+   "profile": {
+    "session": "11/10",
+    "dayType": "normal",
+    "vah": 170.8,
+    "val": 166.5,
+    "vpoc": 167.7,
+    "migration": "向下移",
+    "note": "今日盤前價喺昨日價值區同昨日高之上。"
+   },
+   "levels": {
+    "pmh": 178.36,
+    "pml": 171.25,
+    "pdh": 174.69,
+    "pdl": 165.89,
+    "pdc": 168.89,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 170.8
+     },
+     {
+      "label": "昨日 POC",
+      "price": 167.7
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 166.5
+     },
+     {
+      "label": "11/09 高位",
+      "price": 179.92
+     }
+    ]
+   },
+   "why": "Gap +3.7%、RVOL 3.3、Pre-Market Volume 1,732 萬、Bid-Ask Spread 0.02%、ATR 5.5%、Relative Strength +1.8；但價格低過 EMA 9 少少（−0.27%），9 個指標 8 個合格。",
+   "catalyst": "兩日下跌（CEO 事件）之後跟 AI 股反彈；但 Baird 降評級到「中性」、目標價 200，Morgan Stanley 剔出首選股（Benzinga、Seeking Alpha）——好淡消息都有。",
+   "technical": "日線跌勢（低過 20、50 日線，Daily EMA 9 190.3）；今日跳空高過昨日高 174.69；盤前高 178.36、盤前低 171.25。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "晶片板塊大升（SMH +4.57%），NVDA 升幅（+3.7%）反而落後板塊（Relative Strength 對 SMH 係負）。",
+    "fundamentals": "CEO 事件未完，分析師降級。升幅主要係跟板塊。",
+    "technical": "TradingCalc：昨日 Normal Day，價值區向下移（VAH 170.80／VAL 166.50）。今日盤前 175 已經喺昨日價值區同昨日高之上；11/09 嘅高位 179.92 係上面阻力，Target 183.98 要穿過佢。",
+    "tape": "盤前 1,732 萬股（日均 11%）、RVOL 3.3；Spread 0.03 元。平時開市首 5 分鐘約 1,130 萬股，要見 ≥ 2,259 萬股。",
+    "intuition": "信心中低。過去 4 日 NVDA 開市後都大上大落（11/06 做多中 Stop、11/09 沽空中 Stop），等清楚突破先入。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（178.36），首 5 分鐘成交 ≥ 平時 2 倍（約 2,259 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 178.4,
+    "stop": 175.61,
+    "target1": 183.98,
+    "target2": 186.77,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 178.40 兼放量 → 做多，Stop 175.61，T1 183.98，T2 186.77（11/09 高位 179.92 係第一個阻力）。",
+    "short": "跌返昨日高 174.69 之下 = 反彈失敗，唔好做多。",
+    "noTrade": "09:35 已經高過 181.19 唔追；首 5 分鐘量不足唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做；由 10/29 起 13 次、贏 2 次、累計約 −8.1R）：首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 4.65 元），Target 2R。"
+   },
+   "risks": [
+    "近幾日開市後大上大落，兩次中 Stop",
+    "Baird 降級、CEO 事件未完",
+    "11/09 高位 179.92 喺入場價上面少少，係阻力",
+    "價格低過 EMA 9"
+   ],
+   "news": [
+    {
+     "title": "Vertiv CFO Says Customers Aren't Pushing Back on Higher Prices Despite Inflation Pressure",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/63135575/vertiv-cfo-says-customers-arent-pushing-back-on-higher-prices-despite-inflation-pressure",
+     "time": "2026-11-11 13:04 UTC"
+    },
+    {
+     "title": "Nvidia attempts to rebound despite Baird downgrade, Morgan Stanley removing as top pick",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/NVDA/news?source=feed_symbol_NVDA",
+     "time": "2026-11-11 12:56 UTC"
+    },
+    {
+     "title": "This Nvidia Analyst Is No Longer Bullish; Here Are Top 5 Downgrades For Wednesday",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/analyst-stock-ratings/downgrades/26/11/63134933/this-nvidia-analyst-is-no-longer-bullish-here-are-top-5-downgrades-for-wednesday",
+     "time": "2026-11-11 12:40 UTC"
+    },
+    {
+     "title": "Baird Downgrades NVIDIA to Neutral, Lowers Price Target to $200",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/63133871/baird-downgrades-nvidia-neutral-lowers-price-target-200",
+     "time": "2026-11-11 12:02 UTC"
+    }
+   ],
+   "lists": [
+    "Alpaca 最活躍"
+   ]
+  },
+  {
+   "sym": "NBIS",
+   "name": "Nebius Group",
+   "grade": "C",
+   "beginner": "高風險",
+   "direction": "Long",
+   "score": 56,
+   "price": 152.09,
+   "prevClose": 134,
+   "gapPct": 13.5,
+   "pmVolume": 2527705,
+   "pmVolPct": 9.83,
+   "avgVolume": 25711020,
+   "rvol": 2.86,
+   "spread": 0.41,
+   "spreadPct": 0.27,
+   "atr": 15.78,
+   "atrPct": 11.78,
+   "mktCapB": 41.17,
+   "floatM": 222.54,
+   "rsQqq": 11.63,
+   "rsSpy": 12.64,
+   "ema9": 152.97,
+   "ema9Pct": -0.58,
+   "ema9Step": "5m",
+   "ema9Daily": 142.84,
+   "profile": {
+    "session": "11/10",
+    "dayType": "normal",
+    "vah": 139.4,
+    "val": 131.1,
+    "vpoc": 132.8,
+    "migration": "重疊",
+    "note": "今日跳空遠高過昨日價值區。"
+   },
+   "levels": {
+    "pmh": 154.44,
+    "pml": 146.88,
+    "pdh": 146.26,
+    "pdl": 130.9,
+    "pdc": 134,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 139.4
+     },
+     {
+      "label": "昨日 POC",
+      "price": 132.8
+     },
+     {
+      "label": "昨日 VAL",
+      "price": 131.1
+     },
+     {
+      "label": "20 日線",
+      "price": 158.16
+     }
+    ]
+   },
+   "why": "Gap +13.5%、RVOL 2.9、Pre-Market Volume 253 萬、ATR 11.8%、Relative Strength +11.6；但 Bid-Ask Spread 0.27%（超過 0.1%）同價格低過 EMA 9（−0.58%），9 個指標 7 個合格。高風險。",
+   "catalyst": "同類「AI 雲端」股跟 CoreWeave 業績大升（Seeking Alpha：Neocloud stocks surge）。NBIS 自己聽日（11/12）開市前公布業績。",
+   "technical": "日線跌勢（低過 20、50 日線）；今日跳空高過昨日高 146.26；盤前高 154.44、盤前低 146.88；20 日線 158.16 喺上面。",
+   "setup": "Opening Drive（開市推動）做多",
+   "pillars": {
+    "bigPicture": "AI 股大反彈，NBIS 係跟升（同類股效應）。",
+    "fundamentals": "冇自己嘅新消息；聽日開市前公布業績，今日可能有人「業績前炒高」，亦可能有人業績前減倉。",
+    "technical": "TradingCalc：昨日 Normal Day（VAH 139.40／VAL 131.10）。今日跳空遠高過昨日價值區；20 日線 158.16 喺 Target 163.96 之前，係阻力。",
+    "tape": "盤前 253 萬股（日均 10%）、RVOL 2.9；Spread 0.41 元（偏闊）。平時開市首 5 分鐘約 95 萬股，要見 ≥ 190 萬股。",
+    "intuition": "信心低。跟升股通常弱過主角（CRWV）；聽日業績，一定要收市前平倉，唔好揸過夜。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高位（154.44），首 5 分鐘成交 ≥ 平時 2 倍（約 190 萬股），而且價格喺 VWAP 同 5 分鐘 EMA 9 之上",
+    "entry": 154.5,
+    "stop": 149.77,
+    "target1": 163.96,
+    "target2": 168.69,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 154.50 兼放量 → 做多，Stop 149.77，T1 163.96，T2 168.69（20 日線 158.16 係中途阻力）；收市前一定平倉。",
+    "short": "跌穿盤前低 146.88 = 跟升失敗，唔好做多。",
+    "noTrade": "09:35 已經高過 159.23 唔追；Spread 開市後仲係 > 0.2% 唔做；CRWV 轉弱就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做；由 10/29 起 13 次、贏 2 次、累計約 −8.1R）：首 5 分鐘高位升穿，Stop 首 5 分鐘低位（最多 7.89 元），Target 2R。"
+   },
+   "risks": [
+    "聽日開市前業績：唔好揸過夜",
+    "Bid-Ask Spread 0.27%",
+    "ATR 11.8%，每股風險 4.73 元",
+    "跟升股，主角 CRWV 轉弱佢會跌得更快"
+   ],
+   "news": [
+    {
+     "title": "Why Is Nebius Group Stock Soaring Wednesday?",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/markets/tech/26/11/63134289/why-is-nebius-group-stock-soaring-wednesday",
+     "time": "2026-11-11 12:10 UTC"
+    },
+    {
+     "title": "12 Information Technology Stocks Moving In Wednesday's Pre-Market Session",
+     "source": "benzinga（經 Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/63134045/12-information-technology-stocks-moving-wednesday-s-pre-market-session",
+     "time": "2026-11-11 12:05 UTC"
+    },
+    {
+     "title": "Neocloud stocks surge as CoreWeave's outlook eases AI spending concerns",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/NBIS/news?source=feed_symbol_NBIS",
+     "time": "2026-11-11 09:38 UTC"
+    },
+    {
+     "title": "$Micron Technology (MU.US)$ $NEBIUS (NBIS.US)$ BULLS this is worrysome!",
+     "source": "Moomoo（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPTDNjOWNlRXVsTzNTVGlObjI3N0RNamhISDdVVHdDVlhLcHFrRm0tekVhR2FuSXlUU09hV01NWVc2T1ZxckZVcDU0LWpWRFQ0YWpNVHpDdFlPd1pGSkJrYXgwY2FqN0ZZQzFySHp4ZVJFNHo3VmtqOF9oLXh6clJGMXl5bEhKUWhkNWtJZXF1QjQwbkFhVjdRR1NweV9lNVpmRmMyMjhZcWdJQQ?oc=5",
+     "time": "2026-11-11 09:28 UTC"
+    }
+   ],
+   "lists": [
+    "StockAnalysis 盤前升幅榜"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "MU",
+   "why": "+6.5% 跟 AI 股升，但 RVOL 1.1。開市後首 5 分鐘量夠先考慮。"
+  },
+  {
+   "sym": "AMD",
+   "why": "+5.6%，但 RVOL 1.4。"
+  },
+  {
+   "sym": "RSKD",
+   "why": "+21.5%、RVOL 104（業績好過預期），但 Spread 1.15%。"
+  },
+  {
+   "sym": "TSLA",
+   "why": "唔喺今日異動名單，冇催化劑，唔做。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "OMH",
+   "why": "Float 2M，細價股急升 75%。"
+  },
+  {
+   "sym": "SATL",
+   "why": "$4.7 細價股，Spread 0.21%。"
+  },
+  {
+   "sym": "SOXL",
+   "why": "3 倍槓桿 ETF，唔適合學習階段。"
+  }
+ ],
+ "news": [
+  {
+   "title": "CoreWeave stock pops 11% after outlook raise eases AI slowdown concerns",
+   "source": "CNBC",
+   "url": "https://cnbc.com/2026/11/11/coreweave-crwv-outlook-earnings-ai.html",
+   "time": "2026-11-11",
+   "tickers": [
+    "CRWV"
+   ]
+  },
+  {
+   "title": "CoreWeave provides silver lining for neoclouds as Nvidia storm swirls",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/11/coreweave-provides-silver-lining-for-neoclouds-as-nvidia-storm-swirls.html",
+   "time": "2026-11-11",
+   "tickers": [
+    "CRWV",
+    "NBIS",
+    "NVDA"
+   ]
+  },
+  {
+   "title": "Stocks moving the most today: Live updates",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/11/stocks-moving-the-most-today-live-updates.html",
+   "time": "2026-11-11",
+   "tickers": []
+  },
+  {
+   "title": "Stock market today: Live updates",
+   "source": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/10/stock-market-today-live-updates.html",
+   "time": "2026-11-11",
+   "tickers": [
+    "SPY",
+    "QQQ"
+   ]
+  },
+  {
+   "title": "Baird Downgrades NVIDIA to Neutral, Lowers Price Target to $200",
+   "source": "benzinga（經 Alpaca）",
+   "url": "https://www.benzinga.com/news/26/11/63133871/baird-downgrades-nvidia-neutral-lowers-price-target-200",
+   "time": "2026-11-11 12:02 UTC",
+   "tickers": [
+    "NVDA"
+   ]
+  },
+  {
+   "title": "Neocloud stocks surge as CoreWeave's outlook eases AI spending concerns",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/NBIS/news?source=feed_symbol_NBIS",
+   "time": "2026-11-11 09:38 UTC",
+   "tickers": [
+    "NBIS",
+    "CRWV"
+   ]
+  },
+  {
+   "title": "Riskified beats top-line and bottom-line estimates; updates FY26 outlook",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/RSKD/news?source=feed_symbol_RSKD",
+   "time": "2026-11-11 11:49 UTC",
+   "tickers": [
+    "RSKD"
+   ]
+  }
+ ],
+ "lesson": "業績股跳空高開（例如今日 CRWV +15%），Level 12 數據顯示只有大約三分一會延續，三分二橫行或者回落。所以計劃係「升穿盤前高 + 首 5 分鐘放量」先入；跟升嘅同類股（NBIS）通常弱過主角，要更加小心。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，數據延遲 16 分鐘，可能有錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

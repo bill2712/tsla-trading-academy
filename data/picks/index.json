@@ -1,6 +1,38 @@
 {
- "updated": "2026-11-10T13:17:34.311Z",
+ "updated": "2026-11-11T13:16:09.201Z",
  "days": [
+  {
+   "date": "2026-11-11",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏好（AI 股反彈）",
+   "headline": "AI 股大反彈：CoreWeave 業績好兼上調展望，盤前 +15%，晶片 SMH +4.6%、QQQ +1.9%。3 隻做多候選：CRWV（RVOL 5.2）、NVDA（RVOL",
+   "n": 3,
+   "top": [
+    {
+     "sym": "CRWV",
+     "gapPct": 15.08,
+     "rvol": 5.23,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "NVDA",
+     "gapPct": 3.66,
+     "rvol": 3.3,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "NBIS",
+     "gapPct": 13.5,
+     "rvol": 2.86,
+     "beginner": "高風險",
+     "grade": "C"
+    }
+   ],
+   "reviewed": false
+  },
   {
    "date": "2026-11-10",
    "version": 3,
@@ -17,7 +49,7 @@
      "grade": "C"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-11-09",
