@@ -513,6 +513,8 @@ Cash 戶口賣出之後，資金要 T+1 先交收，同一筆錢當日唔可以�
 
 [[quiz:l15-final]]
 
+[[link:level/l16|➡️ 下一課：Level 16 Indicator 實戰]]
+
 [[link:map|🗺️ 睇你嘅學習地圖同證書]]
 `},
   ],

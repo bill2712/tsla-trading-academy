@@ -1388,3 +1388,32 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .pk-long-t td, .pk-long-t th { white-space: nowrap; vertical-align: middle; }
 .pk-long-t td.pk-long-s { white-space: normal; min-width: 180px; }
 .pk-long-t td small { display: block; color: var(--muted); }
+
+/* ---------- Level 16：Indicator ---------- */
+.l16-bars { display: grid; gap: 4px; }
+.l16-row { display: grid; grid-template-columns: minmax(120px, 1.5fr) minmax(80px, 1.2fr) 62px minmax(90px, 1fr); gap: 8px; align-items: center; font-size: .86em; }
+.l16-row.few { opacity: .6; }
+.l16-track { position: relative; height: 14px; border-radius: 7px; background: var(--bg-soft); overflow: hidden; }
+.l16-track::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--muted); opacity: .6; }
+.l16-track i { position: absolute; top: 0; bottom: 0; }
+.l16-track i.pos { background: var(--up); } .l16-track i.neg { background: var(--down); }
+.l16-val { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.l16-val.pos { color: var(--up); } .l16-val.neg { color: var(--down); }
+.l16-n { color: var(--muted); font-size: .88em; white-space: nowrap; }
+.l16-h { margin: 0; }
+.l16-slider { display: grid; grid-template-columns: auto auto 1fr; gap: 8px; align-items: center; font-size: .9em; }
+.l16-slider input { width: 100%; min-width: 0; }
+.l16-reads { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 6px; }
+.l16-reads > div { padding: 6px 10px; border-radius: 10px; background: var(--bg-soft); display: grid; line-height: 1.35; }
+.l16-reads span { font-size: .75em; color: var(--muted); font-weight: 700; }
+.l16-reads b { font-size: .88em; font-weight: 600; }
+.l16-reads .bad b { color: var(--down); }
+.l16-verdict { margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; font-weight: 600; background: var(--warn-soft); }
+.l16-verdict.ok { background: var(--up-soft); } .l16-verdict.bad { background: var(--down-soft); }
+.chart-svg .l16-e20 { fill: none; stroke: #0ea5e9; stroke-width: 1.8; stroke-dasharray: 5 3; }
+.chart-svg .l16-e20-label { fill: #0ea5e9; font-size: 12px; font-weight: 700; }
+.chart-svg .l16-rsi { fill: none; stroke: #db2777; stroke-width: 1.8; }
+@media (max-width: 560px) { .l16-row { grid-template-columns: 1fr 70px; } .l16-row .l16-track { grid-column: 1 / -1; order: 3; } .l16-row .l16-n { grid-column: 1 / -1; order: 4; } }
+
+.l10-bar label.l16-pick { display: grid; grid-template-columns: auto 1fr; width: 100%; white-space: normal; }
+.l10-bar label.l16-pick select { width: 100%; min-width: 0; }

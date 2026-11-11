@@ -1,9 +1,9 @@
 /* 簡單離線快取：先用網絡，失敗先用快取（內容更新後即刻見到） */
-const CACHE = 'ta-v17';
+const CACHE = 'ta-v18';
 const CORE = [
   './', 'index.html', 'css/style.css', 'css/theme.css', 'manifest.webmanifest', 'assets/icon.svg',
   'js/vendor/marked.min.js', 'js/store.js', 'js/charts.js', 'js/data-glossary.js', 'js/data-quizzes.js',
-  'content/level1.js', 'content/level2.js', 'content/level3.js', 'content/level4.js', 'content/level5.js', 'content/level6.js', 'content/level7.js', 'content/level8.js', 'content/level9.js', 'content/level10.js', 'content/level11.js', 'content/level12.js', 'content/level13.js', 'content/level14.js', 'content/level15.js', 'content/qa.js',
+  'content/level1.js', 'content/level2.js', 'content/level3.js', 'content/level4.js', 'content/level5.js', 'content/level6.js', 'content/level7.js', 'content/level8.js', 'content/level9.js', 'content/level10.js', 'content/level11.js', 'content/level12.js', 'content/level13.js', 'content/level14.js', 'content/level15.js', 'content/level16.js', 'content/qa.js',
   'js/tools.js', 'js/tools2.js', 'js/tools3.js', 'js/vcp.js', 'js/sim.js', 'js/replay.js', 'js/journal.js', 'js/learn.js', 'js/data.js', 'js/lab.js', 'js/edge.js', 'js/picks.js', 'js/vendor/firebase-app-compat.js', 'js/vendor/firebase-auth-compat.js', 'js/vendor/firebase-firestore-compat.js', 'js/cloud-config.js', 'js/cloud.js', 'assets/google.svg', 'js/app.js',
 ];
 self.addEventListener('install', (e) => {
