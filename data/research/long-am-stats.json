@@ -1,0 +1,2104 @@
+{
+ "generatedAt": "2026-11-11T15:12:58.969Z",
+ "from": "2024-01-01",
+ "to": "2026-11-06",
+ "universe": [
+  "TSLA",
+  "NVDA",
+  "AAPL",
+  "AMD",
+  "META",
+  "AMZN",
+  "MSFT",
+  "GOOGL",
+  "AVGO",
+  "NFLX",
+  "PLTR",
+  "COIN",
+  "MU",
+  "SMCI",
+  "MSTR",
+  "HOOD",
+  "ARM",
+  "INTC",
+  "ORCL",
+  "CRM",
+  "ADBE",
+  "SHOP",
+  "UBER",
+  "ABNB",
+  "SNOW",
+  "CRWD",
+  "PANW",
+  "NET",
+  "DDOG",
+  "MRVL",
+  "QCOM",
+  "LRCX",
+  "AMAT",
+  "ROKU",
+  "PYPL",
+  "RIVN",
+  "SOFI",
+  "AFRM",
+  "UPST",
+  "BABA",
+  "PDD",
+  "DIS",
+  "BA",
+  "NKE",
+  "SBUX",
+  "LLY",
+  "UNH",
+  "CVNA",
+  "DKNG",
+  "RBLX"
+ ],
+ "source": "Alpaca SIP 5 分鐘 K 線（正常交易時段）",
+ "daysAll": 33118,
+ "daysInPlay": 7132,
+ "trendDays": {
+  "up": 2207,
+  "mixed": 2879,
+  "down": 2046
+ },
+ "rules": {
+  "inPlay": "Gap ≥ 2% 或者首 5 分鐘成交 ≥ 過去 20 日平均 2 倍",
+  "trend": "升勢 = 昨日收市 > 20 日線 > 50 日線；跌勢 = 昨日收市 < 20 日線 < 50 日線；其餘 = 橫行",
+  "nearHigh": "昨日收市喺 20 日高位 5% 之內",
+  "exit": "Buy Stop 入場（11:30 前）；Target 2R；Stop；未到就 11:30 平倉。同一支 K 掂 Stop 同 Target 當 Stop",
+  "cost": "扣成本後 = 平均 R 減 0.05R",
+  "qqq": "入場前一支 5 分鐘 K 收市時，QQQ 喺自己 VWAP 上面（冇偷睇之後嘅價）",
+  "ema9": "5 分鐘 EMA 9 只用正常時段 K 線計（冇包盤前）"
+ },
+ "baseline": {
+  "note": "09:35 買入、11:30 賣出（冇 Stop），單位 ATR",
+  "all": {
+   "n": 7132,
+   "up": 51.3,
+   "avgAtr": 0.02
+  },
+  "up": {
+   "n": 2207,
+   "up": 50.7,
+   "avgAtr": 0.02
+  },
+  "mixed": {
+   "n": 2879,
+   "up": 51.8,
+   "avgAtr": 0.02
+  },
+  "down": {
+   "n": 2046,
+   "up": 51.3,
+   "avgAtr": 0.01
+  },
+  "upGapUp": {
+   "n": 1020,
+   "up": 47.3,
+   "avgAtr": 0.01
+  },
+  "upGapDown": {
+   "n": 804,
+   "up": 56.3,
+   "avgAtr": 0.05
+  },
+  "downGapUp": {
+   "n": 924,
+   "up": 49.1,
+   "avgAtr": 0
+  },
+  "downGapDown": {
+   "n": 844,
+   "up": 52.4,
+   "avgAtr": 0.02
+  },
+  "upNearHigh": {
+   "n": 1385,
+   "up": 50,
+   "avgAtr": 0.02
+  }
+ },
+ "setups": {
+  "orb5": {
+   "name": "5 分鐘 ORB 做多",
+   "all": {
+    "n": 2350,
+    "win": 44.8,
+    "target": 12.8,
+    "stop": 40.5,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.03
+   },
+   "up": {
+    "n": 666,
+    "win": 42.2,
+    "target": 12.8,
+    "stop": 43.8,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": -0.02
+   },
+   "mixed": {
+    "n": 929,
+    "win": 45.7,
+    "target": 12.6,
+    "stop": 41,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.03
+   },
+   "down": {
+    "n": 755,
+    "win": 46,
+    "target": 13.1,
+    "stop": 37,
+    "avgR": 0.07,
+    "avgRCost": 0.02,
+    "avgREod": 0.08
+   },
+   "upNearHigh": {
+    "n": 365,
+    "win": 40.8,
+    "target": 10.7,
+    "stop": 44.1,
+    "avgR": -0.09,
+    "avgRCost": -0.14,
+    "avgREod": -0.06
+   },
+   "upGapUp": {
+    "n": 303,
+    "win": 39.3,
+    "target": 14.5,
+    "stop": 48.8,
+    "avgR": -0.05,
+    "avgRCost": -0.1,
+    "avgREod": 0.02
+   },
+   "upGapDown": {
+    "n": 288,
+    "win": 45.5,
+    "target": 11.8,
+    "stop": 38.5,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": -0.05
+   },
+   "upQqq": {
+    "n": 392,
+    "win": 39.5,
+    "target": 9.9,
+    "stop": 43.6,
+    "avgR": -0.09,
+    "avgRCost": -0.14,
+    "avgREod": -0.05
+   },
+   "upQqqNot": {
+    "n": 274,
+    "win": 46,
+    "target": 16.8,
+    "stop": 44.2,
+    "avgR": 0.06,
+    "avgRCost": 0.01,
+    "avgREod": 0.02
+   },
+   "upRvol": {
+    "n": 148,
+    "win": 39.9,
+    "target": 10.1,
+    "stop": 47.3,
+    "avgR": -0.1,
+    "avgRCost": -0.15,
+    "avgREod": -0.08
+   },
+   "upBest": {
+    "n": 85,
+    "win": 40,
+    "target": 10.6,
+    "stop": 48.2,
+    "avgR": -0.08,
+    "avgRCost": -0.13,
+    "avgREod": -0.01
+   },
+   "best": {
+    "n": 278,
+    "win": 50.7,
+    "target": 10.4,
+    "stop": 38.5,
+    "avgR": 0.07,
+    "avgRCost": 0.02,
+    "avgREod": 0.16
+   },
+   "notUpBest": {
+    "n": 193,
+    "win": 55.4,
+    "target": 10.4,
+    "stop": 34.2,
+    "avgR": 0.13,
+    "avgRCost": 0.08,
+    "avgREod": 0.24
+   },
+   "upBest2024": {
+    "n": 35,
+    "win": 40,
+    "target": 14.3,
+    "stop": 51.4,
+    "avgR": -0.1,
+    "avgRCost": -0.15,
+    "avgREod": 0
+   },
+   "upBest2025": {
+    "n": 37,
+    "win": 37.8,
+    "target": 5.4,
+    "stop": 48.6,
+    "avgR": -0.11,
+    "avgRCost": -0.16,
+    "avgREod": -0.16
+   },
+   "upBest2026": {
+    "n": 13,
+    "win": 46.2,
+    "target": 15.4,
+    "stop": 38.5,
+    "avgR": 0.08,
+    "avgRCost": 0.03,
+    "avgREod": 0.38
+   },
+   "upStrong20": {
+    "n": 466,
+    "win": 41.8,
+    "target": 14.8,
+    "stop": 45.1,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": 0
+   },
+   "upEarly": {
+    "n": 666,
+    "win": 42.2,
+    "target": 12.8,
+    "stop": 43.8,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": -0.02
+   },
+   "upLate": {
+    "n": 0
+   },
+   "up2024": {
+    "n": 178,
+    "win": 36,
+    "target": 12.4,
+    "stop": 53.4,
+    "avgR": -0.16,
+    "avgRCost": -0.21,
+    "avgREod": -0.19
+   },
+   "up2025": {
+    "n": 246,
+    "win": 45.1,
+    "target": 11.4,
+    "stop": 39.8,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.01
+   },
+   "up2026": {
+    "n": 242,
+    "win": 43.8,
+    "target": 14.5,
+    "stop": 40.9,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.07
+   }
+  },
+  "orb15": {
+   "name": "15 分鐘 ORB 做多",
+   "all": {
+    "n": 2486,
+    "win": 50,
+    "target": 4.5,
+    "stop": 19.5,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.04
+   },
+   "up": {
+    "n": 709,
+    "win": 48.2,
+    "target": 3.5,
+    "stop": 20.9,
+    "avgR": -0.01,
+    "avgRCost": -0.06,
+    "avgREod": -0.03
+   },
+   "mixed": {
+    "n": 984,
+    "win": 50.3,
+    "target": 3,
+    "stop": 19.4,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.03
+   },
+   "down": {
+    "n": 793,
+    "win": 51.3,
+    "target": 7.1,
+    "stop": 18.5,
+    "avgR": 0.07,
+    "avgRCost": 0.02,
+    "avgREod": 0.1
+   },
+   "upNearHigh": {
+    "n": 397,
+    "win": 47.6,
+    "target": 3.8,
+    "stop": 21.2,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.03
+   },
+   "upGapUp": {
+    "n": 329,
+    "win": 45.6,
+    "target": 4.3,
+    "stop": 24.6,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": 0.01
+   },
+   "upGapDown": {
+    "n": 297,
+    "win": 49.8,
+    "target": 3,
+    "stop": 17.5,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": -0.08
+   },
+   "upQqq": {
+    "n": 471,
+    "win": 48.8,
+    "target": 2.1,
+    "stop": 19.3,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.02
+   },
+   "upQqqNot": {
+    "n": 238,
+    "win": 47.1,
+    "target": 6.3,
+    "stop": 23.9,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": -0.03
+   },
+   "upRvol": {
+    "n": 182,
+    "win": 47.3,
+    "target": 4.4,
+    "stop": 22.5,
+    "avgR": -0.01,
+    "avgRCost": -0.06,
+    "avgREod": 0
+   },
+   "upBest": {
+    "n": 109,
+    "win": 52.3,
+    "target": 3.7,
+    "stop": 20.2,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.06
+   },
+   "best": {
+    "n": 412,
+    "win": 51.9,
+    "target": 4.9,
+    "stop": 17,
+    "avgR": 0.06,
+    "avgRCost": 0.01,
+    "avgREod": 0.12
+   },
+   "notUpBest": {
+    "n": 303,
+    "win": 51.8,
+    "target": 5.3,
+    "stop": 15.8,
+    "avgR": 0.07,
+    "avgRCost": 0.02,
+    "avgREod": 0.14
+   },
+   "upBest2024": {
+    "n": 38,
+    "win": 57.9,
+    "target": 5.3,
+    "stop": 18.4,
+    "avgR": 0.16,
+    "avgRCost": 0.11,
+    "avgREod": 0.19
+   },
+   "upBest2025": {
+    "n": 49,
+    "win": 49,
+    "target": 2,
+    "stop": 22.4,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.04
+   },
+   "upBest2026": {
+    "n": 22,
+    "win": 50,
+    "target": 4.5,
+    "stop": 18.2,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": 0.06
+   },
+   "upStrong20": {
+    "n": 475,
+    "win": 47.6,
+    "target": 3.6,
+    "stop": 21.9,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": -0.03
+   },
+   "upEarly": {
+    "n": 700,
+    "win": 47.9,
+    "target": 3.6,
+    "stop": 21.1,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": -0.03
+   },
+   "upLate": {
+    "n": 9,
+    "win": 77.8,
+    "target": 0,
+    "stop": 0,
+    "avgR": 0.14,
+    "avgRCost": 0.09,
+    "avgREod": 0.15
+   },
+   "up2024": {
+    "n": 168,
+    "win": 47.6,
+    "target": 2.4,
+    "stop": 26.2,
+    "avgR": -0.05,
+    "avgRCost": -0.1,
+    "avgREod": -0.11
+   },
+   "up2025": {
+    "n": 287,
+    "win": 50.9,
+    "target": 4.5,
+    "stop": 19.2,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.05
+   },
+   "up2026": {
+    "n": 254,
+    "win": 45.7,
+    "target": 3.1,
+    "stop": 19.3,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.06
+   }
+  },
+  "orb30": {
+   "name": "30 分鐘 ORB 做多",
+   "all": {
+    "n": 1926,
+    "win": 50.7,
+    "target": 1.3,
+    "stop": 8.7,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.02
+   },
+   "up": {
+    "n": 513,
+    "win": 50.5,
+    "target": 0.8,
+    "stop": 9.4,
+    "avgR": 0,
+    "avgRCost": -0.05,
+    "avgREod": -0.05
+   },
+   "mixed": {
+    "n": 783,
+    "win": 51.5,
+    "target": 1.1,
+    "stop": 7.8,
+    "avgR": 0.04,
+    "avgRCost": -0.01,
+    "avgREod": 0.05
+   },
+   "down": {
+    "n": 630,
+    "win": 49.8,
+    "target": 1.9,
+    "stop": 9.2,
+    "avgR": 0,
+    "avgRCost": -0.05,
+    "avgREod": 0.04
+   },
+   "upNearHigh": {
+    "n": 271,
+    "win": 52,
+    "target": 0.4,
+    "stop": 8.1,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": -0.03
+   },
+   "upGapUp": {
+    "n": 244,
+    "win": 48.8,
+    "target": 0.4,
+    "stop": 11.9,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": -0.06
+   },
+   "upGapDown": {
+    "n": 215,
+    "win": 47.9,
+    "target": 0.9,
+    "stop": 7.9,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": -0.08
+   },
+   "upQqq": {
+    "n": 372,
+    "win": 52.4,
+    "target": 0.5,
+    "stop": 8.3,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": -0.01
+   },
+   "upQqqNot": {
+    "n": 141,
+    "win": 45.4,
+    "target": 1.4,
+    "stop": 12.1,
+    "avgR": 0,
+    "avgRCost": -0.05,
+    "avgREod": -0.15
+   },
+   "upRvol": {
+    "n": 119,
+    "win": 54.6,
+    "target": 2.5,
+    "stop": 8.4,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.03
+   },
+   "upBest": {
+    "n": 73,
+    "win": 61.6,
+    "target": 2.7,
+    "stop": 6.8,
+    "avgR": 0.14,
+    "avgRCost": 0.09,
+    "avgREod": 0.11
+   },
+   "best": {
+    "n": 296,
+    "win": 51.7,
+    "target": 2.4,
+    "stop": 6.1,
+    "avgR": 0.05,
+    "avgRCost": 0,
+    "avgREod": 0.13
+   },
+   "notUpBest": {
+    "n": 223,
+    "win": 48.4,
+    "target": 2.2,
+    "stop": 5.8,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.14
+   },
+   "upBest2024": {
+    "n": 25,
+    "win": 76,
+    "target": 4,
+    "stop": 4,
+    "avgR": 0.27,
+    "avgRCost": 0.22,
+    "avgREod": 0.18
+   },
+   "upBest2025": {
+    "n": 31,
+    "win": 58.1,
+    "target": 3.2,
+    "stop": 9.7,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.11
+   },
+   "upBest2026": {
+    "n": 17,
+    "win": 47.1,
+    "target": 0,
+    "stop": 5.9,
+    "avgR": 0.04,
+    "avgRCost": -0.01,
+    "avgREod": -0.02
+   },
+   "upStrong20": {
+    "n": 352,
+    "win": 49.7,
+    "target": 0.9,
+    "stop": 9.7,
+    "avgR": 0,
+    "avgRCost": -0.05,
+    "avgREod": -0.04
+   },
+   "upEarly": {
+    "n": 435,
+    "win": 50.8,
+    "target": 0.9,
+    "stop": 10.8,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": -0.05
+   },
+   "upLate": {
+    "n": 78,
+    "win": 48.7,
+    "target": 0,
+    "stop": 1.3,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.04
+   },
+   "up2024": {
+    "n": 124,
+    "win": 63.7,
+    "target": 0.8,
+    "stop": 9.7,
+    "avgR": 0.12,
+    "avgRCost": 0.07,
+    "avgREod": -0.01
+   },
+   "up2025": {
+    "n": 198,
+    "win": 52,
+    "target": 1.5,
+    "stop": 9.6,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.02
+   },
+   "up2026": {
+    "n": 191,
+    "win": 40.3,
+    "target": 0,
+    "stop": 8.9,
+    "avgR": -0.1,
+    "avgRCost": -0.15,
+    "avgREod": -0.15
+   }
+  },
+  "flag": {
+   "name": "開市推動後第一次回調（Bull Flag）",
+   "all": {
+    "n": 546,
+    "win": 41.6,
+    "target": 14.8,
+    "stop": 43.4,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.02
+   },
+   "up": {
+    "n": 191,
+    "win": 41.9,
+    "target": 18.3,
+    "stop": 47.1,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.06
+   },
+   "mixed": {
+    "n": 202,
+    "win": 41.1,
+    "target": 13.4,
+    "stop": 43.6,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": -0.05
+   },
+   "down": {
+    "n": 153,
+    "win": 41.8,
+    "target": 12.4,
+    "stop": 38.6,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.06
+   },
+   "upNearHigh": {
+    "n": 127,
+    "win": 40.2,
+    "target": 21.3,
+    "stop": 48,
+    "avgR": 0.04,
+    "avgRCost": -0.01,
+    "avgREod": 0.08
+   },
+   "upGapUp": {
+    "n": 83,
+    "win": 49.4,
+    "target": 22.9,
+    "stop": 41,
+    "avgR": 0.21,
+    "avgRCost": 0.16,
+    "avgREod": 0.29
+   },
+   "upGapDown": {
+    "n": 72,
+    "win": 30.6,
+    "target": 12.5,
+    "stop": 54.2,
+    "avgR": -0.25,
+    "avgRCost": -0.3,
+    "avgREod": -0.27
+   },
+   "upQqq": {
+    "n": 126,
+    "win": 41.3,
+    "target": 18.3,
+    "stop": 46,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.06
+   },
+   "upQqqNot": {
+    "n": 65,
+    "win": 43.1,
+    "target": 18.5,
+    "stop": 49.2,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.07
+   },
+   "upRvol": {
+    "n": 79,
+    "win": 48.1,
+    "target": 27.8,
+    "stop": 45.6,
+    "avgR": 0.22,
+    "avgRCost": 0.17,
+    "avgREod": 0.29
+   },
+   "upBest": {
+    "n": 52,
+    "win": 44.2,
+    "target": 26.9,
+    "stop": 46.2,
+    "avgR": 0.15,
+    "avgRCost": 0.1,
+    "avgREod": 0.25
+   },
+   "best": {
+    "n": 141,
+    "win": 46.1,
+    "target": 22,
+    "stop": 37.6,
+    "avgR": 0.17,
+    "avgRCost": 0.12,
+    "avgREod": 0.22
+   },
+   "notUpBest": {
+    "n": 89,
+    "win": 47.2,
+    "target": 19.1,
+    "stop": 32.6,
+    "avgR": 0.18,
+    "avgRCost": 0.13,
+    "avgREod": 0.2
+   },
+   "upBest2024": {
+    "n": 16,
+    "win": 43.8,
+    "target": 31.3,
+    "stop": 50,
+    "avgR": 0.18,
+    "avgRCost": 0.13,
+    "avgREod": 0.46
+   },
+   "upBest2025": {
+    "n": 24,
+    "win": 45.8,
+    "target": 25,
+    "stop": 45.8,
+    "avgR": 0.17,
+    "avgRCost": 0.12,
+    "avgREod": 0.27
+   },
+   "upBest2026": {
+    "n": 12,
+    "win": 41.7,
+    "target": 25,
+    "stop": 41.7,
+    "avgR": 0.05,
+    "avgRCost": 0,
+    "avgREod": -0.08
+   },
+   "upStrong20": {
+    "n": 124,
+    "win": 37.9,
+    "target": 17.7,
+    "stop": 46.8,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": 0.09
+   },
+   "upEarly": {
+    "n": 131,
+    "win": 42,
+    "target": 22.9,
+    "stop": 51.9,
+    "avgR": 0.04,
+    "avgRCost": -0.01,
+    "avgREod": 0.07
+   },
+   "upLate": {
+    "n": 60,
+    "win": 41.7,
+    "target": 8.3,
+    "stop": 36.7,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": 0.06
+   },
+   "up2024": {
+    "n": 38,
+    "win": 52.6,
+    "target": 31.6,
+    "stop": 39.5,
+    "avgR": 0.39,
+    "avgRCost": 0.34,
+    "avgREod": 0.51
+   },
+   "up2025": {
+    "n": 80,
+    "win": 40,
+    "target": 18.8,
+    "stop": 48.8,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.08
+   },
+   "up2026": {
+    "n": 73,
+    "win": 38.4,
+    "target": 11,
+    "stop": 49.3,
+    "avgR": -0.15,
+    "avgRCost": -0.2,
+    "avgREod": -0.19
+   }
+  },
+  "vwapPull": {
+   "name": "VWAP 第一次回調",
+   "all": {
+    "n": 1003,
+    "win": 41.8,
+    "target": 10,
+    "stop": 39.6,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": 0
+   },
+   "up": {
+    "n": 293,
+    "win": 41.3,
+    "target": 13.7,
+    "stop": 41.6,
+    "avgR": -0.01,
+    "avgRCost": -0.06,
+    "avgREod": 0.01
+   },
+   "mixed": {
+    "n": 401,
+    "win": 43.1,
+    "target": 9.2,
+    "stop": 39.7,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": 0
+   },
+   "down": {
+    "n": 309,
+    "win": 40.5,
+    "target": 7.4,
+    "stop": 37.5,
+    "avgR": -0.08,
+    "avgRCost": -0.13,
+    "avgREod": 0
+   },
+   "upNearHigh": {
+    "n": 165,
+    "win": 44.8,
+    "target": 15.2,
+    "stop": 40,
+    "avgR": 0.07,
+    "avgRCost": 0.02,
+    "avgREod": 0.11
+   },
+   "upGapUp": {
+    "n": 122,
+    "win": 42.6,
+    "target": 19.7,
+    "stop": 44.3,
+    "avgR": 0.07,
+    "avgRCost": 0.02,
+    "avgREod": 0.11
+   },
+   "upGapDown": {
+    "n": 125,
+    "win": 37.6,
+    "target": 7.2,
+    "stop": 39.2,
+    "avgR": -0.14,
+    "avgRCost": -0.19,
+    "avgREod": -0.21
+   },
+   "upQqq": {
+    "n": 179,
+    "win": 40.8,
+    "target": 14.5,
+    "stop": 40.2,
+    "avgR": 0,
+    "avgRCost": -0.05,
+    "avgREod": -0.03
+   },
+   "upQqqNot": {
+    "n": 114,
+    "win": 42.1,
+    "target": 12.3,
+    "stop": 43.9,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": 0.06
+   },
+   "upRvol": {
+    "n": 105,
+    "win": 43.8,
+    "target": 15.2,
+    "stop": 47.6,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.09
+   },
+   "upBest": {
+    "n": 59,
+    "win": 42.4,
+    "target": 16.9,
+    "stop": 49.2,
+    "avgR": 0,
+    "avgRCost": -0.05,
+    "avgREod": 0
+   },
+   "best": {
+    "n": 194,
+    "win": 42.8,
+    "target": 12.4,
+    "stop": 39.2,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.06
+   },
+   "notUpBest": {
+    "n": 135,
+    "win": 43,
+    "target": 10.4,
+    "stop": 34.8,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.09
+   },
+   "upBest2024": {
+    "n": 20,
+    "win": 60,
+    "target": 30,
+    "stop": 35,
+    "avgR": 0.49,
+    "avgRCost": 0.44,
+    "avgREod": 0.59
+   },
+   "upBest2025": {
+    "n": 24,
+    "win": 29.2,
+    "target": 8.3,
+    "stop": 58.3,
+    "avgR": -0.32,
+    "avgRCost": -0.37,
+    "avgREod": -0.37
+   },
+   "upBest2026": {
+    "n": 15,
+    "win": 40,
+    "target": 13.3,
+    "stop": 53.3,
+    "avgR": -0.15,
+    "avgRCost": -0.2,
+    "avgREod": -0.2
+   },
+   "upStrong20": {
+    "n": 183,
+    "win": 43.7,
+    "target": 12,
+    "stop": 38.3,
+    "avgR": 0.02,
+    "avgRCost": -0.03,
+    "avgREod": 0.09
+   },
+   "upEarly": {
+    "n": 230,
+    "win": 41.7,
+    "target": 15.7,
+    "stop": 44.3,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0
+   },
+   "upLate": {
+    "n": 63,
+    "win": 39.7,
+    "target": 6.3,
+    "stop": 31.7,
+    "avgR": -0.09,
+    "avgRCost": -0.14,
+    "avgREod": 0.05
+   },
+   "up2024": {
+    "n": 62,
+    "win": 56.5,
+    "target": 22.6,
+    "stop": 38.7,
+    "avgR": 0.28,
+    "avgRCost": 0.23,
+    "avgREod": 0.3
+   },
+   "up2025": {
+    "n": 129,
+    "win": 38,
+    "target": 9.3,
+    "stop": 42.6,
+    "avgR": -0.12,
+    "avgRCost": -0.17,
+    "avgREod": -0.1
+   },
+   "up2026": {
+    "n": 102,
+    "win": 36.3,
+    "target": 13.7,
+    "stop": 42.2,
+    "avgR": -0.06,
+    "avgRCost": -0.11,
+    "avgREod": -0.03
+   }
+  },
+  "ema9Pull": {
+   "name": "EMA 9 回調（強勢延續）",
+   "all": {
+    "n": 1878,
+    "win": 44.4,
+    "target": 10.9,
+    "stop": 38.4,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.03
+   },
+   "up": {
+    "n": 562,
+    "win": 42.9,
+    "target": 11.7,
+    "stop": 40.9,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": -0.03
+   },
+   "mixed": {
+    "n": 768,
+    "win": 44.8,
+    "target": 10.9,
+    "stop": 37.5,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.06
+   },
+   "down": {
+    "n": 548,
+    "win": 45.4,
+    "target": 9.9,
+    "stop": 37.2,
+    "avgR": 0,
+    "avgRCost": -0.05,
+    "avgREod": 0.04
+   },
+   "upNearHigh": {
+    "n": 349,
+    "win": 43,
+    "target": 13.2,
+    "stop": 43.6,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": -0.03
+   },
+   "upGapUp": {
+    "n": 256,
+    "win": 43,
+    "target": 12.9,
+    "stop": 39.5,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": -0.05
+   },
+   "upGapDown": {
+    "n": 228,
+    "win": 41.2,
+    "target": 9.6,
+    "stop": 44.7,
+    "avgR": -0.1,
+    "avgRCost": -0.15,
+    "avgREod": -0.08
+   },
+   "upQqq": {
+    "n": 418,
+    "win": 44,
+    "target": 12.2,
+    "stop": 40.4,
+    "avgR": -0.01,
+    "avgRCost": -0.06,
+    "avgREod": -0.03
+   },
+   "upQqqNot": {
+    "n": 144,
+    "win": 39.6,
+    "target": 10.4,
+    "stop": 42.4,
+    "avgR": -0.08,
+    "avgRCost": -0.13,
+    "avgREod": -0.04
+   },
+   "upRvol": {
+    "n": 199,
+    "win": 46.7,
+    "target": 15.6,
+    "stop": 37.2,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.21
+   },
+   "upBest": {
+    "n": 143,
+    "win": 51.7,
+    "target": 18.2,
+    "stop": 34.3,
+    "avgR": 0.18,
+    "avgRCost": 0.13,
+    "avgREod": 0.32
+   },
+   "best": {
+    "n": 433,
+    "win": 49.4,
+    "target": 14.1,
+    "stop": 34.2,
+    "avgR": 0.11,
+    "avgRCost": 0.06,
+    "avgREod": 0.16
+   },
+   "notUpBest": {
+    "n": 290,
+    "win": 48.3,
+    "target": 12.1,
+    "stop": 34.1,
+    "avgR": 0.07,
+    "avgRCost": 0.02,
+    "avgREod": 0.08
+   },
+   "upBest2024": {
+    "n": 53,
+    "win": 64.2,
+    "target": 17,
+    "stop": 18.9,
+    "avgR": 0.37,
+    "avgRCost": 0.32,
+    "avgREod": 0.45
+   },
+   "upBest2025": {
+    "n": 50,
+    "win": 48,
+    "target": 18,
+    "stop": 44,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.31
+   },
+   "upBest2026": {
+    "n": 40,
+    "win": 40,
+    "target": 20,
+    "stop": 42.5,
+    "avgR": 0.06,
+    "avgRCost": 0.01,
+    "avgREod": 0.16
+   },
+   "upStrong20": {
+    "n": 368,
+    "win": 43.2,
+    "target": 11.7,
+    "stop": 41.6,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": 0.01
+   },
+   "upEarly": {
+    "n": 0
+   },
+   "upLate": {
+    "n": 562,
+    "win": 42.9,
+    "target": 11.7,
+    "stop": 40.9,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": -0.03
+   },
+   "up2024": {
+    "n": 156,
+    "win": 51.3,
+    "target": 12.2,
+    "stop": 32.1,
+    "avgR": 0.13,
+    "avgRCost": 0.08,
+    "avgREod": 0.16
+   },
+   "up2025": {
+    "n": 213,
+    "win": 41.3,
+    "target": 9.9,
+    "stop": 43.2,
+    "avgR": -0.08,
+    "avgRCost": -0.13,
+    "avgREod": -0.11
+   },
+   "up2026": {
+    "n": 193,
+    "win": 37.8,
+    "target": 13.5,
+    "stop": 45.6,
+    "avgR": -0.1,
+    "avgRCost": -0.15,
+    "avgREod": -0.09
+   }
+  },
+  "pdhBreak": {
+   "name": "升穿昨日高位（PDH Break）",
+   "all": {
+    "n": 675,
+    "win": 44,
+    "target": 20.7,
+    "stop": 28.3,
+    "avgR": -0.13,
+    "avgRCost": -0.18,
+    "avgREod": -0.11
+   },
+   "up": {
+    "n": 237,
+    "win": 42.2,
+    "target": 22.4,
+    "stop": 33.3,
+    "avgR": -0.19,
+    "avgRCost": -0.24,
+    "avgREod": -0.14
+   },
+   "mixed": {
+    "n": 241,
+    "win": 45.6,
+    "target": 21.6,
+    "stop": 27.4,
+    "avgR": -0.13,
+    "avgRCost": -0.18,
+    "avgREod": -0.19
+   },
+   "down": {
+    "n": 197,
+    "win": 44.2,
+    "target": 17.8,
+    "stop": 23.4,
+    "avgR": -0.06,
+    "avgRCost": -0.11,
+    "avgREod": 0.03
+   },
+   "upNearHigh": {
+    "n": 142,
+    "win": 40.1,
+    "target": 21.1,
+    "stop": 37.3,
+    "avgR": -0.27,
+    "avgRCost": -0.32,
+    "avgREod": -0.21
+   },
+   "upGapUp": {
+    "n": 129,
+    "win": 42.6,
+    "target": 24,
+    "stop": 34.1,
+    "avgR": -0.14,
+    "avgRCost": -0.19,
+    "avgREod": -0.08
+   },
+   "upGapDown": {
+    "n": 28,
+    "win": 50,
+    "target": 0,
+    "stop": 25,
+    "avgR": -0.01,
+    "avgRCost": -0.06,
+    "avgREod": -0.03
+   },
+   "upQqq": {
+    "n": 139,
+    "win": 42.4,
+    "target": 22.3,
+    "stop": 31.7,
+    "avgR": -0.12,
+    "avgRCost": -0.17,
+    "avgREod": -0.09
+   },
+   "upQqqNot": {
+    "n": 98,
+    "win": 41.8,
+    "target": 22.4,
+    "stop": 35.7,
+    "avgR": -0.29,
+    "avgRCost": -0.34,
+    "avgREod": -0.22
+   },
+   "upRvol": {
+    "n": 96,
+    "win": 37.5,
+    "target": 28.1,
+    "stop": 34.4,
+    "avgR": -0.29,
+    "avgRCost": -0.34,
+    "avgREod": -0.26
+   },
+   "upBest": {
+    "n": 56,
+    "win": 35.7,
+    "target": 33.9,
+    "stop": 30.4,
+    "avgR": -0.2,
+    "avgRCost": -0.25,
+    "avgREod": -0.13
+   },
+   "best": {
+    "n": 141,
+    "win": 40.4,
+    "target": 27.7,
+    "stop": 26.2,
+    "avgR": -0.17,
+    "avgRCost": -0.22,
+    "avgREod": -0.16
+   },
+   "notUpBest": {
+    "n": 85,
+    "win": 43.5,
+    "target": 23.5,
+    "stop": 23.5,
+    "avgR": -0.15,
+    "avgRCost": -0.2,
+    "avgREod": -0.18
+   },
+   "upBest2024": {
+    "n": 24,
+    "win": 41.7,
+    "target": 41.7,
+    "stop": 25,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": 0.04
+   },
+   "upBest2025": {
+    "n": 23,
+    "win": 30.4,
+    "target": 30.4,
+    "stop": 43.5,
+    "avgR": -0.32,
+    "avgRCost": -0.37,
+    "avgREod": -0.25
+   },
+   "upBest2026": {
+    "n": 9,
+    "win": 33.3,
+    "target": 22.2,
+    "stop": 11.1,
+    "avgR": -0.36,
+    "avgRCost": -0.41,
+    "avgREod": -0.26
+   },
+   "upStrong20": {
+    "n": 165,
+    "win": 43.6,
+    "target": 19.4,
+    "stop": 34.5,
+    "avgR": -0.13,
+    "avgRCost": -0.18,
+    "avgREod": -0.08
+   },
+   "upEarly": {
+    "n": 209,
+    "win": 42.1,
+    "target": 25.4,
+    "stop": 35.9,
+    "avgR": -0.21,
+    "avgRCost": -0.26,
+    "avgREod": -0.16
+   },
+   "upLate": {
+    "n": 28,
+    "win": 42.9,
+    "target": 0,
+    "stop": 14.3,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": -0.02
+   },
+   "up2024": {
+    "n": 82,
+    "win": 35.4,
+    "target": 25.6,
+    "stop": 37.8,
+    "avgR": -0.31,
+    "avgRCost": -0.36,
+    "avgREod": -0.25
+   },
+   "up2025": {
+    "n": 79,
+    "win": 45.6,
+    "target": 24.1,
+    "stop": 34.2,
+    "avgR": -0.15,
+    "avgRCost": -0.2,
+    "avgREod": -0.02
+   },
+   "up2026": {
+    "n": 76,
+    "win": 46.1,
+    "target": 17.1,
+    "stop": 27.6,
+    "avgR": -0.11,
+    "avgRCost": -0.16,
+    "avgREod": -0.15
+   }
+  },
+  "pdhRetest": {
+   "name": "Gap 高開後回試昨日高位（PDH Retest）",
+   "all": {
+    "n": 430,
+    "win": 42.3,
+    "target": 10.9,
+    "stop": 39.8,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.02
+   },
+   "up": {
+    "n": 152,
+    "win": 41.4,
+    "target": 9.2,
+    "stop": 44.1,
+    "avgR": -0.09,
+    "avgRCost": -0.14,
+    "avgREod": -0.03
+   },
+   "mixed": {
+    "n": 162,
+    "win": 40.1,
+    "target": 12.3,
+    "stop": 40.7,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.04
+   },
+   "down": {
+    "n": 116,
+    "win": 46.6,
+    "target": 11.2,
+    "stop": 32.8,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.03
+   },
+   "upNearHigh": {
+    "n": 98,
+    "win": 43.9,
+    "target": 9.2,
+    "stop": 42.9,
+    "avgR": -0.07,
+    "avgRCost": -0.12,
+    "avgREod": -0.02
+   },
+   "upGapUp": {
+    "n": 134,
+    "win": 41,
+    "target": 10.4,
+    "stop": 44,
+    "avgR": -0.08,
+    "avgRCost": -0.13,
+    "avgREod": 0.01
+   },
+   "upGapDown": {
+    "n": 0
+   },
+   "upQqq": {
+    "n": 81,
+    "win": 39.5,
+    "target": 9.9,
+    "stop": 45.7,
+    "avgR": -0.11,
+    "avgRCost": -0.16,
+    "avgREod": -0.01
+   },
+   "upQqqNot": {
+    "n": 71,
+    "win": 43.7,
+    "target": 8.5,
+    "stop": 42.3,
+    "avgR": -0.08,
+    "avgRCost": -0.13,
+    "avgREod": -0.05
+   },
+   "upRvol": {
+    "n": 50,
+    "win": 38,
+    "target": 8,
+    "stop": 44,
+    "avgR": -0.12,
+    "avgRCost": -0.17,
+    "avgREod": -0.15
+   },
+   "upBest": {
+    "n": 21,
+    "win": 38.1,
+    "target": 4.8,
+    "stop": 42.9,
+    "avgR": -0.11,
+    "avgRCost": -0.16,
+    "avgREod": 0.06
+   },
+   "best": {
+    "n": 49,
+    "win": 38.8,
+    "target": 10.2,
+    "stop": 42.9,
+    "avgR": -0.08,
+    "avgRCost": -0.13,
+    "avgREod": -0.03
+   },
+   "notUpBest": {
+    "n": 28,
+    "win": 39.3,
+    "target": 14.3,
+    "stop": 42.9,
+    "avgR": -0.06,
+    "avgRCost": -0.11,
+    "avgREod": -0.1
+   },
+   "upBest2024": {
+    "n": 10,
+    "win": 20,
+    "target": 0,
+    "stop": 50,
+    "avgR": -0.44,
+    "avgRCost": -0.49,
+    "avgREod": -0.31
+   },
+   "upBest2025": {
+    "n": 7,
+    "win": 57.1,
+    "target": 0,
+    "stop": 28.6,
+    "avgR": 0.24,
+    "avgRCost": 0.19,
+    "avgREod": 0.57
+   },
+   "upBest2026": {
+    "n": 4,
+    "win": 50,
+    "target": 25,
+    "stop": 50,
+    "avgR": 0.08,
+    "avgRCost": 0.03,
+    "avgREod": 0.08
+   },
+   "upStrong20": {
+    "n": 96,
+    "win": 39.6,
+    "target": 8.3,
+    "stop": 44.8,
+    "avgR": -0.15,
+    "avgRCost": -0.2,
+    "avgREod": 0.03
+   },
+   "upEarly": {
+    "n": 127,
+    "win": 40.9,
+    "target": 8.7,
+    "stop": 44.9,
+    "avgR": -0.09,
+    "avgRCost": -0.14,
+    "avgREod": -0.02
+   },
+   "upLate": {
+    "n": 25,
+    "win": 44,
+    "target": 12,
+    "stop": 40,
+    "avgR": -0.1,
+    "avgRCost": -0.15,
+    "avgREod": -0.07
+   },
+   "up2024": {
+    "n": 50,
+    "win": 28,
+    "target": 4,
+    "stop": 48,
+    "avgR": -0.26,
+    "avgRCost": -0.31,
+    "avgREod": -0.33
+   },
+   "up2025": {
+    "n": 55,
+    "win": 47.3,
+    "target": 10.9,
+    "stop": 41.8,
+    "avgR": -0.03,
+    "avgRCost": -0.08,
+    "avgREod": 0.14
+   },
+   "up2026": {
+    "n": 47,
+    "win": 48.9,
+    "target": 12.8,
+    "stop": 42.6,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.1
+   }
+  },
+  "r2g": {
+   "name": "Red-to-Green（升穿昨收）",
+   "all": {
+    "n": 325,
+    "win": 46.2,
+    "target": 2.2,
+    "stop": 10.2,
+    "avgR": 0.01,
+    "avgRCost": -0.04,
+    "avgREod": 0.04
+   },
+   "up": {
+    "n": 96,
+    "win": 44.8,
+    "target": 2.1,
+    "stop": 11.5,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.04
+   },
+   "mixed": {
+    "n": 121,
+    "win": 41.3,
+    "target": 0.8,
+    "stop": 7.4,
+    "avgR": -0.05,
+    "avgRCost": -0.1,
+    "avgREod": -0.07
+   },
+   "down": {
+    "n": 108,
+    "win": 52.8,
+    "target": 3.7,
+    "stop": 12,
+    "avgR": 0.12,
+    "avgRCost": 0.07,
+    "avgREod": 0.24
+   },
+   "upNearHigh": {
+    "n": 45,
+    "win": 46.7,
+    "target": 2.2,
+    "stop": 11.1,
+    "avgR": -0.05,
+    "avgRCost": -0.1,
+    "avgREod": -0.08
+   },
+   "upGapUp": {
+    "n": 0
+   },
+   "upGapDown": {
+    "n": 96,
+    "win": 44.8,
+    "target": 2.1,
+    "stop": 11.5,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": -0.04
+   },
+   "upQqq": {
+    "n": 73,
+    "win": 39.7,
+    "target": 1.4,
+    "stop": 12.3,
+    "avgR": -0.12,
+    "avgRCost": -0.17,
+    "avgREod": -0.12
+   },
+   "upQqqNot": {
+    "n": 23,
+    "win": 60.9,
+    "target": 4.3,
+    "stop": 8.7,
+    "avgR": 0.22,
+    "avgRCost": 0.17,
+    "avgREod": 0.2
+   },
+   "upRvol": {
+    "n": 5,
+    "win": 60,
+    "target": 0,
+    "stop": 20,
+    "avgR": 0.23,
+    "avgRCost": 0.18,
+    "avgREod": 0.27
+   },
+   "upBest": {
+    "n": 5,
+    "win": 60,
+    "target": 0,
+    "stop": 20,
+    "avgR": 0.23,
+    "avgRCost": 0.18,
+    "avgREod": 0.27
+   },
+   "best": {
+    "n": 16,
+    "win": 56.3,
+    "target": 6.3,
+    "stop": 12.5,
+    "avgR": 0.17,
+    "avgRCost": 0.12,
+    "avgREod": 0.17
+   },
+   "notUpBest": {
+    "n": 11,
+    "win": 54.5,
+    "target": 9.1,
+    "stop": 9.1,
+    "avgR": 0.15,
+    "avgRCost": 0.1,
+    "avgREod": 0.12
+   },
+   "upBest2024": {
+    "n": 0
+   },
+   "upBest2025": {
+    "n": 3,
+    "win": 66.7,
+    "target": 0,
+    "stop": 0,
+    "avgR": 0.28,
+    "avgRCost": 0.23,
+    "avgREod": 0.24
+   },
+   "upBest2026": {
+    "n": 2,
+    "win": 50,
+    "target": 0,
+    "stop": 50,
+    "avgR": 0.15,
+    "avgRCost": 0.1,
+    "avgREod": 0.33
+   },
+   "upStrong20": {
+    "n": 75,
+    "win": 46.7,
+    "target": 1.3,
+    "stop": 13.3,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": -0.04
+   },
+   "upEarly": {
+    "n": 85,
+    "win": 45.9,
+    "target": 2.4,
+    "stop": 12.9,
+    "avgR": -0.02,
+    "avgRCost": -0.07,
+    "avgREod": -0.05
+   },
+   "upLate": {
+    "n": 11,
+    "win": 36.4,
+    "target": 0,
+    "stop": 0,
+    "avgR": -0.14,
+    "avgRCost": -0.19,
+    "avgREod": 0.01
+   },
+   "up2024": {
+    "n": 17,
+    "win": 52.9,
+    "target": 0,
+    "stop": 5.9,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.01
+   },
+   "up2025": {
+    "n": 27,
+    "win": 44.4,
+    "target": 3.7,
+    "stop": 3.7,
+    "avgR": -0.01,
+    "avgRCost": -0.06,
+    "avgREod": 0.01
+   },
+   "up2026": {
+    "n": 52,
+    "win": 42.3,
+    "target": 1.9,
+    "stop": 17.3,
+    "avgR": -0.09,
+    "avgRCost": -0.14,
+    "avgREod": -0.09
+   }
+  },
+  "flatTop": {
+   "name": "高位窄幅整固後突破（Flat Top／HOD Break）",
+   "all": {
+    "n": 921,
+    "win": 50.2,
+    "target": 5.1,
+    "stop": 21.5,
+    "avgR": 0.06,
+    "avgRCost": 0.01,
+    "avgREod": 0.12
+   },
+   "up": {
+    "n": 270,
+    "win": 52.2,
+    "target": 5.9,
+    "stop": 22.6,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.14
+   },
+   "mixed": {
+    "n": 381,
+    "win": 50.7,
+    "target": 6,
+    "stop": 24.4,
+    "avgR": 0.06,
+    "avgRCost": 0.01,
+    "avgREod": 0.09
+   },
+   "down": {
+    "n": 270,
+    "win": 47.4,
+    "target": 3,
+    "stop": 16.3,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.13
+   },
+   "upNearHigh": {
+    "n": 158,
+    "win": 49.4,
+    "target": 5.7,
+    "stop": 23.4,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.08
+   },
+   "upGapUp": {
+    "n": 113,
+    "win": 58.4,
+    "target": 6.2,
+    "stop": 15.9,
+    "avgR": 0.2,
+    "avgRCost": 0.15,
+    "avgREod": 0.17
+   },
+   "upGapDown": {
+    "n": 121,
+    "win": 43,
+    "target": 5,
+    "stop": 26.4,
+    "avgR": -0.04,
+    "avgRCost": -0.09,
+    "avgREod": 0.07
+   },
+   "upQqq": {
+    "n": 222,
+    "win": 51.8,
+    "target": 5.4,
+    "stop": 20.7,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.14
+   },
+   "upQqqNot": {
+    "n": 48,
+    "win": 54.2,
+    "target": 8.3,
+    "stop": 31.3,
+    "avgR": 0.1,
+    "avgRCost": 0.05,
+    "avgREod": 0.12
+   },
+   "upRvol": {
+    "n": 74,
+    "win": 63.5,
+    "target": 8.1,
+    "stop": 20.3,
+    "avgR": 0.23,
+    "avgRCost": 0.18,
+    "avgREod": 0.32
+   },
+   "upBest": {
+    "n": 63,
+    "win": 63.5,
+    "target": 9.5,
+    "stop": 17.5,
+    "avgR": 0.25,
+    "avgRCost": 0.2,
+    "avgREod": 0.36
+   },
+   "best": {
+    "n": 191,
+    "win": 55,
+    "target": 8.4,
+    "stop": 18.3,
+    "avgR": 0.18,
+    "avgRCost": 0.13,
+    "avgREod": 0.28
+   },
+   "notUpBest": {
+    "n": 128,
+    "win": 50.8,
+    "target": 7.8,
+    "stop": 18.8,
+    "avgR": 0.15,
+    "avgRCost": 0.1,
+    "avgREod": 0.24
+   },
+   "upBest2024": {
+    "n": 23,
+    "win": 69.6,
+    "target": 13,
+    "stop": 13,
+    "avgR": 0.41,
+    "avgRCost": 0.36,
+    "avgREod": 0.47
+   },
+   "upBest2025": {
+    "n": 24,
+    "win": 58.3,
+    "target": 4.2,
+    "stop": 29.2,
+    "avgR": 0.09,
+    "avgRCost": 0.04,
+    "avgREod": 0.32
+   },
+   "upBest2026": {
+    "n": 16,
+    "win": 62.5,
+    "target": 12.5,
+    "stop": 6.3,
+    "avgR": 0.27,
+    "avgRCost": 0.22,
+    "avgREod": 0.27
+   },
+   "upStrong20": {
+    "n": 177,
+    "win": 49.2,
+    "target": 6.2,
+    "stop": 19.8,
+    "avgR": 0.08,
+    "avgRCost": 0.03,
+    "avgREod": 0.15
+   },
+   "upEarly": {
+    "n": 96,
+    "win": 44.8,
+    "target": 8.3,
+    "stop": 32.3,
+    "avgR": 0.03,
+    "avgRCost": -0.02,
+    "avgREod": 0.08
+   },
+   "upLate": {
+    "n": 174,
+    "win": 56.3,
+    "target": 4.6,
+    "stop": 17.2,
+    "avgR": 0.12,
+    "avgRCost": 0.07,
+    "avgREod": 0.17
+   },
+   "up2024": {
+    "n": 60,
+    "win": 56.7,
+    "target": 8.3,
+    "stop": 18.3,
+    "avgR": 0.2,
+    "avgRCost": 0.15,
+    "avgREod": 0.2
+   },
+   "up2025": {
+    "n": 120,
+    "win": 50.8,
+    "target": 4.2,
+    "stop": 27.5,
+    "avgR": -0.01,
+    "avgRCost": -0.06,
+    "avgREod": 0.04
+   },
+   "up2026": {
+    "n": 90,
+    "win": 51.1,
+    "target": 6.7,
+    "stop": 18.9,
+    "avgR": 0.15,
+    "avgRCost": 0.1,
+    "avgREod": 0.24
+   }
+  }
+ }
+}

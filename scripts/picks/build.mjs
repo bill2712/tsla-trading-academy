@@ -144,6 +144,32 @@ function checkPickV3(f, w, p, rules) {
   if (miss.length) warn(f, `${w} ${p.sym} 唔合指標：${miss.join('、')}——要喺 why／risks 講明點解仍然揀`);
 }
 const VERDICT = ['pick', 'watch', 'avoid', 'skip'];
+const TREND = ['up', 'mixed', 'down'];
+const LONG_FOCUS_FROM = '2026-11-12'; // 呢日起，盤前報告一定要有 Long 專區同每隻 pick 嘅 dailyTrend
+/* Long 專區（頭 2 小時做多、日線升勢優先）：items 入面每隻都要係做多嘅 pick */
+function checkLongFocus(f, d) {
+  const must = d.status === 'premarket' && d.date >= LONG_FOCUS_FROM;
+  (d.picks || []).forEach((p, i) => {
+    if (p.dailyTrend != null && !TREND.includes(p.dailyTrend)) err(f, `picks[${i}].dailyTrend 要係 ${TREND.join('/')}`);
+    if (must && p.dailyTrend == null) err(f, `picks[${i}] ${p.sym} 要有 dailyTrend（up/mixed/down）`);
+  });
+  const L = d.longFocus;
+  if (L == null) { if (must) err(f, 'longFocus（Long 專區）一定要有；冇合格股都要寫 summary 講明，items 用空 array'); return; }
+  if (!nonEmpty(L.summary, 800)) err(f, 'longFocus.summary 唔可以空（≤ 800 字）');
+  if (!Array.isArray(L.items)) { err(f, 'longFocus.items 要係 array'); return; }
+  L.items.forEach((x, i) => {
+    const w = `longFocus.items[${i}]`;
+    const p = (d.picks || []).find((y) => y.sym === x.sym);
+    if (!p) err(f, `${w}.sym ${x.sym} 唔喺 picks`);
+    else if (!p.trade || p.trade.side !== 'Long') err(f, `${w} ${x.sym} 唔係做多計劃，唔可以放入 Long 專區`);
+    else if (p.dailyTrend && x.trend && p.dailyTrend !== x.trend) err(f, `${w}.trend 同 pick 嘅 dailyTrend 唔一致`);
+    if (!TREND.includes(x.trend)) err(f, `${w}.trend 要係 ${TREND.join('/')}`);
+    if (!nonEmpty(x.setups, 200)) err(f, `${w}.setups（頭 2 小時用邊個 Setup）唔可以空`);
+    if (!optStr(x.note, 400)) err(f, `${w}.note 要係字串`);
+  });
+  const up = L.items.filter((x) => x.trend === 'up').length;
+  if (L.items.length && L.items.findIndex((x) => x.trend !== 'up') > -1 && L.items.findIndex((x) => x.trend !== 'up') < up) err(f, 'longFocus.items：日線升勢（up）嘅要排最前');
+}
 function checkScan(f, d) {
   if (!Array.isArray(d.scan)) { err(f, 'scan（盤前掃描總表）要係 array'); return; }
   if (!d.scan.length && d.status === 'premarket') warn(f, 'scan 係空嘅：總表冇數據');
@@ -155,7 +181,9 @@ function checkScan(f, d) {
     ['price', 'gapPct', 'rvol', 'pmVolume', 'avgVolume', 'floatM', 'atrPct', 'spreadPct', 'rsQqq', 'ema9Pct'].forEach((k) => { if (!isNum(x[k] ?? null)) err(f, `${w}.${k} 要係數字或 null`); });
     if (!VERDICT.includes(x.verdict)) err(f, `${w}.verdict 要係 ${VERDICT.join('/')}`);
     ['catalyst', 'note'].forEach((k) => { if (!optStr(x[k], 300)) err(f, `${w}.${k} 要係字串（≤ 300 字）`); });
+    if (x.trend != null && !TREND.includes(x.trend)) err(f, `${w}.trend 要係 ${TREND.join('/')} 或 null`);
   });
+  checkLongFocus(f, d);
   (d.picks || []).forEach((p) => { const r = d.scan.find((x) => x.sym === p.sym); if (!r) warn(f, `${p.sym} 喺 picks 但唔喺 scan 總表`); else if (r.verdict !== 'pick') err(f, `scan 入面 ${p.sym} 嘅 verdict 要係 pick`); });
   if (d.rules != null) Object.entries(d.rules).forEach(([k, v]) => { if (typeof v !== 'number' && typeof v !== 'boolean') err(f, `rules.${k} 要係數字`); });
   if (d.market && d.market.base != null) ['spy', 'qqq'].forEach((k) => { if (!isNum(d.market.base[k] ?? null)) err(f, `market.base.${k} 要係數字或 null`); });

@@ -130,7 +130,7 @@ pool.forEach((s) => {
 // 詳細資料（Finviz、新聞、SEC）只查最有機會嘅 40 隻：RVOL ≥ 2 先，之後跳空大、盤前成交多
 // 細價股（< $5）、盤前冇乜成交、日均成交低（多數係槓桿 ETF／冷門股）排後；用戶指定嘅一定查
 const rank = (m) => (userSyms.includes(m.sym) ? 5000 : 0) + (m.rvol >= 2 ? 1000 : 0) + Math.min(Math.abs(m.gapPct || 0), 50) * 10 + Math.min((m.pmVolume || 0) / 1e5, 100)
-  + (CORE.includes(m.sym) ? 5 : 0) + (earnMap[m.sym] ? 300 : 0) - ((m.pmLast || m.pdc || 0) < 5 ? 800 : 0) - ((m.pmVolume || 0) < 100000 ? 400 : 0) - (m.avgVol20 != null && m.avgVol20 < 1e6 ? 400 : 0);
+  + (CORE.includes(m.sym) ? 5 : 0) + (earnMap[m.sym] ? 300 : 0) + (m.dailyTrend === 'up' && (m.gapPct || 0) > 0 ? 200 : 0) - ((m.pmLast || m.pdc || 0) < 5 ? 800 : 0) - ((m.pmVolume || 0) < 100000 ? 400 : 0) - (m.avgVol20 != null && m.avgVol20 < 1e6 ? 400 : 0);
 const short = pool.map((s) => M[s]).filter((m) => m.pmLast != null || m.pdc != null).sort((a, b) => rank(b) - rank(a)).slice(0, 50).map((m) => m.sym);
 
 /* ---------- 5. 新聞 + 基本資料 ---------- */
@@ -170,9 +170,14 @@ pool.forEach((s) => {
 const rows = Object.values(result.symbols).sort((a, b) => (b.screen.rvolOk - a.screen.rvolOk) || (b.screen.passed - a.screen.passed) || Math.abs(b.gapPct || 0) - Math.abs(a.gapPct || 0));
 result.scanDraft = rows.slice(0, 30).map((m) => ({
   sym: m.sym, price: m.pmLast, gapPct: m.gapPct ?? null, rvol: m.rvol ?? null, pmVolume: m.pmVolume ?? null, avgVolume: m.avgVol20 ?? null,
-  floatM: m.floatM ?? null, atrPct: m.atrPct ?? null, spreadPct: m.spreadPct ?? null, rsQqq: m.rsQqq ?? null, ema9Pct: m.ema9Pct ?? null,
+  floatM: m.floatM ?? null, atrPct: m.atrPct ?? null, spreadPct: m.spreadPct ?? null, rsQqq: m.rsQqq ?? null, ema9Pct: m.ema9Pct ?? null, trend: m.dailyTrend ?? null,
   catalyst: m.earningsToday ? `業績（${m.earningsToday.when}）` : (m.news && m.news[0] ? m.news[0].title.slice(0, 80) : ''), passed: m.screen.passed, verdict: '', note: ''
 }));
+/* Long 專區草稿：做多候選（Gap 向上）、RVOL ≥ 2、價 ≥ $5、盤前量 ≥ 10 萬；日線升勢排先 */
+const TR = { up: 0, mixed: 1, down: 2 };
+result.longDraft = rows.filter((m) => (m.gapPct || 0) > 0 && m.rvol >= 2 && (m.pmLast || 0) >= 5 && (m.pmVolume || 0) >= 100000 && (m.avgVol20 == null || m.avgVol20 >= 1e6) && (m.floatM == null || m.floatM >= 30))
+  .sort((a, b) => (TR[a.dailyTrend] ?? 3) - (TR[b.dailyTrend] ?? 3) || b.screen.passed - a.screen.passed)
+  .map((m) => ({ sym: m.sym, trend: m.dailyTrend ?? null, gapPct: m.gapPct, rvol: m.rvol, spreadPct: m.spreadPct ?? null, fromHigh20Pct: m.fromHigh20Pct ?? null, sma20: m.sma20 ?? null, sma50: m.sma50 ?? null, passed: m.screen.passed }));
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
 fs.writeFileSync(outFile, JSON.stringify(result, null, 1));
 
@@ -182,5 +187,7 @@ const mark = (p) => (p === true ? '✅' : p === false ? '❌' : '・');
 console.log(`目標日 ${target}｜寫入 ${outFile}｜候選池 ${pool.length} 隻，有價格 ${rows.length} 隻`);
 console.log('來源：' + Object.entries(S.sources).map(([k, v]) => `${k} ${v.ok ? '✅' + v.ok : ''}${v.fail ? '❌' + v.fail : ''}${!v.ok && v.error ? '（' + v.error + '）' : ''}`).join('｜'));
 console.log(`大市：` + ['SPY', 'QQQ', 'IWM', 'SMH'].map((s) => `${s} ${idx[s] ? fmt(idx[s].chgPct, 2) + '%' : '—'}`).join('  ') + (base.qqq != null && !idx.QQQ ? `（RS 基準用 --base：SPY ${base.spy}%、QQQ ${base.qqq}%）` : '') + (result.market.economic.length ? `｜今日數據：${result.market.economic.filter((e) => e.impact === '高').map((e) => e.timeET + ' ' + e.name).join('、') || '冇高影響'}` : ''));
-console.log('Symbol  Price    Gap%   RVOL  PM Vol   FloatM  ATR%  Sprd%  RS/QQQ EMA9%  News 9項   Source');
-rows.slice(0, 45).forEach((m) => { const c = m.screen.checks; console.log([m.sym.padEnd(7), (m.pmLast == null ? '—' : m.pmLast.toFixed(2)).padEnd(8), (mark(c.gap.pass) + fmt(m.gapPct)).padEnd(7), (mark(c.rvol.pass) + fmt(m.rvol)).padEnd(6), (mark(c.pmVolume.pass) + fmt(m.pmVolume)).padEnd(8), (mark(c.float.pass) + (m.floatM == null ? '—' : String(Math.round(m.floatM)))).padEnd(7), (mark(c.atr.pass) + fmt(m.atrPct)).padEnd(6), (mark(c.spread.pass) + fmt(m.spreadPct, 2)).padEnd(6), (mark(c.rs.pass) + fmt(m.rsQqq)).padEnd(7), (mark(c.ema9.pass) + fmt(m.ema9Pct, 2)).padEnd(7), (mark(c.catalyst.pass) + String((m.news || []).length)).padEnd(4), `${m.screen.passed}/${m.screen.known}`.padEnd(5), (m.dataSource || m.priceFrom || '').slice(0, 14)].join(' ')); });
+const TRM = { up: '📈升', mixed: '➖橫', down: '📉跌' };
+console.log('Long 專區草稿（Gap 向上 + RVOL ≥ 2；日線升勢排先）：' + (result.longDraft.length ? result.longDraft.map((x) => `${x.sym} ${TRM[x.trend] || '—'} Gap ${fmt(x.gapPct)}% RVOL ${fmt(x.rvol)} Sprd ${fmt(x.spreadPct, 2)}% 離20日高 ${fmt(x.fromHigh20Pct)}%`).join('｜') : '冇'));
+console.log('Symbol  Price    Gap%   RVOL  PM Vol   FloatM  ATR%  Sprd%  RS/QQQ EMA9%  News 9項   Trend Source');
+rows.slice(0, 45).forEach((m) => { const c = m.screen.checks; console.log([m.sym.padEnd(7), (m.pmLast == null ? '—' : m.pmLast.toFixed(2)).padEnd(8), (mark(c.gap.pass) + fmt(m.gapPct)).padEnd(7), (mark(c.rvol.pass) + fmt(m.rvol)).padEnd(6), (mark(c.pmVolume.pass) + fmt(m.pmVolume)).padEnd(8), (mark(c.float.pass) + (m.floatM == null ? '—' : String(Math.round(m.floatM)))).padEnd(7), (mark(c.atr.pass) + fmt(m.atrPct)).padEnd(6), (mark(c.spread.pass) + fmt(m.spreadPct, 2)).padEnd(6), (mark(c.rs.pass) + fmt(m.rsQqq)).padEnd(7), (mark(c.ema9.pass) + fmt(m.ema9Pct, 2)).padEnd(7), (mark(c.catalyst.pass) + String((m.news || []).length)).padEnd(4), `${m.screen.passed}/${m.screen.known}`.padEnd(5), (TRM[m.dailyTrend] || '—').padEnd(4), (m.dataSource || m.priceFrom || '').slice(0, 14)].join(' ')); });

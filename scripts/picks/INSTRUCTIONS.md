@@ -217,6 +217,35 @@ Use them for every pick after the shortlist is final:
 5. Every row in `scan` gets a `verdict`: `pick`, `watch` (say which rule failed, e.g.
    「RVOL 1.4，未夠 2」), `avoid` (tiny float, dilution, halts, wide spread) or `skip`.
 
+## 4b. Long focus（Long 專區）— required from 2026-11-12
+
+The main user trades **long only, in the first 2 hours (09:30–11:30 ET), and prefers stocks in a
+daily uptrend** (course: Level 15). Other family members still read the short ideas, so keep
+them, but the report must serve the long-only trader first.
+
+1. **Daily trend** comes from the collector (`symbols[sym].dailyTrend`, also in `scanDraft[].trend`):
+   `up` = prior close > SMA 20 > SMA 50; `down` = prior close < SMA 20 < SMA 50; else `mixed`.
+   Copy it to every `scan[].trend` and every pick's `dailyTrend`. Never guess it.
+2. **Order of `picks`**: Long + `up` first, then other Longs, then Shorts (max 2 Shorts when at
+   least 2 Longs qualify). The hard rule RVOL ≥ 2 does not change: never add a weak long just to
+   fill the list. The collector prints a「Long 專區草稿」line (gap up + RVOL ≥ 2, uptrend first)
+   and gives +200 rank to uptrend gap-ups; use it as the starting list.
+3. **`longFocus` block** (always present, even when empty):
+   `"longFocus": { "summary": "…", "items": [{ "sym": "", "trend": "up", "setups": "", "note": "" }] }`
+   - `items`: every Long pick, `up` first. Each must be a pick whose `trade.side` is `Long`.
+   - `setups`: which first-2-hours setup fits, in the Level 15 order of preference:
+     Flat Top（高位整固突破）→ EMA 9 回調 → Bull Flag（第一次回調）→ 30 分鐘 ORB.
+   - `summary`: 1–3 sentences in Cantonese: how many uptrend longs there are today, the best one,
+     and the A+ filter reminder. If no Long qualifies write that plainly
+     （例如「今日冇日線升勢而又 RVOL ≥ 2 嘅做多股，Long 專區冇合格股」）and use `"items": []`.
+4. **Long plans must fit 09:30–11:30**: in `plan.long` name the setup, say「11:30 前未觸發就放棄」,
+   and in `plan.noTrade` include the data-backed don'ts: no entry 09:30–09:35; do not chase a
+   break of yesterday's high (PDH) at the open (tested: negative expectancy); skip when the first
+   5-minute volume is below 2× normal or QQQ is below its VWAP (the「A+ 過濾」).
+5. State uncertainty honestly: in tests (`data/research/long-am-stats.json`) a daily uptrend alone
+   did not improve morning longs; opening volume and QQQ above VWAP mattered more. Do not write
+   that uptrend stocks are "safer" or "more likely to win".
+
 ## 5. Five-pillar analysis for every pick (`pillars`)
 
 | Field | What to write |
@@ -270,11 +299,13 @@ failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never cha
              "atrPct": 0, "spreadPct": 0, "rsQqq": 0, "ema9Pct": 0, "catalyst": "一句（≤ 300 字）", "verdict": "pick", "note": "" }],
   "focus": "（可選）TSLA 今日真係值得做先寫",
   "fewPicksReason": "（可選）少過 5 隻時必填",
+  "longFocus": { "summary": "今日 Long 專區…", "items": [{ "sym": "", "trend": "up", "setups": "Flat Top／EMA 9 回調", "note": "" }] },
   "picks": [{
     "sym": "", "name": "", "grade": "A", "beginner": "中等", "direction": "Long", "score": 80,
     "price": 0, "prevClose": 0, "gapPct": 0, "pmVolume": 0, "pmVolPct": 0, "avgVolume": 0,
     "rvol": 2.4, "spread": 0, "spreadPct": 0, "atr": 0, "atrPct": 0, "mktCapB": null, "floatM": 0, "floatNote": "（floatM 係 null 先寫）",
     "rsQqq": 0, "rsSpy": 0, "ema9": 0, "ema9Pct": 0, "ema9Step": "5m", "ema9Daily": 0,
+    "dailyTrend": "up",
     "profile": { "session": "MM/DD", "dayType": "normal_var", "vah": 0, "val": 0, "vpoc": 0, "migration": "向上移", "note": "" },
     "levels": { "pmh": 0, "pml": 0, "pdh": 0, "pdl": 0, "pdc": 0, "other": [{ "label": "突破價", "price": 0 }] },
     "why": "", "catalyst": "", "technical": "", "setup": "開市推動（Opening Drive）",

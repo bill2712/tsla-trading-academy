@@ -16,6 +16,8 @@
   const BEGIN = { 適合新手: 'ok', 中等: 'mid', 高風險: 'bad' };
   // 盤前揀股 8 大指標嘅預設門檻（同 scripts/picks/lib.mjs RULES 一樣；報告可以用 rules 覆蓋）
   const RULES = { gapAbs: 3, rvol: 2, pmVolume: 200000, pmVolumeEarly: 100000, floatM: 30, atrPct: 2, spreadPct: 0.1, avgVolume: 1000000, priceMin: 10, priceMax: 150 };
+  const TREND = { up: ['📈', 'Uptrend', '日線升勢', 'ok'], mixed: ['➖', 'Sideways', '日線橫行', 'mid'], down: ['📉', 'Downtrend', '日線跌勢', 'bad'] };
+  const trendTag = (t) => (TREND[t] ? `<span class="pk-beg ${TREND[t][3]}" title="${TREND[t][2]}：用昨日收市、20 日線、50 日線判斷">${TREND[t][0]} ${TREND[t][1]}</span>` : '');
   const VERDICT = { pick: ['🎯', 'Pick 候選', 'ok'], watch: ['👀', 'Watch 觀察', 'mid'], avoid: ['🚫', 'Avoid 避開', 'bad'], skip: ['・', 'Skip 唔合', ''] };
   /* 每個指標：值、門檻文字、合唔合（true/false/null） */
   function checks(x, R, early) {
@@ -48,11 +50,12 @@
     if (!rows.length) return '';
     const cell = (c) => `<td class="pk-c ${mk(c[5])}">${esc(c[3])}</td>`;
     const H = (en, zh) => `<th>${en}<small>${zh}</small></th>`;
+    const hasT = rows.some((x) => x.trend);
     return `<section class="card pk-scan"><div class="card-h">📊 Pre-Market Scanner（盤前掃描總表）<small>${esc(d.scanTime ? '數據截至美東 ' + d.scanTime : '')}</small></div>
       <p class="muted">先睇數據，再睇下面每隻嘅分析同新聞。綠色 = 合新手起步條件，紅色 = 唔合，灰色 = 冇數據。RVOL ≥ ${R.rvol} 係硬性規則（must），其他係參考條件（唔係驗證過嘅獲利門檻）。</p>
-      <div class="tbl-scroll"><table class="mini-tbl wide pk-scan-t"><thead><tr>${H('Symbol', '股票')}${H('Price', '價')}${H('Gap %', '盤前漲跌幅')}${H('RVOL', '相對成交量')}${H('Pre-Mkt Vol', '盤前成交量')}${H('Catalyst', '消息催化劑')}${H('Float', '流通股數')}${H('ATR %', '波幅')}${H('Spread %', '買賣差價')}${H('Rel. Strength', 'vs QQQ')}${H('EMA 9', '5m，價距 %')}${H('Pass', '合格')}${H('Verdict', '結論')}</tr></thead><tbody>
+      <div class="tbl-scroll"><table class="mini-tbl wide pk-scan-t"><thead><tr>${H('Symbol', '股票')}${H('Price', '價')}${H('Gap %', '盤前漲跌幅')}${H('RVOL', '相對成交量')}${H('Pre-Mkt Vol', '盤前成交量')}${H('Catalyst', '消息催化劑')}${H('Float', '流通股數')}${H('ATR %', '波幅')}${H('Spread %', '買賣差價')}${H('Rel. Strength', 'vs QQQ')}${H('EMA 9', '5m，價距 %')}${hasT ? H('Daily Trend', '日線趨勢') : ''}${H('Pass', '合格')}${H('Verdict', '結論')}</tr></thead><tbody>
       ${rows.map((x) => { const c = checks(x, R, early); const v = VERDICT[x.verdict] || VERDICT.skip; const n = c.filter((y) => y[5] === true).length, k = c.filter((y) => y[5] != null).length;
-        return `<tr><th>${esc(x.sym)}</th><td>${num(x.price) == null ? '—' : '$' + F(x.price)}</td>${cell(c[0])}${cell(c[1])}${cell(c[2])}<td class="pk-c ${mk(c[3][5])} pk-cat" title="${esc(x.catalyst || '')}">${esc((x.catalyst || '—').slice(0, 40))}</td>${cell(c[4])}${cell(c[5])}${cell(c[6])}${cell(c[7])}${cell(c[8])}<td>${n}/${k}</td><td><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span>${x.note ? `<small>${esc(x.note)}</small>` : ''}</td></tr>`; }).join('')}
+        return `<tr><th>${esc(x.sym)}</th><td>${num(x.price) == null ? '—' : '$' + F(x.price)}</td>${cell(c[0])}${cell(c[1])}${cell(c[2])}<td class="pk-c ${mk(c[3][5])} pk-cat" title="${esc(x.catalyst || '')}">${esc((x.catalyst || '—').slice(0, 40))}</td>${cell(c[4])}${cell(c[5])}${cell(c[6])}${cell(c[7])}${cell(c[8])}${hasT ? `<td>${TREND[x.trend] ? TREND[x.trend][0] + ' ' + TREND[x.trend][1] : '—'}</td>` : ''}<td>${n}/${k}</td><td><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span>${x.note ? `<small>${esc(x.note)}</small>` : ''}</td></tr>`; }).join('')}
       </tbody></table></div>
       <p class="tool-fine">Thresholds：|Gap %| ≥ ${R.gapAbs}%・RVOL ≥ ${R.rvol}×・Pre-Market Volume ≥ ${big(early ? R.pmVolumeEarly : R.pmVolume)}・Float ≥ ${R.floatM}M・ATR % ≥ ${R.atrPct}%・Bid-Ask Spread ≤ ${R.spreadPct}%・Relative Strength：升嘅股要強過 QQQ、跌嘅要弱過 QQQ・EMA 9：做多價格要喺 5 分鐘 EMA 9 之上，沽空要喺之下。另外新手宜揀股價 $${R.priceMin}–${R.priceMax}、日均成交 ≥ ${big(R.avgVolume)}。盤前買賣差價通常比開市後闊，開市前再喺券商睇一次。</p></section>`;
   }
@@ -107,7 +110,7 @@
       <header class="pk-head">
         <div class="pk-rank">${i + 1}</div>
         <div class="pk-title"><b>${esc(p.sym)}</b><span>${esc(p.name || '')}</span></div>
-        <div class="pk-tags">${num(p.rvol) != null ? `<span class="pk-rvol ${p.rvol >= 2 ? 'ok' : 'low'}" title="盤前相對成交量（同時段）">RVOL ${F(p.rvol, 1)}×</span>` : ''}${p.grade ? `<span class="pk-grade g-${esc(p.grade)}">${esc(p.grade)} 級</span>` : ''}${p.beginner ? `<span class="pk-beg ${BEGIN[p.beginner] || 'mid'}">${esc(p.beginner)}</span>` : ''}${p.direction ? `<span class="pk-dir">${esc(p.direction)}</span>` : ''}</div>
+        <div class="pk-tags">${num(p.rvol) != null ? `<span class="pk-rvol ${p.rvol >= 2 ? 'ok' : 'low'}" title="盤前相對成交量（同時段）">RVOL ${F(p.rvol, 1)}×</span>` : ''}${p.grade ? `<span class="pk-grade g-${esc(p.grade)}">${esc(p.grade)} 級</span>` : ''}${p.beginner ? `<span class="pk-beg ${BEGIN[p.beginner] || 'mid'}">${esc(p.beginner)}</span>` : ''}${p.direction ? `<span class="pk-dir">${esc(p.direction)}</span>` : ''}${trendTag(p.dailyTrend)}</div>
       </header>
       <div class="pk-nums">
         <div><span>Pre-Market Price</span><b>$${F(p.price)}</b></div>
@@ -148,6 +151,20 @@
   function profileHTML(m) {
     if (!m || num(m.vah) == null) return '';
     return `<p class="pk-prof"><b>📊 Market Profile（${esc(m.session || '昨日')}）：</b>${esc(DAYTYPE[m.dayType] || m.dayType || '')}｜VAH $${F(m.vah)}｜POC $${F(m.vpoc)}｜VAL $${F(m.val)}${m.migration ? `｜價值區${esc(m.migration)}` : ''}${m.note ? `<small>${esc(m.note)}</small>` : ''}<small class="muted">（TradingCalc 計算）</small></p>`;
+  }
+  /* Long 專區：頭 2 小時做多、日線升勢優先（Level 15） */
+  function longFocusHTML(d) {
+    const L = d.longFocus;
+    if (!L) return '';
+    const items = L.items || [];
+    return `<section class="card pk-long"><div class="card-h">🌅 Long 專區<small>頭 2 小時做多・日線升勢優先</small></div>
+      <p>${esc(L.summary || '')}</p>
+      ${items.length ? `<div class="tbl-scroll"><table class="mini-tbl wide pk-long-t"><thead><tr><th>股票</th><th>Daily Trend</th><th>Gap %</th><th>RVOL</th><th>入場（觸發）</th><th>Stop</th><th>Target 1</th><th>頭 2 小時 Setup</th><th></th></tr></thead><tbody>
+      ${items.map((x) => { const p = (d.picks || []).find((y) => y.sym === x.sym) || {}; const t = p.trade || {};
+        const tk = num(t.entry) != null && num(t.stop) != null && num(t.target1) != null ? `#/tools/bracket-ticket?sym=${encodeURIComponent(x.sym)}&side=long&entry=${t.entry}&stop=${t.stop}&t1=${t.target1}${num(t.target2) != null ? '&t2=' + t.target2 : ''}${num(p.atr) != null ? '&atr=' + p.atr : ''}` : '';
+        return `<tr><th>${esc(x.sym)}</th><td>${trendTag(x.trend)}</td><td class="${cls(p.gapPct)}">${P(p.gapPct)}</td><td>${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</td><td>${num(t.entry) == null ? '—' : '$' + F(t.entry)}</td><td class="neg">${num(t.stop) == null ? '—' : '$' + F(t.stop)}</td><td class="pos">${num(t.target1) == null ? '—' : '$' + F(t.target1)}</td><td class="pk-long-s">${esc(x.setups || '')}${x.note ? `<small>${esc(x.note)}</small>` : ''}</td><td>${tk ? `<a class="btn sm" href="${tk}">⚡ 落單卡</a>` : ''}</td></tr>`; }).join('')}
+      </tbody></table></div>` : '<p class="pk-risk">今日 Long 專區冇合格股：冇好機會就唔做。</p>'}
+      <p class="tool-fine"><b>A+ 過濾（開市後自己核對）：</b>首 5 分鐘成交 ≥ 平時 2 倍；入場前 QQQ 喺自己 VWAP 上面。兩樣唔齊就唔做。09:30–09:35 唔落單；唔好一開市追昨日高位（PDH）突破；11:30 收工。<a href="#/level/l15">Level 15：頭 2 小時做多</a></p></section>`;
   }
   function tradeHTML(t, p) {
     if (!t || num(t.entry) == null) return '';
@@ -198,6 +215,7 @@
         ${(m.events || []).length ? `<ul class="pk-ev">${m.events.map((e) => `<li><b>${esc(e.time || '')}</b> ${esc(e.name)} ${e.impact ? `<span class="pk-beg ${e.impact === '高' ? 'bad' : 'mid'}">${esc(e.impact)}影響</span>` : ''}${e.note ? `<small>${esc(e.note)}</small>` : ''}</li>`).join('')}</ul>` : ''}
         ${(m.earnings || []).length ? `<p><b>業績：</b>${m.earnings.map((e) => `${esc(e.sym)}（${esc(e.when || '')}${e.note ? '，' + esc(e.note) : ''}）`).join('、')}</p>` : ''}</section>` : ''}
       ${d.focus ? `<section class="card pk-focus"><div class="card-h">⚡ TSLA 今日狀態</div><p>${esc(d.focus)}</p></section>` : ''}
+      ${longFocusHTML(d)}
       ${scanHTML(d, R, early)}
       <h2 class="sec-h">🎯 今日候選股（${(d.picks || []).length}）</h2>
       ${d.fewPicksReason ? `<p class="pk-risk">ℹ️ ${esc(d.fewPicksReason)}</p>` : ''}

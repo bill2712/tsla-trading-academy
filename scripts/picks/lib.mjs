@@ -51,6 +51,9 @@ export function dailyMetrics(dailyJson, target) {
     : out.sma50 == null ? (up ? '收市高過 20 日線（冇 50 日線數據）' : '收市低過 20 日線（冇 50 日線數據）')
     : up && out.sma20 > out.sma50 ? '日線升勢（收市高過 20 日線，20 日線高過 50 日線）'
     : dn && out.sma20 < out.sma50 ? '日線跌勢（收市低過 20 日線，20 日線低過 50 日線）' : '日線橫行／方向未明（20、50 日線同價格位置唔一致）';
+  // Long 專區用：up = 昨收 > 20 日線 > 50 日線；down = 相反；其餘 mixed
+  out.dailyTrend = out.sma20 == null || out.sma50 == null ? null : up && out.sma20 > out.sma50 ? 'up' : dn && out.sma20 < out.sma50 ? 'down' : 'mixed';
+  out.fromHigh20Pct = out.high20 ? r2((out.high20 - last.c) / out.high20 * 100) : null;
   return out;
 }
 

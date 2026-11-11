@@ -34,6 +34,7 @@ window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
     return B;
   }
   function vwapOf(B) { let pv = 0, vv = 0; return B.map((b) => { pv += ((b.h + b.l + b.c) / 3) * b.v; vv += b.v; return vv ? pv / vv : b.c; }); }
+  function emaOf(B) { const k = 2 / 10; let e = B[0].c; return B.map((b) => (e = b.c * k + e * (1 - k))); }
   const hiOf = (B, a, b) => Math.max(...B.slice(a, b + 1).map((x) => x.h));
   const loOf = (B, a, b) => Math.min(...B.slice(a, b + 1).map((x) => x.l));
   /* 鏡像：做空版本（價格上下反轉） */
@@ -177,6 +178,16 @@ window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
     });
     const vw = vwapOf(B).slice(0, n); if (vw.length > 1) mk('polyline', { points: vw.map((v, i) => x(i) + ',' + y(v)).join(' '), class: 'vwap-line' }, svg);
     const lg = mk('text', { x: m.l + 6, y: m.t + 10, class: 'vwap-label l10-lg' }, svg); lg.textContent = 'VWAP';
+    if (X.ema) {
+      const em = emaOf(B).slice(0, n);
+      if (em.length > 1) mk('polyline', { points: em.map((v, i) => x(i) + ',' + y(v)).join(' '), class: 'l10-ema' }, svg);
+      const t2 = mk('text', { x: m.l + 6, y: m.t + 26, class: 'l10-ema-label l10-lg' }, svg); t2.textContent = 'EMA 9';
+    }
+    if (show.amLine) {
+      const xx = m.l + step * 24;
+      mk('line', { x1: xx, x2: xx, y1: m.t - 6, y2: priceH + volH, class: 'l10-break' }, svg);
+      const t3 = mk('text', { x: xx + 4, y: priceH - 2, class: 'axis' }, svg); t3.textContent = '11:30 收工';
+    }
     if (show.levels && X.res && X.res.i < n) {
       const t = mk('text', { x: x(X.res.i), y: X.side > 0 ? y(B[X.res.i].l) + 16 : y(B[X.res.i].h) - 8, class: 'l14-mark in', 'text-anchor': 'middle' }, svg); t.textContent = X.side > 0 ? '▲ 入' : '▼ 入';
       if (X.res.exit < n) { const e = mk('text', { x: x(X.res.exit), y: X.side > 0 ? y(B[X.res.exit].h) - 8 : y(B[X.res.exit].l) + 16, class: 'l14-mark out', 'text-anchor': 'middle' }, svg); e.textContent = '出'; }
@@ -187,25 +198,26 @@ window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
   }
 
   /* ① 每個 Setup 嘅示意圖：一步一步揭 */
-  KEYS.forEach((key) => {
-    window.WIDGETS_EXTRA['l14-d-' + key] = (el) => {
+  const diagram = (key, opts = {}) => (el) => {
+    {
       const S = SET[key];
-      let side = S.side || 1, stage = 0, seed = 300 + KEYS.indexOf(key);
+      let side = S.side || 1, stage = 0, seed = 300 + Object.keys(SET).indexOf(key);
       const steps = ['① 等：條件形成緊', '② 觸發：入場條件出現', '③ 入場：Entry、Stop、Target', '④ 出場：結果'];
       const render = () => {
         const X = build(key, seed, side, false);
         const upto = stage === 0 ? Math.max(6, X.k - 6) : stage === 1 ? X.k : stage === 2 ? Math.min(78, (X.res ? X.res.i : X.k) + 2) : 78;
-        el.innerHTML = `<div class="l10-w"><div class="l10-bar">${steps.map((t, i) => `<button class="btn sm ${i === stage ? 'primary' : ''}" data-st="${i}">${t}</button>`).join('')}${S.short ? `<label><select data-side><option value="1" ${side > 0 ? 'selected' : ''}>Long 版本</option><option value="-1" ${side < 0 ? 'selected' : ''}>Short 版本</option></select></label>` : ''}<button class="btn sm ghost" data-new>另一個例子</button></div>
+        el.innerHTML = `<div class="l10-w"><div class="l10-bar">${steps.map((t, i) => `<button class="btn sm ${i === stage ? 'primary' : ''}" data-st="${i}">${t}</button>`).join('')}${S.short && !opts.longOnly ? `<label><select data-side><option value="1" ${side > 0 ? 'selected' : ''}>Long 版本</option><option value="-1" ${side < 0 ? 'selected' : ''}>Short 版本</option></select></label>` : ''}<button class="btn sm ghost" data-new>另一個例子</button></div>
           <div class="l12-chart" data-c></div>
           <p class="l10-read">${stage === 0 ? esc(X.wait) : stage === 1 ? '<b>觸發：</b>' + esc(X.trig) : stage === 2 ? `<b>${X.side > 0 ? '做多' : '沽空'}</b> Entry ${f2(X.entry)}（Stop 單）｜Stop ${f2(X.stop)}（每股風險 ${f2(X.risk)} = ${(X.risk / X.A).toFixed(2)} ATR）｜Target ${f2(X.target)}（2R）` : X.res ? `結果：${X.res.how}（${X.res.R >= 0 ? '+' : ''}${X.res.R.toFixed(2)}R）。<span class="muted">示意圖係教學模擬，真實勝率睇下面嘅統計。</span>` : '今次冇觸發入場價——冇觸發就冇交易。'}</p></div>`;
-        draw(el.querySelector('[data-c]'), X, upto, { levels: stage >= 2 });
+        draw(el.querySelector('[data-c]'), X, upto, { levels: stage >= 2, amLine: opts.amLine });
         el.querySelectorAll('[data-st]').forEach((b) => b.addEventListener('click', () => { stage = +b.dataset.st; render(); }));
         const sd = el.querySelector('[data-side]'); if (sd) sd.addEventListener('change', () => { side = +sd.value; stage = 0; render(); });
         el.querySelector('[data-new]').addEventListener('click', () => { seed += 17; stage = 0; render(); });
       };
       render();
-    };
-  });
+    }
+  };
+  KEYS.forEach((key) => { window.WIDGETS_EXTRA['l14-d-' + key] = diagram(key); });
 
   /* ② 真實統計表 */
   const ORDER = ['orb15', 'orb30', 'flag', 'vwapPull', 'vwapReclaim', 'r2g', 'gapFade', 'hodBreak'];
@@ -226,29 +238,32 @@ window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
   };
 
   /* ③ 辨認練習：睇到觸發前，估係邊個 Setup */
-  window.WIDGETS_EXTRA['l14-spot'] = (el) => {
+  const spot = (keys, storeKey, longOnly) => (el) => {
     let seed = Math.floor(Math.random() * 1e6), X = null, opts = [], ans = null;
     const next = () => {
       seed += 7919; ans = null;
-      const r = rng(seed); const key = KEYS[Math.floor(r() * KEYS.length)];
-      const S = SET[key]; const side = S.side || (S.short && r() < 0.4 ? -1 : 1);
+      const r = rng(seed); const key = keys[Math.floor(r() * keys.length)];
+      const S = SET[key]; const side = S.side || (!longOnly && S.short && r() < 0.4 ? -1 : 1);
       X = build(key, seed, side, true);
-      const others = KEYS.filter((k) => k !== key).sort(() => r() - 0.5).slice(0, 3);
+      const others = keys.filter((k) => k !== key).sort(() => r() - 0.5).slice(0, 3);
       opts = [key, ...others].sort(() => r() - 0.5);
       render();
     };
     const render = () => {
-      const t = tsGet('l14-spot', { n: 0, ok: 0 });
+      const t = tsGet(storeKey, { n: 0, ok: 0 });
       el.innerHTML = `<div class="l10-w"><div class="l12-chart" data-c></div>
         <div class="l12-quiz">呢個係邊個 Setup？${opts.map((k) => `<button class="btn sm ${ans ? (k === X.key ? 'primary' : k === ans ? 'l14-wrong' : '') : ''}" data-a="${k}" ${ans ? 'disabled' : ''}>${esc(SET[k].name)}</button>`).join(' ')}</div>
         <div class="l11-out" aria-live="polite">${ans ? `<p>${ans === X.key ? '✅ 啱！' : '❌ 唔啱，'}呢個係 <b>${esc(SET[X.key].name)}</b>（${X.side > 0 ? '做多' : '沽空'}）。</p><p><b>觸發：</b>${esc(X.trig)}</p><p>Entry ${f2(X.entry)}｜Stop ${f2(X.stop)}｜Target ${f2(X.target)} → ${X.res ? `${X.res.how}（${X.res.R >= 0 ? '+' : ''}${X.res.R.toFixed(2)}R）` : '冇觸發'}</p>` : '<p class="muted">灰色係未發生嘅時間。睇結構、VWAP、開市區間同昨收，揀一個答案。</p>'}
         <p><button class="btn sm" data-next>下一題 ▶</button> <span class="muted">${t.n ? `答咗 ${t.n} 題，啱 ${t.ok} 題（${Math.round((t.ok / t.n) * 100)}%）` : ''}</span></p></div></div>`;
-      draw(el.querySelector('[data-c]'), X, ans ? 78 : X.k, { levels: !!ans });
-      el.querySelectorAll('[data-a]').forEach((b) => b.addEventListener('click', () => { if (ans) return; ans = b.dataset.a; const t2 = tsGet('l14-spot', { n: 0, ok: 0 }); t2.n++; if (ans === X.key) t2.ok++; tsSet('l14-spot', t2); render(); }));
+      draw(el.querySelector('[data-c]'), X, ans ? 78 : X.k, { levels: !!ans, amLine: longOnly });
+      el.querySelectorAll('[data-a]').forEach((b) => b.addEventListener('click', () => { if (ans) return; ans = b.dataset.a; const t2 = tsGet(storeKey, { n: 0, ok: 0 }); t2.n++; if (ans === X.key) t2.ok++; tsSet(storeKey, t2); render(); }));
       el.querySelector('[data-next]').addEventListener('click', next);
     };
     next();
   };
+  window.WIDGETS_EXTRA['l14-spot'] = spot(KEYS, 'l14-spot');
+  /* 俾其他 Level 共用（Level 15 會加自己嘅 Setup） */
+  window.SetupLab = { SET, build, draw, diagram, spot, rng, genPath, vwapOf, emaOf, hiOf, loOf, mk, esc, f2 };
 })();
 
 window.COURSE.push({
@@ -682,6 +697,8 @@ Level 12 第 7 章嘅數據：Gap ≥ 3% 只有大約三分一延續。Gap 高�
 [[check:l14-grad]]
 
 [[quiz:l14-final]]
+
+[[link:level/l15|➡️ 下一課：Level 15 頭 2 小時做多]]
 
 [[link:map|🗺️ 睇你嘅學習地圖同證書]]
 `},

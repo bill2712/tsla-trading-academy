@@ -183,7 +183,7 @@
           const t = x.trade, side = t.side === 'Short' ? 'short' : 'long';
           const P = plan({ side, entryType: 'breakout', entry: t.entry, stopMode: 'price', stop: t.stop, atr: x.atr || 0, tMode: 'price', t1: t.target1, t2: t.target2 || 0 }, S);
           return { x, t, side, P };
-        });
+        }).sort((a, b) => (a.side === 'long' ? 0 : 1) - (b.side === 'long' ? 0 : 1) || ((a.x.dailyTrend === 'up' ? 0 : 1) - (b.x.dailyTrend === 'up' ? 0 : 1)));
         const ok = rows.filter((r) => !r.P.err && r.P.shares > 0 && !(r.side === 'short' && S.cash === 'yes'));
         const link = (r) => `#/tools/bracket-ticket?sym=${encodeURIComponent(r.x.sym)}&side=${r.side}&entry=${r.t.entry}&stop=${r.t.stop}&t1=${r.t.target1}${r.t.target2 ? '&t2=' + r.t.target2 : ''}${r.x.atr ? '&atr=' + r.x.atr : ''}`;
         const alerts = rows.filter((r) => !r.P.err).map((r) => `${r.x.sym} ${r.side === 'long' ? '升穿' : '跌穿'} ${F(r.t.entry)}（入場）｜${r.side === 'long' ? '跌穿' : '升穿'} ${F(r.P.stop)}（Stop）`).join('\n');
@@ -192,7 +192,7 @@
           <span>${esc(cur.market && cur.market.bias ? '大市：' + cur.market.bias : '')}</span></div>
           ${cur.headline ? `<p class="tq-hl">${esc(cur.headline)}</p>` : ''}
           <div class="tbl-scroll"><table class="mini-tbl wide tq-t"><tr><th>股票</th><th>方向</th><th>入場（觸發）</th><th>Stop</th><th>Target 1</th><th>R:R</th><th>股數</th><th>風險</th><th>現金</th><th>唔追價</th><th>+1R 移 Stop</th><th></th></tr>
-          ${rows.map((r) => { const P = r.P, bad = P.err || P.shares <= 0 || (r.side === 'short' && S.cash === 'yes'); return `<tr class="${bad ? 'tq-off' : ''}"><th>${esc(r.x.sym)} <small>${esc(r.x.grade || '')}</small></th><td>${r.side === 'long' ? '📈 Long' : '📉 Short'}</td><td>${F(r.t.entry)}</td><td class="neg">${P.err ? '—' : F(P.stop)}</td><td class="pos">${P.err ? '—' : F(P.t1)}</td><td>${P.err ? '—' : F(P.rr)}</td><td><b>${P.err ? '—' : P.shares}</b></td><td>${P.err ? '—' : money(P.riskUsd, 0)}</td><td>${P.err ? '—' : money(P.cash, 0)}</td><td>${P.chase ? F(P.chase) : '—'}</td><td>${P.err ? '—' : F(P.be)}</td><td>${bad ? `<small>${P.err ? esc(P.err) : r.side === 'short' && S.cash === 'yes' ? 'Cash 戶口唔沽空' : '風險太大'}</small>` : `<a class="btn sm" href="${link(r)}">⚡ 落單卡</a>`}</td></tr>`; }).join('')}
+          ${rows.map((r) => { const P = r.P, bad = P.err || P.shares <= 0 || (r.side === 'short' && S.cash === 'yes'); return `<tr class="${bad ? 'tq-off' : ''}"><th>${esc(r.x.sym)} <small>${esc(r.x.grade || '')}</small></th><td>${r.side === 'long' ? '📈 Long' : '📉 Short'}${r.x.dailyTrend ? `<small> ${{ up: '日線升勢', mixed: '日線橫行', down: '日線跌勢' }[r.x.dailyTrend] || ''}</small>` : ''}</td><td>${F(r.t.entry)}</td><td class="neg">${P.err ? '—' : F(P.stop)}</td><td class="pos">${P.err ? '—' : F(P.t1)}</td><td>${P.err ? '—' : F(P.rr)}</td><td><b>${P.err ? '—' : P.shares}</b></td><td>${P.err ? '—' : money(P.riskUsd, 0)}</td><td>${P.err ? '—' : money(P.cash, 0)}</td><td>${P.chase ? F(P.chase) : '—'}</td><td>${P.err ? '—' : F(P.be)}</td><td>${bad ? `<small>${P.err ? esc(P.err) : r.side === 'short' && S.cash === 'yes' ? 'Cash 戶口唔沽空' : '風險太大'}</small>` : `<a class="btn sm" href="${link(r)}">⚡ 落單卡</a>`}</td></tr>`; }).join('')}
           </table></div>
           <div class="stats">${stat('做得嘅', ok.length + ' 隻')}${stat('每筆風險', money(budgetOf(S), 0))}${stat('今日最多蝕', money(budgetOf(S) * S.dayStopR, 0) + `（${S.dayStopR}R）`, 'neg')}${stat('同時揸幾多隻', '最多 1–2 隻')}</div>
           ${verdict(null, `一次最多專心睇 1–2 隻。蝕夠 ${S.dayStopR}R（${money(budgetOf(S) * S.dayStopR, 0)}）就收工。`)}

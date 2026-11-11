@@ -1379,3 +1379,12 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .chart-svg .l14-mark.in { fill: #7c3aed; } .chart-svg .l14-mark.out { fill: var(--text); }
 .btn.l14-wrong { background: var(--down-soft, #fde2e2); border-color: var(--down); }
 .l12-t tr.l14-ref th, .l12-t tr.l14-ref td { color: var(--muted); font-style: italic; }
+
+/* ---------- Level 15 ---------- */
+.l12-t tr.l15-few td, .l12-t tr.l15-few th { opacity: .72; }
+
+/* ---------- 每日選股：Long 專區 ---------- */
+.pk-long { border-left: 4px solid #c2410c; }
+.pk-long-t td, .pk-long-t th { white-space: nowrap; vertical-align: middle; }
+.pk-long-t td.pk-long-s { white-space: normal; min-width: 180px; }
+.pk-long-t td small { display: block; color: var(--muted); }
