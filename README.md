@@ -17,7 +17,7 @@
 | 🏋️ 訓練場 | 隨機生成、可以無限重玩：K 線形態、市場結構、情境決策（WAIT / PLAN / SKIP）、日類型辨識、讀 Tape（訂單流）、認出心理偏誤、VCP 定唔係 VCP（隨機生成真假形態）、60 秒風險速算 |
 | 📕 錯題本 | 測驗答錯自動收集，按間隔重溫（1、3、7、14 日）再考，答啱 4 次當掌握 |
 | 🎯 每日任務 | 每日 3 個小任務（讀小節、答題、訓練、溫習、筆記、重播、日誌），完成全部有額外 XP；📅 學習日曆熱圖 |
-| 📋 每日選股 | 每個美股交易日開市前約一小時（美東 08:30）由排程任務自動更新：大市指數同期貨、經濟數據、新聞、「盤前掃描總表」（8 大指標：跳空 %、盤前同時段 RVOL、盤前成交、催化劑、流通股、ATR %、買賣差價、相對 QQQ 強弱）、候選股（RVOL ≥ 2 先入選；五大分析、PMH/PML/PDH/PDL、Entry／Stop／Target／R:R、新手適合程度）、避開名單、TSLA 今日狀態；第二日自動加「收市後回顧」。每隻股票可以記錄有冇睇／做、結果幾多 R 同筆記（雲端同步，家人睇到）。數據：Alpaca（主要，SIP K 線計 RVOL）、Yahoo（後備）、IBKR（只讀核對）、StockAnalysis、Finviz、TopBreakoutStocks、Nasdaq／ForexFactory 日曆、多個新聞來源同 SEC 公告；TradingCalc 計 Market Profile（昨日 VAH／POC／VAL）同核對 R:R。收集器：`scripts/picks/gather.mjs`。操作手冊：`scripts/picks/INSTRUCTIONS.md` |
+| 📋 每日選股 | 每個美股交易日開市前約一小時（美東 08:30）由排程任務自動更新：「昨日候選股：今日可唔可以再做」（上一份報告嘅每隻候選股逐隻跟進：今日盤前 RVOL 再次 ≥ 2 先算可以再做）、大市指數同期貨、經濟數據、新聞、「盤前掃描總表」（8 大指標：跳空 %、盤前同時段 RVOL、盤前成交、催化劑、流通股、ATR %、買賣差價、相對 QQQ 強弱）、候選股（RVOL ≥ 2 先入選；五大分析、PMH/PML/PDH/PDL、Entry／Stop／Target／R:R、新手適合程度）、避開名單、TSLA 今日狀態；第二日自動加「收市後回顧」。每隻股票可以記錄有冇睇／做、結果幾多 R 同筆記（雲端同步，家人睇到）。數據：Alpaca（主要，SIP K 線計 RVOL）、Yahoo（後備）、IBKR（只讀核對）、StockAnalysis、Finviz、TopBreakoutStocks、Nasdaq／ForexFactory 日曆、多個新聞來源同 SEC 公告；TradingCalc 計 Market Profile（昨日 VAH／POC／VAL）同核對 R:R。收集器：`scripts/picks/gather.mjs`。操作手冊：`scripts/picks/INSTRUCTIONS.md` |
 | 🔬 真實數據回測實驗室 | 用 Alpaca（美股／ETF，2016 年至今）或 Binance（加密貨幣）真實 5 分鐘 K 線回測：ORB、昨日高位突破 + 回測、VWAP 回調、日內 VCP 突破（收縮比例、量縮比例可調）；20 日線篩選、RVOL、時段；結構 Stop + R 目標或者 ATR20 出場；計埋滑價同佣金；前 70% 調規則、後 30% 樣本外驗證；「加 vs 唔加 20 日線」A/B 比較；數據存喺瀏覽器 IndexedDB |
 | 🧪 研究板 | 測試前先登記假設同成功標準，規則鎖定（防止事後調參數）；附加回測結果；全組評審討論（雲端同步） |
 | 📊 我有冇 Edge？ | 由交易日誌或回測計：期望值 95% 可信範圍、期望值 > 0 機率（bootstrap）、打和勝率、遵守率、違規成本、樣本外、滾動期望值，再老實講而家喺邊一級 |
@@ -102,7 +102,7 @@ content/level15.js      Level 15 頭 2 小時做多（統計表、示意圖、�
 content/level16.js      Level 16 Indicator 實戰（讀數瀏覽器、入場位比較表、ATR 計算器、Indicator 練習圖）
 content/level17.js      Level 17 名家打法（示意圖、名家 Setup 成績表、日線突破圖、NR7 練習、PlayBook 卡）
 js/tools3.js            落盤效率工具：開市前計劃表、IBKR Bracket 落單卡（可由每日選股帶入）
-scripts/research/       研究腳本（gap-stats.mjs：Gap 延續率；setup-stats.mjs：8 個 Setup 成績；long-am-stats.mjs：頭 2 小時做多、按日線趨勢分組；indicator-stats.mjs：Indicator 讀數 vs 做多結果；famous-setups-stats.mjs：名家 Setup 驗證；輸出喺 data/research/）
+scripts/research/       研究腳本（gap-stats.mjs：Gap 延續率；setup-stats.mjs：8 個 Setup 成績；long-am-stats.mjs：頭 2 小時做多、按日線趨勢分組；indicator-stats.mjs：Indicator 讀數 vs 做多結果；famous-setups-stats.mjs：名家 Setup 驗證；day2-stats.mjs：昨日有人關注嘅股第二日仲做唔做得；輸出喺 data/research/）
 content/level3.js       Level 3 課程內容
 content/level4.js       Level 4 課程內容
 content/level5.js       Level 5 課程內容

@@ -12,7 +12,7 @@
 //   Finviz、MarketWatch、Investing.com、CNBC RSS）、SEC EDGAR 公告。
 import fs from 'node:fs';
 import path from 'node:path';
-import { etDate, dailyMetrics, premarketMetrics, rthDays, screen, RULES, r2 } from './lib.mjs';
+import { etDate, dailyMetrics, premarketMetrics, rthDays, screen, RULES, r2, bars as toBars } from './lib.mjs';
 import * as S from './sources.mjs';
 
 const args = process.argv.slice(2);
@@ -28,6 +28,15 @@ const SECTOR_ETF = { 'Technology': 'XLK', 'Communication Services': 'XLC', 'Cons
 const userSyms = (opt('--symbols', '') || '').split(',').map((s) => s.trim().toUpperCase()).filter(Boolean);
 const okSym = (s) => /^[A-Z]{1,5}(\.[A-Z])?$/.test(s || '');
 const prevWeekday = (d) => { const t = new Date(d + 'T12:00:00Z'); do { t.setUTCDate(t.getUTCDate() - 1); } while ([0, 6].includes(t.getUTCDay())); return t.toISOString().slice(0, 10); };
+/* 上一份報告（昨日候選股）：佢哋一定入候選池，之後出「今日可唔可以再做」草稿 */
+const PICKS_DIR = path.join(path.dirname(new URL(import.meta.url).pathname), '../../data/picks');
+const prevRep = (() => {
+  try {
+    const f = fs.readdirSync(PICKS_DIR).filter((x) => /^\d{4}-\d{2}-\d{2}\.json$/.test(x) && x.slice(0, 10) < target).sort().pop();
+    return f ? JSON.parse(fs.readFileSync(path.join(PICKS_DIR, f), 'utf8')) : null;
+  } catch (e) { return null; }
+})();
+const carrySyms = prevRep ? (prevRep.picks || []).map((p) => p.sym).filter(okSym) : [];
 const etMidnightISO = (d) => new Date(Date.parse(d + 'T04:00:00Z')).toISOString(); // 美東 00:00 ≈ UTC 04:00/05:00，早一個鐘冇問題
 
 /* ---------- 1. 發掘候選 ---------- */
@@ -51,7 +60,7 @@ const tbsMap = {}; tbs.watch.forEach((x) => (tbsMap[x.sym] = Object.assign({ kin
 const liquid = (x) => x.price == null || x.price >= 2; // Alpaca 異動榜有好多認股證同 $1 以下嘅股，唔要
 const saPool = [...saG, ...saL].filter((r) => (r.price == null || r.price >= 1) && (r.pmVolume == null || r.pmVolume >= 50000)).map((r) => r.sym);
 const pool = [...new Set([
-  ...userSyms, ...saPool, ...alpM.gainers.filter(liquid).slice(0, 20).map((x) => x.sym), ...alpM.losers.filter(liquid).slice(0, 15).map((x) => x.sym), ...alpM.active.slice(0, 15).map((x) => x.sym),
+  ...userSyms, ...carrySyms, ...saPool, ...alpM.gainers.filter(liquid).slice(0, 20).map((x) => x.sym), ...alpM.losers.filter(liquid).slice(0, 15).map((x) => x.sym), ...alpM.active.slice(0, 15).map((x) => x.sym),
   ...result.market.earnings.filter((e) => e.mcap >= 2e9).map((e) => e.sym), ...CORE,
   ...tbs.watch.map((x) => x.sym), ...tbs.yesterday.map((x) => x.sym)
 ])].filter(okSym).filter((s) => !INDEX.includes(s)).slice(0, MAX);
@@ -129,7 +138,7 @@ pool.forEach((s) => {
 });
 // 詳細資料（Finviz、新聞、SEC）只查最有機會嘅 40 隻：RVOL ≥ 2 先，之後跳空大、盤前成交多
 // 細價股（< $5）、盤前冇乜成交、日均成交低（多數係槓桿 ETF／冷門股）排後；用戶指定嘅一定查
-const rank = (m) => (userSyms.includes(m.sym) ? 5000 : 0) + (m.rvol >= 2 ? 1000 : 0) + Math.min(Math.abs(m.gapPct || 0), 50) * 10 + Math.min((m.pmVolume || 0) / 1e5, 100)
+const rank = (m) => (userSyms.includes(m.sym) || carrySyms.includes(m.sym) ? 5000 : 0) + (m.rvol >= 2 ? 1000 : 0) + Math.min(Math.abs(m.gapPct || 0), 50) * 10 + Math.min((m.pmVolume || 0) / 1e5, 100)
   + (CORE.includes(m.sym) ? 5 : 0) + (earnMap[m.sym] ? 300 : 0) + (m.dailyTrend === 'up' && (m.gapPct || 0) > 0 ? 200 : 0) - ((m.pmLast || m.pdc || 0) < 5 ? 800 : 0) - ((m.pmVolume || 0) < 100000 ? 400 : 0) - (m.avgVol20 != null && m.avgVol20 < 1e6 ? 400 : 0);
 const short = pool.map((s) => M[s]).filter((m) => m.pmLast != null || m.pdc != null).sort((a, b) => rank(b) - rank(a)).slice(0, 50).map((m) => m.sym);
 
@@ -178,6 +187,33 @@ const TR = { up: 0, mixed: 1, down: 2 };
 result.longDraft = rows.filter((m) => (m.gapPct || 0) > 0 && m.rvol >= 2 && (m.pmLast || 0) >= 5 && (m.pmVolume || 0) >= 100000 && (m.avgVol20 == null || m.avgVol20 >= 1e6) && (m.floatM == null || m.floatM >= 30))
   .sort((a, b) => (TR[a.dailyTrend] ?? 3) - (TR[b.dailyTrend] ?? 3) || b.screen.passed - a.screen.passed)
   .map((m) => ({ sym: m.sym, trend: m.dailyTrend ?? null, gapPct: m.gapPct, rvol: m.rvol, spreadPct: m.spreadPct ?? null, fromHigh20Pct: m.fromHigh20Pct ?? null, sma20: m.sma20 ?? null, sma50: m.sma50 ?? null, passed: m.screen.passed }));
+/* 昨日候選股草稿：昨日點收、今日盤前有冇新成交。初步結論只睇今日 RVOL（硬性規則），最後由分析決定 */
+result.carryDraft = prevRep ? {
+  fromDate: prevRep.date,
+  items: (prevRep.picks || []).map((p) => {
+    const m = M[p.sym] || {}, t = p.trade || {};
+    const rv = ((prevRep.review || {}).items || []).find((x) => x.sym === p.sym);
+    const D = toBars(daily.bars[p.sym]).filter((b) => b.d < target), y = D[D.length - 1], yy = D[D.length - 2];
+    const R = intra.bars[p.sym] ? rthDays(intra.bars[p.sym]).filter((d) => d.d < target).pop() : null; // 正常時段高低收
+    const Y = y && y.d === prevRep.date ? { o: R && R.d === y.d ? R.o : y.o, h: R && R.d === y.d ? R.h : y.h, l: R && R.d === y.d ? R.l : y.l, c: y.c, v: y.v } : null;
+    const v20 = D.slice(-21, -1).map((b) => b.v).filter((v) => v != null);
+    const px = m.pmLast ?? null;
+    const where = px == null || !Y ? null : px > Y.h ? '高過昨日高位' : px < Y.l ? '低過昨日低位' : px >= Y.c ? '昨日收市之上、昨日高位之下' : '昨日收市之下、昨日低位之上';
+    const draft = m.rvol == null ? 'watch' : m.rvol >= RULES.rvol ? 'again' : m.rvol >= 1.2 ? 'watch' : 'skip';
+    return {
+      sym: p.sym, prevSide: t.side || null, prevEntry: t.entry ?? null, prevStop: t.stop ?? null, prevTarget1: t.target1 ?? null,
+      prevResult: rv ? String(rv.verdict || '').split('｜')[0] : null,
+      yOpen: Y ? r2(Y.o) : null, yHigh: Y ? r2(Y.h) : null, yLow: Y ? r2(Y.l) : null, yClose: Y ? r2(Y.c) : null,
+      yChgPct: Y && yy ? r2((Y.c - yy.c) / yy.c * 100) : null, yClosePos: Y && Y.h > Y.l ? r2((Y.c - Y.l) / (Y.h - Y.l)) : null,
+      yVolRatio: Y && Y.v && v20.length ? r2(Y.v / (v20.reduce((a, b) => a + b, 0) / v20.length)) : null,
+      price: px, gapPct: m.gapPct ?? null, rvol: m.rvol ?? null, pmVolume: m.pmVolume ?? null, spreadPct: m.spreadPct ?? null, ema9Pct: m.ema9Pct ?? null,
+      trend: m.dailyTrend ?? null, where, news24h: (m.news || []).filter((n) => n.time && NOW - Date.parse(n.time) < 24 * 3600e3).length,
+      passed: m.screen ? m.screen.passed : null, draft,
+      draftWhy: m.rvol == null ? '今日冇 RVOL 數據' : m.rvol >= RULES.rvol ? `今日盤前 RVOL ${m.rvol} ≥ 2：仲有人關注，當新股咁再檢查 9 個指標` : `今日盤前 RVOL ${m.rvol}，未夠 2`,
+      stale: !Y,
+    };
+  }),
+} : null;
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
 fs.writeFileSync(outFile, JSON.stringify(result, null, 1));
 
@@ -189,5 +225,10 @@ console.log('來源：' + Object.entries(S.sources).map(([k, v]) => `${k} ${v.ok
 console.log(`大市：` + ['SPY', 'QQQ', 'IWM', 'SMH'].map((s) => `${s} ${idx[s] ? fmt(idx[s].chgPct, 2) + '%' : '—'}`).join('  ') + (base.qqq != null && !idx.QQQ ? `（RS 基準用 --base：SPY ${base.spy}%、QQQ ${base.qqq}%）` : '') + (result.market.economic.length ? `｜今日數據：${result.market.economic.filter((e) => e.impact === '高').map((e) => e.timeET + ' ' + e.name).join('、') || '冇高影響'}` : ''));
 const TRM = { up: '📈升', mixed: '➖橫', down: '📉跌' };
 console.log('Long 專區草稿（Gap 向上 + RVOL ≥ 2；日線升勢排先）：' + (result.longDraft.length ? result.longDraft.map((x) => `${x.sym} ${TRM[x.trend] || '—'} Gap ${fmt(x.gapPct)}% RVOL ${fmt(x.rvol)} Sprd ${fmt(x.spreadPct, 2)}% 離20日高 ${fmt(x.fromHigh20Pct)}%`).join('｜') : '冇'));
+if (result.carryDraft) {
+  const DV = { again: '✅ 可以再睇', watch: '👀 觀察', skip: '⏭️ 唔做' };
+  console.log(`昨日候選股草稿（${result.carryDraft.fromDate} 嘅 picks；初步結論只睇今日 RVOL）：` + (result.carryDraft.items.length ? '' : '上一份報告冇 picks'));
+  result.carryDraft.items.forEach((x) => console.log(`  ${x.sym.padEnd(6)} 昨日 ${x.prevSide || '—'}｜${x.prevResult || '未有回顧'}｜昨日收 ${fmt(x.yClose, 2)}（${fmt(x.yChgPct)}%，收喺波幅 ${x.yClosePos == null ? '—' : Math.round(x.yClosePos * 100) + '%'} 位，成交 ${fmt(x.yVolRatio)}×）｜今日 ${fmt(x.price, 2)} Gap ${fmt(x.gapPct)}% RVOL ${fmt(x.rvol)}｜${x.where || '—'}｜24h 新聞 ${x.news24h}｜${DV[x.draft]}${x.stale ? '（⚠️ 上一份報告唔係上一個交易日）' : ''}`));
+}
 console.log('Symbol  Price    Gap%   RVOL  PM Vol   FloatM  ATR%  Sprd%  RS/QQQ EMA9%  News 9項   Trend Source');
 rows.slice(0, 45).forEach((m) => { const c = m.screen.checks; console.log([m.sym.padEnd(7), (m.pmLast == null ? '—' : m.pmLast.toFixed(2)).padEnd(8), (mark(c.gap.pass) + fmt(m.gapPct)).padEnd(7), (mark(c.rvol.pass) + fmt(m.rvol)).padEnd(6), (mark(c.pmVolume.pass) + fmt(m.pmVolume)).padEnd(8), (mark(c.float.pass) + (m.floatM == null ? '—' : String(Math.round(m.floatM)))).padEnd(7), (mark(c.atr.pass) + fmt(m.atrPct)).padEnd(6), (mark(c.spread.pass) + fmt(m.spreadPct, 2)).padEnd(6), (mark(c.rs.pass) + fmt(m.rsQqq)).padEnd(7), (mark(c.ema9.pass) + fmt(m.ema9Pct, 2)).padEnd(7), (mark(c.catalyst.pass) + String((m.news || []).length)).padEnd(4), `${m.screen.passed}/${m.screen.known}`.padEnd(5), (TRM[m.dailyTrend] || '—').padEnd(4), (m.dataSource || m.priceFrom || '').slice(0, 14)].join(' ')); });

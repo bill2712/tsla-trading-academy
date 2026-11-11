@@ -1425,3 +1425,25 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 .l17-pb label { display: grid; gap: 4px; font-size: .86em; font-weight: 700; }
 .l17-pb input, .l17-pb textarea { width: 100%; min-width: 0; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; font-weight: 400; resize: vertical; }
 .l17-nr7 { max-width: 560px; }
+
+/* ---------- 每日選股：昨日候選股跟進 ---------- */
+.pk-carry .card-h a { margin-left: auto; font-size: .8em; font-weight: 600; white-space: nowrap; }
+.pk-carry-list { display: grid; gap: 10px; margin: 10px 0; }
+.pk-carry-i { border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: 12px; padding: 10px 12px; }
+.pk-carry-i.v-again { border-left-color: var(--up); }
+.pk-carry-i.v-watch { border-left-color: var(--warn); }
+.pk-carry-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pk-carry-h > b { font-size: 1.1em; }
+.pk-carry-h .btn { margin-left: auto; }
+.pk-carry-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 8px 0; }
+.pk-carry-g > div { display: grid; align-content: start; padding: 6px 10px; border-radius: 10px; background: var(--bg-soft); line-height: 1.35; }
+.pk-carry-g span { font-size: .74em; color: var(--muted); font-weight: 700; }
+.pk-carry-g b { font-variant-numeric: tabular-nums; }
+.pk-carry-g small { color: var(--muted); font-size: .78em; }
+.pk-carry-g em { font-style: normal; font-size: .9em; }
+.pk-carry-g em.pos, .pk-carry-g .ok b { color: var(--up); } .pk-carry-g em.neg, .pk-carry-g .bad b { color: var(--down); }
+.pk-carry-r { margin: 0; line-height: 1.5; }
+.pk-carry-r small { display: block; color: var(--muted); margin-top: 2px; }
+.pk-carry-i.v-skip { opacity: .85; }
+.pk-card.pk-flash { outline: 3px solid #7c3aed; outline-offset: 2px; }
+@media (max-width: 560px) { .pk-carry-g { grid-template-columns: 1fr 1fr; } }

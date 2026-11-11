@@ -7,7 +7,8 @@ verify, cross-check, and never fill gaps with guesses.
 
 All user-facing text: **Traditional Chinese, Cantonese style** (係、嘅、唔、冇), concise and specific.
 
-The report is laid out as: **data first** (8-indicator scan table for every candidate), then
+The report is laid out as: Long focus, **yesterday's picks follow-up** (can they be traded again
+today?), then **data first** (8-indicator scan table for every candidate), then
 **analysis and news** for each pick, then **whether it suits a day trade today** and the plan.
 
 ---
@@ -124,6 +125,9 @@ yesterday after the close, core liquid names, `--symbols`), then:
   S-3/424B = possible dilution).
 - **Calendar**: ForexFactory (exact dates/times, impact) + Nasdaq (actual values; its `date`
   parameter is off by one day, the collector matches it against ForexFactory).
+
+It also reads the previous report in `data/picks/`, forces its picks into the pool and prints
+「昨日候選股草稿」(section 4c).
 
 It prints the source status line and a table with the 9 indicators (✅/❌/・), writes
 `/tmp/picks/gather.json` and a ready `scanDraft` (fill `verdict` and `note`). If no index data
@@ -246,6 +250,59 @@ them, but the report must serve the long-only trader first.
    did not improve morning longs; opening volume and QQQ above VWAP mattered more. Do not write
    that uptrend stocks are "safer" or "more likely to win".
 
+## 4c. Yesterday's picks: can they be traded again today? (`carryover`) — required from 2026-11-12
+
+The user asked for a section that follows up every pick of the **previous report** and says
+whether it can be traded again today. The app shows it as「🔄 昨日候選股：今日可唔可以再做？」
+right after the Long focus.
+
+1. **Input.** The collector always adds the previous report's picks to the pool and prints
+   「昨日候選股草稿」; the same data is in `gather.json` → `carryDraft`
+   (`fromDate`, and per symbol: yesterday's plan and review result, yesterday's regular-hours
+   open/high/low/close, `yChgPct` = yesterday's close vs the close before, `yClosePos` = where it
+   closed inside the day's range (1 = at the high), `yVolRatio` = yesterday's volume ÷ 20-day
+   average, today's pre-market price, gap, RVOL, spread, where price sits vs yesterday's range,
+   number of news items in the last 24 h, and a first-pass `draft`). Run the review (section 2)
+   **before** the collector so `prevResult` is filled.
+2. **What the data says** (`data/research/day2-stats.json`, 50 large caps, 2024-01 to 2026-11):
+   after an in-play day only about one third of stocks are in play again the next day, and only
+   about 13% open with volume ≥ 2× normal again; the next day's direction matches yesterday's
+   48% of the time (a coin flip), whether or not yesterday closed strong, and a 15-minute ORB in
+   yesterday's direction averaged about −0.04R. When the stock *is* in play again, its range is
+   larger (about 1.35 ATR vs 0.91). **So yesterday's move is not a reason to trade today.**
+   The decision rests on today's own conditions.
+3. **Verdict for every previous pick** (one row each, none skipped):
+   - `again`（今日可以再做）: today's pre-market RVOL ≥ 2 (same hard rule as any pick) **and** it
+     passes the normal selection in section 4, so it is also in today's `picks` with a full plan
+     built from **today's** levels. `side` = today's direction, which may differ from yesterday's.
+     Never copy yesterday's entry/stop/target.
+   - `watch`（只觀察）: not enough volume yet (RVOL about 1.2–2, or no RVOL number) but there is a
+     fresh reason to look (new news, price pressing yesterday's high/low). Say exactly what would
+     upgrade it at the open, e.g.「首 5 分鐘成交 ≥ 平時 2 倍，而且企穩昨日高位 $X 之上」.
+   - `skip`（今日唔做）: RVOL below about 1.2, no new catalyst, spread too wide, or the story is
+     finished. Most rows will be `skip` — that is normal and should be said plainly.
+4. **`reason`** (required, ≤ 400 chars, Cantonese): the concrete facts — today's RVOL, whether
+   there is news from the last 24 h, where price is relative to yesterday's high/low/close.
+   **`levels`** (optional): the 2–3 prices that matter today, e.g.「昨日高 $15.80、昨日收 $15.42」.
+   Do not write that yesterday's winner is "likely to continue" or that a missed trade should be
+   "made up" today.
+5. **`summary`**: 1–3 sentences: how many of yesterday's picks can be traded again, which ones,
+   and (if none) say so, e.g.「昨日 3 隻候選股今日盤前 RVOL 全部低過 1，冇一隻值得再做」.
+   If the previous report had no picks: `"items": []` and a summary that says so.
+6. `fromDate` = the date of the previous report (the collector gives it). If that report is not
+   the previous trading day (a run was missed), say so in `summary`.
+
+```json
+"carryover": { "fromDate": "YYYY-MM-DD", "summary": "…",
+  "items": [{ "sym": "", "prevSide": "Long", "prevResult": "09:40 觸發 → 10:15 到 Target 1（+2R）",
+              "yClose": 0, "yChgPct": 0, "yClosePos": 0.8, "yVolRatio": 1.9,
+              "price": 0, "gapPct": 0, "rvol": 0, "verdict": "again", "side": "Long",
+              "reason": "…", "levels": "昨日高 $…、昨日收 $…" }] }
+```
+
+`build.mjs` checks: every previous pick has a row; `again` needs RVOL ≥ 2, a `side`, and the
+symbol in today's `picks`; a symbol that is in today's `picks` must be `again`.
+
 ## 5. Five-pillar analysis for every pick (`pillars`)
 
 | Field | What to write |
@@ -300,6 +357,7 @@ failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never cha
   "focus": "（可選）TSLA 今日真係值得做先寫",
   "fewPicksReason": "（可選）少過 5 隻時必填",
   "longFocus": { "summary": "今日 Long 專區…", "items": [{ "sym": "", "trend": "up", "setups": "Flat Top／EMA 9 回調", "note": "" }] },
+  "carryover": { "fromDate": "YYYY-MM-DD", "summary": "昨日候選股今日…", "items": [{ "sym": "", "prevSide": "Long", "prevResult": "", "yClose": 0, "yChgPct": 0, "yClosePos": 0.8, "yVolRatio": 1.9, "price": 0, "gapPct": 0, "rvol": 0, "verdict": "skip", "side": null, "reason": "", "levels": "" }] },
   "picks": [{
     "sym": "", "name": "", "grade": "A", "beginner": "中等", "direction": "Long", "score": 80,
     "price": 0, "prevClose": 0, "gapPct": 0, "pmVolume": 0, "pmVolPct": 0, "avgVolume": 0,
@@ -343,6 +401,7 @@ Retry network failures up to 4 times (2s, 4s, 8s, 16s).
 「📋 10/28 選股：大市偏好。NVDA +3.1% RVOL 4.2（業績）、AMD +2.4% RVOL 2.6…（共 6 隻）
 https://bill2712.github.io/tsla-trading-academy/#/picks/2026-10-28」.
 If a step failed or data was partial (e.g. Alpaca key missing, IBKR down), say so in the same line.
+When one of yesterday's picks is `again` in `carryover`, mention it briefly (e.g.「昨日嘅 NVDA 今日可以再做」).
 
 ## Time budget
 

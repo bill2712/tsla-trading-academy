@@ -166,6 +166,28 @@
       </tbody></table></div>` : '<p class="pk-risk">今日 Long 專區冇合格股：冇好機會就唔做。</p>'}
       <p class="tool-fine"><b>A+ 過濾（開市後自己核對）：</b>首 5 分鐘成交 ≥ 平時 2 倍；入場前 QQQ 喺自己 VWAP 上面。兩樣唔齊就唔做。09:30–09:35 唔落單；唔好一開市追昨日高位（PDH）突破；11:30 收工。<a href="#/level/l15">Level 15：頭 2 小時做多</a></p></section>`;
   }
+  /* 昨日候選股：今日可唔可以再做（上一份報告嘅 picks 逐隻跟進） */
+  const CARRY = { again: ['✅', '今日可以再做', 'ok'], watch: ['👀', '只觀察', 'mid'], skip: ['⏭️', '今日唔做', ''] };
+  function carryHTML(d) {
+    const C = d.carryover;
+    if (!C) return '';
+    const items = C.items || [];
+    const md = (C.fromDate || '').slice(5).replace('-', '/');
+    const n = items.filter((x) => x.verdict === 'again').length;
+    return `<section class="card pk-carry"><div class="card-h">🔄 昨日候選股：今日可唔可以再做？<small>${esc(md)} 嘅候選股・${items.length ? `${n} / ${items.length} 隻可以再做` : '冇候選股'}</small>${C.fromDate ? `<a href="#/picks/${esc(C.fromDate)}">睇 ${esc(md)} 報告 →</a>` : ''}</div>
+      <p>${esc(C.summary || '')}</p>
+      ${items.length ? `<div class="pk-carry-list">${items.map((x) => { const v = CARRY[x.verdict] || CARRY.skip; const pos = num(x.yClosePos) == null ? '' : `收喺全日波幅 ${Math.round(x.yClosePos * 100)}% 位`;
+        return `<div class="pk-carry-i v-${esc(x.verdict || 'skip')}">
+          <div class="pk-carry-h"><b>${esc(x.sym)}</b><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span>${x.verdict === 'again' ? `<span class="pk-dir">${x.side === 'Short' ? '📉 今日 Short' : '📈 今日 Long'}</span><a class="btn sm" href="#/picks/${esc(d.date)}" data-goto="${esc(x.sym)}">睇今日計劃 ↓</a>` : ''}</div>
+          <div class="pk-carry-g">
+            <div><span>昨日計劃同結果</span><b>${x.prevSide ? (x.prevSide === 'Short' ? '📉 Short' : '📈 Long') : '—'}</b>${x.prevResult ? `<small>${esc(x.prevResult)}</small>` : ''}</div>
+            <div><span>昨日收市</span><b>${num(x.yClose) == null ? '—' : '$' + F(x.yClose)}${num(x.yChgPct) != null ? ` <em class="${cls(x.yChgPct)}">${P(x.yChgPct, 1)}</em>` : ''}</b>${pos || num(x.yVolRatio) != null ? `<small>${[pos, num(x.yVolRatio) != null ? `成交係平時 ${F(x.yVolRatio, 1)} 倍` : ''].filter(Boolean).join('・')}</small>` : ''}</div>
+            <div><span>今日盤前</span><b>${num(x.price) == null ? '—' : '$' + F(x.price)}${num(x.gapPct) != null ? ` <em class="${cls(x.gapPct)}">${P(x.gapPct, 1)}</em>` : ''}</b><small>Gap %（對昨日收市）</small></div>
+            <div class="${num(x.rvol) == null ? '' : x.rvol >= 2 ? 'ok' : 'bad'}"><span>今日 RVOL</span><b>${num(x.rvol) == null ? '—' : F(x.rvol, 1) + '×'}</b><small>${num(x.rvol) == null ? '冇數據' : x.rvol >= 2 ? '✅ ≥ 2×' : '❌ 未夠 2×'}</small></div>
+          </div>
+          <p class="pk-carry-r">${esc(x.reason || '')}${x.levels ? `<small>📍 關鍵位：${esc(x.levels)}</small>` : ''}</p></div>`; }).join('')}</div>` : '<p class="pk-risk">上一份報告冇候選股，今日冇嘢要跟進。</p>'}
+      <p class="tool-fine"><b>點樣判斷：</b>「可以再做」唔係因為昨日升咗或者跌咗，而係今日盤前 <b>RVOL 再次 ≥ 2</b>、有今日嘅新計劃（同新股一樣要過 9 個指標）。數據（50 隻大型股，2024–2026）：昨日有人關注嘅股，第二日仲有人關注嘅只有約三分一，開市成交再次 ≥ 2 倍嘅只有約 13%；第二日方向同昨日一樣嘅機會係 48%，同擲銀仔差唔多。所以昨日贏唔代表今日照做，昨日冇觸發亦唔代表今日補做。<a href="#/c/l17-c4">Level 17 第 4 章：Second Day Play 嘅數據</a></p></section>`;
+  }
   function tradeHTML(t, p) {
     if (!t || num(t.entry) == null) return '';
     const tk = p && p.sym && num(t.stop) != null && num(t.target1) != null ? `#/tools/bracket-ticket?sym=${encodeURIComponent(p.sym)}&side=${t.side === 'Short' ? 'short' : 'long'}&entry=${t.entry}&stop=${t.stop}&t1=${t.target1}${num(t.target2) != null ? '&t2=' + t.target2 : ''}${num(p.atr) != null ? '&atr=' + p.atr : ''}` : '';
@@ -200,7 +222,7 @@
     const R = Object.assign({}, RULES, d.rules || {});
     const early = !!(d.scanTime && d.scanTime < '08:30');
     const base = m.base || {};
-    return `<div class="page-head"><h1>📋 每日選股</h1><p class="muted">每個美股交易日開市前約一小時（美東 08:30）自動更新：先列 8 大盤前指標總表，再列每隻候選股嘅分析、新聞同交易計劃。只有盤前 <b>RVOL ≥ 2</b> 嘅股票先會入候選名單。AI 整理嘅數據可能有延遲或者錯漏，落單前一定要喺券商再核對價位、計好股數同風險。</p></div>
+    return `<div class="page-head"><h1>📋 每日選股</h1><p class="muted">每個美股交易日開市前約一小時（美東 08:30）自動更新：先跟進昨日候選股今日可唔可以再做，再列 8 大盤前指標總表，同每隻候選股嘅分析、新聞同交易計劃。只有盤前 <b>RVOL ≥ 2</b> 嘅股票先會入候選名單。AI 整理嘅數據可能有延遲或者錯漏，落單前一定要喺券商再核對價位、計好股數同風險。</p></div>
       <div class="pk-days" role="tablist" aria-label="日期">${days.slice(0, 30).map((x) => `<a href="#/picks/${esc(x.date)}" class="pk-day ${x.date === d.date ? 'on' : ''}"><b>${esc(x.date.slice(5))}</b><small>${esc(x.bias || '')}${x.reviewed ? ' · 已回顧' : ''}</small></a>`).join('')}</div>
       <section class="pk-hero card">
         <div><div class="pk-date">${esc(d.date)}（美東）${d.status === 'test' ? '<span class="pk-beg mid">測試版</span>' : ''}</div>
@@ -216,6 +238,7 @@
         ${(m.earnings || []).length ? `<p><b>業績：</b>${m.earnings.map((e) => `${esc(e.sym)}（${esc(e.when || '')}${e.note ? '，' + esc(e.note) : ''}）`).join('、')}</p>` : ''}</section>` : ''}
       ${d.focus ? `<section class="card pk-focus"><div class="card-h">⚡ TSLA 今日狀態</div><p>${esc(d.focus)}</p></section>` : ''}
       ${longFocusHTML(d)}
+      ${carryHTML(d)}
       ${scanHTML(d, R, early)}
       <h2 class="sec-h">🎯 今日候選股（${(d.picks || []).length}）</h2>
       ${d.fewPicksReason ? `<p class="pk-risk">ℹ️ ${esc(d.fewPicksReason)}</p>` : ''}
@@ -247,6 +270,11 @@
   }
 
   function bind(view, d) {
+    $$('[data-goto]', view).forEach((a) => a.addEventListener('click', (e) => {
+      const card = $$('.pk-card', view).find((c) => c.dataset.sym === a.dataset.goto);
+      if (!card) return;
+      e.preventDefault(); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); card.classList.add('pk-flash'); setTimeout(() => card.classList.remove('pk-flash'), 1600);
+    }));
     $$('.pk-card', view).forEach((card) => {
       const sym = card.dataset.sym;
       $('[data-st]', card).addEventListener('change', (e) => { setLog(d.date, sym, { status: e.target.value }); App.toast('已記錄 ' + sym); });

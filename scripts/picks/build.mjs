@@ -27,7 +27,7 @@ function checkNews(f, where, list) {
   });
 }
 
-function checkDay(f, d) {
+function checkDay(f, d, prev) {
   const date = f.replace('.json', '');
   if (![1, 2, 3].includes(d.version)) err(f, 'version 要係 1、2 或 3（新報告用 3）');
   if (d.date !== date) err(f, `date（${d.date}）要同檔名一樣`);
@@ -69,6 +69,7 @@ function checkDay(f, d) {
     if (d.version >= 2 && d.picks.length > 8) err(f, 'picks 最多 8 隻');
   }
   if (d.version >= 3) checkScan(f, d);
+  if (d.version >= 3) checkCarry(f, d, prev);
   if (d.version >= 2) {
     if (!Array.isArray(d.sources) || !d.sources.length) err(f, 'sources 要列出每個數據來源 [{name, ok, note}]');
     else d.sources.forEach((x, i) => { if (!nonEmpty(x.name, 80) || typeof x.ok !== 'boolean') err(f, `sources[${i}] 要有 name 同 ok（true/false）`); });
@@ -170,6 +171,41 @@ function checkLongFocus(f, d) {
   const up = L.items.filter((x) => x.trend === 'up').length;
   if (L.items.length && L.items.findIndex((x) => x.trend !== 'up') > -1 && L.items.findIndex((x) => x.trend !== 'up') < up) err(f, 'longFocus.items：日線升勢（up）嘅要排最前');
 }
+/* 昨日候選股：今日可唔可以再做（carryover）。上一份報告嘅每隻 pick 都要有結論；
+ * 「可以再做」（again）一定要今日 RVOL ≥ 2 而且喺今日 picks 入面（硬性規則唔變） */
+const CARRY_FROM = '2026-11-12';
+const CARRY_V = ['again', 'watch', 'skip'];
+function checkCarry(f, d, prev) {
+  const C = d.carryover;
+  const must = d.status === 'premarket' && d.date >= CARRY_FROM && !!prev;
+  if (C == null) { if (must) err(f, `carryover（昨日候選股：今日可唔可以再做）一定要有；上一份報告係 ${prev.date}`); return; }
+  if (!nonEmpty(C.summary, 800)) err(f, 'carryover.summary 唔可以空（≤ 800 字）');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(C.fromDate || '') || C.fromDate >= d.date) err(f, 'carryover.fromDate 要係上一份報告嘅日期（YYYY-MM-DD）');
+  if (prev && C.fromDate !== prev.date) err(f, `carryover.fromDate 寫 ${C.fromDate}，但上一份報告係 ${prev.date}`);
+  if (!Array.isArray(C.items)) { err(f, 'carryover.items 要係 array'); return; }
+  const seen = new Set();
+  C.items.forEach((x, i) => {
+    const w = `carryover.items[${i}]`;
+    if (!/^[A-Z][A-Z0-9.\-]{0,9}$/.test(x.sym || '')) err(f, `${w}.sym`);
+    if (seen.has(x.sym)) err(f, `${w}.sym 重複 ${x.sym}`); seen.add(x.sym);
+    if (prev && !(prev.picks || []).some((p) => p.sym === x.sym)) err(f, `${w} ${x.sym} 唔係 ${prev.date} 嘅候選股`);
+    if (x.prevSide != null && !['Long', 'Short'].includes(x.prevSide)) err(f, `${w}.prevSide 要係 Long／Short`);
+    ['yClose', 'yChgPct', 'yClosePos', 'yVolRatio', 'price', 'gapPct', 'rvol'].forEach((k) => { if (!isNum(x[k] ?? null)) err(f, `${w}.${k} 要係數字或 null`); });
+    if (req(x.yClosePos) && (x.yClosePos < 0 || x.yClosePos > 1)) err(f, `${w}.yClosePos 要喺 0–1 之間（昨日收市喺全日波幅嘅位置）`);
+    if (!CARRY_V.includes(x.verdict)) err(f, `${w}.verdict 要係 ${CARRY_V.join('/')}`);
+    if (x.side != null && !['Long', 'Short'].includes(x.side)) err(f, `${w}.side 要係 Long／Short／null`);
+    if (!nonEmpty(x.reason, 400)) err(f, `${w}.reason（點解可以／唔可以再做）唔可以空（≤ 400 字）`);
+    ['prevResult', 'levels'].forEach((k) => { if (!optStr(x[k], 300)) err(f, `${w}.${k} 要係字串（≤ 300 字）`); });
+    const p = (d.picks || []).find((y) => y.sym === x.sym);
+    if (x.verdict === 'again') {
+      if (!req(x.rvol) || x.rvol < 2) err(f, `${w} ${x.sym}：「可以再做」要今日 RVOL ≥ 2（而家係 ${x.rvol ?? '冇數字'}）；未夠就用 watch 或 skip`);
+      if (!p) err(f, `${w} ${x.sym}：「可以再做」嘅股要喺今日 picks 入面（有齊數據同交易計劃）`);
+      else if (x.side && p.trade && p.trade.side !== x.side) err(f, `${w}.side 同今日 pick 嘅交易方向唔一致`);
+      if (!x.side) err(f, `${w}.side：「可以再做」要寫今日做邊個方向`);
+    } else if (p) err(f, `${w} ${x.sym} 喺今日 picks 入面，verdict 就要係 again`);
+  });
+  if (prev) (prev.picks || []).forEach((p) => { if (!seen.has(p.sym)) err(f, `carryover.items 漏咗 ${p.sym}（${prev.date} 嘅候選股每隻都要有結論）`); });
+}
 function checkScan(f, d) {
   if (!Array.isArray(d.scan)) { err(f, 'scan（盤前掃描總表）要係 array'); return; }
   if (!d.scan.length && d.status === 'premarket') warn(f, 'scan 係空嘅：總表冇數據');
@@ -191,17 +227,21 @@ function checkScan(f, d) {
 
 const files = fs.readdirSync(DIR).filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse();
 const days = [];
+const docs = {};
+for (const f of files) { try { docs[f] = JSON.parse(fs.readFileSync(path.join(DIR, f), 'utf8')); } catch (e) { err(f, 'JSON 格式錯：' + e.message); } }
 for (const f of files) {
-  let d;
-  try { d = JSON.parse(fs.readFileSync(path.join(DIR, f), 'utf8')); } catch (e) { err(f, 'JSON 格式錯：' + e.message); continue; }
+  const d = docs[f];
+  if (!d) continue;
   const before = errs.length;
-  checkDay(f, d);
+  const pf = files.find((x) => x < f && docs[x]); // files 已經由新到舊排
+  checkDay(f, d, pf ? docs[pf] : null);
   if (errs.length > before) continue;
   const m = d.market || {};
   days.push({
     date: d.date, version: d.version, status: d.status, bias: m.bias, headline: (d.headline || m.summary || '').slice(0, 90), n: d.picks.length,
     top: d.picks.slice(0, 7).map((p) => ({ sym: p.sym, gapPct: p.gapPct ?? null, rvol: p.rvol ?? null, beginner: p.beginner || null, grade: p.grade || null })),
     reviewed: !!(d.review && (d.review.items || []).length),
+    again: d.carryover ? (d.carryover.items || []).filter((x) => x.verdict === 'again').map((x) => x.sym) : undefined,
   });
 }
 if (warns.length) console.warn('⚠️ 提醒：\n' + warns.map((e) => ' - ' + e).join('\n'));
