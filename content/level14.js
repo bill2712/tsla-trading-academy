@@ -34,7 +34,7 @@ window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
     return B;
   }
   function vwapOf(B) { let pv = 0, vv = 0; return B.map((b) => { pv += ((b.h + b.l + b.c) / 3) * b.v; vv += b.v; return vv ? pv / vv : b.c; }); }
-  function emaOf(B) { const k = 2 / 10; let e = B[0].c; return B.map((b) => (e = b.c * k + e * (1 - k))); }
+  function emaOf(B, n = 9) { const k = 2 / (n + 1); let e = B[0].c; return B.map((b) => (e = b.c * k + e * (1 - k))); }
   const hiOf = (B, a, b) => Math.max(...B.slice(a, b + 1).map((x) => x.h));
   const loOf = (B, a, b) => Math.min(...B.slice(a, b + 1).map((x) => x.l));
   /* 鏡像：做空版本（價格上下反轉） */
@@ -179,9 +179,9 @@ window.WIDGETS_EXTRA = window.WIDGETS_EXTRA || {};
     const vw = vwapOf(B).slice(0, n); if (vw.length > 1) mk('polyline', { points: vw.map((v, i) => x(i) + ',' + y(v)).join(' '), class: 'vwap-line' }, svg);
     const lg = mk('text', { x: m.l + 6, y: m.t + 10, class: 'vwap-label l10-lg' }, svg); lg.textContent = 'VWAP';
     if (X.ema) {
-      const em = emaOf(B).slice(0, n);
+      const en = X.ema === true ? 9 : X.ema; const em = emaOf(B, en).slice(0, n);
       if (em.length > 1) mk('polyline', { points: em.map((v, i) => x(i) + ',' + y(v)).join(' '), class: 'l10-ema' }, svg);
-      const t2 = mk('text', { x: m.l + 6, y: m.t + 26, class: 'l10-ema-label l10-lg' }, svg); t2.textContent = 'EMA 9';
+      const t2 = mk('text', { x: m.l + 6, y: m.t + 26, class: 'l10-ema-label l10-lg' }, svg); t2.textContent = 'EMA ' + en;
     }
     if (show.amLine) {
       const xx = m.l + step * 24;

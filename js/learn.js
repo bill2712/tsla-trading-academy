@@ -404,6 +404,7 @@
     l14: '多學 8 個常見 Setup：30 分鐘 ORB、開市推動後第一次回調（Flag）、VWAP 回調、VWAP 收復、Red-to-Green、Gap Fade、午市 HOD 突破、失敗突破；每個都有入場、Stop、Target、唔做嘅情況、一步一步示意圖同真實統計。',
     l15: '專為「頭 2 小時、只做多、日線升勢股」而寫：真實數據話日線升勢本身冇加分，開市量同 QQQ 先係關鍵；四個主力 Setup（Flat Top、EMA 9 回調、Bull Flag、30 分鐘 ORB）、唔好追 PDH 突破、11:30 收工，配合每日報告嘅 Long 專區。',
     l16: '專講 Indicator：EMA 9／20、VWAP、ATR、RVOL、RSI、MACD、Relative Strength、日線均線。每個量度乜、點讀、做多點用；真實數據顯示單睇讀數冇預測力，「靚」係背景合格加入場位出現。附逐支 K 讀 Indicator 嘅練習圖。',
+    l17: '著名 Day Trader 公開教嘅打法：Ross Cameron（Gap & Go）、Andrew Aziz（ABCD、VWAP）、SMB（Stocks In Play、PlayBook）、Linda Raschke（Holy Grail）、Kullamägi（日線突破、EP）、Toby Crabel（ORB、NR7）。每個都用我哋 3 年真實數據驗證：大部分喺零附近，等確認好過估底。最後砌你自己嘅 PlayBook。',
     l10: '圖表點用：將 TradingView 設定成 Day Trade 用嘅樣 —— New York 時區、Extended Hours 同盤前背景、Session Breaks、日線／15m／5m、VWAP 同 EMA 9、畫 PMH／PDH、Position 工具、警報同 Bar Replay。',
     l9: '進修專題：Mark Minervini 嘅 VCP。睇突破之前嘅收縮 —— T1/T2/T3、量縮、Pivot、Stage 2，再分開研究日線同 5 分鐘版本，最後用真實數據回測。',
     qa: '你曾經問過嘅實戰問題：S/R 點畫、Zone 幾闊、Stop 放邊、點解 Replay 搵唔到 Entry。',

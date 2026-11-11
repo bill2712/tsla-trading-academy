@@ -625,6 +625,8 @@ Indicator 係儀錶板，唔係自動駕駛。佢哋幫你回答「而家係咩�
 
 [[quiz:l16-final]]
 
+[[link:level/l17|➡️ 下一課：Level 17 名家打法]]
+
 [[link:map|🗺️ 睇你嘅學習地圖同證書]]
 `},
   ],

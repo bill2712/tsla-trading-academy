@@ -1417,3 +1417,11 @@ h1 .fam-badges .fam-badge { font-size: .4em; }
 
 .l10-bar label.l16-pick { display: grid; grid-template-columns: auto 1fr; width: 100%; white-space: normal; }
 .l10-bar label.l16-pick select { width: 100%; min-width: 0; }
+
+/* ---------- Level 17：名家打法 ---------- */
+.l17-kt { margin: 0 0 6px; font-size: .92em; }
+.l17-h { margin: 14px 0 6px; font-size: .95em; }
+.l17-pb { display: grid; gap: 8px; margin-top: 8px; }
+.l17-pb label { display: grid; gap: 4px; font-size: .86em; font-weight: 700; }
+.l17-pb input, .l17-pb textarea { width: 100%; min-width: 0; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; font-weight: 400; resize: vertical; }
+.l17-nr7 { max-width: 560px; }
