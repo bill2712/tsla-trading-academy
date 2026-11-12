@@ -70,6 +70,8 @@ function checkDay(f, d, prev) {
   }
   if (d.version >= 3) checkScan(f, d);
   if (d.version >= 3) checkCarry(f, d, prev);
+  (d.picks || []).forEach((p, i) => checkIbkr(f, `picks[${i}].ibkr`, p.ibkr));
+  checkPreopen(f, d);
   if (d.version >= 2) {
     if (!Array.isArray(d.sources) || !d.sources.length) err(f, 'sources 要列出每個數據來源 [{name, ok, note}]');
     else d.sources.forEach((x, i) => { if (!nonEmpty(x.name, 80) || typeof x.ok !== 'boolean') err(f, `sources[${i}] 要有 name 同 ok（true/false）`); });
@@ -173,6 +175,32 @@ function checkLongFocus(f, d) {
 }
 /* 昨日候選股：今日可唔可以再做（carryover）。上一份報告嘅每隻 pick 都要有結論；
  * 「可以再做」（again）一定要今日 RVOL ≥ 2 而且喺今日 picks 入面（硬性規則唔變） */
+/* IBKR 即時數據（scripts/picks/ibkr-merge.mjs 寫入） */
+function checkIbkr(f, w, x) {
+  if (x == null) return;
+  if (typeof x !== 'object') { err(f, `${w} 要係 object`); return; }
+  ['last', 'bid', 'ask', 'bidSize', 'askSize', 'spread', 'spreadPct', 'volume', 'pmh', 'pml', 'pmVolume', 'rvol', 'gapNow'].forEach((k) => { if (!isNum(x[k] ?? null)) err(f, `${w}.${k} 要係數字或 null`); });
+  if (!isStr(x.at, 40) || isNaN(Date.parse(x.at))) err(f, `${w}.at 要係 ISO 時間`);
+  if (x.status != null && !isStr(x.status, 20)) err(f, `${w}.status 要係字串`);
+}
+/* 開市前最後更新（美東約 08:57，IBKR 即時） */
+const PRE_ST = ['waiting', 'near', 'chase', 'broken', 'nodata'];
+function checkPreopen(f, d) {
+  const P = d.preopen; if (P == null) return;
+  if (!isStr(P.at, 40) || isNaN(Date.parse(P.at))) err(f, 'preopen.at 要係 ISO 時間');
+  if (!nonEmpty(P.summary, 800)) err(f, 'preopen.summary（開市前總結）唔可以空（≤ 800 字）');
+  if (!Array.isArray(P.items)) { err(f, 'preopen.items 要係 array'); return; }
+  P.items.forEach((x, i) => {
+    const w = `preopen.items[${i}]`;
+    if (!(d.picks || []).some((p) => p.sym === x.sym)) err(f, `${w}.sym ${x.sym} 唔喺 picks`);
+    if (!PRE_ST.includes(x.status)) err(f, `${w}.status 要係 ${PRE_ST.join('/')}`);
+    ['last', 'entry', 'stop', 'distAtr', 'spreadPct', 'gapNow', 'rvol'].forEach((k) => { if (!isNum(x[k] ?? null)) err(f, `${w}.${k} 要係數字或 null`); });
+    if (!nonEmpty(x.reason, 400)) err(f, `${w}.reason 唔可以空`);
+    if (!optStr(x.note, 300)) err(f, `${w}.note 要係字串（≤ 300 字）`);
+  });
+  (P.market || []).forEach((m, i) => { if (!isStr(m.sym, 12) || !isNum(m.last ?? null)) err(f, `preopen.market[${i}]`); });
+  (P.newMovers || []).forEach((m, i) => { if (!/^[A-Z][A-Z0-9.\-]{0,9}$/.test(m.sym || '') || !optStr(m.note, 300)) err(f, `preopen.newMovers[${i}] 要有 sym 同 note`); });
+}
 const CARRY_FROM = '2026-11-12';
 const CARRY_V = ['again', 'watch', 'skip'];
 function checkCarry(f, d, prev) {
@@ -241,6 +269,7 @@ for (const f of files) {
     date: d.date, version: d.version, status: d.status, bias: m.bias, headline: (d.headline || m.summary || '').slice(0, 90), n: d.picks.length,
     top: d.picks.slice(0, 7).map((p) => ({ sym: p.sym, gapPct: p.gapPct ?? null, rvol: p.rvol ?? null, beginner: p.beginner || null, grade: p.grade || null })),
     reviewed: !!(d.review && (d.review.items || []).length),
+    preopen: d.preopen ? d.preopen.atET || true : undefined,
     again: d.carryover ? (d.carryover.items || []).filter((x) => x.verdict === 'again').map((x) => x.sym) : undefined,
   });
 }

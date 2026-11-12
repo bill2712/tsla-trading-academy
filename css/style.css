@@ -1528,3 +1528,20 @@ body.mc-pop .mc-grid { height: calc(100vh - 120px); }
 .mc-strip.mc-flash { animation: mcflash 1.2s ease 3; border-radius: 12px; }
 .mc-keyf { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
 .mc-keyf input { flex: 1 1 180px; min-width: 0; height: 34px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-soft); color: var(--text); }
+
+/* ---------- 每日選股：開市前最後更新（IBKR） ---------- */
+.pk-pre { border: 2px solid var(--accent, #6366f1); }
+.pk-pre-m { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9em; }
+.pk-pre-m em { font-style: normal; font-weight: 700; } .pk-pre-m em.pos { color: var(--up); } .pk-pre-m em.neg { color: var(--down); }
+.pk-pre-list { display: grid; gap: 10px; margin: 10px 0; }
+.pk-pre-i { border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: 12px; padding: 10px 12px; }
+.pk-pre-i.s-waiting { border-left-color: var(--up); } .pk-pre-i.s-near { border-left-color: var(--warn); } .pk-pre-i.s-chase, .pk-pre-i.s-broken { border-left-color: var(--down); }
+.pk-pre-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; } .pk-pre-h > b { font-size: 1.1em; } .pk-pre-h .btn { margin-left: auto; }
+.pk-pre-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 8px 0; }
+.pk-pre-g > div { display: grid; align-content: start; padding: 6px 10px; border-radius: 10px; background: var(--bg-soft); line-height: 1.35; }
+.pk-pre-g span { font-size: .74em; color: var(--muted); font-weight: 700; } .pk-pre-g b { font-variant-numeric: tabular-nums; } .pk-pre-g b.neg { color: var(--down); }
+.pk-pre-g small { font-size: .78em; color: var(--muted); } .pk-pre-g small.pos { color: var(--up); } .pk-pre-g small.neg { color: var(--down); }
+.pk-pre-r { margin: 0; line-height: 1.5; } .pk-pre-r small { display: block; color: var(--muted); margin-top: 2px; }
+.pk-ib { font-size: .88em; padding: 6px 10px; border-radius: 10px; background: var(--up-soft); line-height: 1.5; }
+.pk-ib b.pos { color: var(--up); } .pk-ib b.neg { color: var(--down); }
+@media (max-width: 560px) { .pk-pre-g { grid-template-columns: 1fr 1fr; } }

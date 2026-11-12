@@ -124,6 +124,7 @@
         <div><span>Market Cap</span><b>${num(p.mktCapB) == null ? '—' : F(p.mktCapB, 1) + 'B'}</b></div>
         <div><span>Float</span><b>${num(p.floatM) == null ? '—' : big(p.floatM * 1e6)}</b></div>
       </div>
+      ${ibkrHTML(p.ibkr)}
       ${indicatorsHTML(p, R, early)}
       ${(p.lists || []).length ? `<div class="pk-lists">${p.lists.map((x) => `<span>📌 ${esc(x)}</span>`).join('')}</div>` : ''}
       <div class="pk-levels">${lvl('PMH', L.pmh)}${lvl('PML', L.pml)}${lvl('PDH', L.pdh)}${lvl('PDL', L.pdl)}${lvl('昨收', L.pdc)}${(L.other || []).map((o) => lvl(esc(o.label), o.price)).join('')}</div>
@@ -165,6 +166,28 @@
         return `<tr><th>${esc(x.sym)}</th><td>${trendTag(x.trend)}</td><td class="${cls(p.gapPct)}">${P(p.gapPct)}</td><td>${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</td><td>${num(t.entry) == null ? '—' : '$' + F(t.entry)}</td><td class="neg">${num(t.stop) == null ? '—' : '$' + F(t.stop)}</td><td class="pos">${num(t.target1) == null ? '—' : '$' + F(t.target1)}</td><td class="pk-long-s">${esc(x.setups || '')}${x.note ? `<small>${esc(x.note)}</small>` : ''}</td><td>${tk ? `<a class="btn sm" href="${tk}">⚡ 落單卡</a>` : ''} <a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(x.sym)}" title="多圖同步看盤">📺</a></td></tr>`; }).join('')}
       </tbody></table></div>` : '<p class="pk-risk">今日 Long 專區冇合格股：冇好機會就唔做。</p>'}
       <p class="tool-fine"><b>A+ 過濾（開市後自己核對）：</b>首 5 分鐘成交 ≥ 平時 2 倍；入場前 QQQ 喺自己 VWAP 上面。兩樣唔齊就唔做。09:30–09:35 唔落單；唔好一開市追昨日高位（PDH）突破；11:30 收工。<a href="#/level/l15">Level 15：頭 2 小時做多</a></p></section>`;
+  }
+  /* ⏰ 開市前最後更新（美東約 08:57，IBKR 即時報價） */
+  const PRE = { waiting: ['⏳', '未到入場價：等觸發', 'ok'], near: ['👀', '到咗入場價附近：09:35 後確認', 'mid'], chase: ['🚫', '已過入場價：唔追', 'bad'], broken: ['❌', '已穿 Stop：作廢', 'bad'], nodata: ['・', '冇 IBKR 數據', ''] };
+  function preopenHTML(d) {
+    const Pre = d.preopen; if (!Pre) return '';
+    const items = Pre.items || [];
+    return `<section class="card pk-pre"><div class="card-h">⏰ 開市前最後更新<small>IBKR 即時報價・美東 ${esc(Pre.atET || '')}</small></div>
+      <p>${esc(Pre.summary || '')}</p>
+      ${(Pre.market || []).length ? `<p class="pk-pre-m">${Pre.market.map((m) => `<span><b>${esc(m.sym)}</b> $${F(m.last)} <em class="${cls(m.chgPct)}">${P(m.chgPct)}</em></span>`).join('')}</p>` : ''}
+      ${items.length ? `<div class="pk-pre-list">${items.map((x) => { const v = PRE[x.status] || PRE.nodata; const L = x.side !== 'Short';
+        return `<div class="pk-pre-i s-${esc(x.status)}"><div class="pk-pre-h"><b>${esc(x.sym)}</b><span class="pk-dir">${L ? '📈 Long' : '📉 Short'}</span><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span><a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(x.sym)}" title="多圖同步看盤">📺</a></div>
+          <div class="pk-pre-g"><div><span>IBKR 即時</span><b>${num(x.last) == null ? '—' : '$' + F(x.last)}</b>${num(x.gapNow) != null ? `<small class="${cls(x.gapNow)}">對昨收 ${P(x.gapNow)}${num(x.gapReport) != null ? `（報告 ${P(x.gapReport)}）` : ''}</small>` : ''}</div>
+          <div><span>入場價</span><b>${num(x.entry) == null ? '—' : '$' + F(x.entry)}</b><small>${x.status === 'broken' ? '盤前已穿 Stop' : num(x.distAtr) == null ? '' : x.distAtr >= 0 ? `仲差 ${F(x.distAtr)} ATR` : `已過 ${F(-x.distAtr)} ATR`}</small></div>
+          <div><span>Stop</span><b class="neg">${num(x.stop) == null ? '—' : '$' + F(x.stop)}</b></div>
+          <div><span>買賣差價</span><b>${num(x.spreadPct) == null ? '—' : F(x.spreadPct, 2) + '%'}</b>${num(x.rvol) != null ? `<small>即時 RVOL ${F(x.rvol, 1)}×</small>` : ''}</div></div>
+          <p class="pk-pre-r">${esc(x.reason || '')}${x.note ? `<small>💬 ${esc(x.note)}</small>` : ''}</p></div>`; }).join('')}</div>` : ''}
+      ${(Pre.newMovers || []).length ? `<p class="pk-risk"><b>🆕 盤前新異動（未分析，唔係候選股）：</b>${Pre.newMovers.map((m) => `${esc(m.sym)}${m.note ? `（${esc(m.note)}）` : ''}`).join('、')}</p>` : ''}
+      <p class="tool-fine">由 Claude 經 IBKR 連接器（只讀）喺開市前約半個鐘攞即時報價，對比報告入面嘅計劃價位。計劃本身冇改；「唔追」同「作廢」係按手冊規則：已經過咗入場價超過 0.3 ATR 唔追、盤前已經穿 Stop 就作廢。開市後以 IBKR 實時報價為準。</p></section>`;
+  }
+  function ibkrHTML(x) {
+    if (!x || num(x.last) == null) return '';
+    return `<p class="pk-ib"><b>🟢 IBKR 即時</b>（美東 ${esc(x.atET || '')}${x.status && x.status !== 'REALTIME' ? '・' + esc(x.status) : ''}）：Last <b>$${F(x.last)}</b>${num(x.bid) != null ? `｜Bid $${F(x.bid)} × ${big(x.bidSize)} / Ask $${F(x.ask)} × ${big(x.askSize)}（差價 ${F(x.spreadPct, 2)}%）` : ''}${num(x.pmVolume) != null ? `｜盤前成交 ${big(x.pmVolume)}` : ''}${num(x.rvol) != null ? `｜即時 RVOL <b class="${x.rvol >= 2 ? 'pos' : 'neg'}">${F(x.rvol, 1)}×</b>` : ''}${num(x.pmh) != null ? `｜PMH $${F(x.pmh)} / PML $${F(x.pml)}` : ''}</p>`;
   }
   /* 昨日候選股：今日可唔可以再做（上一份報告嘅 picks 逐隻跟進） */
   const CARRY = { again: ['✅', '今日可以再做', 'ok'], watch: ['👀', '只觀察', 'mid'], skip: ['⏭️', '今日唔做', ''] };
@@ -223,7 +246,7 @@
     const early = !!(d.scanTime && d.scanTime < '08:30');
     const base = m.base || {};
     return `<div class="page-head"><h1>📋 每日選股</h1><p class="muted">每個美股交易日開市前約一小時（美東 08:30）自動更新：先跟進昨日候選股今日可唔可以再做，再列 8 大盤前指標總表，同每隻候選股嘅分析、新聞同交易計劃。只有盤前 <b>RVOL ≥ 2</b> 嘅股票先會入候選名單。AI 整理嘅數據可能有延遲或者錯漏，落單前一定要喺券商再核對價位、計好股數同風險。</p></div>
-      <div class="pk-days" role="tablist" aria-label="日期">${days.slice(0, 30).map((x) => `<a href="#/picks/${esc(x.date)}" class="pk-day ${x.date === d.date ? 'on' : ''}"><b>${esc(x.date.slice(5))}</b><small>${esc(x.bias || '')}${x.reviewed ? ' · 已回顧' : ''}</small></a>`).join('')}</div>
+      <div class="pk-days" role="tablist" aria-label="日期">${days.slice(0, 30).map((x) => `<a href="#/picks/${esc(x.date)}" class="pk-day ${x.date === d.date ? 'on' : ''}"><b>${esc(x.date.slice(5))}</b><small>${esc(x.bias || '')}${x.preopen ? ' · ⏰' : ''}${x.reviewed ? ' · 已回顧' : ''}</small></a>`).join('')}</div>
       <section class="pk-hero card">
         <div><div class="pk-date">${esc(d.date)}（美東）${d.status === 'test' ? '<span class="pk-beg mid">測試版</span>' : ''}</div>
           <div class="pk-bias">大市傾向：<b>${esc(m.bias || '—')}</b></div>
@@ -237,6 +260,7 @@
         ${(m.events || []).length ? `<ul class="pk-ev">${m.events.map((e) => `<li><b>${esc(e.time || '')}</b> ${esc(e.name)} ${e.impact ? `<span class="pk-beg ${e.impact === '高' ? 'bad' : 'mid'}">${esc(e.impact)}影響</span>` : ''}${e.note ? `<small>${esc(e.note)}</small>` : ''}</li>`).join('')}</ul>` : ''}
         ${(m.earnings || []).length ? `<p><b>業績：</b>${m.earnings.map((e) => `${esc(e.sym)}（${esc(e.when || '')}${e.note ? '，' + esc(e.note) : ''}）`).join('、')}</p>` : ''}</section>` : ''}
       ${d.focus ? `<section class="card pk-focus"><div class="card-h">⚡ TSLA 今日狀態</div><p>${esc(d.focus)}</p></section>` : ''}
+      ${preopenHTML(d)}
       ${longFocusHTML(d)}
       ${carryHTML(d)}
       ${scanHTML(d, R, early)}

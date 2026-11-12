@@ -133,24 +133,55 @@ It prints the source status line and a table with the 9 indicators (✅/❌/・)
 `/tmp/picks/gather.json` and a ready `scanDraft` (fill `verdict` and `note`). If no index data
 is available, pass `--base spy=<chg>,qqq=<chg>` from trader-alerts or IBKR so RS can be computed.
 
-### 3b. IBKR (confirmation + fallback)
+### 3b. IBKR — the real-time layer (required; user decision 2026-11-12)
+
+The IBKR connector gives **REALTIME** quotes (tested 2026-11-12: `top_status` REALTIME, bid/ask with
+sizes, volume; 5-minute bar volume ≈ 92% of Alpaca SIP, so ratios like RVOL are comparable).
+Alpaca's SIP data is 15 minutes behind, so **IBKR is the source for "now"**. IBKR stays read-only:
+quotes, history, screeners and earnings insights only (rule 6).
 
 Contract IDs: `scripts/picks/contracts.json` first; `search_contracts` only for new symbols
-(US row, exact symbol), then add them to the file. If IBKR answers "Service Unavailable", retry
-once or twice, then carry on without it — the collector already covers RVOL.
+(US row, exact symbol), then **add them to the file** so the next run is faster. If IBKR answers
+"Service Unavailable", retry once or twice; if it stays down, carry on with the collector and say
+so in `sources` and the notification.
 
-- Market: `get_price_snapshot` `["last","change","volume"]` for SPY, QQQ, IWM, DIA, SMH, XLK,
-  VIX (IND/CBOE); ES/NQ via `search_futures` if useful.
-- Discovery scans (`preview_screener`, selector `STK`, locations `["STK.US.MAJOR"]`, 25 each):
-  `SCAN_changePerc_DESC` / `SCAN_changePerc_ASC` with `priceAbove 5`, `avgVolumeAbove 1000000`,
-  `marketCapAbove1e6 300`; `HIGH_STVOLUME_10MIN`; `SCAN_stVolumeVsAvg10min_DESC`. Add new names to
-  the collector with `--symbols`.
-- For each pick: `get_price_snapshot` `["last","change","volume","bid_ask"]` (spread = ask − bid;
-  `spreadPct` = spread ÷ mid × 100). Use it when the IEX spread is missing or looks odd.
-- RVOL fallback when the collector has none: `get_price_history` `step: ONE_HOUR`,
-  `period: TWO_WEEKS`, `outside_rth: true`, plus daily `ONE_DAY` `step_count: 60`, saved to
-  `/tmp/picks/SYM-*.json`, then
-  `node scripts/picks/calc.mjs --date <targetDate> /tmp/picks/SYM-daily.json /tmp/picks/SYM-1h.json`.
+**A. Before the collector (discovery):** run the four `preview_screener` scans (selector `STK`,
+locations `["STK.US.MAJOR"]`, 25 each): `SCAN_changePerc_DESC` and `SCAN_changePerc_ASC` with
+`priceAbove 5`, `avgVolumeAbove 1000000`, `marketCapAbove1e6 300`; `HIGH_STVOLUME_10MIN`;
+`SCAN_stVolumeVsAvg10min_DESC`. Pass every name that is not already a core name to the collector
+with `--symbols` (comma list). Screener rows already carry `contract_id`.
+
+**B. Market:** `get_price_snapshot` with `["last","change","volume","top_status"]` for SPY, QQQ,
+IWM, SMH (and VIX as IND/CBOE). Use these real-time numbers in `market.indices` and `market.base`
+(note the time); the collector's index numbers are 15 minutes older.
+
+**C. Every pick (after the shortlist):** for each pick plus QQQ and SPY call
+`get_price_snapshot` with `["last","bid_ask","volume","change","top_status","open","high","low"]`
+and write the response **exactly as returned** to `/tmp/picks/ibkr/snap-SYM.json`. For the
+Long-focus picks (max 3) also call `get_price_history` with `step: FIFTEEN_MINS`,
+`outside_rth: true`, `step_count: 280` (≈ 4 days incl. pre-market; needed for real-time RVOL)
+and write it to `/tmp/picks/ibkr/bars-SYM.json`. Then, after the report file exists:
+
+```bash
+node scripts/picks/ibkr-merge.mjs data/picks/<targetDate>.json --mode premarket --apply-spread --write
+```
+
+It adds `pick.ibkr` (real-time last, bid × size / ask × size, spread, real-time pre-market
+volume, RVOL, PMH/PML), replaces the IEX spread with the IBKR one when REALTIME, adds a source
+line, and prints warnings. Act on them:
+- price moved > 0.5% since the collector: re-check that the entry is still ahead of price (a long
+  whose real-time price is already above the entry needs a new entry or a note);
+- **IBKR real-time RVOL < 2** while the collector said ≥ 2: keep the pick only if IBKR RVOL ≥ 1.2,
+  add a risk line and lower the grade one step; below 1.2 move it to `watch`;
+- spread > 0.15%: say so in `risks`; data status not REALTIME: say so in `sources`.
+
+**D. Earnings movers:** `search_earnings_insights` / `get_earnings_insight` for names reporting
+today or last night; put the real numbers (beat/miss, guidance) in `pillars.fundamentals`.
+`get_company_themes` is optional context.
+
+**E. RVOL fallback** when the collector has none: the 15-minute bars above give RVOL through
+`ibkr-merge.mjs`; or the older path `get_price_history` `ONE_HOUR`/`TWO_WEEKS` + daily
+`ONE_DAY`/`step_count 60` → `node scripts/picks/calc.mjs --date <targetDate> daily.json 1h.json`.
 
 ### 3c. Daily reference lists (check every run)
 
@@ -364,6 +395,7 @@ failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never cha
     "rvol": 2.4, "spread": 0, "spreadPct": 0, "atr": 0, "atrPct": 0, "mktCapB": null, "floatM": 0, "floatNote": "（floatM 係 null 先寫）",
     "rsQqq": 0, "rsSpy": 0, "ema9": 0, "ema9Pct": 0, "ema9Step": "5m", "ema9Daily": 0,
     "dailyTrend": "up",
+    "ibkr": { "at": "<ISO>", "atET": "08:12", "status": "REALTIME", "last": 0, "bid": 0, "ask": 0, "spreadPct": 0, "rvol": 0, "pmh": 0, "pml": 0 },
     "profile": { "session": "MM/DD", "dayType": "normal_var", "vah": 0, "val": 0, "vpoc": 0, "migration": "向上移", "note": "" },
     "levels": { "pmh": 0, "pml": 0, "pdh": 0, "pdl": 0, "pdc": 0, "other": [{ "label": "突破價", "price": 0 }] },
     "why": "", "catalyst": "", "technical": "", "setup": "開市推動（Opening Drive）",
@@ -394,6 +426,12 @@ git push origin main               # rejected → git pull --rebase origin main,
 ```
 
 Retry network failures up to 4 times (2s, 4s, 8s, 16s).
+
+## 8b. Pre-open update (separate scheduled run, about 08:57 ET)
+
+A second scheduled run re-checks today's picks with IBKR real-time quotes about half an hour
+before the open and writes `preopen` into the same report. Its playbook is
+`scripts/picks/PREOPEN.md`. The 08:07 run does not write `preopen`.
 
 ## 9. Notify
 
