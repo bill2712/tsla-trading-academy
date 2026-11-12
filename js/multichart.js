@@ -732,9 +732,32 @@
       <p class="tool-fine mc-foot">數據：Alpaca 免費帳戶。<b>全市場（SIP）延遲 15 分鐘</b>；<b>IEX 即時，但只係一間交易所</b>（價格接近全市場，成交量約 2–3%）。「智能」模式：歷史用 SIP，最近 15 分鐘用 IEX 即時價（開市時逐筆串流），成交量按同日比例估算（灰色柱、旁邊有 *）。要全市場即時報價：用 IBKR 嘅圖，或者 TradingView 官網（免費帳戶有 Cboe 即時報價，配合 <a href="#/tools/tv-allinone">一合一指標</a>）。落單前一定要喺券商睇返即時報價。時間係美東時間。圖表：<a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener noreferrer">TradingView Lightweight Charts™</a>（Apache 2.0 開源）。</p></div>`;
     root = $('[data-mc]', view);
     try { await loadLib(); } catch (e) { $('[data-top]', root).innerHTML = `<div class="card"><p class="neg">${esc(e.message)}</p></div>`; return; }
+    $('[data-top]', root).innerHTML = '<p class="muted">讀取緊 Alpaca 金鑰…</p>';
     keys = await MarketData.getKeys().catch(() => null);
     if (!keys) {
-      $('[data-top]', root).innerHTML = `<div class="card mc-nokey"><h3>🔑 要先設定 Alpaca 金鑰（免費）</h3><ol><li>去 <a href="https://alpaca.markets/" target="_blank" rel="noopener noreferrer">alpaca.markets</a> 開一個免費帳戶（唔使入錢，用 Paper Trading 帳戶就得）</li><li>喺 Alpaca 網頁攞 API Key ID 同 Secret</li><li>返嚟呢度 <a href="#/settings">⚙️ 設定 → 市場數據</a> 貼上</li></ol><p class="muted">金鑰只會存喺你部機（或者家庭雲端，只有成員讀到），淨係用嚟讀市場數據，唔會落單。</p></div>`;
+      if (!location.hash.startsWith('#/charts')) return;
+      const cloud = window.Cloud && Cloud.enabled && Store.isCloud();
+      $('[data-top]', root).innerHTML = `<div class="card mc-nokey"><h3>🔑 呢個帳戶未有 Alpaca 金鑰</h3>
+        <p>喺度貼一次就得${cloud ? '：會存入家庭雲端，你所有裝置（同家人）之後都唔使再輸入' : '：會存喺呢部機'}。淨係用嚟讀市場數據，唔會落單。</p>
+        <form class="mc-keyf" data-keyf><input data-kid placeholder="API Key ID" autocomplete="off" spellcheck="false" aria-label="API Key ID"><input data-ksec type="password" placeholder="Secret Key" autocomplete="off" aria-label="Secret Key"><button class="btn primary">測試並儲存</button></form>
+        <p class="muted" data-kmsg aria-live="polite"></p>
+        <p class="tool-fine">喺 <a href="https://app.alpaca.markets/" target="_blank" rel="noopener noreferrer">Alpaca 網頁</a>（Paper Trading 帳戶都得）右邊「API Keys」攞。金鑰唔會寫入網站程式碼（呢個網站係公開嘅，寫入就人人都睇到）。亦可以喺 <a href="#/settings">⚙️ 設定 → 市場數據</a> 管理。</p></div>`;
+      const f = $('[data-keyf]', root), msg = $('[data-kmsg]', root);
+      f.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const keyId = $('[data-kid]', f).value.trim(), secret = $('[data-ksec]', f).value.trim();
+        if (!keyId || !secret) { msg.textContent = 'Key ID 同 Secret 都要填'; return; }
+        msg.textContent = '測試緊…';
+        try {
+          const r = await fetch(API + 'SPY/bars/latest?feed=iex', { headers: { 'APCA-API-KEY-ID': keyId, 'APCA-API-SECRET-KEY': secret } });
+          if (!r.ok) { msg.textContent = r.status === 401 || r.status === 403 ? '⚠️ 金鑰唔啱（Alpaca 拒絕咗），再檢查一次' : '⚠️ Alpaca 錯誤 ' + r.status; return; }
+          await MarketData.setKeys({ keyId, secret, feed: 'sip' });
+          msg.textContent = '✅ 已儲存'; App.toast('已儲存 Alpaca 金鑰'); render(view, q);
+        } catch (err) { msg.textContent = '⚠️ ' + (err.code === 'permission-denied' ? '只有 Bill 可以改金鑰（Firestore 規則）' : err.message || '連唔到 Alpaca'); }
+      });
+      // 雲端登入遲咗完成：自動再試
+      const retry = () => { window.removeEventListener('ta:sync', retry); if (location.hash.startsWith('#/charts') && !active) MarketData.getKeys().then((k) => { if (k) render(view, q); }); };
+      window.addEventListener('ta:sync', retry);
       return;
     }
     if (!location.hash.startsWith('#/charts')) return;

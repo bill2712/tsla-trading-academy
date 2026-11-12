@@ -13,8 +13,18 @@
 
   /* ---------------- 金鑰 ---------------- */
   let keyCache = null;
+  /* 雲端模式：直接打開某一頁（例如看盤頁、第二個視窗）時，登入可能未完成；等最多 10 秒先讀，唔係會誤報「未設定」 */
+  function waitCloudUser(ms = 10000) {
+    if (!(window.Cloud && Cloud.enabled && Store.isCloud()) || Cloud.user) return Promise.resolve();
+    return new Promise((res) => {
+      const t0 = Date.now();
+      const chk = () => { if (Cloud.user || Date.now() - t0 > ms) { window.removeEventListener('ta:sync', chk); clearInterval(iv); res(); } };
+      const iv = setInterval(chk, 250); window.addEventListener('ta:sync', chk);
+    });
+  }
   async function getKeys() {
     if (keyCache) return keyCache;
+    await waitCloudUser();
     if (window.Cloud && Cloud.enabled && Store.isCloud() && Cloud.getConfig) {
       try { const k = await Cloud.getConfig('alpaca'); if (k && k.keyId) return (keyCache = k); } catch (e) { console.warn(e); }
     }

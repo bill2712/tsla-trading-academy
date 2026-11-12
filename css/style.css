@@ -1526,3 +1526,5 @@ body.mc-pop .mc-grid { height: calc(100vh - 120px); }
 .mc-drawing .mc-chart { cursor: crosshair; outline: 2px dashed #0891b2; outline-offset: -2px; }
 @keyframes mcflash { 0%, 100% { box-shadow: none; } 30% { box-shadow: 0 0 0 4px rgba(245, 158, 11, .55); } }
 .mc-strip.mc-flash { animation: mcflash 1.2s ease 3; border-radius: 12px; }
+.mc-keyf { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.mc-keyf input { flex: 1 1 180px; min-width: 0; height: 34px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-soft); color: var(--text); }
