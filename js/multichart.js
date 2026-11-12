@@ -93,7 +93,19 @@
   let queue = Promise.resolve();
   const serial = (fn) => (queue = queue.then(fn, fn)); // 一次一個請求，避免撞 Alpaca 限速
   class Feed {
-    constructor(sym, tf, mode) { Object.assign(this, { sym, tf, mode, bars: new Map(), subs: new Set(), loaded: false, loading: null, error: null, sipLast: 0, nextSip: 0, nextTail: 0, updated: 0, k: null }); }
+    constructor(sym, tf, mode) { Object.assign(this, { sym, tf, mode, bars: new Map(), subs: new Set(), loaded: false, loading: null, error: null, sipLast: 0, nextSip: 0, nextTail: 0, updated: 0, k: null, lastT: 0, dirty: false }); }
+    put(b) { this.bars.set(b.t, b); if (b.t > this.lastT) this.lastT = b.t; }
+    /* 逐筆成交（IEX 即時串流）：更新而家嗰支 K；成交量按 SIP／IEX 比例估算 */
+    applyTrade(p, sz, t) {
+      if (!this.loaded || this.tf === '1Day' || this.mode === 'sip') return;
+      const ms = TF[this.tf].sec * 1000, k0 = Math.floor(t / ms) * ms;
+      if (k0 < this.lastT) return;
+      const k = this.mode === 'iex' ? 1 : this.k || kBySym[this.sym] || 1, est = this.mode === 'iex' ? undefined : 'scaled';
+      const b = this.bars.get(k0);
+      if (b) { b.h = Math.max(b.h, p); b.l = Math.min(b.l, p); b.c = p; b.v += sz * k; if (est) b.est = b.est || est; }
+      else this.put({ t: k0, o: p, h: p, l: p, c: p, v: sz * k, est });
+      this.dirty = true;
+    }
     get key() { return `${this.sym}|${this.tf}|${this.mode}`; }
     sorted() { return [...this.bars.values()].sort((a, b) => a.t - b.t); }
     emit() { this.updated = Date.now(); this.subs.forEach((f) => { try { f(this); } catch (e) { console.warn(e); } }); }
@@ -102,10 +114,10 @@
       this.loading = serial(async () => {
         try {
           const start = Date.now() - TF[this.tf].days * 864e5;
-          if (this.mode === 'iex' && this.tf !== '1Day') (await getBars(keys, this.sym, this.tf, 'iex', start)).forEach((b) => this.bars.set(b.t, b));
+          if (this.mode === 'iex' && this.tf !== '1Day') (await getBars(keys, this.sym, this.tf, 'iex', start)).forEach((b) => this.put(b));
           else {
             const s = await getBars(keys, this.sym, this.tf, 'sip', start, Date.now() - SIP_DELAY);
-            s.forEach((b) => this.bars.set(b.t, b));
+            s.forEach((b) => this.put(b));
             this.sipLast = s.length ? s[s.length - 1].t : 0;
             if (this.mode === 'hybrid' && this.tf !== '1Day') await this.tail(keys);
           }
@@ -121,12 +133,12 @@
     async tail(keys) {
       const from = Math.min(this.sipLast || Date.now(), Date.now() - SIP_DELAY) - 60 * 60e3;
       const ie = await getBars(keys, this.sym, this.tf, 'iex', from);
-      if (this.mode === 'iex') { ie.forEach((b) => this.bars.set(b.t, b)); return; }
+      if (this.mode === 'iex') { ie.forEach((b) => this.put(b)); return; }
       let s = 0, i = 0, n = 0;
       ie.forEach((b) => { const x = this.bars.get(b.t); if (b.t <= this.sipLast && x && !x.est && b.v > 0) { s += x.v; i += b.v; n++; } });
       if (n >= 5 && i > 0) { this.k = Math.max(1, Math.min(1000, s / i)); if (this.tf === '1Min' || this.tf === '5Min') kBySym[this.sym] = this.k; }
       const k = this.k || kBySym[this.sym] || null;
-      ie.filter((b) => b.t > this.sipLast).forEach((b) => this.bars.set(b.t, Object.assign({}, b, { v: k ? b.v * k : b.v, vRaw: b.v, est: k ? 'scaled' : 'iex' })));
+      ie.filter((b) => b.t > this.sipLast).forEach((b) => this.put(Object.assign({}, b, { v: k ? b.v * k : b.v, vRaw: b.v, est: k ? 'scaled' : 'iex' })));
     }
     async poll(keys) {
       if (!this.loaded || this.tf === '1Day') return;
@@ -135,13 +147,13 @@
         if (this.mode !== 'iex' && now >= this.nextSip) {
           this.nextSip = now + 60e3;
           const s = await getBars(keys, this.sym, this.tf, 'sip', (this.sipLast || now - 864e5) - TF[this.tf].sec * 1000, now - SIP_DELAY);
-          s.forEach((b) => this.bars.set(b.t, b));
+          s.forEach((b) => this.put(b));
           if (s.length) this.sipLast = Math.max(this.sipLast, s[s.length - 1].t);
           if (this.mode === 'sip') this.emit();
         }
         if (this.mode !== 'sip' && now >= this.nextTail) {
           this.nextTail = now + 15e3;
-          if (this.mode === 'iex') { const last = this.sorted().pop(); const ie = await getBars(keys, this.sym, this.tf, 'iex', last ? last.t - TF[this.tf].sec * 2000 : now - 864e5); ie.forEach((b) => this.bars.set(b.t, b)); }
+          if (this.mode === 'iex') { const last = this.sorted().pop(); const ie = await getBars(keys, this.sym, this.tf, 'iex', last ? last.t - TF[this.tf].sec * 2000 : now - 864e5); ie.forEach((b) => this.put(b)); }
           else await this.tail(keys);
           this.emit();
         }
@@ -204,7 +216,7 @@
   const WID = Math.random().toString(36).slice(2);
   const bc = 'BroadcastChannel' in window ? new BroadcastChannel('ta-multichart') : null;
   let S = null, win = 'main', pop = false, panes = [], root = null, timer = null, clock = null, keys = null, picks = [], active = false, strip = { sym: null, qqq: null };
-  const DEF = (w) => ({ sym: 'TSLA', layout: w === 'main' ? (innerWidth < 760 ? '1' : '3') : 'd', mode: 'hybrid', ext: true, xsync: true, tsync: true, lv: true, ema20: false, link: true, recent: [], panes: null });
+  const DEF = (w) => ({ sym: 'TSLA', layout: w === 'main' ? (innerWidth < 760 ? '1' : '3') : 'd', mode: 'hybrid', ext: true, xsync: true, tsync: true, lv: true, ema20: false, link: true, live: true, plan: true, tvFollow: false, recent: [], panes: null });
   function loadState(w) {
     let all = {}; try { all = (Store.user().toolState || {}).multichart || {}; } catch (e) {}
     return Object.assign(DEF(w), all[w] || {});
@@ -254,6 +266,7 @@
       if (this.daily) { this.sma20 = line(COL.sma20, 1.5); this.sma50 = line(COL.sma50, 1.5); }
       else { this.vwap = line(COL.vwap, 2); this.ema9 = line(COL.ema9, 1.5); this.ema20 = line(COL.ema20, 1.5, 2); }
       this.chart.subscribeCrosshairMove((p) => this.onCross(p));
+      this.chart.subscribeClick((p) => { if (!drawMode || !p.point) return; const px = this.candle.coordinateToPrice(p.point.y); if (num(px) == null) return; drawMode = false; root.classList.remove('mc-drawing'); addLine(this.sym, Math.round(px * 100) / 100); });
       this.chart.timeScale().subscribeVisibleTimeRangeChange((r) => this.onRange(r));
       const box = $('[data-chart]', el);
       ['pointerenter', 'pointerdown', 'wheel', 'touchstart'].forEach((ev) => box.addEventListener(ev, () => { leader = this; }, { passive: true }));
@@ -329,12 +342,17 @@
         this.rows = rows;
         this.legendExtra = (i) => `${vwOk[i] ? `<span style="color:${COL.vwap}">VWAP ${f2(vw[i].value)}</span>` : ''}<span style="color:${COL.ema9}">EMA9 ${f2(e9[i])}</span>${S.ema20 ? `<span style="color:${COL.ema20}">EMA20 ${f2(e20[i])}</span>` : ''}`;
         this.lines.forEach((l) => this.candle.removePriceLine(l)); this.lines = [];
+        this.levels = levelsOf(F.sorted(), this.cfg.tf);
         if (S.lv) {
-          const L = levelsOf(F.sorted(), this.cfg.tf);
+          const L = this.levels;
           [['PDH', L.pdh, COL.pdh], ['PDL', L.pdl, COL.pdh], ['昨收', L.pdc, COL.pdc], ['PMH', L.pmh, COL.pm], ['PML', L.pml, COL.pm], ['ORH', L.orh, COL.or], ['ORL', L.orl, COL.or]]
             .forEach(([t, p, col]) => { if (num(p) != null) this.lines.push(this.candle.createPriceLine({ price: p, color: col, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: t })); });
         }
+        const T = S.plan ? planFor(this.sym) : null;
+        if (T) [['Entry', T.entry, '#7c3aed', 2], ['Stop', T.stop, '#dc2626', 2], ['T1', T.target1, '#16a34a', 2], ['T2', T.target2, '#16a34a', 1]]
+          .forEach(([t, p, col, w]) => { if (num(p) != null) this.lines.push(this.candle.createPriceLine({ price: p, color: col, lineWidth: w, lineStyle: 0, axisLabelVisible: true, title: t })); });
       }
+      myLines(this.sym).forEach((px) => this.lines.push(this.candle.createPriceLine({ price: px, color: '#0891b2', lineWidth: 1, lineStyle: 0, axisLabelVisible: true, title: alertAt(this.sym, px) ? '🔔' : '線' })));
       this.candle.setData(cd); this.vol.setData(vd);
       this.times = cd.map((x) => x.time); this.byTime = new Map(cd.map((x, i) => [x.time, i]));
       if (this.first) {
@@ -351,6 +369,7 @@
       b.textContent = S.mode === 'sip' ? '延遲 15 分鐘' : live ? (est ? '即時・最近成交量估算' : '即時') : '收市後';
       b.title = S.mode === 'iex' ? '價格同成交只係 IEX 一間交易所（約全市場 2–3% 成交）' : S.mode === 'sip' ? 'SIP 全市場數據，免費帳戶延遲 15 分鐘' : 'SIP 全市場數據（延遲 15 分鐘）+ 最近 15 分鐘用 IEX 即時價；灰色成交柱 = 按比例估算';
       if (this.daily && this.trend) b.textContent += this.trend === 'up' ? '・📈 日線升勢' : this.trend === 'down' ? '・📉 日線跌勢' : '・➖ 橫行';
+      if (!this.daily && this.sym === S.sym && panes.find((x) => x.sym === S.sym && !x.daily) === this) { const key = JSON.stringify(this.levels); if (key !== lastLvKey) { lastLvKey = key; renderAlerts(); } }
       this.legend(null);
     }
     legend(i) {
@@ -388,7 +407,7 @@
       panes.forEach((o) => { if (o !== this && !o.daily && o.times.length) { try { o.chart.timeScale().setVisibleRange(r); } catch (e) {} } });
     }
   }
-  let leader = null;
+  let leader = null, lastLvKey = '';
   function savePanes() { S.panes = panes.map((p) => Object.assign({}, p.cfg)); saveState(); }
 
   /* ---------------- 頁面 ---------------- */
@@ -399,15 +418,16 @@
       <form class="mc-symf" data-symf><input data-sym value="${esc(S.sym)}" list="mc-dl" maxlength="10" autocomplete="off" spellcheck="false" aria-label="股票代號" placeholder="代號"><datalist id="mc-dl">${[...new Set([...picks.map((p) => p.sym), ...S.recent])].map((s) => `<option value="${esc(s)}">`).join('')}</datalist><button class="btn sm primary">睇</button></form>
       <select data-layout aria-label="版面">${L.map(([k, l]) => `<option value="${k}" ${k === S.layout ? 'selected' : ''}>${l.name}</option>`).join('')}</select>
       <select data-mode aria-label="數據來源">${Object.entries(MODES).map(([k, t]) => `<option value="${k}" ${k === S.mode ? 'selected' : ''}>${t}</option>`).join('')}</select>
-      <div class="mc-tgs">${tg('xsync', '十字線同步', '喺一個圖郁滑鼠，其他圖（同第二個視窗）一齊顯示同一時間')}${tg('tsync', '時間同步', '捲動／放大一個日內圖，其他日內圖跟住')}${tg('link', '視窗同步', '換股、十字線同其他開咗呢頁嘅視窗同步（第二個螢幕用）')}${tg('ext', '盤前盤後', '顯示 04:00–09:30 同 16:00–20:00（淡色 K 線）')}${tg('lv', '關鍵位', 'PDH／PDL／昨收、PMH／PML、開市 5 分鐘區間')}${tg('ema20', 'EMA 20', '加多條 EMA 20（藍色虛線）')}</div>
-      <div class="mc-acts">${pop ? '' : '<button class="btn sm" data-popout title="開一個新視窗，拖去第二個螢幕">🪟 第二個視窗</button>'}<button class="btn sm" data-full title="全螢幕">⛶ 全螢幕</button>${pop ? '' : '<button class="btn sm ghost" data-help>❓</button>'}</div>
+      <div class="mc-tgs">${tg('xsync', '十字線同步', '喺一個圖郁滑鼠，其他圖（同第二個視窗）一齊顯示同一時間')}${tg('tsync', '時間同步', '捲動／放大一個日內圖，其他日內圖跟住')}${tg('link', '視窗同步', '換股、十字線同其他開咗呢頁嘅視窗同步（第二個螢幕用）')}${tg('ext', '盤前盤後', '顯示 04:00–09:30 同 16:00–20:00（淡色 K 線）')}${tg('lv', '關鍵位', 'PDH／PDL／昨收、PMH／PML、開市 5 分鐘區間')}${tg('ema20', 'EMA 20', '加多條 EMA 20（藍色虛線）')}${tg('plan', '今日計劃線', '今日選股報告有呢隻股：畫 Entry／Stop／Target')}${pop ? '' : tg('live', '逐筆即時', '開市時用 Alpaca IEX 即時串流，每一筆成交即刻更新（唔使等 15 秒）')}${pop ? '' : tg('tvFollow', 'TradingView 跟住換股', '撳過「📈 TradingView」開咗視窗之後，換股會叫嗰個視窗一齊換')}</div>
+      <div class="mc-acts"><button class="btn sm" data-tvopen title="喺 TradingView 官網開同一隻股（免費帳戶有 Cboe 即時報價）">📈 TradingView</button>${pop ? '' : '<button class="btn sm" data-popout title="開一個新視窗，拖去第二個螢幕">🪟 第二個視窗</button>'}<button class="btn sm" data-full title="全螢幕">⛶ 全螢幕</button>${pop ? '' : '<button class="btn sm ghost" data-help>❓</button>'}</div>
     </div>
     <div class="mc-chips" data-chips></div>
-    <div class="mc-strip" data-strip aria-live="polite"></div>`;
+    <div class="mc-strip" data-strip aria-live="polite"></div>
+    <div class="mc-al" data-alerts></div>`;
   }
   function chipsHTML() {
     const seen = new Set(), out = [];
-    picks.forEach((p) => { if (seen.has(p.sym)) return; seen.add(p.sym); out.push(`<button class="mc-chip ${p.sym === S.sym ? 'on' : ''} ${p.long ? 'long' : ''}" data-chip="${esc(p.sym)}" title="${esc(p.tip)}">${p.long ? '🌅 ' : ''}${esc(p.sym)}${num(p.gap) != null ? ` <small class="${p.gap >= 0 ? 'up' : 'dn'}">${pc(p.gap, 1)}</small>` : ''}</button>`); });
+    picks.forEach((p) => { if (seen.has(p.sym)) return; seen.add(p.sym); out.push(`<button class="mc-chip ${p.sym === S.sym ? 'on' : ''} ${p.long ? 'long' : ''}" data-chip="${esc(p.sym)}" title="${esc(p.tip)}">${p.long ? '🌅 ' : ''}${esc(p.sym)} <small data-live="${esc(p.sym)}" class="${num(p.gap) == null ? '' : p.gap >= 0 ? 'up' : 'dn'}">${num(p.gap) != null ? pc(p.gap, 1) : ''}</small></button>`); });
     const rec = S.recent.filter((s) => !seen.has(s)).slice(0, 8);
     return (out.length ? `<span class="mc-cl">今日選股</span>${out.join('')}` : '') + (rec.length ? `<span class="mc-cl">最近</span>${rec.map((s) => `<button class="mc-chip ${s === S.sym ? 'on' : ''}" data-chip="${esc(s)}">${esc(s)}</button>`).join('')}` : '') + '<span class="mc-cl mc-kb">打字即換股・[ ] 上／下一隻</span>';
   }
@@ -435,7 +455,183 @@
       if (s.vwap != null) parts.push(cell(`${esc(S.sym)} vs VWAP`, s.last >= s.vwap ? '上面' : '下面', s.last >= s.vwap));
     } else if (s) parts.push(cell(`${esc(S.sym)} 最後`, `${f2(s.last)}（${s.day}）`, null));
     if (q && q.isToday && q.vwap != null) parts.push(cell('QQQ vs VWAP', q.last >= q.vwap ? '上面 ✅' : '下面 ❌', q.last >= q.vwap, 'A+ 過濾：入場前 QQQ 要喺自己 VWAP 上面'));
+    parts.push(liveCell(cell));
     el.innerHTML = parts.join('');
+  }
+
+  /* ================= 即時串流（Alpaca IEX，逐筆成交） =================
+   * 免費帳戶只准 1 個連線、30 隻股：主視窗連線，第二個視窗經 BroadcastChannel 收。 */
+  const Live = { ws: null, status: 'off', authed: false, syms: new Set(), last: {}, retry: 0, err: '', n: 0 };
+  let tradeBuf = [], flushTimer = null;
+  const liveWanted = () => active && !pop && !!keys && S.mode !== 'sip' && S.live !== false;
+  function liveSyms() {
+    const set = new Set([S.sym, 'QQQ']); panes.forEach((p) => set.add(p.sym)); picks.forEach((p) => set.add(p.sym));
+    alerts().forEach((a) => { if (!a.fired) set.add(a.sym); });
+    return [...set].filter(okSym).slice(0, 30);
+  }
+  function liveConnect() {
+    if (Live.ws || !liveWanted() || !liveNow() || ['limit', 'auth'].includes(Live.status)) return;
+    let ws; try { ws = new WebSocket('wss://stream.data.alpaca.markets/v2/iex'); } catch (e) { Live.status = 'error'; Live.err = String(e.message || e); return; }
+    Live.ws = ws; Live.status = 'connecting'; Live.authed = false; Live.syms = new Set();
+    ws.onopen = () => { try { ws.send(JSON.stringify({ action: 'auth', key: keys.keyId, secret: keys.secret })); } catch (e) {} };
+    ws.onmessage = (e) => { let arr; try { arr = JSON.parse(e.data); } catch (x) { return; } (Array.isArray(arr) ? arr : [arr]).forEach(onLiveMsg); };
+    ws.onclose = () => { if (Live.ws !== ws) return; Live.ws = null; Live.authed = false; if (!['limit', 'auth'].includes(Live.status)) { Live.status = 'off'; if (liveWanted() && liveNow()) setTimeout(liveConnect, Math.min(30000, 2000 * ++Live.retry)); } renderStrip(); };
+    ws.onerror = () => {};
+  }
+  function liveClose() { const ws = Live.ws; Live.ws = null; Live.authed = false; if (!['limit', 'auth'].includes(Live.status)) Live.status = 'off'; if (ws) try { ws.close(); } catch (e) {} }
+  function onLiveMsg(m) {
+    if (!m || typeof m !== 'object') return;
+    if (m.T === 't') { onTrade(m.S, +m.p, +m.s || 0, Date.parse(m.t), true); return; }
+    if (m.T === 'success' && m.msg === 'authenticated') { Live.authed = true; Live.retry = 0; Live.status = 'on'; liveSubscribe(); }
+    else if (m.T === 'error') {
+      Live.err = m.msg || ''; Live.status = m.code === 406 ? 'limit' : [401, 402, 403].includes(m.code) ? 'auth' : 'error';
+      if (Live.status !== 'error') { const ws = Live.ws; Live.ws = null; if (ws) try { ws.close(); } catch (e) {} }
+    } else if (m.T === 'subscription') Live.syms = new Set(m.trades || []);
+    renderStrip();
+  }
+  function liveSubscribe() {
+    if (!Live.ws || !Live.authed) return;
+    const want = new Set(liveSyms()), add = [...want].filter((x) => !Live.syms.has(x)), del = [...Live.syms].filter((x) => !want.has(x));
+    try {
+      if (del.length) Live.ws.send(JSON.stringify({ action: 'unsubscribe', trades: del }));
+      if (add.length) Live.ws.send(JSON.stringify({ action: 'subscribe', trades: add }));
+    } catch (e) {}
+  }
+  /* 每一筆成交：更新 K 線、檢查警報、更新 chips；主視窗再轉發去第二個視窗 */
+  function onTrade(sym, p, sz, t, mine) {
+    if (!okSym(sym) || num(p) == null || !isFinite(t)) return;
+    Live.last[sym] = { p, t }; Live.n++;
+    feeds.forEach((f) => { if (f.sym === sym) f.applyTrade(p, sz, t); });
+    if (mine) { checkAlerts(sym, p); if (bc) tradeBuf.push([sym, p, sz, t]); }
+    chipLive(sym);
+  }
+  function flush() {
+    feeds.forEach((f) => { if (f.dirty) { f.dirty = false; f.emit(); } });
+    if (bc && tradeBuf.length) { bc.postMessage({ from: WID, type: 'trades', list: tradeBuf }); tradeBuf = []; }
+  }
+  function liveCell(cell) {
+    if (pop) return Live.n ? cell('即時', '⚡ 跟主視窗逐筆更新', true) : cell('即時', '每 15 秒更新', null, '主視窗開咗逐筆即時，呢度就會跟住');
+    if (S.mode === 'sip') return cell('即時', '關咗（全市場延遲模式）', null);
+    if (S.live === false) return cell('即時', '每 15 秒更新', null, '剔「逐筆即時」就會用 Alpaca IEX 即時串流');
+    const st = { on: ['⚡ 逐筆（IEX）', true, `已訂閱 ${Live.syms.size} 隻股`], connecting: ['連線中…', null, ''], off: [liveNow() ? '重新連線中…' : '收市（開市自動連）', null, ''], limit: ['❌ 另一個分頁用緊', false, 'Alpaca 免費帳戶只准 1 個即時連線：關咗其他開住呢頁嘅分頁／裝置，再重新整理'], auth: ['❌ 金鑰冇權限', false, Live.err], error: ['⚠️ 連線有問題', false, Live.err] }[Live.status] || ['—', null, ''];
+    return cell('即時串流', st[0], st[1], st[2]);
+  }
+  function chipLive(sym) {
+    const el = root && root.querySelector(`[data-live="${sym}"]`), P = picks.find((x) => x.sym === sym), L = Live.last[sym];
+    if (!el || !P || num(P.prevClose) == null || !L) return;
+    const v = (L.p / P.prevClose - 1) * 100; el.textContent = pc(v, 1); el.className = v >= 0 ? 'up' : 'dn';
+  }
+
+  /* ================= 警報（響聲 + 桌面通知；只喺主視窗響） ================= */
+  const tsGet = (k, d) => { try { const u = Store.user(); return (u && u.toolState && u.toolState[k]) || d; } catch (e) { return d; } };
+  const tsSet = (k, v) => { try { const u = Store.user(); u.toolState = u.toolState || {}; u.toolState[k] = v; Store.save(); } catch (e) {} };
+  const alerts = () => tsGet('mc-alerts', []);
+  const alertAt = (sym, px) => alerts().find((a) => !a.fired && a.sym === sym && Math.abs(a.price - px) < 0.005);
+  let audio = null;
+  function beep(n = 3) {
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume();
+      for (let i = 0; i < n; i++) { const o = audio.createOscillator(), g = audio.createGain(), t0 = audio.currentTime + i * 0.28; o.type = 'sine'; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.25, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.22); o.connect(g).connect(audio.destination); o.start(t0); o.stop(t0 + 0.25); }
+    } catch (e) {}
+  }
+  function lastPrice(sym) {
+    const L = Live.last[sym]; if (L && Date.now() - L.t < 60e3) return L.p;
+    for (const tf of ['1Min', '5Min', '15Min']) { const f = feeds.get(`${sym}|${tf}|${S.mode}`); if (f && f.loaded && f.lastT) return f.bars.get(f.lastT).c; }
+    return L ? L.p : null;
+  }
+  function toggleAlert(sym, px, label) {
+    const list = alerts(), i = list.findIndex((a) => !a.fired && a.sym === sym && Math.abs(a.price - px) < 0.005);
+    if (i >= 0) { list.splice(i, 1); tsSet('mc-alerts', list); App.toast('已刪除警報'); }
+    else {
+      const last = lastPrice(sym); if (last == null) { App.toast('未有價，等數據載入完再試'); return; }
+      list.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), sym, price: px, dir: px >= last ? 'up' : 'down', label: label || '', at: Date.now(), fired: null });
+      tsSet('mc-alerts', list.slice(-60));
+      beep(0); // 喺你撳嘅時候解鎖聲音
+      if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {});
+      App.toast(`🔔 ${sym} ${px >= last ? '升穿' : '跌穿'} ${f2(px)} 會響（呢頁要開住）`);
+    }
+    if (bc) bc.postMessage({ from: WID, type: 'alerts' });
+    liveSubscribe(); renderAlerts(); panes.forEach((p) => { if (p.sym === sym) p.render(); });
+  }
+  function fire(a) {
+    const msg = `${a.sym} ${a.dir === 'up' ? '升穿' : '跌穿'} ${a.label ? a.label + ' ' : ''}${f2(a.price)}（而家 ${f2(a.firedPx)}）`;
+    beep(3); App.toast('🔔 ' + msg);
+    try { if ('Notification' in window && Notification.permission === 'granted') new Notification('🔔 ' + a.sym + ' 價位警報', { body: msg, tag: 'ta-' + a.id }); } catch (e) {}
+    const st = root && $('[data-strip]', root); if (st) { st.classList.remove('mc-flash'); void st.offsetWidth; st.classList.add('mc-flash'); }
+  }
+  function checkAlerts(sym, p, hi, lo) {
+    if (pop || !active) return;
+    const list = alerts(); let ch = false;
+    list.forEach((a) => {
+      if (a.fired || a.sym !== sym) return;
+      const hit = a.dir === 'up' ? (hi != null ? hi : p) >= a.price : (lo != null ? lo : p) <= a.price;
+      if (hit) { a.fired = Date.now(); a.firedPx = p; ch = true; fire(a); }
+    });
+    if (ch) { tsSet('mc-alerts', list); renderAlerts(); if (bc) bc.postMessage({ from: WID, type: 'alerts' }); panes.forEach((x) => { if (x.sym === sym) x.render(); }); }
+  }
+  /* 冇即時串流時：用輪詢返嚟嘅 K 線高低位檢查（設定警報之後嘅 K 線） */
+  function checkAlertsBars() {
+    if (pop) return;
+    const open = alerts().filter((a) => !a.fired); if (!open.length) return;
+    [...new Set(open.map((a) => a.sym))].forEach((sym) => {
+      const L = Live.last[sym]; if (L && Date.now() - L.t < 30e3) return;
+      const f = feeds.get(`${sym}|1Min|${S.mode}`) || feeds.get(`${sym}|5Min|${S.mode}`); if (!f || !f.loaded) return;
+      const since = Math.min(...open.filter((a) => a.sym === sym).map((a) => a.at)) - TF[f.tf].sec * 1000;
+      const B = f.sorted().filter((b) => b.t >= since); if (!B.length) return;
+      checkAlerts(sym, B[B.length - 1].c, Math.max(...B.map((b) => b.h)), Math.min(...B.map((b) => b.l)));
+    });
+  }
+
+  /* ================= 自己畫嘅水平線 ================= */
+  let drawMode = false;
+  const myLines = (sym) => (tsGet('mc-lines', {})[sym] || []);
+  function addLine(sym, px) {
+    const all = Object.assign({}, tsGet('mc-lines', {})); all[sym] = [...new Set([...(all[sym] || []), px])].slice(-20); tsSet('mc-lines', all);
+    App.toast(`已畫線 ${sym} ${f2(px)}：喺下面撳 🔕 可以設警報`);
+    if (bc) bc.postMessage({ from: WID, type: 'lines' });
+    panes.forEach((p) => { if (p.sym === sym) p.render(); }); renderAlerts();
+  }
+  function removeLine(sym, px) {
+    const all = Object.assign({}, tsGet('mc-lines', {})); all[sym] = (all[sym] || []).filter((x) => Math.abs(x - px) > 0.005); tsSet('mc-lines', all);
+    if (bc) bc.postMessage({ from: WID, type: 'lines' });
+    panes.forEach((p) => { if (p.sym === sym) p.render(); }); renderAlerts();
+  }
+
+  /* ================= 今日計劃（每日選股報告） ================= */
+  function planFor(sym) {
+    const P = picks.find((x) => x.sym === sym); if (!P || !P.trade) return null;
+    return P.date === sDay(etSec(Date.now())) ? P.trade : null; // 只用今日嘅報告
+  }
+
+  /* ================= TradingView 官網（免費帳戶有 Cboe 即時報價） ================= */
+  let tvWin = null;
+  const tvUrl = (sym) => 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(sym);
+  function openTV(sym, user) {
+    try { if (tvWin && !tvWin.closed) { tvWin.location.href = tvUrl(sym); if (user) tvWin.focus(); return; } } catch (e) {}
+    if (!user) return;
+    tvWin = window.open(tvUrl(sym), 'ta-tv');
+    if (!tvWin) App.toast('瀏覽器擋咗彈出視窗：喺網址列允許彈出視窗再試');
+  }
+
+  /* ================= 警報同價位列 ================= */
+  function renderAlerts() {
+    const el = root && $('[data-alerts]', root); if (!el) return;
+    const sym = S.sym, P = panes.find((p) => p.sym === sym && !p.daily && p.levels), L = (P && P.levels) || {}, T = planFor(sym);
+    const lv = [['PDH', L.pdh], ['PDL', L.pdl], ['昨收', L.pdc], ['PMH', L.pmh], ['PML', L.pml], ['ORH', L.orh], ['ORL', L.orl]]
+      .concat(T ? [['Entry', T.entry], ['Stop', T.stop], ['T1', T.target1], ['T2', T.target2]] : []).filter(([, v]) => num(v) != null);
+    const chip = (label, px, extra = '') => `<span class="mc-lv ${alertAt(sym, px) ? 'on' : ''}"><button data-al="${px}" data-lb="${esc(label)}" title="撳一下設定／取消警報">${esc(label)} ${f2(px)} ${alertAt(sym, px) ? '🔔' : '🔕'}</button>${extra}</span>`;
+    const list = alerts(), today = sDay(etSec(Date.now()));
+    const act = list.filter((a) => !a.fired), fired = list.filter((a) => a.fired && sDay(etSec(a.fired)) === today);
+    const tk = T && num(T.entry) != null && num(T.stop) != null && num(T.target1) != null ? `#/tools/bracket-ticket?sym=${encodeURIComponent(sym)}&side=${T.side === 'Short' ? 'short' : 'long'}&entry=${T.entry}&stop=${T.stop}&t1=${T.target1}${num(T.target2) != null ? '&t2=' + T.target2 : ''}${num((picks.find((x) => x.sym === sym) || {}).atr) != null ? '&atr=' + picks.find((x) => x.sym === sym).atr : ''}` : '';
+    el.innerHTML = `<div class="mc-al-row"><span class="mc-cl">🔔 ${esc(sym)} 價位警報</span>${lv.map(([l, v]) => chip(l, v)).join('')}${myLines(sym).map((v) => chip('線', v, `<button class="mc-x" data-rmline="${v}" title="刪除呢條線">✕</button>`)).join('')}
+        <form class="mc-alf" data-alf><input type="number" step="0.01" inputmode="decimal" placeholder="自訂價" data-alp aria-label="自訂警報價"><button class="btn sm">＋ 警報</button></form>
+        ${pop ? '' : `<button class="btn sm ghost" data-draw title="撳完再喺任何一個圖撳一下，就喺嗰個價畫一條水平線">${drawMode ? '✏️ 撳圖畫線…（Esc 取消）' : '✏️ 畫線'}</button>`}${tk && !pop ? `<a class="btn sm" href="${tk}">⚡ 落單卡</a>` : ''}</div>
+      ${act.length || fired.length ? `<div class="mc-al-row mc-al-list">${act.map((a) => `<span class="mc-alr"><b>${esc(a.sym)}</b> ${a.dir === 'up' ? '↑' : '↓'} ${f2(a.price)}${a.label ? ' ' + esc(a.label) : ''}<button class="mc-x" data-rmal="${esc(a.id)}" title="刪除">✕</button></span>`).join('')}${fired.map((a) => `<span class="mc-alr fired">✅ <b>${esc(a.sym)}</b> ${a.dir === 'up' ? '升穿' : '跌穿'} ${f2(a.price)} ${sHM(etSec(a.fired))}<button class="mc-x" data-rmal="${esc(a.id)}" title="刪除">✕</button></span>`).join('')}</div>` : ''}`;
+    $$('[data-al]', el).forEach((b) => b.addEventListener('click', () => toggleAlert(sym, +b.dataset.al, b.dataset.lb)));
+    $$('[data-rmline]', el).forEach((b) => b.addEventListener('click', () => removeLine(sym, +b.dataset.rmline)));
+    $$('[data-rmal]', el).forEach((b) => b.addEventListener('click', () => { tsSet('mc-alerts', alerts().filter((a) => a.id !== b.dataset.rmal)); if (bc) bc.postMessage({ from: WID, type: 'alerts' }); renderAlerts(); panes.forEach((p) => p.render()); }));
+    $('[data-alf]', el).addEventListener('submit', (e) => { e.preventDefault(); const v = parseFloat($('[data-alp]', el).value); if (!(v > 0)) return; toggleAlert(sym, Math.round(v * 100) / 100, '自訂'); });
+    const dr = $('[data-draw]', el); if (dr) dr.addEventListener('click', () => { drawMode = !drawMode; root.classList.toggle('mc-drawing', drawMode); renderAlerts(); });
   }
 
   function attachStrip() {
@@ -455,7 +651,7 @@
     grid.innerHTML = cfgs.map((c, i) => new Pane(i, c).html()).join('');
     panes = cfgs.map((c, i) => new Pane(i, c));
     panes.forEach((p, i) => p.mount($$('.mc-pane', grid)[i]));
-    attachStrip(); renderStrip(); loadAll();
+    attachStrip(); renderStrip(); renderAlerts(); loadAll(); liveSubscribe();
   }
   function setSymbol(sym, broadcast = true) {
     sym = String(sym || '').trim().toUpperCase();
@@ -471,21 +667,27 @@
       setSymbol(prev, broadcast);
     });
     S.sym = sym; S.recent = [sym, ...S.recent.filter((x) => x !== sym)].slice(0, 12); saveState();
+    drawMode = false; lastLvKey = ''; if (root) root.classList.remove('mc-drawing');
+    if (S.tvFollow && broadcast) openTV(sym, false);
     const inp = $('[data-sym]', root); if (inp) inp.value = sym;
     panes.forEach((p) => { if (!p.cfg.sym) p.attach(); });
-    attachStrip(); renderStrip(); renderChips(); loadAll();
+    attachStrip(); renderStrip(); renderChips(); renderAlerts(); loadAll(); liveSubscribe();
     if (bc && S.link && broadcast) bc.postMessage({ from: WID, type: 'sym', sym });
   }
 
   async function tick() {
-    if (!active || document.hidden || !keys) return;
-    renderStrip();
+    if (!active || !keys) return;
+    if (!document.hidden) renderStrip();
+    if (liveWanted() && liveNow()) liveConnect(); else if (Live.ws && (!liveWanted() || !liveNow())) liveClose();
     if (!liveNow()) return;
+    if (document.hidden && !alerts().some((a) => !a.fired)) return; // 背景分頁：有警報先繼續更新
     for (const f of activeFeeds()) await serial(() => f.poll(keys));
+    checkAlertsBars();
   }
 
   function teardown() {
-    active = false; clearInterval(timer); clearInterval(clock); timer = clock = null;
+    active = false; clearInterval(timer); clearInterval(clock); clearInterval(flushTimer); timer = clock = flushTimer = null;
+    liveClose(); Live.status = 'off'; drawMode = false;
     panes.forEach((p) => p.destroy()); panes = [];
     if (strip.sym) strip.sym.subs.delete(renderStrip); if (strip.qqq) strip.qqq.subs.delete(renderStrip);
     document.body.classList.remove('mc-pop');
@@ -494,13 +696,17 @@
   }
   let themeObs = null;
   function onKey(e) {
+    if (active && e.key === 'Escape' && drawMode) { drawMode = false; root.classList.remove('mc-drawing'); renderAlerts(); return; }
     if (!active || e.metaKey || e.ctrlKey || e.altKey || e.target.closest('input,textarea,select,[contenteditable]') || $('.modal-wrap')) return;
     const list = [...new Set([...picks.map((p) => p.sym), ...S.recent])];
     if (e.key === '[' || e.key === ']') { if (!list.length) return; const i = list.indexOf(S.sym); setSymbol(list[(i + (e.key === ']' ? 1 : -1) + list.length) % list.length]); e.preventDefault(); return; }
     if (/^[a-zA-Z]$/.test(e.key)) { const inp = $('[data-sym]', root); inp.value = e.key.toUpperCase(); inp.focus(); inp.setSelectionRange(1, 1); e.preventDefault(); }
   }
   if (bc) bc.onmessage = (e) => {
-    const m = e.data; if (!active || !m || m.from === WID || !S.link) return;
+    const m = e.data; if (!active || !m || m.from === WID) return;
+    if (m.type === 'trades' && Array.isArray(m.list)) { m.list.forEach((x) => onTrade(x[0], x[1], x[2], x[3], false)); return; }
+    if (m.type === 'alerts' || m.type === 'lines') { renderAlerts(); panes.forEach((p) => p.render()); return; }
+    if (!S.link) return;
     if (m.type === 'sym' && m.sym !== S.sym) setSymbol(m.sym, false);
     if (m.type === 'hello' && win !== m.win) bc.postMessage({ from: WID, type: 'sym', sym: S.sym });
     if (m.type === 'x' && S.xsync) panes.forEach((p) => p.showX(m.t));
@@ -511,7 +717,7 @@
       const idx = await Picks.loadIndex(); const d0 = (idx.days || [])[0]; if (!d0) return [];
       const d = await Picks.loadDay(d0.date);
       const L = new Set(((d.longFocus || {}).items || []).map((x) => x.sym));
-      const P = (d.picks || []).map((p) => ({ sym: p.sym, gap: p.gapPct, long: L.has(p.sym), tip: `${d.date}：${p.trade ? p.trade.side : ''} RVOL ${p.rvol ?? '—'}${p.trade ? `｜Entry ${p.trade.entry} Stop ${p.trade.stop} T1 ${p.trade.target1}` : ''}` }));
+      const P = (d.picks || []).map((p) => ({ sym: p.sym, gap: p.gapPct, long: L.has(p.sym), date: d.date, trade: p.trade || null, atr: p.atr, prevClose: p.prevClose ?? (p.levels || {}).pdc, tip: `${d.date}：${p.trade ? p.trade.side : ''} RVOL ${p.rvol ?? '—'}${p.trade ? `｜Entry ${p.trade.entry} Stop ${p.trade.stop} T1 ${p.trade.target1}` : ''}` }));
       return P.sort((a, b) => b.long - a.long);
     } catch (e) { return []; }
   }
@@ -523,7 +729,7 @@
     if (okSym((qs.get('sym') || '').toUpperCase())) { S.sym = qs.get('sym').toUpperCase(); S.recent = [S.sym, ...S.recent.filter((x) => x !== S.sym)].slice(0, 12); }
     if (pop) document.body.classList.add('mc-pop');
     view.innerHTML = `<div class="mc" data-mc>${pop ? '' : `<div class="page-head mc-head"><h1>📺 多圖同步看盤</h1><p class="muted">免費版「Multi-Chart」：個股 5 分鐘 + 日線 + QQQ 一齊睇，換股、十字線、時間軸全部同步；可以開第二個視窗放第二個螢幕。數據用你嘅 Alpaca 免費帳戶。</p></div>`}<div data-top><p class="muted">載入緊…</p></div><div class="mc-grid" data-grid></div>
-      <p class="tool-fine mc-foot">數據：Alpaca 免費帳戶。<b>全市場（SIP）延遲 15 分鐘</b>；<b>IEX 即時，但只係一間交易所</b>（價格接近全市場，成交量約 2–3%）。「智能」模式：歷史用 SIP，最近 15 分鐘用 IEX 即時價，成交量按同日比例估算（灰色柱、旁邊有 *）。落單前一定要喺券商睇返即時報價。時間係美東時間。圖表：<a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener noreferrer">TradingView Lightweight Charts™</a>（Apache 2.0 開源）。</p></div>`;
+      <p class="tool-fine mc-foot">數據：Alpaca 免費帳戶。<b>全市場（SIP）延遲 15 分鐘</b>；<b>IEX 即時，但只係一間交易所</b>（價格接近全市場，成交量約 2–3%）。「智能」模式：歷史用 SIP，最近 15 分鐘用 IEX 即時價（開市時逐筆串流），成交量按同日比例估算（灰色柱、旁邊有 *）。要全市場即時報價：用 IBKR 嘅圖，或者 TradingView 官網（免費帳戶有 Cboe 即時報價，配合 <a href="#/tools/tv-allinone">一合一指標</a>）。落單前一定要喺券商睇返即時報價。時間係美東時間。圖表：<a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener noreferrer">TradingView Lightweight Charts™</a>（Apache 2.0 開源）。</p></div>`;
     root = $('[data-mc]', view);
     try { await loadLib(); } catch (e) { $('[data-top]', root).innerHTML = `<div class="card"><p class="neg">${esc(e.message)}</p></div>`; return; }
     keys = await MarketData.getKeys().catch(() => null);
@@ -540,7 +746,8 @@
     $('[data-symf]', top).addEventListener('submit', (e) => { e.preventDefault(); setSymbol($('[data-sym]', top).value); $('[data-sym]', top).blur(); });
     $('[data-layout]', top).addEventListener('change', (e) => { S.layout = e.target.value; S.panes = null; saveState(); build(); });
     $('[data-mode]', top).addEventListener('change', (e) => { S.mode = e.target.value; saveState(); build(); });
-    $$('[data-tg]', top).forEach((c) => c.addEventListener('change', () => { S[c.dataset.tg] = c.checked; saveState(); if (['ext', 'lv', 'ema20'].includes(c.dataset.tg)) panes.forEach((p) => p.render()); if (c.dataset.tg === 'xsync' && !c.checked) panes.forEach((p) => p.showX(null)); }));
+    $$('[data-tg]', top).forEach((c) => c.addEventListener('change', () => { S[c.dataset.tg] = c.checked; saveState(); if (['ext', 'lv', 'ema20', 'plan'].includes(c.dataset.tg)) { panes.forEach((p) => p.render()); renderAlerts(); } if (c.dataset.tg === 'xsync' && !c.checked) panes.forEach((p) => p.showX(null)); if (c.dataset.tg === 'live') { if (c.checked) { Live.status = 'off'; liveConnect(); } else liveClose(); renderStrip(); } }));
+    $('[data-tvopen]', top).addEventListener('click', () => openTV(S.sym, true));
     const po = $('[data-popout]', top);
     if (po) po.addEventListener('click', () => { const w = window.open(location.pathname + location.search + '#/charts?w=2&pop=1&sym=' + encodeURIComponent(S.sym), 'ta-charts-2', 'popup,width=1400,height=900'); if (!w) App.toast('瀏覽器擋咗彈出視窗：喺網址列允許彈出視窗再試'); });
     $('[data-full]', top).addEventListener('click', () => { const el = document.documentElement; if (document.fullscreenElement) document.exitFullscreen(); else if (el.requestFullscreen) el.requestFullscreen().catch(() => {}); });
@@ -552,14 +759,21 @@
       <li><b>每個圖：</b>可以揀時間框架（1m／5m／15m／1h／日線）同股票（跟主代號、QQQ、SPY…）。</li>
       <li><b>線：</b>橙色 = VWAP（09:30 起計）、紫色 = EMA 9、藍色虛線 = EMA 20；日線：藍色 = SMA 20、粉紅 = SMA 50。虛線水平線 = PDH／PDL／昨收、PMH／PML、ORH／ORL（開市 5 分鐘區間）。</li>
       <li><b>上面一排：</b>Level 15 嘅 A+ 過濾即時檢查：首 5 分鐘成交 ≥ 平時 2 倍、QQQ 喺 VWAP 上面、相對 QQQ 強弱，同 11:30 收工倒數。</li>
+      <li><b>逐筆即時：</b>開市時用 Alpaca 免費嘅 IEX 即時串流，每一筆成交即刻更新圖同警報。IEX 只係一間交易所：價格同全市場好接近，但唔係每一筆成交都見到。</li>
+      <li><b>警報：</b>撳下面任何一個價位（PDH、PMH、ORH、Entry…）就設定警報，再撳一次取消；亦可以輸入自訂價。到價會響、彈通知。<b>呢頁要開住先會響</b>（可以喺背景）。</li>
+      <li><b>畫線：</b>撳「✏️ 畫線」再撳任何一個圖，就喺嗰個價畫一條水平線（兩個視窗都見到），線亦可以設警報。</li>
+      <li><b>今日計劃：</b>今日選股報告有呢隻股，就會畫 Entry／Stop／T1／T2，同出「⚡ 落單卡」。</li>
+      <li><b>TradingView：</b>「📈 TradingView」喺官網開同一隻股（免費帳戶有 Cboe 即時報價，可以配合 <a href="#/tools/tv-allinone">一合一指標</a>）；剔「TradingView 跟住換股」，之後換股嗰個視窗會跟住換。</li>
       <li><b>數據：</b>免費帳戶全市場數據延遲 15 分鐘；「智能」模式最近 15 分鐘用 IEX 即時價。即時落單前喺券商再核對。</li></ul>`));
     themeObs = new MutationObserver(() => build()); themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     document.addEventListener('keydown', onKey);
     build();
     if (bc && S.link && !okSym((qs.get('sym') || '').toUpperCase())) bc.postMessage({ from: WID, type: 'hello', win });
     timer = setInterval(tick, 5000);
+    flushTimer = setInterval(flush, 400);
+    tick();
     clock = setInterval(() => active && renderStrip(), 20000);
   }
   window.addEventListener('hashchange', () => { if (active && !location.hash.startsWith('#/charts')) teardown(); });
-  window.MultiChart = { render, _test: { sessionsOf, levelsOf, snapshot, etSec, feeds, get panes() { return panes; } } };
+  window.MultiChart = { render, _test: { sessionsOf, levelsOf, snapshot, etSec, feeds, Live, alerts, get panes() { return panes; } } };
 })();

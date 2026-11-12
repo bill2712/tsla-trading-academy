@@ -162,6 +162,31 @@
   };
 
   /* ---------------- 🛫 開市前計劃表：今日所有 pick 一版睇晒 ---------------- */
+  TOOLS['tv-allinone'] = {
+    title: 'TradingView 一合一指標（免費版都用得）', icon: '🧩', cat: '落盤效率', level: 'l10',
+    desc: '免費版 TradingView 每個圖最多 2 個指標。呢個 Pine Script 將 VWAP、EMA 9／20、PDH／PDL／昨收、PMH／PML、開市 5 分鐘區間、今日計劃價位同 A+ 檢查表全部放入 1 個指標，用 TradingView 自己嘅即時數據。',
+    render(el) {
+      el.innerHTML = `<div class="l11-w">
+        <p><b>點解要咁做：</b>TradingView 官網免費帳戶有即時美股報價（Cboe），但每個圖只可以加 2 個指標。TradingView 係逐個 Script 計數，所以將所有線寫入同一個 Script，就只用 1 個名額，仲剩 1 個俾你加成交量或者其他嘢。</p>
+        <ol class="tv-steps">
+          <li>喺電腦開 <a href="https://www.tradingview.com/chart/" target="_blank" rel="noopener noreferrer">tradingview.com/chart</a>（登入免費帳戶），揀 1 分鐘或者 5 分鐘圖</li>
+          <li>圖表設定 → Symbol → 剔「Extended trading hours」（延長交易時段），先會有盤前高低</li>
+          <li>下面撳「📋 複製程式碼」</li>
+          <li>畫面底部撳「Pine Editor」→ 刪走入面原有內容 → 貼上 → 撳「Add to chart」（加到圖表）</li>
+          <li>撳「Save」儲存，之後喺 Indicators → My scripts（我的腳本）就搵到「Day Trading 一合一（TSLA 學院）」</li>
+          <li>每朝：撳指標嘅 ⚙️ 設定，將今日選股報告嘅 Entry／Stop／Target 1／Target 2 填入「今日計劃」，就會畫線同計 R:R</li>
+        </ol>
+        <p class="muted">包括：VWAP（09:30 起計，盤前盤後唔計）、EMA 9、EMA 20、PDH／PDL／昨收、PMH／PML、ORH／ORL（開市 5 分鐘）、今日 Entry／Stop／T1／T2、09:30–09:35 紅底、11:30 後灰底；右上角 A+ 檢查表：開市成交係平時幾多倍、QQQ 喺 VWAP 上定下、個股 vs VWAP、RS vs QQQ、11:30 倒數、計劃 R:R。每樣都可以喺設定度熄。</p>
+        <p><button class="btn primary" data-copy>📋 複製程式碼</button> <button class="btn" data-dl>⬇️ 下載 .pine 檔</button> <span class="muted" data-msg aria-live="polite"></span></p>
+        <details><summary>睇程式碼</summary><pre class="tv-code" data-code>載入緊…</pre></details>
+        <p class="tool-fine">呢個 Script 我喺呢度冇辦法喺 TradingView 實際編譯測試；如果 Pine Editor 出錯，將紅色錯誤訊息影低畀我，我幫你改。TradingView 免費版嘅即時美股數據來自 Cboe（唔係全市場合併報價），盤前盤後同成交量會同券商有少少分別；落單以 IBKR 報價為準。</p></div>`;
+      let code = '';
+      fetch('assets/pine/day-trading-all-in-one.pine', { cache: 'no-cache' }).then((r) => (r.ok ? r.text() : Promise.reject(new Error(r.status)))).then((t) => { code = t; el.querySelector('[data-code]').textContent = t; }).catch(() => { el.querySelector('[data-code]').textContent = '載入失敗，檢查網絡再試。'; });
+      const msg = el.querySelector('[data-msg]');
+      el.querySelector('[data-copy]').addEventListener('click', async () => { if (!code) return; try { await navigator.clipboard.writeText(code); msg.textContent = '✅ 已複製，去 TradingView 嘅 Pine Editor 貼上'; } catch (e) { msg.textContent = '複製唔到：撳「睇程式碼」自己揀晒再複製'; } });
+      el.querySelector('[data-dl]').addEventListener('click', () => { if (code) App.download('day-trading-all-in-one.pine', code, 'text/plain'); });
+    },
+  };
   TOOLS['multichart'] = {
     title: '多圖同步看盤', icon: '📺', cat: '落盤效率', level: 'l10',
     desc: '免費版 Multi-Chart：個股 5 分鐘 + 日線 + QQQ 一齊睇，換股、十字線、時間軸同步；可以開第二個視窗放第二個螢幕。用你嘅 Alpaca 免費金鑰。',

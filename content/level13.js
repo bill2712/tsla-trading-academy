@@ -206,6 +206,8 @@ TWS 嘅視窗有「連結」（Grouping，一個顏色鏈）功能：Watchlist�
 
 [[link:charts|📺 打開多圖同步看盤]]
 
+[[link:tools/tv-allinone|🧩 TradingView 一合一指標：所有線只計 1 個指標]]
+
 ## 3.5 只有 2 個 Mon（冇 MacBook 屏，或者 M3 合埋蓋）
 
 | 畫面 | 擺咩 |

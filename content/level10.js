@@ -448,6 +448,12 @@ EMA 9、VWAP 呢類指標會將盤前 K 線都計埋。示範圖下面寫咗 10:
 
 [[link:charts|📺 打開多圖同步看盤]]
 
+:::tip 用 TradingView 官網又想破「2 個指標」限制？
+TradingView 係逐個 Script 計指標數目。平台整咗一個「Day Trading 一合一」Pine Script：VWAP（09:30 起計）、EMA 9／20、PDH／PDL／昨收、PMH／PML、開市 5 分鐘區間、今日 Entry／Stop／Target、A+ 檢查表，全部放入 **1 個指標**。免費帳戶喺 TradingView 官網睇美股係 Cboe 即時報價（唔係全市場合併報價）；**嵌入其他網站嘅 TradingView 圖表就只有延遲數據**，所以要喺官網用。
+:::
+
+[[link:tools/tv-allinone|🧩 攞 TradingView 一合一指標]]
+
 :::key 新手唔好太多圖
 兩至三個圖已經夠：**個股 5m + 個股日線 + QQQ（或者 SPY）5m**。QQQ 嗰個圖就係你嘅 Relative Strength 比較。
 :::

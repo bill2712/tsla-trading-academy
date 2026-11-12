@@ -1,0 +1,195 @@
+//@version=5
+// TSLA Day Trading 學院：Day Trading 一合一指標
+// 免費版 TradingView 每個圖最多 2 個指標；呢個 script 將以下全部放入「1 個指標」：
+//   VWAP（09:30 起計）、EMA 9、EMA 20、昨日高／低／收（PDH／PDL／PDC）、盤前高／低（PMH／PML）、
+//   開市 5 分鐘區間（ORH／ORL）、今日計劃價位（Entry／Stop／Target）、A+ 檢查表、09:30–09:35 同 11:30 後底色
+// 用法：用喺 1 分鐘或 5 分鐘圖；要喺圖表設定開「延長交易時段（Extended trading hours）」先有盤前高低。
+// 時間一律用美東時間（America/New_York）。
+indicator("Day Trading 一合一（TSLA 學院）", shorttitle = "DT 一合一", overlay = true, max_labels_count = 60)
+
+tz = "America/New_York"
+
+// ---------- 設定 ----------
+gMa = "均線"
+showVWAP = input.bool(true, "VWAP（09:30 起計）", group = gMa)
+showE9 = input.bool(true, "EMA 9", group = gMa)
+showE20 = input.bool(true, "EMA 20", group = gMa)
+gLv = "關鍵位"
+showPD = input.bool(true, "昨日高／低／收（PDH／PDL／PDC）", group = gLv)
+showPM = input.bool(true, "盤前高／低（PMH／PML）", group = gLv)
+showOR = input.bool(true, "開市 5 分鐘區間（ORH／ORL）", group = gLv)
+showLbl = input.bool(true, "喺右邊寫埋價錢", group = gLv)
+gPlan = "今日計劃（由每日選股報告抄過嚟；0 = 唔顯示）"
+pEntry = input.float(0.0, "Entry", group = gPlan)
+pStop = input.float(0.0, "Stop", group = gPlan)
+pT1 = input.float(0.0, "Target 1", group = gPlan)
+pT2 = input.float(0.0, "Target 2", group = gPlan)
+gA = "A+ 檢查"
+showTbl = input.bool(true, "顯示 A+ 檢查表", group = gA)
+idxSym = input.symbol("NASDAQ:QQQ", "大市比較", group = gA)
+rvolDays = input.int(20, "開市成交：對比幾多日", minval = 5, maxval = 60, group = gA)
+showTime = input.bool(true, "09:30–09:35 紅底、11:30 後灰底", group = gA)
+
+// ---------- 時段 ----------
+inRTH = not na(time(timeframe.period, "0930-1600", tz))
+inPM = not na(time(timeframe.period, "0400-0930", tz))
+inOR = not na(time(timeframe.period, "0930-0935", tz))
+inLate = not na(time(timeframe.period, "1130-1600", tz))
+dom = dayofmonth(time, tz)
+newDay = dom != dom[1]
+newRTH = inRTH and (not inRTH[1] or newDay)
+
+// ---------- 每日數值 ----------
+var float dayH = na
+var float dayL = na
+var float dayC = na
+var float pdh = na
+var float pdl = na
+var float pdc = na
+var float pmh = na
+var float pml = na
+var float orh = na
+var float orl = na
+var float orVol = na
+var float dayOpen = na
+var orHist = array.new_float()
+
+if newDay
+    if not na(orVol)
+        array.push(orHist, orVol)
+        if array.size(orHist) > rvolDays
+            array.shift(orHist)
+    if not na(dayH)
+        pdh := dayH
+        pdl := dayL
+        pdc := dayC
+    dayH := na
+    dayL := na
+    dayC := na
+    pmh := na
+    pml := na
+    orh := na
+    orl := na
+    orVol := na
+    dayOpen := na
+
+if inPM
+    pmh := na(pmh) ? high : math.max(pmh, high)
+    pml := na(pml) ? low : math.min(pml, low)
+if inRTH
+    dayH := na(dayH) ? high : math.max(dayH, high)
+    dayL := na(dayL) ? low : math.min(dayL, low)
+    dayC := close
+    if na(dayOpen)
+        dayOpen := open
+if inOR
+    orh := na(orh) ? high : math.max(orh, high)
+    orl := na(orl) ? low : math.min(orl, low)
+    orVol := nz(orVol) + volume
+
+// ---------- VWAP：每日由 09:30 開始計，盤前盤後唔計 ----------
+var float cumPV = 0.0
+var float cumV = 0.0
+if newRTH
+    cumPV := 0.0
+    cumV := 0.0
+if inRTH
+    cumPV += hlc3 * volume
+    cumV += volume
+vwap0 = inRTH and cumV > 0 ? cumPV / cumV : na
+e9 = ta.ema(close, 9)
+e20 = ta.ema(close, 20)
+
+// ---------- 畫線 ----------
+plot(showVWAP ? vwap0 : na, "VWAP", color.new(color.orange, 0), 2, plot.style_linebr)
+plot(showE9 ? e9 : na, "EMA 9", color.new(color.purple, 0), 1)
+plot(showE20 ? e20 : na, "EMA 20", color.new(color.aqua, 0), 1)
+plot(showPD and not newDay ? pdh : na, "PDH", color.new(color.blue, 0), 1, plot.style_linebr)
+plot(showPD and not newDay ? pdl : na, "PDL", color.new(color.blue, 0), 1, plot.style_linebr)
+plot(showPD and not newDay ? pdc : na, "昨收", color.new(color.gray, 0), 1, plot.style_linebr)
+plot(showPM and not newDay ? pmh : na, "PMH", color.new(color.fuchsia, 30), 1, plot.style_linebr)
+plot(showPM and not newDay ? pml : na, "PML", color.new(color.fuchsia, 30), 1, plot.style_linebr)
+plot(showOR and not newDay ? orh : na, "ORH", color.new(color.orange, 40), 1, plot.style_linebr)
+plot(showOR and not newDay ? orl : na, "ORL", color.new(color.orange, 40), 1, plot.style_linebr)
+plot(pEntry > 0 ? pEntry : na, "Entry", color.new(color.purple, 0), 2, plot.style_linebr)
+plot(pStop > 0 ? pStop : na, "Stop", color.new(color.red, 0), 2, plot.style_linebr)
+plot(pT1 > 0 ? pT1 : na, "Target 1", color.new(color.green, 0), 2, plot.style_linebr)
+plot(pT2 > 0 ? pT2 : na, "Target 2", color.new(color.green, 40), 1, plot.style_linebr)
+bgcolor(showTime and inOR ? color.new(color.red, 88) : na, title = "09:30–09:35 唔落單")
+bgcolor(showTime and inLate ? color.new(color.gray, 90) : na, title = "11:30 之後")
+
+// ---------- 右邊價錢標籤 ----------
+var lbls = array.new_label()
+f_lbl(float p, string t, color c) =>
+    label.new(bar_index + 3, p, t + " " + str.tostring(p, format.mintick), xloc = xloc.bar_index, style = label.style_label_left, color = color.new(c, 80), textcolor = c, size = size.small)
+
+if barstate.islast
+    for lb in lbls
+        label.delete(lb)
+    array.clear(lbls)
+    if showLbl
+        if showPD and not na(pdh)
+            array.push(lbls, f_lbl(pdh, "PDH", color.blue))
+            array.push(lbls, f_lbl(pdl, "PDL", color.blue))
+            array.push(lbls, f_lbl(pdc, "昨收", color.gray))
+        if showPM and not na(pmh)
+            array.push(lbls, f_lbl(pmh, "PMH", color.fuchsia))
+            array.push(lbls, f_lbl(pml, "PML", color.fuchsia))
+        if showOR and not na(orh) and not inOR
+            array.push(lbls, f_lbl(orh, "ORH", color.orange))
+            array.push(lbls, f_lbl(orl, "ORL", color.orange))
+        if pEntry > 0
+            array.push(lbls, f_lbl(pEntry, "Entry", color.purple))
+        if pStop > 0
+            array.push(lbls, f_lbl(pStop, "Stop", color.red))
+        if pT1 > 0
+            array.push(lbls, f_lbl(pT1, "T1", color.green))
+
+// ---------- A+ 檢查表（Level 15）：開市成交 ≥ 平時 2 倍 + QQQ 喺 VWAP 上面 ----------
+f_idx() =>
+    r = not na(time(timeframe.period, "0930-1600", "America/New_York"))
+    dd = dayofmonth(time, "America/New_York")
+    nr = r and (not r[1] or dd != dd[1])
+    var float pv = 0.0
+    var float vv = 0.0
+    var float o = na
+    if nr
+        pv := 0.0
+        vv := 0.0
+        o := open
+    if r
+        pv += hlc3 * volume
+        vv += volume
+    [close, r and vv > 0 ? pv / vv : na, o]
+
+[qC, qV, qO] = request.security(idxSym, timeframe.period, f_idx())
+
+var table tb = table.new(position.top_right, 2, 7, bgcolor = color.new(color.black, 65), frame_color = color.gray, frame_width = 1, border_width = 1)
+f_row(int r, string k, string v, color c) =>
+    table.cell(tb, 0, r, k, text_color = color.white, text_size = size.small, text_halign = text.align_left)
+    table.cell(tb, 1, r, v, text_color = c, text_size = size.small, text_halign = text.align_left)
+
+f_2(int x) =>
+    (x < 10 ? "0" : "") + str.tostring(x)
+
+if barstate.islast and showTbl
+    hh = hour(timenow, tz)
+    mm = minute(timenow, tz)
+    nowMin = hh * 60 + mm
+    tRule = nowMin < 570 ? "未開市" : nowMin < 575 ? "⛔ 09:35 前唔落單" : nowMin < 690 ? "⏱ 11:30 收工：仲有 " + str.tostring(690 - nowMin) + " 分鐘" : nowMin < 960 ? "已過 11:30：唔開新倉" : "已收市"
+    f_row(0, "美東 " + f_2(hh) + ":" + f_2(mm), tRule, nowMin >= 575 and nowMin < 690 ? color.lime : color.yellow)
+    avgOr = array.size(orHist) > 0 ? array.avg(orHist) : na
+    rv = na(orVol) or na(avgOr) or avgOr == 0 ? na : orVol / avgOr
+    orDone = not na(orVol) and not inOR
+    rvTxt = na(rv) ? "等開市" : str.tostring(rv, "#.#") + "× 平時" + (orDone ? "" : "（未完）")
+    f_row(1, "開市成交", rvTxt, na(rv) ? color.silver : rv >= 2 ? color.lime : color.red)
+    qAbove = not na(qV) and qC >= qV
+    f_row(2, "QQQ vs VWAP", na(qV) ? "未開市" : qAbove ? "上面 ✅" : "下面 ❌", na(qV) ? color.silver : qAbove ? color.lime : color.red)
+    sAbove = not na(vwap0) and close >= vwap0
+    f_row(3, "個股 vs VWAP", na(vwap0) ? "未開市" : sAbove ? "上面" : "下面", na(vwap0) ? color.silver : sAbove ? color.lime : color.red)
+    rs = na(dayOpen) or na(qO) or dayOpen == 0 or qO == 0 ? na : (close / dayOpen - qC / qO) * 100
+    f_row(4, "RS vs QQQ（由開市）", na(rs) ? "—" : (rs >= 0 ? "+" : "") + str.tostring(rs, "#.##") + "%", na(rs) ? color.silver : rs > 0 ? color.lime : color.red)
+    aPlus = not na(rv) and rv >= 2 and qAbove
+    f_row(5, "A+ 過濾", aPlus ? "✅ 齊" : "❌ 未齊：唔做", aPlus ? color.lime : color.red)
+    rr = pEntry > 0 and pStop > 0 and pT1 > 0 and pEntry != pStop ? math.abs(pT1 - pEntry) / math.abs(pEntry - pStop) : na
+    f_row(6, "計劃 R:R", na(rr) ? "（設定入面填 Entry／Stop／T1）" : str.tostring(rr, "#.##") + "R", na(rr) ? color.silver : rr >= 2 ? color.lime : color.yellow)
