@@ -1,6 +1,42 @@
 {
- "updated": "2026-11-12T04:46:46.178Z",
+ "updated": "2026-11-12T13:18:00.495Z",
  "days": [
+  {
+   "date": "2026-11-12",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏淡",
+   "headline": "NVDA 管理層風波拖低科技股（QQQ −1.5%）：Long 專區得 LUNR（業績好）；NVDA、NBIS 沽空候選。",
+   "n": 3,
+   "top": [
+    {
+     "sym": "LUNR",
+     "gapPct": 9.85,
+     "rvol": 9.2,
+     "beginner": "中等",
+     "grade": "A"
+    },
+    {
+     "sym": "NVDA",
+     "gapPct": -7.74,
+     "rvol": 4.03,
+     "beginner": "適合新手",
+     "grade": "B"
+    },
+    {
+     "sym": "NBIS",
+     "gapPct": -11.46,
+     "rvol": 6.82,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false,
+   "again": [
+    "NVDA",
+    "NBIS"
+   ]
+  },
   {
    "date": "2026-11-11",
    "version": 3,
@@ -31,7 +67,7 @@
      "grade": "C"
     }
    ],
-   "reviewed": false
+   "reviewed": true
   },
   {
    "date": "2026-11-10",

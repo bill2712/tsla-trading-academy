@@ -1,0 +1,1084 @@
+{
+ "version": 3,
+ "date": "2026-11-12",
+ "generatedAt": "2026-11-12T13:17:51Z",
+ "status": "premarket",
+ "dataQuality": "full",
+ "scanTime": "07:55",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH／PML、日線趨勢）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca SIP 報價",
+   "ok": true
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅、高成交、成交異常）",
+   "ok": true
+  },
+  {
+   "name": "IBKR 即時報價（指數同候選股）",
+   "ok": true,
+   "note": "美東 08:14–08:15，REALTIME"
+  },
+  {
+   "name": "IBKR 15 分鐘 K 線（NVDA、NBIS 盤前高低；LUNR）",
+   "ok": true
+  },
+  {
+   "name": "Finviz",
+   "ok": true
+  },
+  {
+   "name": "新聞：Alpaca／Benzinga、Seeking Alpha、Google News、MarketWatch、Investing.com",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 業績日曆",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": true
+  },
+  {
+   "name": "Yahoo（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇用到"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "時間緊，今日冇做"
+  },
+  {
+   "name": "IBKR 業績資料（earnings insight）",
+   "ok": false,
+   "note": "時間緊，今日冇做；業績數字用 Benzinga／Seeking Alpha"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "3 隻 pick，美東 08:17"
+  }
+ ],
+ "headline": "NVDA 管理層風波拖低科技股（QQQ −1.5%）：Long 專區得 LUNR（業績好）；NVDA、NBIS 沽空候選。",
+ "market": {
+  "bias": "偏淡",
+  "summary": "消息指 NVIDIA 董事會考慮 CEO 去留，加上兩間券商降級，NVDA 盤前跌約 8%，拖低 AI 同半導體股。IBKR 即時：QQQ −1.48%、SPY −0.78%、IWM −0.70%、SMH −3.59%。資金轉去 AVGO、AMD。08:30 公布初領失業救濟金（中影響）。",
+  "base": {
+   "spy": -0.78,
+   "qqq": -1.48
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 680.17,
+    "chgPct": -1.48,
+    "note": "IBKR 即時 08:14"
+   },
+   {
+    "sym": "SPY",
+    "last": 753.85,
+    "chgPct": -0.78,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 281.1,
+    "chgPct": -0.7,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 488.78,
+    "chgPct": -3.59,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "初領失業救濟金（Unemployment Claims）",
+    "impact": "中",
+    "note": "預期 19.4 萬"
+   },
+   {
+    "time": "10:00 ET",
+    "name": "成屋銷售（Existing Home Sales）",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "11:15 ET",
+    "name": "Fed Goolsbee 講話",
+    "impact": "低",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "LUNR",
+    "when": "盤前",
+    "note": "好過預期"
+   },
+   {
+    "sym": "NBIS",
+    "when": "盤前",
+    "note": "好過預期，但容量延遲"
+   },
+   {
+    "sym": "FIGR",
+    "when": "盤前",
+    "note": "好過預期"
+   },
+   {
+    "sym": "CTVA",
+    "when": "昨日盤後",
+    "note": "差過預期"
+   },
+   {
+    "sym": "YETI",
+    "when": "盤前",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "LUNR",
+   "price": 13.38,
+   "gapPct": 9.85,
+   "rvol": 9.2,
+   "pmVolume": 1208726,
+   "avgVolume": 7980207,
+   "floatM": 152.73,
+   "atrPct": 8.7,
+   "spreadPct": 0.3,
+   "rsQqq": 10.9,
+   "ema9Pct": 1.46,
+   "trend": "mixed",
+   "catalyst": "業績（盤前）",
+   "verdict": "pick",
+   "note": "業績好過預期；唯一合格做多"
+  },
+  {
+   "sym": "NBIS",
+   "price": 136.96,
+   "gapPct": -11.46,
+   "rvol": 6.82,
+   "pmVolume": 7314996,
+   "avgVolume": 26072748,
+   "floatM": 222.54,
+   "atrPct": 10.68,
+   "spreadPct": 0.28,
+   "rsQqq": -10.41,
+   "ema9Pct": -3.28,
+   "trend": "down",
+   "catalyst": "業績（盤前）",
+   "verdict": "pick",
+   "note": "業績後出貨，創盤前新低"
+  },
+  {
+   "sym": "NVDA",
+   "price": 160.28,
+   "gapPct": -7.74,
+   "rvol": 4.03,
+   "pmVolume": 27633729,
+   "avgVolume": 166330435,
+   "floatM": 23190,
+   "atrPct": 5.26,
+   "spreadPct": 0.03,
+   "rsQqq": -6.69,
+   "ema9Pct": 0,
+   "trend": "down",
+   "catalyst": "Corteva Posts Downbeat Q3 Results, Joins Nvidia, Alvotech And Other Big Stocks M",
+   "verdict": "pick",
+   "note": "重大消息跳空低開"
+  },
+  {
+   "sym": "CTVA",
+   "price": 10.95,
+   "gapPct": -9.8,
+   "rvol": 50.81,
+   "pmVolume": 162655,
+   "avgVolume": 20070409,
+   "floatM": 664.79,
+   "atrPct": 3.95,
+   "spreadPct": 0.46,
+   "rsQqq": -8.75,
+   "ema9Pct": 0,
+   "trend": "down",
+   "catalyst": "業績（盤後）",
+   "verdict": "watch",
+   "note": "業績差跌 9.8%；價格 10.95 同 50 日線 40 相差太遠，懷疑有分拆，數據未核實"
+  },
+  {
+   "sym": "BZ",
+   "price": 14.18,
+   "gapPct": -15.19,
+   "rvol": 43.58,
+   "pmVolume": 431386,
+   "avgVolume": 4286155,
+   "floatM": 373.7,
+   "atrPct": 3.47,
+   "spreadPct": 0.35,
+   "rsQqq": -14.14,
+   "ema9Pct": -0.53,
+   "trend": "mixed",
+   "catalyst": "12 Industrials Stocks Moving In Thursday's Pre-Market Session",
+   "verdict": "watch",
+   "note": "跌 15%、RVOL 43，但搵唔到清楚消息、差價 0.35%"
+  },
+  {
+   "sym": "FIGR",
+   "price": 26.08,
+   "gapPct": 7.81,
+   "rvol": 32.39,
+   "pmVolume": 549689,
+   "avgVolume": 5221314,
+   "floatM": 122.84,
+   "atrPct": 7.19,
+   "spreadPct": 0.96,
+   "rsQqq": 8.86,
+   "ema9Pct": -0.49,
+   "trend": "mixed",
+   "catalyst": "業績（盤前）",
+   "verdict": "watch",
+   "note": "業績好升 7.8%、RVOL 32，但差價 0.96%，開市前再睇"
+  },
+  {
+   "sym": "TTEK",
+   "price": 41.56,
+   "gapPct": 10.5,
+   "rvol": 16.18,
+   "pmVolume": 17188,
+   "avgVolume": 2737750,
+   "floatM": 254.73,
+   "atrPct": 3.51,
+   "spreadPct": 0.96,
+   "rsQqq": 11.55,
+   "ema9Pct": 0.39,
+   "trend": "mixed",
+   "catalyst": "Tetra Tech, Inc. (NASDAQ:TTEK) Plans Quarterly Dividend of $0.07",
+   "verdict": "watch",
+   "note": "業績升 10.5%，但盤前成交得 1.7 萬股、差價 0.96%"
+  },
+  {
+   "sym": "CLBT",
+   "price": 13.5,
+   "gapPct": 6.3,
+   "rvol": 7.99,
+   "pmVolume": 27561,
+   "avgVolume": 1687032,
+   "floatM": 125.78,
+   "atrPct": 3.23,
+   "spreadPct": 1.32,
+   "rsQqq": 7.35,
+   "ema9Pct": 0.35,
+   "trend": "up",
+   "catalyst": "業績（盤前）",
+   "verdict": "watch",
+   "note": "盤前成交得 2.8 萬股、差價 1.3%"
+  },
+  {
+   "sym": "AVGO",
+   "price": 348.06,
+   "gapPct": 0.82,
+   "rvol": 2.02,
+   "pmVolume": 696677,
+   "avgVolume": 26034751,
+   "floatM": 4680,
+   "atrPct": 5.17,
+   "spreadPct": 0.07,
+   "rsQqq": 1.87,
+   "ema9Pct": -0.12,
+   "trend": "mixed",
+   "catalyst": "Broadcom Stock Rises Amid Nvidia Executive Turmoil",
+   "verdict": "watch",
+   "note": "資金由 NVDA 轉入，相對強；但 Gap 只 0.8%、盤前由 359 跌返 346"
+  },
+  {
+   "sym": "CRWV",
+   "price": 54.69,
+   "gapPct": -10,
+   "rvol": 1.86,
+   "pmVolume": 4925214,
+   "avgVolume": 75456324,
+   "floatM": 349.31,
+   "atrPct": 9.49,
+   "spreadPct": 0.18,
+   "rsQqq": -8.95,
+   "ema9Pct": -0.75,
+   "trend": "mixed",
+   "catalyst": "Corteva Posts Downbeat Q3 Results, Joins Nvidia, Alvotech And Other Big Stocks Moving Lower In Thursday’s Pre-Market Session",
+   "verdict": "watch",
+   "note": "RVOL 1.9，差少少到 2"
+  },
+  {
+   "sym": "YETI",
+   "price": 39.13,
+   "gapPct": -8.55,
+   "rvol": 146.66,
+   "pmVolume": 127155,
+   "avgVolume": 1514405,
+   "floatM": 71.92,
+   "atrPct": 4.39,
+   "spreadPct": 1.48,
+   "rsQqq": -7.5,
+   "ema9Pct": -0.46,
+   "trend": "mixed",
+   "catalyst": "業績（盤前）",
+   "verdict": "avoid",
+   "note": "差價 1.48%，太闊"
+  },
+  {
+   "sym": "TWST",
+   "price": 112.88,
+   "gapPct": -7.92,
+   "rvol": 24.77,
+   "pmVolume": 174270,
+   "avgVolume": 2381433,
+   "floatM": 64.01,
+   "atrPct": 14.12,
+   "spreadPct": 1.92,
+   "rsQqq": -6.87,
+   "ema9Pct": -1.63,
+   "trend": "down",
+   "catalyst": "業績（盤前）",
+   "verdict": "avoid",
+   "note": "差價 1.92%，太闊"
+  },
+  {
+   "sym": "EYE",
+   "price": 15.7,
+   "gapPct": -13.21,
+   "rvol": 17.37,
+   "pmVolume": 26501,
+   "avgVolume": 2007453,
+   "floatM": 76.77,
+   "atrPct": 6.36,
+   "spreadPct": 8.62,
+   "rsQqq": -12.16,
+   "ema9Pct": -2.15,
+   "trend": "up",
+   "catalyst": "業績（盤前）",
+   "verdict": "avoid",
+   "note": "盤前成交得 2.7 萬股、差價 8.6%"
+  },
+  {
+   "sym": "ONDS",
+   "price": 5.59,
+   "gapPct": -2.44,
+   "rvol": 2.67,
+   "pmVolume": 2177320,
+   "avgVolume": 44434224,
+   "floatM": 539.32,
+   "atrPct": 9.6,
+   "spreadPct": 0.36,
+   "rsQqq": -1.39,
+   "ema9Pct": -0.79,
+   "trend": "down",
+   "catalyst": "業績（盤前）",
+   "verdict": "skip",
+   "note": "Gap 只 −2.4%、股價 5.6"
+  },
+  {
+   "sym": "MSTR",
+   "price": 115.33,
+   "gapPct": -5.74,
+   "rvol": 1.83,
+   "pmVolume": 1092556,
+   "avgVolume": 18091434,
+   "floatM": 401.61,
+   "atrPct": 6.95,
+   "spreadPct": 0.3,
+   "rsQqq": -4.69,
+   "ema9Pct": -0.13,
+   "trend": "down",
+   "catalyst": "Strategy Shares Fall About 6% After MSCI Confirms Index Removal",
+   "verdict": "skip",
+   "note": "RVOL 1.8"
+  },
+  {
+   "sym": "IREN",
+   "price": 19.48,
+   "gapPct": -6.53,
+   "rvol": 1.15,
+   "pmVolume": 3280047,
+   "avgVolume": 69740925,
+   "floatM": 372.32,
+   "atrPct": 13.53,
+   "spreadPct": 0.2,
+   "rsQqq": -5.48,
+   "ema9Pct": -0.84,
+   "trend": "down",
+   "catalyst": "IREN: The Risk/Reward Is Worth It",
+   "verdict": "skip",
+   "note": "RVOL 1.1"
+  },
+  {
+   "sym": "SNDK",
+   "price": 916.95,
+   "gapPct": -6.21,
+   "rvol": 1.1,
+   "pmVolume": 731676,
+   "avgVolume": 11801664,
+   "floatM": 140.42,
+   "atrPct": 11.15,
+   "spreadPct": 0.07,
+   "rsQqq": -5.16,
+   "ema9Pct": -0.49,
+   "trend": "down",
+   "catalyst": "Sandisk: The Next NAND Downturn Could Prove Bulls Right",
+   "verdict": "skip",
+   "note": "RVOL 1.1，未夠 2"
+  },
+  {
+   "sym": "MU",
+   "price": 773.85,
+   "gapPct": -4.62,
+   "rvol": 0.93,
+   "pmVolume": 995182,
+   "avgVolume": 31447865,
+   "floatM": 1130,
+   "atrPct": 7.81,
+   "spreadPct": 0.05,
+   "rsQqq": -3.57,
+   "ema9Pct": -0.44,
+   "trend": "down",
+   "catalyst": "Micron Technology Named to Fortune World's Best Workplaces List",
+   "verdict": "skip",
+   "note": "RVOL 0.9，未夠 2"
+  },
+  {
+   "sym": "AAOI",
+   "price": 52.09,
+   "gapPct": -6.75,
+   "rvol": 0.89,
+   "pmVolume": 620813,
+   "avgVolume": 14130871,
+   "floatM": 86.09,
+   "atrPct": 13.46,
+   "spreadPct": 0.53,
+   "rsQqq": -5.7,
+   "ema9Pct": -0.55,
+   "trend": "down",
+   "catalyst": "Applied Optoelectronics (AAOI) Just Soared 15.6% — This Company May Hold The Reason",
+   "verdict": "skip",
+   "note": "RVOL 0.9"
+  },
+  {
+   "sym": "SMCI",
+   "price": 28.72,
+   "gapPct": -5.62,
+   "rvol": 0.84,
+   "pmVolume": 1026767,
+   "avgVolume": 44202178,
+   "floatM": 575.83,
+   "atrPct": 7.92,
+   "spreadPct": 0.17,
+   "rsQqq": -4.57,
+   "ema9Pct": -0.03,
+   "trend": "down",
+   "catalyst": "Corteva Posts Downbeat Q3 Results, Joins Nvidia, Alvotech And Other Big Stocks Moving Lower In Thursday’s Pre-Market Session",
+   "verdict": "skip",
+   "note": "RVOL 0.8"
+  }
+ ],
+ "fewPicksReason": "大市偏淡，RVOL ≥ 2 而且差價、成交合格嘅股得 3 隻；FIGR、TTEK、YETI 等升跌幅大，但差價太闊或者盤前成交太少，放入觀察／避開。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇日線升勢而又 RVOL ≥ 2 嘅做多股（科技股被 NVDA 拖低）。唯一合格做多係 LUNR（業績好過預期，日線橫行，相對 QQQ 強 10.9%）：等 09:35 後喺盤前高 14.08 下面整固再升穿先入。記住 A+ 過濾：首 5 分鐘成交 ≥ 平時 2 倍、QQQ 喺 VWAP 上面；今日 QQQ 偏弱，條件唔齊就唔做。",
+  "items": [
+   {
+    "sym": "LUNR",
+    "trend": "mixed",
+    "setups": "Flat Top（盤前高 14.08 下面整固再破）→ 30 分鐘 ORB",
+    "note": "日線橫行唔係升勢；QQQ 喺 VWAP 下面就唔做"
+   }
+  ]
+ },
+ "carryover": {
+  "fromDate": "2026-11-11",
+  "summary": "昨日 3 隻做多候選股今日全部跳空低開。NVDA 同 NBIS 盤前 RVOL 仍然 ≥ 2，今日以「沽空」重新入選（計劃用今日價位）；CRWV RVOL 1.9，只觀察。只做多嘅用戶：呢三隻今日都唔好撈底。",
+  "items": [
+   {
+    "sym": "NVDA",
+    "prevSide": "Long",
+    "prevResult": "未觸發（入場價冇到）",
+    "yClose": 173.73,
+    "yChgPct": 2.87,
+    "yClosePos": 0.44,
+    "yVolRatio": 2.19,
+    "price": 160.28,
+    "gapPct": -7.74,
+    "rvol": 4.03,
+    "verdict": "again",
+    "side": "Short",
+    "reason": "今日盤前 RVOL 4.0、跌 7.7%，有新消息（董事會考慮 CEO 去留、兩間券商降級），已跌穿昨日低位 170.77。方向同昨日計劃相反，今日係沽空計劃。",
+    "levels": "盤前低 158.92、盤前高 164.80、昨日低 170.77"
+   },
+   {
+    "sym": "NBIS",
+    "prevSide": "Long",
+    "prevResult": "10:00 觸發 → 收市前未到 Stop／Target（收市計 0.14R）",
+    "yClose": 154.69,
+    "yChgPct": 15.44,
+    "yClosePos": 0.57,
+    "yVolRatio": 1.61,
+    "price": 136.96,
+    "gapPct": -11.46,
+    "rvol": 6.82,
+    "verdict": "again",
+    "side": "Short",
+    "reason": "今日盤前 RVOL 6.8、跌 11.5%（IBKR 即時跌 14%），業績後出貨，已跌穿昨日低位 147.36。今日係沽空計劃。",
+    "levels": "盤前低 130.60、07:30 反彈高 137.85、昨日低 147.36"
+   },
+   {
+    "sym": "CRWV",
+    "prevSide": "Long",
+    "prevResult": "10:00 觸發 → 11:50 到 Target 1（+2R）",
+    "yClose": 60.77,
+    "yChgPct": 24.71,
+    "yClosePos": 0.85,
+    "yVolRatio": 2.27,
+    "price": 54.69,
+    "gapPct": -10,
+    "rvol": 1.86,
+    "verdict": "watch",
+    "side": null,
+    "reason": "今日盤前 RVOL 1.9，差少少到 2；跟 NVDA 一齊跌 10%，價格喺昨日收市 60.77 之下、昨日低 53.81 之上。開市首 5 分鐘成交 ≥ 平時 2 倍（約 570 萬股）先當有人關注；只做多嘅用戶唔撈底。",
+    "levels": "昨日低 53.81、盤前高 58.46、昨日收 60.77"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "LUNR",
+   "name": "Intuitive Machines",
+   "grade": "A",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 78,
+   "price": 13.38,
+   "prevClose": 12.18,
+   "gapPct": 9.85,
+   "pmVolume": 1208726,
+   "pmVolPct": 15.15,
+   "avgVolume": 7980207,
+   "rvol": 9.2,
+   "spread": 0.04,
+   "spreadPct": 0.3,
+   "atr": 1.06,
+   "atrPct": 8.7,
+   "mktCapB": 3.1,
+   "floatM": 152.73,
+   "rsQqq": 10.9,
+   "rsSpy": 10.33,
+   "ema9": 13.19,
+   "ema9Pct": 1.46,
+   "ema9Step": "5m",
+   "ema9Daily": 11.14,
+   "dailyTrend": "mixed",
+   "profile": {
+    "session": "11/11",
+    "dayType": "normal",
+    "vah": 12.5,
+    "val": 12.21,
+    "vpoc": 12.26,
+    "migration": "向上移",
+    "note": "Normal Day，價值區比前日向上移，冇重疊；今日盤前已經高過昨日 VAH 好多，喺價值區之外交易。"
+   },
+   "levels": {
+    "pmh": 14.08,
+    "pml": 11.91,
+    "pdh": 12.58,
+    "pdl": 11.89,
+    "pdc": 12.18,
+    "other": [
+     {
+      "label": "昨日 VAH",
+      "price": 12.5
+     },
+     {
+      "label": "昨日 POC",
+      "price": 12.26
+     },
+     {
+      "label": "50 日線",
+      "price": 12.98
+     },
+     {
+      "label": "盤前回調低位",
+      "price": 13.2
+     }
+    ]
+   },
+   "why": "業績好過預期，盤前升 9.8%、RVOL 9.2、盤前成交 120 萬股；買賣差價 0.07%。今日少數逆大市（QQQ −1.5%）向上嘅股，相對 QQQ 強 10.9%。",
+   "catalyst": "Q3 每股蝕 0.02 美元，好過預期蝕 0.12；收入 2.69 億美元，好過預期 2.46 億；訂單積壓（backlog）升到 19 億美元。全年收入指引收窄到 9.2–9.5 億（市場預期約 9.25 億）。",
+   "technical": "日線橫行（昨收高過 20 日線 10.84，但 20 日線仲低過 50 日線 12.98）；盤前已經企喺 50 日線同 20 日高位 12.58 之上。盤前高 14.08，之後回到 13.2 再企返 13.5 附近，5 分鐘 EMA 9 之上。",
+   "setup": "Flat Top／開市推動：喺盤前高 14.08 下面整固，升穿 14.08 先入（09:35 後）",
+   "pillars": {
+    "bigPicture": "大市偏淡：QQQ −1.5%、SPY −0.8%、半導體 SMH −3.6%（IBKR 即時），因為 NVDA 管理層風波。LUNR 屬航天國防，同 AI 板塊關係細，相對 QQQ 強 10.9%、相對 XLI 強 9.8%。",
+    "fundamentals": "盤前 07:30 左右出業績：收入同每股盈利都好過預期，backlog 19 億美元（年初至今多咗 17 億）。指引收窄，中位數同市場預期差唔多。屬新而具體嘅消息。",
+    "technical": "盤前由 12.0 一路升到 14.08，回調到 13.2 守住，再企返 13.5–13.6。上面阻力就係 PMH 14.08；下面支持 13.2、50 日線 12.98、昨日高 12.58。ATR 1.06（8.7%），波幅夠。",
+    "tape": "盤前成交 120 萬股（約平時 15%），RVOL 9.2；IBKR 即時買 13.52／賣 13.56，差價窄。開市第一支 5 分鐘 K 平時約 35 萬股，要見 ≥ 70 萬股先算 A+。",
+    "intuition": "信心中等。業績同訂單都實在，Short Float 23.7%，升穿盤前高有機會逼淡倉。最大風險係大市跌得急、科技股拖累成個市。開市跌穿 13.2 就放棄。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 14.08，首 5 分鐘成交 ≥ 平時 2 倍（約 70 萬股），價格喺 VWAP 同 5 分鐘 EMA 9 之上，入場前 QQQ 喺 VWAP 上面",
+    "entry": 14.1,
+    "stop": 13.58,
+    "target1": 15.14,
+    "target2": 15.66,
+    "rr": 2
+   },
+   "plan": {
+    "long": "Flat Top：開市後喺 14.08 下面窄幅整固（冇跌穿 VWAP），升穿 14.08 用 Buy Stop 14.10 入，Stop 13.58，T1 15.14、T2 15.66；+1R（14.62）將 Stop 移返入場價。11:30 前未觸發就放棄。",
+    "short": "唔做沽空：消息正面兼且 Short Float 高。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿盤前回調低位 13.2 就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 14 次、贏 2 次、約 −9.1R。"
+   },
+   "risks": [
+    "大市偏淡（QQQ −1.5%），科技股急跌可能拖累",
+    "盤前已升 9.8%，開市可能先回吐（Gap Fade）",
+    "ATR 8.7%，波幅大：Stop 0.52 ATR，要按每股風險計股數",
+    "IBKR 即時買賣差價約 0.3%（盤前偏闊），開市後收窄到 0.1% 以下先入，用限價單"
+   ],
+   "news": [
+    {
+     "title": "Intuitive Machines Reports Backlog At End Of Q3 Of $1.9B, Up $1.7B YtD",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/63180557/intuitive-machines-reports-backlog-end-q3-1-9b-1-7b-ytd",
+     "time": "2026-11-12T12:44"
+    },
+    {
+     "title": "Intuitive Machines Q3 EPS $(0.02) Beats $(0.12) Estimate, Sales $269.348M Beat $245.879M Estimate",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/news/earnings/26/11/63180524/intuitive-machines-q3-eps-0-02-beats-0-12-estimate-sales-269-348m-beat-245-879m-estimate",
+     "time": "2026-11-12T12:44"
+    },
+    {
+     "title": "LUNR: Intuitive Machines Inc. filed SEC Form 8-K: Results of...",
+     "source": "Quantisnow（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNNWk2Y2dIeW01bnlYZFh4VlZtb2UxZDdxTE9QbWs4bVNvUjJUbWRHTW5uWE5US0UwaXZVNWc0ZTJsTVM1MVlNWDktRVRSdlJHbVBMdC1TVWtDVU0wZ0x1UlIwMXFCNExCcXRIMXlrcFY5MW5Tdy1DN2lNQWxkd2xCMnlXT29iX0Nhc2RpSFBFdjNsSEhMODlxcjFnZGd2U2NPSlZOSHdtWVo3Zw?oc=5",
+     "time": "2026-11-12T12:36"
+    },
+    {
+     "title": "Intuitive Machines GAAP EPS of -$0.02 beats by $0.10, revenue of $269.3M beats by $21.74M",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/LUNR/news?source=feed_symbol_LUNR",
+     "time": "2026-11-12T12:33"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描",
+    "Nasdaq 業績日曆（盤前）"
+   ],
+   "ibkr": {
+    "at": "2026-11-12T13:17:51.603Z",
+    "atET": "08:17",
+    "status": "REALTIME",
+    "last": 13.59,
+    "ts": "2026-11-12T13:14:14.000Z",
+    "halted": false,
+    "bid": 13.52,
+    "ask": 13.56,
+    "bidSize": 100,
+    "askSize": 37,
+    "volume": 1522023.339776,
+    "chgPct": 11.58,
+    "spread": 0.04,
+    "spreadPct": 0.295,
+    "gapNow": 11.58
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "NVDA",
+   "name": "NVIDIA",
+   "grade": "B",
+   "beginner": "適合新手",
+   "direction": "Short",
+   "score": 72,
+   "price": 160.28,
+   "prevClose": 173.73,
+   "gapPct": -7.74,
+   "pmVolume": 27633729,
+   "pmVolPct": 16.61,
+   "avgVolume": 166330435,
+   "rvol": 4.03,
+   "spread": 0.05,
+   "spreadPct": 0.03,
+   "atr": 9.14,
+   "atrPct": 5.26,
+   "mktCapB": 3842.6,
+   "floatM": 23190,
+   "rsQqq": -6.69,
+   "rsSpy": -7.26,
+   "ema9": 160.28,
+   "ema9Pct": 0,
+   "ema9Step": "5m",
+   "ema9Daily": 186.97,
+   "dailyTrend": "down",
+   "profile": {
+    "session": "11/11",
+    "dayType": "normal",
+    "vah": 176.92,
+    "val": 173.78,
+    "vpoc": 175.08,
+    "migration": "向上移",
+    "note": "昨日價值區向上移，但今日盤前跳空到 160 附近，遠低過昨日 VAL 173.78：喺價值區下面交易，偏淡。"
+   },
+   "levels": {
+    "pmh": 164.8,
+    "pml": 158.92,
+    "pdh": 177.54,
+    "pdl": 170.77,
+    "pdc": 173.73,
+    "other": [
+     {
+      "label": "昨日 VAL",
+      "price": 173.78
+     },
+     {
+      "label": "20 日低",
+      "price": 165.89
+     },
+     {
+      "label": "盤前 08:00 反彈高",
+      "price": 161.3
+     }
+    ]
+   },
+   "why": "重大消息令全市場最大成交股跳空低開 7.7%：盤前成交 2,760 萬股、RVOL 4.0、差價 0.02%。日線跌勢（昨收低過 20 日線，20 日線低過 50 日線），盤前已跌穿 20 日低 165.89。",
+   "catalyst": "消息指董事會考慮 CEO 黃仁勳嘅去留；William Blair 同 KeyBanc 今朝都降級評級。資金由 NVDA 轉去 AVGO、AMD。",
+   "technical": "日線跌勢；盤前喺 158.9–164.8 之間，08:00 後慢慢走低，貼近盤前低 158.92。下面冇明顯支持（20 日低 165.89 已經失守），上面阻力 161.3（08:00 反彈高）同盤前高 164.8。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低 158.92",
+   "pillars": {
+    "bigPicture": "QQQ −1.5%、SMH −3.6%（IBKR 即時），NVDA 係拖低大市嘅主因。相對 QQQ 弱 6.7%、相對 SMH 弱 4.8%。",
+    "fundamentals": "管理層風波 + 兩間券商降級，屬新而重大嘅消息；但未有正式公告，消息隨時可能澄清，引起急速反彈。",
+    "technical": "日線跌勢，價格遠低過 20 日線 203.8。盤前未有明顯反彈，收市價附近係盤前低。",
+    "tape": "盤前成交 2,760 萬股（約平時 17%），差價 0.02%；開市第一支 5 分鐘 K 平時約 1,250 萬股，要見 ≥ 2,500 萬股先算跟進。",
+    "intuition": "信心中等偏低。之前兩次大型股壞消息跳空低開（11/04、11/09）都係開市後反彈，所以一定要等跌穿盤前低先入，唔好開市即沽。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低 158.92，首 5 分鐘成交 ≥ 2,500 萬股，價格喺 VWAP 同 5 分鐘 EMA 9 之下，QQQ 喺 VWAP 下面",
+    "entry": 158.85,
+    "stop": 162.4,
+    "target1": 151.75,
+    "target2": 148.2,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：日線跌勢兼重大負面消息。只做多嘅用戶今日唔好撈底。",
+    "short": "跌穿 158.92 用 Sell Stop 158.85 沽，Stop 162.40（08:00 反彈高 161.3 之上），T1 151.75、T2 148.20；−1R（155.30）將 Stop 移返入場價。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。一開市反彈企穩 161.3 之上就唔沽；有官方澄清消息就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 14 次、贏 2 次、約 −9.1R。"
+   },
+   "risks": [
+    "大型股壞消息跳空低開，開市後反彈嘅情況多（11/04、11/09 都係）",
+    "消息未經公司證實，隨時有澄清令股價急升",
+    "Stop 闊 3.55（0.39 ATR），要按風險計股數",
+    "盤前價貼住 5 分鐘 EMA 9（0%），未有明確向下動能，要等跌穿盤前低先確認"
+   ],
+   "news": [
+    {
+     "title": "Corteva Posts Downbeat Q3 Results, Joins Nvidia, Alvotech And Other Big Stocks Moving Lower In Thursday’s Pre-Market Session",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/63182030/corteva-posts-downbeat-q3-results-joins-nvidia-alvotech-and-other-big-stocks-moving-lower-in-thursdays-pre-market-session",
+     "time": "2026-11-12T13:05"
+    },
+    {
+     "title": "Nvidia Faces A 'Black Eye Moment,' Dan Ives Says, as 'Writing Is On The Wall' for Jensen Huang; Projects $225 Stock Valuation Without CEO",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/markets/equities/26/11/63181607/nvidia-faces-a-black-eye-moment-dan-ives-says-as-writing-is-on-the-wall-for-jensen-huang-projects-225-stock-valuation-without-ceo",
+     "time": "2026-11-12T13:00"
+    },
+    {
+     "title": "Is Nvidia Done For Following The Drama? Absolutely Not (Q3 Preview)",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4966952-is-nvidia-done-for-following-the-drama-absolutely-not-q3-preview?source=feed_symbol_NVDA",
+     "time": "2026-11-12T12:45"
+    },
+    {
+     "title": "William Blair Downgrades NVIDIA to Market Perform",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/news/26/11/63180438/william-blair-downgrades-nvidia-market-perform",
+     "time": "2026-11-12T12:43"
+    }
+   ],
+   "lists": [
+    "IBKR 跌幅掃描",
+    "IBKR 高成交掃描",
+    "Alpaca 最活躍"
+   ],
+   "ibkr": {
+    "at": "2026-11-12T13:17:51.603Z",
+    "atET": "08:17",
+    "status": "REALTIME",
+    "last": 159.33,
+    "ts": "2026-11-12T13:14:34.000Z",
+    "halted": false,
+    "bid": 159.32,
+    "ask": 159.37,
+    "bidSize": 163,
+    "askSize": 10,
+    "volume": 30131586.731395,
+    "chgPct": -8.29,
+    "spread": 0.05,
+    "spreadPct": 0.031,
+    "gapNow": -8.29
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "NBIS",
+   "name": "Nebius Group",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 66,
+   "price": 136.96,
+   "prevClose": 154.69,
+   "gapPct": -11.46,
+   "pmVolume": 7314996,
+   "pmVolPct": 28.06,
+   "avgVolume": 26072748,
+   "rvol": 6.82,
+   "spread": 0.37,
+   "spreadPct": 0.28,
+   "atr": 16.52,
+   "atrPct": 10.68,
+   "mktCapB": 35.99,
+   "floatM": 222.54,
+   "rsQqq": -10.41,
+   "rsSpy": -10.98,
+   "ema9": 141.6,
+   "ema9Pct": -3.28,
+   "ema9Step": "5m",
+   "ema9Daily": 145.21,
+   "dailyTrend": "down",
+   "profile": {
+    "session": "11/11",
+    "dayType": "normal",
+    "vah": 159.55,
+    "val": 154.15,
+    "vpoc": 156,
+    "migration": "向上移",
+    "note": "昨日價值區大幅向上移（154–160），今日盤前已經跌到 131，遠低過昨日 VAL：喺價值區下面交易。"
+   },
+   "levels": {
+    "pmh": 164.22,
+    "pml": 130.6,
+    "pdh": 160.21,
+    "pdl": 147.36,
+    "pdc": 154.69,
+    "other": [
+     {
+      "label": "昨日 VAL",
+      "price": 154.15
+     },
+     {
+      "label": "盤前 07:30 反彈高",
+      "price": 137.85
+     },
+     {
+      "label": "20 日低",
+      "price": 113.3
+     }
+    ]
+   },
+   "why": "業績後「好消息出貨」：盤前由 164 跌到 131，IBKR 即時跌 14%；RVOL 6.8、盤前成交 730 萬股。今日 IBKR 高成交掃描頭 5 名。",
+   "catalyst": "Q3 收入 9.81 億美元、經調整每股賺 0.30，都好過預期；但公司話 Microsoft 喺 New Jersey 嘅剩餘容量延遲到 2027 年第二季交付。市場聚焦延遲，加上 NVDA 拖累 AI 股。",
+   "technical": "日線跌勢（昨收低過 20 日線 156.6，20 日線低過 50 日線 198）。盤前 07:00 出業績衝上 164.22 之後一路跌，07:30 反彈到 137.85 失敗，08:15 創盤前新低 130.6。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低 130.60",
+   "pillars": {
+    "bigPicture": "QQQ −1.5%、AI 基建股（NVDA、CRWV、IREN）一齊跌，NBIS 相對 QQQ 弱 10.4%。",
+    "fundamentals": "業績本身好，但容量交付延遲係實質負面；好消息出貨通常波動好大。",
+    "technical": "盤前一路創新低，07:30 反彈高 137.85 係重要阻力。ATR 16.5（10.7%），一日波幅極大。",
+    "tape": "盤前成交 730 萬股（約平時 28%）；IBKR 即時買賣差價約 0.28%，偏闊，要用限價單。",
+    "intuition": "信心中低。Short Float 22.9%，跌得太急隨時大反彈。只做跌穿盤前低嘅延續，唔追低。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低 130.60，首 5 分鐘成交 ≥ 平時 2 倍（約 220 萬股），價格喺 VWAP 下面，QQQ 喺 VWAP 下面",
+    "entry": 130.5,
+    "stop": 136.4,
+    "target1": 118.7,
+    "target2": 113.3,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：日線跌勢、盤前一路跌。只做多嘅用戶今日唔好撈底。",
+    "short": "跌穿 130.60 用 Sell Stop 130.50 沽，Stop 136.40（07:30 反彈高 137.85 下面、0.36 ATR），T1 118.70、T2 113.30（20 日低）；−1R（124.60）將 Stop 移返入場價。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。差價 > 0.3% 就唔做；開市即反彈企穩 137.85 之上就唔沽。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 14 次、贏 2 次、約 −9.1R。"
+   },
+   "risks": [
+    "Short Float 22.9%，急跌後容易急升（逼淡倉）",
+    "買賣差價約 0.28%，偏闊",
+    "ATR 10.7%，波幅極大：股數要細"
+   ],
+   "news": [
+    {
+     "title": "Nebius Group Reports Third Quarter 2026 Financial Results",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.finanzen.ch/nachrichten/aktien/nebius-posts-narrower-loss-in-q3;-plans-to-reach-pre-tax-breakeven-by-end-of-2027-1036755527",
+     "time": "2026-11-12T13:01"
+    },
+    {
+     "title": "Nebius revenue jumps nearly sixfold as CEO says AI demand remains strong",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/NBIS/news?source=feed_symbol_NBIS",
+     "time": "2026-11-12T12:39"
+    },
+    {
+     "title": "Nebius Group N.V. - Class A Ordinary Shares Q3 Adj. EPS $0.30 Beats $(0.69) Estimate, Sales $980.800M Beat $907.534M Estimate",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/news/earnings/26/11/63179326/nebius-group-n-v-class-ordinary-shares-q3-adj-eps-0-30-beats-0-69-estimate-sales-980-800m-beat-907-5",
+     "time": "2026-11-12T12:21"
+    },
+    {
+     "title": "Nebius Says Databricks, Datadog, And Snowflake Signed Multi-Year AI Cloud Agreements, Palantir Named It Preferred AI Cloud Partner; Terms Not Disclosed",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/quote/NBIS",
+     "time": "2026-11-12T12:19"
+    }
+   ],
+   "lists": [
+    "IBKR 跌幅掃描",
+    "IBKR 高成交掃描",
+    "Nasdaq 業績日曆（盤前）"
+   ],
+   "ibkr": {
+    "at": "2026-11-12T13:17:51.603Z",
+    "atET": "08:17",
+    "status": "REALTIME",
+    "last": 132.62,
+    "ts": "2026-11-12T13:14:36.000Z",
+    "halted": false,
+    "bid": 132.33,
+    "ask": 132.7,
+    "bidSize": 80,
+    "askSize": 3,
+    "volume": 8841441.573412,
+    "chgPct": -14.27,
+    "spread": 0.37,
+    "spreadPct": 0.279,
+    "gapNow": -14.27
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "AVGO",
+   "why": "資金由 NVDA 轉入，相對 QQQ 強 1.9%、RVOL 2.0；但 Gap 只有 0.8%、盤前由 359 跌返 346。開市後企穩 VWAP、等 10:00 後 30 分鐘 ORB 先考慮做多。"
+  },
+  {
+   "sym": "FIGR",
+   "why": "業績好過預期、加大回購，升 7.8%、RVOL 32；但差價 0.96%，開市後差價收窄到 0.1% 以下先考慮。"
+  },
+  {
+   "sym": "BZ",
+   "why": "跌 15%、RVOL 43，但未搵到清楚消息、差價 0.35%。"
+  },
+  {
+   "sym": "CRWV",
+   "why": "RVOL 1.9（未夠 2），跟 NVDA 一齊跌 10%。"
+  },
+  {
+   "sym": "TTEK",
+   "why": "業績升 10.5%，但盤前成交得 1.7 萬股、差價 0.96%。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "YETI",
+   "why": "差價 1.48%，太闊"
+  },
+  {
+   "sym": "TWST",
+   "why": "差價 1.92%，太闊"
+  },
+  {
+   "sym": "EYE",
+   "why": "盤前成交太少、差價 8.6%"
+  }
+ ],
+ "news": [
+  {
+   "title": "NextPlat GAAP EPS of -$0.28 beats by $0.18, revenue of $10.5M misses by $2.5M",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4671385-nextplat-gaap-eps-of-0_28-beats-by-0_18-revenue-of-10_5m-misses-by-2_5m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-12T13:09"
+  },
+  {
+   "title": "Portfolio check: The biggest SA Quant downgrades over the past week",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4671377-portfolio-check-the-biggest-sa-quant-downgrades-over-the-past-week?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-12T13:08"
+  },
+  {
+   "title": "Nuwellis GAAP EPS of -$5.81, revenue of $2.21M",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4671384-nuwellis-gaap-eps-of-5_81-revenue-of-2_21m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-12T13:08"
+  },
+  {
+   "title": "Lucid Diagnostics Non-GAAP EPS of -$0.06 in-line, revenue of $1.21M misses by $0.43M",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4671383-lucid-diagnostics-non-gaap-eps-of-0_06-in-line-revenue-of-1_21m-misses-by-0_43m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-12T13:07"
+  },
+  {
+   "title": "Forum Markets GAAP EPS of $0.00 beats by $0.14, revenue of $2M misses by $2.93M",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4671381-forum-markets-gaap-eps-of-0_00-beats-by-0_14-revenue-of-2m-misses-by-2_93m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-12T13:06"
+  },
+  {
+   "title": "Moderna preps Massachusetts facility as global supply site for cancer shot",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4671374-moderna-preps-massachusetts-site-cancer-shot?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-12T13:05"
+  },
+  {
+   "title": "Imunon GAAP EPS of -$0.64 misses by $0.06",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4671379-imunon-gaap-eps-of-0_64-misses-by-0_06?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-12T13:05"
+  },
+  {
+   "title": "Wendy&#x2019;s rejects a takeover offer, scales back breakfast and still sees its stock surge",
+   "source": "MarketWatch",
+   "url": "https://www.marketwatch.com/story/wendys-rejects-a-takeover-offer-scales-back-breakfast-and-still-sees-its-stock-surge-4e398cde?mod=mw_rss_topstories",
+   "time": "2026-11-12T13:05"
+  }
+ ],
+ "lesson": "大型股壞消息跳空低開，開市後反彈嘅情況好多（11/04、11/09 都係）。沽空 NVDA 一定要等跌穿盤前低先入；只做多嘅話，今日唔好撈 NVDA、NBIS、CRWV 嘅底。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
