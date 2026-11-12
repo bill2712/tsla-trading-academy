@@ -74,7 +74,12 @@
   }
   async function loadDay(date) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error('notfound');
-    if (!dayCache[date]) dayCache[date] = await getJSON('data/picks/' + date + '.json');
+    if (!dayCache[date]) {
+      const d = await getJSON('data/picks/' + date + '.json');
+      /* 2026-11-12 或之前嘅報告用舊課程編號（例如 Level 11 第 8 章）：顯示時轉新編號 */
+      if (date <= '2026-11-12' && window.CURRICULUM) CURRICULUM.fixDeep(d, null);
+      dayCache[date] = d;
+    }
     return dayCache[date];
   }
 
@@ -153,7 +158,7 @@
     if (!m || num(m.vah) == null) return '';
     return `<p class="pk-prof"><b>📊 Market Profile（${esc(m.session || '昨日')}）：</b>${esc(DAYTYPE[m.dayType] || m.dayType || '')}｜VAH $${F(m.vah)}｜POC $${F(m.vpoc)}｜VAL $${F(m.val)}${m.migration ? `｜價值區${esc(m.migration)}` : ''}${m.note ? `<small>${esc(m.note)}</small>` : ''}<small class="muted">（TradingCalc 計算）</small></p>`;
   }
-  /* Long 專區：頭 2 小時做多、日線升勢優先（Level 15） */
+  /* Long 專區：頭 2 小時做多、日線升勢優先（Level 6「頭 2 小時做多」單元） */
   function longFocusHTML(d) {
     const L = d.longFocus;
     if (!L) return '';
@@ -165,7 +170,7 @@
         const tk = num(t.entry) != null && num(t.stop) != null && num(t.target1) != null ? `#/tools/bracket-ticket?sym=${encodeURIComponent(x.sym)}&side=long&entry=${t.entry}&stop=${t.stop}&t1=${t.target1}${num(t.target2) != null ? '&t2=' + t.target2 : ''}${num(p.atr) != null ? '&atr=' + p.atr : ''}` : '';
         return `<tr><th>${esc(x.sym)}</th><td>${trendTag(x.trend)}</td><td class="${cls(p.gapPct)}">${P(p.gapPct)}</td><td>${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</td><td>${num(t.entry) == null ? '—' : '$' + F(t.entry)}</td><td class="neg">${num(t.stop) == null ? '—' : '$' + F(t.stop)}</td><td class="pos">${num(t.target1) == null ? '—' : '$' + F(t.target1)}</td><td class="pk-long-s">${esc(x.setups || '')}${x.note ? `<small>${esc(x.note)}</small>` : ''}</td><td>${tk ? `<a class="btn sm" href="${tk}">⚡ 落單卡</a>` : ''} <a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(x.sym)}" title="多圖同步看盤">📺</a></td></tr>`; }).join('')}
       </tbody></table></div>` : '<p class="pk-risk">今日 Long 專區冇合格股：冇好機會就唔做。</p>'}
-      <p class="tool-fine"><b>A+ 過濾（開市後自己核對）：</b>首 5 分鐘成交 ≥ 平時 2 倍；入場前 QQQ 喺自己 VWAP 上面。兩樣唔齊就唔做。09:30–09:35 唔落單；唔好一開市追昨日高位（PDH）突破；11:30 收工。<a href="#/level/l15">Level 15：頭 2 小時做多</a></p></section>`;
+      <p class="tool-fine"><b>A+ 過濾（開市後自己核對）：</b>首 5 分鐘成交 ≥ 平時 2 倍；入場前 QQQ 喺自己 VWAP 上面。兩樣唔齊就唔做。09:30–09:35 唔落單；唔好一開市追昨日高位（PDH）突破；11:30 收工。<a href="${window.CURRICULUM ? CURRICULUM.unitHref('l15') : '#/level/l15'}">${esc(window.CURRICULUM ? CURRICULUM.unitRef('l15') : '頭 2 小時做多')}</a></p></section>`;
   }
   /* ⏰ 開市前最後更新（美東約 08:57，IBKR 即時報價） */
   const PRE = { waiting: ['⏳', '未到入場價：等觸發', 'ok'], near: ['👀', '到咗入場價附近：09:35 後確認', 'mid'], chase: ['🚫', '已過入場價：唔追', 'bad'], broken: ['❌', '已穿 Stop：作廢', 'bad'], nodata: ['・', '冇 IBKR 數據', ''] };
@@ -209,7 +214,7 @@
             <div class="${num(x.rvol) == null ? '' : x.rvol >= 2 ? 'ok' : 'bad'}"><span>今日 RVOL</span><b>${num(x.rvol) == null ? '—' : F(x.rvol, 1) + '×'}</b><small>${num(x.rvol) == null ? '冇數據' : x.rvol >= 2 ? '✅ ≥ 2×' : '❌ 未夠 2×'}</small></div>
           </div>
           <p class="pk-carry-r">${esc(x.reason || '')}${x.levels ? `<small>📍 關鍵位：${esc(x.levels)}</small>` : ''}</p></div>`; }).join('')}</div>` : '<p class="pk-risk">上一份報告冇候選股，今日冇嘢要跟進。</p>'}
-      <p class="tool-fine"><b>點樣判斷：</b>「可以再做」唔係因為昨日升咗或者跌咗，而係今日盤前 <b>RVOL 再次 ≥ 2</b>、有今日嘅新計劃（同新股一樣要過 9 個指標）。數據（50 隻大型股，2024–2026）：昨日有人關注嘅股，第二日仲有人關注嘅只有約三分一，開市成交再次 ≥ 2 倍嘅只有約 13%；第二日方向同昨日一樣嘅機會係 48%，同擲銀仔差唔多。所以昨日贏唔代表今日照做，昨日冇觸發亦唔代表今日補做。<a href="#/c/l17-c4">Level 17 第 4 章：Second Day Play 嘅數據</a></p></section>`;
+      <p class="tool-fine"><b>點樣判斷：</b>「可以再做」唔係因為昨日升咗或者跌咗，而係今日盤前 <b>RVOL 再次 ≥ 2</b>、有今日嘅新計劃（同新股一樣要過 9 個指標）。數據（50 隻大型股，2024–2026）：昨日有人關注嘅股，第二日仲有人關注嘅只有約三分一，開市成交再次 ≥ 2 倍嘅只有約 13%；第二日方向同昨日一樣嘅機會係 48%，同擲銀仔差唔多。所以昨日贏唔代表今日照做，昨日冇觸發亦唔代表今日補做。<a href="#/c/l17-c4">${esc(window.CURRICULUM ? CURRICULUM.chRef('l17-c4') : '')}：Second Day Play 嘅數據</a></p></section>`;
   }
   function tradeHTML(t, p) {
     if (!t || num(t.entry) == null) return '';

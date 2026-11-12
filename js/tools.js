@@ -63,7 +63,7 @@
 
   const TOOLS = {};
 
-  /* ---------------- Position Size（Level 3 簡單版） ---------------- */
+  /* ---------------- Position Size（簡單版） ---------------- */
   TOOLS['possize-basic'] = {
     title: 'Long Position Size 計算器', icon: '🧮', cat: '風險與倉位', level: 'l3',
     desc: '輸入本金、風險比例、Entry、Stop、Target，計出最多可以買幾多整股。',
@@ -99,7 +99,7 @@
     }),
   };
 
-  /* ---------------- Day Trading Risk Calculator（Level 4） ---------------- */
+  /* ---------------- Day Trading Risk Calculator ---------------- */
   TOOLS['possize-pro'] = {
     title: 'Day Trading Risk Calculator', icon: '🛡️', cat: '風險與倉位', level: 'l4',
     desc: '加入滑價緩衝、來回費用、最多動用本金 %，支援 Long / Short。',
@@ -1176,7 +1176,7 @@
   /* ---------------- 決策教練 ---------------- */
   TOOLS['decision-coach'] = {
     title: '決策教練：WAIT、PLAN 定 SKIP？', icon: '🧠', cat: '計劃與規則', level: 'l2',
-    desc: '將你見到嘅結構、位置、K 線確認、Volume、VWAP 同風險逐項輸入，按 Level 2 優先次序得出建議。',
+    desc: '將你見到嘅結構、位置、K 線確認、Volume、VWAP 同風險逐項輸入，按 Price Action 優先次序得出建議。',
     render(el, ctx) {
       const d = { dir: 'long', bias: 'bull', loc: 'key', conf: 'single', vol: 'neutral', vwap: 'support', stopOk: 'yes', entry: 386.00, stop: 384.90, target: 388.50, minRR: 2 };
       const s = ctx.load(Object.assign({}, d));

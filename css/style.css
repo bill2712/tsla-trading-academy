@@ -1545,3 +1545,16 @@ body.mc-pop .mc-grid { height: calc(100vh - 120px); }
 .pk-ib { font-size: .88em; padding: 6px 10px; border-radius: 10px; background: var(--up-soft); line-height: 1.5; }
 .pk-ib b.pos { color: var(--up); } .pk-ib b.neg { color: var(--down); }
 @media (max-width: 560px) { .pk-pre-g { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- 課程單元（js/curriculum.js） ---------- */
+.toc-chs li.toc-unit { display: flex; align-items: center; gap: 6px; margin: 10px 0 2px; padding: 4px 8px 2px; font-size: .74em; font-weight: 800; letter-spacing: .02em; color: var(--lv, var(--accent)); border-top: 1px dashed var(--border); }
+.toc-chs li.toc-unit:first-of-type { border-top: 0; }
+.full-toc li.ft-unit { list-style: none; margin: 14px 0 4px; padding: 6px 10px; border-radius: 10px; background: var(--bg-soft); font-weight: 800; color: var(--lv, var(--accent)); display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.full-toc li.ft-unit small { font-weight: 600; color: var(--muted); }
+.lv-units { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 8px; }
+.lv-units a { display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--border); border-left: 4px solid var(--lv, var(--accent)); border-radius: 12px; color: inherit; text-decoration: none; background: var(--card, transparent); }
+.lv-units a:hover { border-color: var(--lv, var(--accent)); }
+.lv-units a span { grid-row: 1 / 3; font-size: 1.4em; }
+.lv-units a small { grid-column: 2; color: var(--muted); font-size: .8em; }
+.lv-units a em { grid-row: 1 / 3; grid-column: 3; font-style: normal; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lv-unit-h { margin: 18px 0 6px; padding-bottom: 4px; border-bottom: 2px solid var(--lv, var(--accent)); font-size: 1.05em; scroll-margin-top: 70px; }

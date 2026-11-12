@@ -352,7 +352,7 @@
       return { bars: pre.concat(key), vwap: true, zones: [{ lo: 384.8, hi: 385.2, label: 'Resistance Zone' }],
         lines: [{ y: 386.10, label: 'Entry 386.10', color: 'var(--accent)' }, { y: 384.70, label: 'Stop 384.70', color: 'var(--down)' }, { y: 388.90, label: 'Target 388.90', color: 'var(--up)' }],
         marks: [{ i: 3, text: '突破' }, { i: 4, text: '回測', pos: 'below' }, { i: 5, text: '確認' }, { i: 6, text: '觸發' }, { i: 8, text: '+1R' }],
-        title: 'Level 4：TSLA 模擬交易日', caption: '虛構交易日：由開市到 +1R。之後兩種可能結局見 14.10。' };
+        title: 'TSLA 模擬交易日', caption: '虛構交易日：由開市到 +1R。之後兩種可能結局見 14.10。' };
     },
   };
 

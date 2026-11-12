@@ -1,6 +1,6 @@
 # 📈 TSLA Day Trading 學院
 
-由 Level 1 到 Level 17 嘅美股 Day Trading **互動學習平台**（廣東話）。內容整理自自己生成嘅 Level 1–5 課程筆記同實戰問答，再加上進階 Level 6–8、VCP 專題 Level 9、圖表設定 Level 10、真錢之前實務 Level 11、睇圖實戰 Level 12、落盤效率 Level 13、常用 Setup Level 14、頭 2 小時做多 Level 15、Indicator 實戰 Level 16、名家打法 Level 17、補充章節、互動計算器、模擬交易練習場、K 線重播、訓練場、測驗、錯題本同交易日誌。
+由 Level 1 到 Level 9 嘅美股 Day Trading **互動學習平台**（廣東話）。內容由自己生成嘅課程筆記同實戰問答開始，之後按問題逐步加章節；2026 年 11 月按學習次序重新整理成 9 個 Level、211 章，所有 Setup 集中喺 Level 6。
 
 > ⚠️ 所有 TSLA 價格、成交量同交易例子都係**教學模擬**，唔係即時行情、唔係投資建議、亦唔係已驗證嘅盈利策略。
 
@@ -8,7 +8,7 @@
 
 | 類別 | 功能 |
 |---|---|
-| 📚 內容 | **Level 1** 六樣工具（K 線、Volume、PDH/PDL、S/R、VWAP、LuxAlgo）、**Level 2** Price Action 實戰（結構、Bias、K 線深度、Volume、VWAP、六個 TSLA 情境、WAIT/PLAN/SKIP）、Level 3 交易策略、Level 4 執行與風險、Level 5 驗證與系統開發；進階 **Level 6** 市場環境（多時間框架、Gap、Opening Range、相對強弱、時段、事件、日類型）、**Level 7** 進階交易管理（R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性、Kelly）、**Level 8** 交易者表現系統（計劃書、Routine、檢討、偏誤與 Tilt、升級階梯、策略衰退、可持續交易、畢業專題）、**Level 9** VCP 波幅收縮形態（Mark Minervini 方法：T1/T2/T3、Volume Dry-Up、Pivot、Stage 2 同 Trend Template、三種 Entry、Stop 同股數、日內 5 分鐘 VCP、真假 VCP、TradingView 設定、回測）、**Level 10** 圖表點用（TradingView：New York 時區、Extended Hours 同盤前背景、Session Breaks、時間框架、VWAP／EMA 9／Relative Volume at Time、畫 PMH／PDH、Long／Short Position 工具、警報、Bar Replay；互動示範圖同真實 TradingView 嵌入圖）、**Level 11** 真錢之前（研究數字同每日報告真實成績表、香港券商同投資者保障、W-8BEN／股息預扣／香港稅／美國遺產稅、成本計成 R、實時數據同斷線後備、盤前同開市落單、Cash 戶口做唔做到 Short 同 SSR、停牌、騙局紅旗、點用每日報告、準備度自我評估同第一個月計劃）、**Level 12** 睇圖實戰（Swing 點同市場結構、斜線點畫、Lower High 沽空、突破同 Retest、水平位、用真實數據計 Gap 延續率、開市頭 30 分鐘三個訊號、K 線同成交量、睇圖流程、100 張圖練習同揀師傅；練習圖同真實 Alpaca 圖都得）、**Level 13** 落盤效率（點解唔使同時睇晒、開市前計劃表、畫面佈局、警報、IBKR Bracket Order 同 Stop Limit 突破入場、TWS／IBKR Desktop／手機步驟、Presets 同 Hotkeys、一日節奏；新工具：開市前計劃表、IBKR Bracket 落單卡；MacBook + 雙 Mon 佈局）、**Level 14** 常用 Setup 實戰（30 分鐘 ORB、開市推動後第一次回調、VWAP 回調、VWAP 收復、Red-to-Green、Gap Fade、午市 HOD 突破、失敗突破；每個都有入場／Stop／Target、一步一步示意圖、用 Alpaca 真實數據計嘅成績同辨認練習）、**Level 15** 頭 2 小時做多（09:30–11:30、只做 Long、日線升勢股：真實數據、A+ 過濾、Flat Top／EMA 9 回調／Bull Flag／30 分鐘 ORB、唔好追 PDH 突破、收工規則；配合每日選股嘅 Long 專區）、**Level 16** Indicator 實戰（EMA 9／20、VWAP、ATR、RVOL、RSI、MACD、Relative Strength、日線均線：量度乜、點讀、做多點用；用真實數據驗證邊個讀數有用；逐支 K 讀 Indicator 嘅練習圖、ATR 計算器）、**Level 17** 名家打法（Ross Cameron、Andrew Aziz、Mike Bellafiore／SMB、Linda Raschke、Kristjan Kullamägi、Toby Crabel 公開教嘅 Setup、選股同心法，另加 Al Brooks、Lance Breitstein、Brett Steenbarger 嘅觀點；每個 Setup 用真實數據驗證；十個共通原則；PlayBook 卡）、💡 實戰問答，共 211 章 |
+| 📚 內容 | 9 個 Level（次序 = 建議學習次序；大 Level 再分單元）：**Level 1** 圖表基本工具・**Level 2** TradingView 圖表設定・**Level 3** Price Action 同睇真圖（Price Action 核心／由 Notes 到真圖／你問過嘅問題）・**Level 4** Indicator 實戰・**Level 5** 市場環境、Gap 同開市（市場環境／Gap 同開市頭 30 分鐘）・**Level 6** Setup 大全（Setup 基本功／日內常用 Setup／頭 2 小時做多／名家打法／VCP）・**Level 7** 落單、風險同交易管理（執行與風險管理／進階管理同訂單流／落盤效率 IBKR）・**Level 8** 回測同系統驗證・**Level 9** 真錢之前同交易者表現（真錢之前／交易者表現系統） |
 | 🗺️ 目錄 | 側欄完整目錄、🗺️ 學習地圖（每章進度格、預計完成日期）、每個 Level 概覽頁、完整課程目錄頁、右邊「本章目錄」 |
 | 🎓 證書 | 讀完一個 Level + 期末測驗 80% 或以上，就可以攞可列印嘅結業證書 |
 | 🧭 建議下一步 | 主頁按你嘅進度自動建議：溫錯題、繼續讀、做未完成測驗、攞證書、試訓練場 |
@@ -87,6 +87,7 @@ Firebase Console → tsla-academy → **Firestore Database → 規則（Rules）
 
 ```
 index.html              主頁面
+js/curriculum.js        課程結構：將 content/ 嘅舊 Level（l1–l17、qa）重新分組成 9 個 Level + 單元，章節重新編號，內文交叉參考轉新編號（章節 id 不變）
 css/style.css           樣式（深淺色、手機、列印）
 content/level1.js       Level 1 六樣工具
 content/level2.js       Level 2 Price Action

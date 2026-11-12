@@ -295,6 +295,7 @@
   }
 
   Object.assign(SCENARIOS, window.REPLAY_EXTRA || {});
-  { const ord = ['l1', 'l2', 'l3', 'l4', 'l5', 'l6', 'l7', 'l8', 'l9', 'l10', 'l11', 'l12', 'l13', 'l14', 'l15', 'l16', 'l17', 'qa']; const keys = Object.keys(SCENARIOS).sort((a, b) => ord.indexOf(SCENARIOS[a].level) - ord.indexOf(SCENARIOS[b].level)); const sorted = {}; keys.forEach((k) => (sorted[k] = SCENARIOS[k])); Object.keys(SCENARIOS).forEach((k) => delete SCENARIOS[k]); Object.assign(SCENARIOS, sorted); }
+  /* 按新課程次序排（js/curriculum.js），文字入面嘅「Level N 第 M 章」轉新編號 */
+  { const C = window.CURRICULUM, lvs = (window.COURSE || []).map((l) => l.id); const lvOf = (x) => (C ? C.lvOf(x) : x); const keys = Object.keys(SCENARIOS).sort((a, b) => lvs.indexOf(lvOf(SCENARIOS[a].level)) - lvs.indexOf(lvOf(SCENARIOS[b].level))); const sorted = {}; keys.forEach((k) => { sorted[k] = SCENARIOS[k]; if (C) ['title', 'desc', 'intro', 'outro'].forEach((f) => { if (typeof sorted[k][f] === 'string') sorted[k][f] = C.fixText(sorted[k][f], { old: sorted[k].level, lv: lvOf(sorted[k].level) }); }); }); Object.keys(SCENARIOS).forEach((k) => delete SCENARIOS[k]); Object.assign(SCENARIOS, sorted); }
   window.Replay = { SCENARIOS, play };
 })();

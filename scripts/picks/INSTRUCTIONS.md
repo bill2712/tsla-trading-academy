@@ -255,7 +255,7 @@ Use them for every pick after the shortlist is final:
 ## 4b. Long focus（Long 專區）— required from 2026-11-12
 
 The main user trades **long only, in the first 2 hours (09:30–11:30 ET), and prefers stocks in a
-daily uptrend** (course: Level 15). Other family members still read the short ideas, so keep
+daily uptrend** (course: Level 6, unit 「頭 2 小時做多」). Other family members still read the short ideas, so keep
 them, but the report must serve the long-only trader first.
 
 1. **Daily trend** comes from the collector (`symbols[sym].dailyTrend`, also in `scanDraft[].trend`):
@@ -268,7 +268,7 @@ them, but the report must serve the long-only trader first.
 3. **`longFocus` block** (always present, even when empty):
    `"longFocus": { "summary": "…", "items": [{ "sym": "", "trend": "up", "setups": "", "note": "" }] }`
    - `items`: every Long pick, `up` first. Each must be a pick whose `trade.side` is `Long`.
-   - `setups`: which first-2-hours setup fits, in the Level 15 order of preference:
+   - `setups`: which first-2-hours setup fits, in the course order of preference (Level 6 「頭 2 小時做多」):
      Flat Top（高位整固突破）→ EMA 9 回調 → Bull Flag（第一次回調）→ 30 分鐘 ORB.
    - `summary`: 1–3 sentences in Cantonese: how many uptrend longs there are today, the best one,
      and the A+ filter reminder. If no Long qualifies write that plainly
@@ -348,7 +348,7 @@ symbol in today's `picks`; a symbol that is in today's `picks` must be `again`.
 
 Main setup: **Opening Drive (開市推動)** — after the open, price breaks the opening range in the
 direction of the gap with a clear volume surge. Alternatives: ORB 15m, breakout + retest,
-failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 9). Never chase the gap.
+failed breakout, VWAP pullback, gap-fill fade, intraday VCP (Level 6 「VCP」 unit). Never chase the gap.
 
 - Long: stop < entry < target1. Short: reverse. `rr` = |target1 − entry| ÷ |entry − stop|.
 - Stop at structure (opening-range low, PML, VWAP) — normally ≤ 0.3–0.5 ATR.
@@ -445,3 +445,9 @@ When one of yesterday's picks is `again` in `carryover`, mention it briefly (e.g
 
 Start ≈ 08:07 ET; publish by ≈ 08:40 ET. Quality first, but a report after 09:15 ET is useless —
 if short on time, publish fewer, fully-checked picks and say so.
+
+## Course references (since 2026-11-12)
+
+The course was reorganised into 9 levels (see `js/curriculum.js`). When report text cites the course,
+use the **new** numbering, e.g. 「Level 6 第 31 章」 or 「Level 6「頭 2 小時做多」」, never the old
+Level 10–17 numbers. Reports dated 2026-11-12 or earlier are converted automatically when shown.

@@ -9,13 +9,14 @@
   const view = $('#view');
 
   /* ---------------- 課程資料整理 ---------------- */
+  if (window.CURRICULUM && window.TOOLS) Object.values(TOOLS).forEach((t) => { const ctx = { old: t.level, lv: CURRICULUM.lvOf(t.level) }; t.title = CURRICULUM.fixText(t.title, ctx); t.desc = CURRICULUM.fixText(t.desc, ctx); });
   const LEVELS = window.COURSE;
   const CHAPTERS = [];
   const CH = {};
   LEVELS.forEach((lv) => {
     lv.chapters.forEach((c, i) => {
       c.level = lv; c.index = i;
-      c.sections = parseSections(c.md);
+      c.sections = parseSections(c.md, c);
       CHAPTERS.push(c); CH[c.id] = c;
     });
   });
@@ -28,7 +29,9 @@
     used.add(id);
     return id;
   }
-  function parseSections(md) {
+  /* 課程重新編號之後（js/curriculum.js），小節標題顯示新章號，但 id 照用舊章號（c.idNum），筆記、書籤、留言先唔會甩 */
+  function parseSections(md, c) {
+    const re = c && c.idNum != null && String(c.num) !== c.idNum ? new RegExp('^' + c.num + '(?=[.\\s])') : null;
     const used = new Set(); const out = [];
     let inBlock = false;
     md.split('\n').forEach((line) => {
@@ -36,7 +39,7 @@
       if (/^:::/.test(t)) { inBlock = t !== ':::'; return; }
       if (inBlock) return;
       const m = line.match(/^##\s+(.+)$/);
-      if (m) { const title = m[1].replace(/\*\*/g, '').trim(); out.push({ id: secIdFor(title, out.length, used), title }); }
+      if (m) { const title = m[1].replace(/\*\*/g, '').trim(); out.push({ id: secIdFor(re ? title.replace(re, c.idNum) : title, out.length, used), title }); }
     });
     return out;
   }
@@ -299,9 +302,10 @@
         return `<div class="toc-level ${isOpen ? 'open' : ''}" data-lv="${lv.id}" style="--lv:${lv.color}">
           <button class="toc-lv-head" data-toggle="${lv.id}" aria-expanded="${isOpen}"><span class="lv-icon">${lv.icon}</span><span class="lv-text"><b>${esc(lv.code)}</b><small>${esc(lv.title)}</small></span><span class="lv-prog">${st.done}/${st.total}</span><span class="caret">▾</span></button>
           <div class="toc-bar"><div style="width:${st.pct * 100}%"></div></div>
-          <ol class="toc-chs"><li class="toc-lv-ov"><a href="#/level/${lv.id}" class="toc-ch"><span class="ch-num">ⓘ</span><span class="ch-t">Level 概覽・練習・測驗</span></a></li>${lv.chapters.map((c) => {
+          <ol class="toc-chs"><li class="toc-lv-ov"><a href="#/level/${lv.id}" class="toc-ch"><span class="ch-num">ⓘ</span><span class="ch-t">Level 概覽・練習・測驗</span></a></li>${lv.chapters.map((c, ci) => {
             const p = chapterPct(c); const on = activeCh && activeCh.id === c.id;
-            return `<li class="${on ? 'on' : ''}"><a href="#/c/${c.id}" class="toc-ch"><span class="ch-dot ${p >= 1 ? 'done' : p > 0 ? 'part' : ''}" style="--p:${p * 360}deg"></span><span class="ch-num">${c.num}</span><span class="ch-t">${esc(c.title)}</span></a>
+            const uh = unitHead(lv, ci) ? `<li class="toc-unit"><span>${unitHead(lv, ci).icon}</span>${esc(unitHead(lv, ci).title)}</li>` : '';
+            return `${uh}<li class="${on ? 'on' : ''}"><a href="#/c/${c.id}" class="toc-ch"><span class="ch-dot ${p >= 1 ? 'done' : p > 0 ? 'part' : ''}" style="--p:${p * 360}deg"></span><span class="ch-num">${c.num}</span><span class="ch-t">${esc(c.title)}</span></a>
               ${on && c.sections.length ? `<ul class="toc-secs">${c.sections.map((s) => `<li><a href="#/c/${c.id}/${s.id}" data-sec-link="${s.id}" class="${seenMap()[c.id] && seenMap()[c.id][s.id] ? 'seen' : ''}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</li>`;
           }).join('')}</ol></div>`;
       }).join('')}
@@ -445,6 +449,10 @@
     const pkh = $('[data-pkhome]', view); if (pkh && window.Picks) Picks.homeCard(pkh);
   }
 
+  /* 單元（js/curriculum.js）：第 ci 章係咪一個單元嘅開始；得一個單元嘅 Level 唔顯示 */
+  function unitHead(lv, ci) { return lv.units && lv.units.length > 1 ? lv.units.find((u) => u.start === ci) || null : null; }
+  const LVOF = (id) => (window.CURRICULUM ? CURRICULUM.lvOf(id) : id);
+
   /* ---------------- 完整目錄頁 ---------------- */
   function renderFullTOC() {
     const u = Store.user();
@@ -452,7 +460,7 @@
       <div class="tool-foot"><input type="search" class="filter" placeholder="篩選目錄…" data-filter></div></div>
       <div class="full-toc">${LEVELS.map((lv) => { const st = levelStats(lv); return `<section class="ft-level" style="--lv:${lv.color}">
         <header><span>${lv.icon}</span><div><b>${esc(lv.code)}：${esc(lv.title)}</b><small>${esc(lv.subtitle)}</small></div><em>${st.done}/${st.total}</em></header>
-        <ol>${lv.chapters.map((c) => { const p = chapterPct(c); const seen = seenMap()[c.id] || {}; return `<li class="ft-ch" data-text="${esc((c.title + ' ' + c.sections.map((s) => s.title).join(' ') + ' ' + (c.keywords || []).join(' ')).toLowerCase())}">
+        <ol>${lv.chapters.map((c, ci) => { const p = chapterPct(c); const seen = seenMap()[c.id] || {}; const uh = unitHead(lv, ci); return `${uh ? `<li class="ft-unit">${uh.icon} 單元 ${uh.idx + 1}：${esc(uh.title)}<small>第 ${uh.start + 1}–${uh.start + uh.count} 章</small></li>` : ''}<li class="ft-ch" data-text="${esc((c.title + ' ' + c.sections.map((s) => s.title).join(' ') + ' ' + (c.keywords || []).join(' ')).toLowerCase())}">
           <a class="ft-ch-a" href="#/c/${c.id}"><span class="ch-dot ${p >= 1 ? 'done' : p > 0 ? 'part' : ''}" style="--p:${p * 360}deg"></span><b>第 ${c.num} 章　${esc(c.title)}</b><small>⏱ ${c.mins} 分鐘</small></a>
           <p class="ft-sum">${esc(c.summary)}</p>
           ${c.sections.length ? `<ul class="ft-secs">${c.sections.map((s) => `<li><a href="#/c/${c.id}/${s.id}" class="${seen[s.id] ? 'seen' : ''}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</li>`; }).join('')}</ol></section>`; }).join('')}</div>`;
@@ -469,7 +477,7 @@
     view.innerHTML = `<article class="chapter" style="--lv:${lv.color}">
       <nav class="crumbs"><a href="#/">主頁</a> › <a href="#/level/${lv.id}">${esc(lv.code)}</a> › 第 ${c.num} 章</nav>
       <header class="ch-head">
-        <div class="ch-badge">${lv.icon} ${esc(lv.code)}｜第 ${c.num} 章</div>
+        <div class="ch-badge">${lv.icon} ${esc(lv.code)}${c.unitTitle && lv.units && lv.units.length > 1 ? '・' + esc(c.unitTitle) : ''}｜第 ${c.num} 章</div>
         <h1>${esc(c.title)}</h1>
         <p class="ch-sum">${esc(c.summary)}</p>
         <div class="ch-meta"><span>⏱ 約 ${c.mins} 分鐘</span><span class="ch-pct"></span>${(c.keywords || []).map((k) => `<span class="kw">${esc(k)}</span>`).join('')}</div>
@@ -840,10 +848,10 @@
     }
     const cats = {};
     Object.entries(TOOLS).forEach(([k, t]) => (cats[t.cat] = cats[t.cat] || []).push([k, t]));
-    const tf = Store.ui().toolLv || 'all';
+    const tf = LVOF(Store.ui().toolLv || 'all');
     view.innerHTML = `<div class="page-head"><h1>🧰 工具箱</h1><p class="muted">${Object.keys(TOOLS).length} 個互動計算器同小工具。你輸入過嘅數字會自動記住（每個使用者分開）。全部係教學用途。</p>
       <div class="tool-filter"><input type="search" class="filter" placeholder="搵工具…（例如 VWAP、Stop、Kelly）" data-tq><div class="chips">${[['all', '全部']].concat(LEVELS.map((l) => [l.id, l.code.replace('Level ', 'L')])).map(([k, t]) => `<button class="chip-btn ${tf === k ? 'on' : ''}" data-tl="${k}">${esc(t)}</button>`).join('')}</div></div></div>
-      ${Object.entries(cats).map(([cat, list]) => `<section class="tool-cat"><h2 class="sec-h">${esc(cat)}</h2><div class="tool-grid-cards">${list.map(([k, t]) => `<a class="tool-tile" href="#/tools/${k}" data-lv="${t.level}" data-q="${esc((t.title + ' ' + t.desc + ' ' + cat).toLowerCase())}"><span>${t.icon}</span><b>${esc(t.title)}</b><small>${esc(t.desc)}</small><em>${esc((LEVELS.find((l) => l.id === t.level) || {}).code || '')}</em></a>`).join('')}</div></section>`).join('')}
+      ${Object.entries(cats).map(([cat, list]) => `<section class="tool-cat"><h2 class="sec-h">${esc(cat)}</h2><div class="tool-grid-cards">${list.map(([k, t]) => `<a class="tool-tile" href="#/tools/${k}" data-lv="${LVOF(t.level)}" data-q="${esc((t.title + ' ' + t.desc + ' ' + cat).toLowerCase())}"><span>${t.icon}</span><b>${esc(t.title)}</b><small>${esc(t.desc)}</small><em>${esc((LEVELS.find((l) => l.id === LVOF(t.level)) || {}).code || '')}</em></a>`).join('')}</div></section>`).join('')}
       <div class="empty" data-none hidden>搵唔到符合嘅工具。</div>`;
     const applyTF = () => {
       const q = $('[data-tq]', view).value.trim().toLowerCase(), lv = Store.ui().toolLv || 'all';
@@ -876,7 +884,7 @@
     const totalQ = ids.reduce((a, k) => a + QUIZZES[k].questions.length, 0);
     const doneQ = ids.reduce((a, k) => a + (u.quiz[k] ? u.quiz[k].best : 0), 0);
     view.innerHTML = `<div class="page-head"><h1>📝 測驗中心</h1><p class="muted">總共 ${ids.length} 份測驗、${totalQ} 條題目。你已經答啱過 ${doneQ} 條。</p><div class="bar big"><div style="width:${doneQ / totalQ * 100}%"></div></div></div>
-      ${LEVELS.map((lv) => { const qs = ids.filter((k) => k.startsWith(lv.id + '-')); return `<h2 class="sec-h">${lv.icon} ${esc(lv.code)}：${esc(lv.title)}</h2><div class="quiz-grid">${qs.map((k) => { const q = QUIZZES[k], r = u.quiz[k]; const ch = CHAPTERS.find((c) => c.md.includes(`[[quiz:${k}]]`)); return `<a class="quiz-tile ${q.final ? 'final' : ''} ${r && r.best === r.total ? 'perfect' : ''}" href="#/quiz/${k}"><b>${q.final ? '🏁 ' : ''}${esc(q.title)}</b><small>${ch ? '第 ' + ch.num + ' 章 · ' : ''}${q.questions.length} 題</small><em>${r ? `${r.best}/${r.total}${r.best === r.total ? ' ⭐' : ''}` : '未做'}</em></a>`; }).join('')}</div>`; }).join('')}`;
+      ${LEVELS.map((lv) => { const qs = ids.filter((k) => (window.CURRICULUM ? CURRICULUM.quizLevel(k) : k.split('-')[0]) === lv.id); return `<h2 class="sec-h">${lv.icon} ${esc(lv.code)}：${esc(lv.title)}</h2><div class="quiz-grid">${qs.map((k) => { const q = QUIZZES[k], r = u.quiz[k]; const ch = CHAPTERS.find((c) => c.md.includes(`[[quiz:${k}]]`)); return `<a class="quiz-tile ${q.final ? 'final' : ''} ${r && r.best === r.total ? 'perfect' : ''}" href="#/quiz/${k}"><b>${q.final ? '🏁 ' : ''}${esc(q.title)}</b><small>${ch ? '第 ' + ch.num + ' 章 · ' : ''}${q.questions.length} 題</small><em>${r ? `${r.best}/${r.total}${r.best === r.total ? ' ⭐' : ''}` : '未做'}</em></a>`; }).join('')}</div>`; }).join('')}`;
   }
 
   /* ---------------- 字卡 ---------------- */
@@ -884,6 +892,7 @@
     const st = Store.user().toolState;
     st.cards = st.cards || { known: {}, lv: 'all' };
     const S = st.cards;
+    if (S.lv !== 'all') S.lv = LVOF(S.lv);
     let deck = [], i = 0, flipped = false;
     const build = () => { deck = GLOSSARY.filter((g) => S.lv === 'all' || g.lv === S.lv).filter((g) => !S.onlyNew || !S.known[g.term]); deck.sort(() => Math.random() - 0.5); i = 0; flipped = false; };
     build();
@@ -1206,7 +1215,7 @@
         <div class="tool-foot"><button class="btn primary" data-export>⬇️ 匯出備份（全部使用者）</button><label class="btn">⬆️ 匯入（合併）<input type="file" accept=".json,application/json" hidden data-import="merge"></label><label class="btn ghost">⬆️ 匯入（完全取代）<input type="file" accept=".json,application/json" hidden data-import="replace"></label></div></div>
       <div class="card"><div class="card-h">🧹 重設</div><p class="muted">清除呢部機所有使用者同資料（建議先匯出備份）。</p><button class="btn ghost danger" data-reset>清除全部資料</button></div>`}
       <div class="card"><div class="card-h">📱 加到手機主畫面</div><p>iPhone / iPad：用 Safari 打開 → 分享 → 「加至主畫面」。Android：Chrome 選單 → 「安裝應用程式」。加咗之後可以好似 App 咁開，部分內容離線都睇到。</p></div>
-      <div class="card"><div class="card-h">ℹ️ 關於</div><p>內容整理自你用 ChatGPT 生成嘅 Level 1–5 課程筆記同實戰問答，加上進階 Level 6–8、補充章節、模擬交易練習場、互動計算器、K 線重播遊戲、訓練場、測驗、錯題本、字卡同交易日誌。所有 TSLA 數字均為教學模擬，不構成投資建議。部分平台規則（例如 PDT、T+1、IBKR 數據）會變，請以官方最新公布為準。</p></div>`;
+      <div class="card"><div class="card-h">ℹ️ 關於</div><p>內容整理自你用 ChatGPT 生成嘅課程筆記同實戰問答，之後按你嘅問題加咗好多章節；2026 年 11 月重新整理成 9 個 Level（由睇圖、設定、Price Action、Indicator、市場環境、Setup、落單同風險、回測，到真錢之前），所有 Setup 集中喺 Level 6。另有模擬交易練習場、互動計算器、K 線重播遊戲、訓練場、測驗、錯題本、字卡同交易日誌。所有 TSLA 數字均為教學模擬，不構成投資建議。部分平台規則（例如 PDT、T+1、IBKR 數據）會變，請以官方最新公布為準。</p></div>`;
     $$('[data-edit]', view).forEach((b) => b.addEventListener('click', () => profileForm(ps.find((p) => p.id === b.dataset.edit))));
     { const nb = $('[data-new]', view); if (nb) nb.addEventListener('click', () => profileForm()); }
     if (Store.isCloud()) {
@@ -1354,7 +1363,11 @@
       else if (r === 'journal') Journal.render(view, parts[1]);
       else if (r === 'gym') Learn.renderGym(view, parts[1]);
       else if (r === 'review') Learn.renderReview(view);
-      else if (r === 'level') Learn.renderLevel(view, parts[1]);
+      else if (r === 'level') {
+        const nid = LVOF(parts[1]);
+        if (nid !== parts[1] && window.CURRICULUM) { location.replace(CURRICULUM.unitHref(parts[1])); return; }
+        Learn.renderLevel(view, parts[1], parts[2]);
+      }
       else if (r === 'guide') Learn.renderGuide(view);
       else if (r === 'sim') Sim.play(view, parts[1] === 'real' && parts[3] ? { sym: decodeURIComponent(parts[2] || ''), date: parts[3] } : null);
       else if (r === 'picks') Picks.render(view, parts[1]);
@@ -1363,7 +1376,7 @@
       else if (r === 'edge') Edge.renderEdge(view);
       else if (r === 'research') Edge.renderResearch(view, parts[1]);
       else if (r === 'map') Learn.renderMap(view);
-      else if (r === 'cert') Learn.renderCert(view, parts[1]);
+      else if (r === 'cert') { if (LVOF(parts[1]) !== parts[1]) { location.replace('#/cert/' + LVOF(parts[1])); return; } Learn.renderCert(view, parts[1]); }
       else renderHome();
     }
     renderTOC(activeCh, r === 'c' ? 'chapter' : r);

@@ -332,6 +332,9 @@
     },
   };
   Object.assign(DRILLS, window.DRILLS_EXTRA || {});
+  /* 課程重新編號（js/curriculum.js）：訓練場說明入面「對應 Level N 第 M 章」轉新編號 */
+  const LVOF = (id) => (window.CURRICULUM ? CURRICULUM.lvOf(id) : id);
+  if (window.CURRICULUM) Object.values(DRILLS).forEach((d) => { d.desc = CURRICULUM.fixText(d.desc, { old: d.level, lv: LVOF(d.level) }); d.title = CURRICULUM.fixText(d.title, { old: d.level, lv: LVOF(d.level) }); });
 
   function renderGym(view, id) {
     const u = Store.user();
@@ -389,49 +392,36 @@
   /* =========================================================
    * Level 概覽
    * ========================================================= */
-  const LEVEL_TIPS = {
-    l1: '先打好地基：識睇 K 線、成交量、PDH/PDL、S/R 同 VWAP。唔使急住交易，目標係「睇得明」。',
-    l2: '由「睇得明」進化到「有次序咁判斷」：結構 → 位置 → 確認 → Volume/VWAP → 風險 → WAIT / PLAN / SKIP。',
-    l3: '將判斷變成有規則嘅 Setup：Entry Trigger、Stop、Target、Position Size，全部事前寫低。',
-    l4: '執行同風險控制：訂單類型、滑價、每日虧損上限、心理同紀律。',
-    l5: '驗證你嘅系統：回測、Walk-forward、樣本數、期望值，唔好俾運氣呃到。',
-    l6: '學識揀日子：多時間框架、Gap、Opening Range、相對強弱、時段、事件同日類型，令你只做有利環境嘅 Setup。',
-    l7: '入場之後先係真正考驗：R 分佈、ATR、出場方法、加倉、訂單流、極端行情、做空、相關性同倉位模型。',
-    l8: '由學生變交易者：計劃書、每日流程、進階檢討、心理偏誤、升級階梯、策略衰退同可持續交易，最後完成畢業專題。',
-    l11: '真錢之前最後一課：誠實睇現實數據同每日報告成績，補香港帳戶、稅務、遺產稅、成本、實時數據、盤前落單、做空限制、停牌同騙局，最後做準備度檢查同訂第一個月計劃。',
-    l12: '補返「Notes 同真圖差好遠」：用練習圖同真實 Alpaca 圖練 Swing 點、斜線、Lower High 沽空、突破同 Retest；用真實數據睇清楚 Gap 幾多會延續，再練 100 張圖。',
-    l13: '解決「開市要睇咁多嘢、計咁多數」：開市前用計劃表計好股數同警報，開市只核對三樣嘢；學識 IBKR Bracket Order（TWS、IBKR Desktop、手機）、Stop Limit 突破入場、Presets、Hotkeys 同一日交易節奏。',
-    l14: '多學 8 個常見 Setup：30 分鐘 ORB、開市推動後第一次回調（Flag）、VWAP 回調、VWAP 收復、Red-to-Green、Gap Fade、午市 HOD 突破、失敗突破；每個都有入場、Stop、Target、唔做嘅情況、一步一步示意圖同真實統計。',
-    l15: '專為「頭 2 小時、只做多、日線升勢股」而寫：真實數據話日線升勢本身冇加分，開市量同 QQQ 先係關鍵；四個主力 Setup（Flat Top、EMA 9 回調、Bull Flag、30 分鐘 ORB）、唔好追 PDH 突破、11:30 收工，配合每日報告嘅 Long 專區。',
-    l16: '專講 Indicator：EMA 9／20、VWAP、ATR、RVOL、RSI、MACD、Relative Strength、日線均線。每個量度乜、點讀、做多點用；真實數據顯示單睇讀數冇預測力，「靚」係背景合格加入場位出現。附逐支 K 讀 Indicator 嘅練習圖。',
-    l17: '著名 Day Trader 公開教嘅打法：Ross Cameron（Gap & Go）、Andrew Aziz（ABCD、VWAP）、SMB（Stocks In Play、PlayBook）、Linda Raschke（Holy Grail）、Kullamägi（日線突破、EP）、Toby Crabel（ORB、NR7）。每個都用我哋 3 年真實數據驗證：大部分喺零附近，等確認好過估底。最後砌你自己嘅 PlayBook。',
-    l10: '圖表點用：將 TradingView 設定成 Day Trade 用嘅樣 —— New York 時區、Extended Hours 同盤前背景、Session Breaks、日線／15m／5m、VWAP 同 EMA 9、畫 PMH／PDH、Position 工具、警報同 Bar Replay。',
-    l9: '進修專題：Mark Minervini 嘅 VCP。睇突破之前嘅收縮 —— T1/T2/T3、量縮、Pivot、Stage 2，再分開研究日線同 5 分鐘版本，最後用真實數據回測。',
-    qa: '你曾經問過嘅實戰問題：S/R 點畫、Zone 幾闊、Stop 放邊、點解 Replay 搵唔到 Entry。',
-  };
-  function renderLevel(view, id) {
+  const quizLv = (k) => (window.CURRICULUM ? CURRICULUM.quizLevel(k) : k.split('-')[0]);
+  function renderLevel(view, id, unitPart) {
     const A = App(), lv = A.LEVELS.find((l) => l.id === id);
     if (!lv) { location.hash = '#/toc'; return; }
     const u = Store.user(), st = A.levelStats(lv);
     const next = lv.chapters.find((c) => !u.read[c.id]) || lv.chapters[0];
-    const quizzes = Object.keys(QUIZZES).filter((k) => k.startsWith(lv.id + '-'));
-    const reps = Object.entries(Replay.SCENARIOS).filter(([, s]) => s.level === lv.id);
-    const tools = Object.entries(TOOLS).filter(([, t]) => t.level === lv.id);
-    const drills = Object.entries(DRILLS).filter(([, d]) => d.level === lv.id);
+    const quizzes = Object.keys(QUIZZES).filter((k) => quizLv(k) === lv.id);
+    const reps = Object.entries(Replay.SCENARIOS).filter(([, s]) => LVOF(s.level) === lv.id);
+    const tools = Object.entries(TOOLS).filter(([, t]) => LVOF(t.level) === lv.id);
+    const drills = Object.entries(DRILLS).filter(([, d]) => LVOF(d.level) === lv.id);
+    const units = lv.units && lv.units.length > 1 ? lv.units : null;
+    const chLi = (c) => { const p = A.chapterPct(c); return `<li><a href="#/c/${c.id}" class="${p >= 1 ? 'done' : ''}"><span class="ch-dot ${p >= 1 ? 'done' : p > 0 ? 'part' : ''}" style="--p:${p * 360}deg"></span><span class="lc-num">${c.num}</span><span class="lc-main"><b>${esc(c.title)}</b><small>${esc(c.summary)}</small></span><em>${c.mins}′</em></a></li>`; };
+    const unitStat = (un) => { const cs = lv.chapters.slice(un.start, un.start + un.count); return { done: cs.filter((c) => u.read[c.id]).length, total: cs.length, mins: cs.reduce((a, c) => a + (c.mins || 0), 0) }; };
     const words = GLOSSARY.filter((g) => g.lv === lv.id).length;
     const mins = lv.chapters.reduce((a, c) => a + (c.mins || 0), 0);
     view.innerHTML = `<section class="lv-hero" style="--lv:${lv.color}">
         <div><div class="ch-badge">${lv.icon} ${esc(lv.code)}</div><h1>${esc(lv.title)}</h1><p class="ch-sum">${esc(lv.subtitle)}</p>
-          <p class="lv-q">核心問題：「${esc(lv.question)}」</p><p>${esc(LEVEL_TIPS[lv.id] || '')}</p>
+          <p class="lv-q">核心問題：「${esc(lv.question)}」</p><p>${esc(lv.tip || '')}</p>
           <div class="hero-actions"><a class="btn primary lg" href="#/c/${next.id}">${st.done ? '📍 繼續' : '🚀 開始'}：第 ${next.num} 章</a></div></div>
         <div class="ring" style="--p:${st.pct * 360}deg"><div><b>${st.done}/${st.total}</b><small>章完成</small></div></div>
       </section>
       <div class="lv-facts">${[['📚', lv.chapters.length, '章'], ['⏱ 約', Math.round(mins / 60 * 10) / 10, '小時'], ['📝', quizzes.length, '份測驗'], ['🧰', tools.length, '個工具'], ['🎮', reps.length, '個重播'], ['🏋️', drills.length, '個訓練'], ['📖', words, '個詞彙']].filter((x) => x[1]).map((x) => `<span>${x[0]} ${x[1]} ${x[2]}</span>`).join('')}</div>
+      ${units ? `<h2 class="sec-h">單元（建議由上而下讀）</h2><div class="lv-units">${units.map((un) => { const us = unitStat(un); return `<a href="#/level/${lv.id}/u${un.idx}" data-unit-link="${un.idx}"><span>${un.icon}</span><b>單元 ${un.idx + 1}：${esc(un.title)}</b><small>第 ${un.start + 1}–${un.start + un.count} 章・約 ${Math.round(us.mins / 6) / 10} 小時</small><em>${us.done}/${us.total}</em></a>`; }).join('')}</div>` : ''}
       <h2 class="sec-h">章節</h2>
-      <ol class="lv-chs">${lv.chapters.map((c) => { const p = A.chapterPct(c); return `<li><a href="#/c/${c.id}" class="${p >= 1 ? 'done' : ''}"><span class="ch-dot ${p >= 1 ? 'done' : p > 0 ? 'part' : ''}" style="--p:${p * 360}deg"></span><span class="lc-num">${c.num}</span><span class="lc-main"><b>${esc(c.title)}</b><small>${esc(c.summary)}</small></span><em>${c.mins}′</em></a></li>`; }).join('')}</ol>
+      ${units ? units.map((un) => `<h3 class="lv-unit-h" id="u${un.idx}">${un.icon} 單元 ${un.idx + 1}：${esc(un.title)}</h3><ol class="lv-chs">${lv.chapters.slice(un.start, un.start + un.count).map(chLi).join('')}</ol>`).join('') : `<ol class="lv-chs">${lv.chapters.map(chLi).join('')}</ol>`}
       ${drills.length || reps.length ? `<h2 class="sec-h">練習</h2><div class="quick-tools wide">${drills.map(([k, d]) => `<a href="#/gym/${k}"><span>${d.icon}</span>${esc(d.title)}</a>`).join('')}${reps.map(([k, s]) => `<a href="#/replay/${k}"><span>${s.icon}</span>${esc(s.title)}${u.replay[k] ? ` <small>（${u.replay[k].best}/${u.replay[k].total}）</small>` : ''}</a>`).join('')}</div>` : ''}
       ${tools.length ? `<h2 class="sec-h">工具</h2><div class="quick-tools wide">${tools.map(([k, t]) => `<a href="#/tools/${k}"><span>${t.icon}</span>${esc(t.title)}</a>`).join('')}</div>` : ''}
       ${quizzes.length ? `<h2 class="sec-h">測驗</h2><div class="quiz-grid">${quizzes.map((k) => { const q = QUIZZES[k], r = u.quiz[k]; return `<a class="quiz-tile ${q.final ? 'final' : ''} ${r && r.best === r.total ? 'perfect' : ''}" href="#/quiz/${k}"><b>${q.final ? '🏁 ' : ''}${esc(q.title)}</b><small>${q.questions.length} 題</small><em>${r ? `${r.best}/${r.total}` : '未做'}</em></a>`; }).join('')}</div>` : ''}`;
+    const goUnit = (k) => { const t = document.getElementById('u' + k); if (t) { t.scrollIntoView({ block: 'start' }); window.scrollBy(0, -70); } };
+    if (unitPart && /^u\d+$/.test(unitPart)) setTimeout(() => goUnit(unitPart.slice(1)), 0);
   }
 
   /* =========================================================
@@ -616,12 +606,16 @@
   /* =========================================================
    * 學習地圖、證書、建議下一步、學習進度預計、本章重點
    * ========================================================= */
-  function finalOf(lv) { return Object.keys(QUIZZES).find((k) => k.startsWith(lv.id + '-') && QUIZZES[k].final); }
+  /* 一個 Level 可以有幾份期末測驗（例如 Level 6 有 Setup 基本功同 VCP 兩份）：全部 80% 或以上先攞證書 */
+  const finalsOf = (lv) => Object.keys(QUIZZES).filter((k) => QUIZZES[k].final && quizLv(k) === lv.id);
+  const passed = (r) => !!(r && r.best / r.total >= 0.8);
+  function finalOf(lv) { const u = Store.user(), fs = finalsOf(lv); return fs.find((k) => !passed(u.quiz[k])) || fs[0]; }
   function certState(lv, uid) {
-    const A = App(), u = Store.user(uid), st = A.levelStats(lv, uid), fq = finalOf(lv);
+    const A = App(), u = Store.user(uid), st = A.levelStats(lv, uid), fqs = finalsOf(lv);
+    const fq = fqs.find((k) => !passed(u.quiz[k])) || fqs[0];
     const r = fq ? u.quiz[fq] : null;
-    const scoreOk = !fq || (r && r.best / r.total >= 0.8);
-    return { read: st.done === st.total, st, fq, r, scoreOk, ok: st.done === st.total && scoreOk };
+    const scoreOk = fqs.every((k) => passed(u.quiz[k]));
+    return { read: st.done === st.total, st, fq, fqs, r, scoreOk, ok: st.done === st.total && scoreOk };
   }
   const PACES = [10, 20, 30, 45, 60];
   function paceInfo() {
@@ -659,7 +653,7 @@
     const readyFinal = A.LEVELS.find((lv) => { const c = certState(lv); return c.read && c.fq && !c.scoreOk; });
     if (readyFinal) out.push({ icon: '🏁', t: `${readyFinal.code} 期末測驗`, s: '80% 或以上就可以攞證書', href: `#/quiz/${finalOf(readyFinal)}` });
     const curLv = (last && last.level) || A.LEVELS[0];
-    const drill = Object.entries(DRILLS).find(([k, d]) => d.level === curLv.id && !u.gym[k]);
+    const drill = Object.entries(DRILLS).find(([k, d]) => LVOF(d.level) === curLv.id && !u.gym[k]);
     if (drill) out.push({ icon: drill[1].icon, t: `試吓訓練場：${drill[1].title}`, s: '配合你而家讀緊嘅 Level', href: `#/gym/${drill[0]}` });
     const nxt = A.CHAPTERS.find((c) => !u.read[c.id] && (!last || c !== last));
     if (nxt) out.push({ icon: '📖', t: `下一章：${nxt.level.code} 第 ${nxt.num} 章`, s: nxt.title, href: `#/c/${nxt.id}` });
@@ -674,7 +668,7 @@
   function renderMap(view) {
     const A = App(), u = Store.user();
     const p = Store.activeProfile() || { name: '' };
-    view.innerHTML = `<div class="page-head"><h1>🗺️ 學習地圖</h1><p class="muted">由 Level 1 到 Level 8，一步步上。讀晒一個 Level 嘅章節、期末測驗 80% 或以上，就可以攞證書。</p></div>
+    view.innerHTML = `<div class="page-head"><h1>🗺️ 學習地圖</h1><p class="muted">由 Level 1 到 Level 9，一步步上（次序就係建議學習次序）。讀晒一個 Level 嘅章節、期末測驗全部 80% 或以上，就可以攞證書。</p></div>
       <div class="card">${paceHTML()}</div>
       <ol class="map">${A.LEVELS.map((lv, idx) => {
         const cs = certState(lv), pi = paceInfo().perLevel.find((x) => x.lv === lv);
@@ -684,7 +678,7 @@
           <div class="map-card">
             <div class="map-top"><a href="#/level/${lv.id}"><b>${esc(lv.code)}</b>　${esc(lv.title)}</a><em>${cs.st.done}/${cs.st.total}</em></div>
             <div class="map-chs">${lv.chapters.map((c) => { const pc = A.chapterPct(c); return `<a href="#/c/${c.id}" title="第 ${c.num} 章 ${esc(c.title)}" class="${pc >= 1 ? 'd' : pc > 0 ? 'p' : ''} ${u.conf && u.conf[c.id] === 1 ? 'low' : ''}"></a>`; }).join('')}</div>
-            <div class="map-foot">${cs.fq ? `<span>🏁 期末：${cs.r ? `${cs.r.best}/${cs.r.total}` : '未做'}</span>` : ''}${cs.ok ? `<a class="btn sm primary" href="#/cert/${lv.id}">🎓 睇證書</a>` : `<span class="muted">${pi && pi.remain ? '預計 ' + pi.eta + ' 完成' : ''}</span>`}</div>
+            <div class="map-foot">${cs.fq ? `<span>🏁 期末${cs.fqs.length > 1 ? `（${cs.fqs.filter((k) => passed(u.quiz[k])).length}/${cs.fqs.length} 份合格）` : ''}：${cs.r ? `${cs.r.best}/${cs.r.total}` : '未做'}</span>` : ''}${cs.ok ? `<a class="btn sm primary" href="#/cert/${lv.id}">🎓 睇證書</a>` : `<span class="muted">${pi && pi.remain ? '預計 ' + pi.eta + ' 完成' : ''}</span>`}</div>
           </div></li>`;
       }).join('')}</ol>
       <p class="muted">小格：綠 = 讀完、半色 = 讀緊、紅框 = 你標記咗「未明」。</p>`;
@@ -696,7 +690,7 @@
     if (!lv) { location.hash = '#/map'; return; }
     const cs = certState(lv), p = Store.activeProfile() || { name: '學員' }, u = Store.user();
     if (!cs.ok) {
-      view.innerHTML = `<div class="page-head"><h1>🎓 ${esc(lv.code)} 證書</h1></div><div class="card"><p>仲差少少就可以攞證書：</p><ul class="tool-list"><li>${cs.read ? '✅' : '⬜'} 讀完全部 ${cs.st.total} 章（而家 ${cs.st.done} 章）</li>${cs.fq ? `<li>${cs.scoreOk ? '✅' : '⬜'} 期末測驗 80% 或以上（${cs.r ? `最佳 ${cs.r.best}/${cs.r.total}` : '未做'}）</li>` : ''}</ul><div class="tool-foot"><a class="btn primary" href="#/level/${lv.id}">去 ${esc(lv.code)}</a>${cs.fq ? `<a class="btn" href="#/quiz/${cs.fq}">做期末測驗</a>` : ''}</div></div>`;
+      view.innerHTML = `<div class="page-head"><h1>🎓 ${esc(lv.code)} 證書</h1></div><div class="card"><p>仲差少少就可以攞證書：</p><ul class="tool-list"><li>${cs.read ? '✅' : '⬜'} 讀完全部 ${cs.st.total} 章（而家 ${cs.st.done} 章）</li>${cs.fqs.map((k) => { const r = u.quiz[k]; return `<li>${passed(r) ? '✅' : '⬜'} <a href="#/quiz/${k}">${esc(QUIZZES[k].title)}</a> 80% 或以上（${r ? `最佳 ${r.best}/${r.total}` : '未做'}）</li>`; }).join('')}</ul><div class="tool-foot"><a class="btn primary" href="#/level/${lv.id}">去 ${esc(lv.code)}</a>${cs.fq ? `<a class="btn" href="#/quiz/${cs.fq}">做期末測驗</a>` : ''}</div></div>`;
       return;
     }
     u.toolState.certSeen = u.toolState.certSeen || {}; if (!u.toolState.certSeen[lv.id]) { u.toolState.certSeen[lv.id] = Store.today(); Store.save(); Store.awardXP('cert:' + lv.id, 30); }
@@ -706,7 +700,7 @@
         <div class="cert-icon">${lv.icon}</div><p class="cert-small">TSLA Day Trading 學院</p><h1>結業證書</h1><p class="cert-small">茲證明</p>
         <p class="cert-name">${esc(p.emoji || '')} ${esc(p.name)}</p>
         <p>已完成</p><h2>${esc(lv.code)}：${esc(lv.title)}</h2><p class="cert-sub">${esc(lv.subtitle)}</p>
-        <div class="cert-meta"><span>📚 ${cs.st.total} 章</span>${cs.r ? `<span>🏁 期末測驗 ${cs.r.best}/${cs.r.total}</span>` : ''}<span>${rk.icon} ${esc(rk.name)}・${u.xp} XP</span></div>
+        <div class="cert-meta"><span>📚 ${cs.st.total} 章</span>${cs.fqs.map((k) => u.quiz[k] ? `<span>🏁 ${esc(QUIZZES[k].title)} ${u.quiz[k].best}/${u.quiz[k].total}</span>` : '').join('')}<span>${rk.icon} ${esc(rk.name)}・${u.xp} XP</span></div>
         <p class="cert-date">${u.toolState.certSeen[lv.id]}</p>
         <p class="cert-fine">教育用途，唔代表任何專業資格或投資能力認證。</p></div></div>`;
     $('[data-print]', view).addEventListener('click', () => window.print());

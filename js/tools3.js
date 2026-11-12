@@ -1,5 +1,5 @@
 /* =========================================================
- * 落盤效率工具（Level 13）：Bracket 落單卡、開市前計劃表
+ * 落盤效率工具（Level 7「落盤效率」單元）：Bracket 落單卡、開市前計劃表
  * 開市前將計算做晒，開市時只需要「核對 → 落單」。
  * 教學用途｜App 唔會幫你落單，亦唔會連去券商。
  * ========================================================= */
@@ -130,7 +130,7 @@
         if (P.err) { o.innerHTML = verdict(false, P.err); return; }
         const L = P.long, act = L ? 'BUY' : 'SELL', ex = L ? 'SELL' : 'BUY';
         const warns = [];
-        if (!L && S.cash === 'yes') warns.push(verdict(false, 'Cash 戶口唔可以沽空（Level 11 第 8 章）。要用 Margin 戶口，仲要借到貨。'));
+        if (!L && S.cash === 'yes') warns.push(verdict(false, 'Cash 戶口唔可以沽空（' + (window.CURRICULUM ? CURRICULUM.chRef('l11-c8') : '') + '）。要用 Margin 戶口，仲要借到貨。'));
         if (P.shares <= 0) warns.push(verdict(false, `每股風險 ${F(P.risk)} 大過你每筆風險 ${money(P.budget)}，買唔到 1 股。揀過另一隻，或者 Stop 近啲（要有結構依據）。`));
         if (P.rr < 1.5) warns.push(verdict(null, `R:R 只有 ${F(P.rr)}，低過 1.5。`));
         if (P.byCash < P.byRisk) warns.push(verdict(null, `股數受「每隻最多用 ${S.maxPosPct}% 本金」限制（按風險可以買 ${P.byRisk} 股）。實際風險 ${money(P.riskUsd)}，少過預算。`));

@@ -328,7 +328,7 @@
             <div class="stats">${stat('交易', ts.length + ' 筆')}${stat('勝率', st ? pct(st.wr, 0) : '—')}${stat('Expectancy', st ? signR(st.exp) : '—', st && st.exp >= 0 ? 'pos' : 'neg')}${stat('總 R', st ? signR(st.total, 1) : '—')}${stat('好過程比例', comp != null ? pct(comp, 0) : '—')}</div>
             <details><summary>睇完整規則</summary><table class="tbl"><tbody>${PB_FIELDS.filter(([k]) => p[k]).map(([k, l]) => `<tr><th>${l}</th><td>${esc(p[k]).replace(/\n/g, '<br>')}</td></tr>`).join('')}</tbody></table>
             ${(p.history || []).length ? `<p><b>版本紀錄</b></p><ul class="pb-hist">${p.history.slice().reverse().map((h) => `<li><b>v${esc(h.ver)}</b> → ${new Date(h.ts).toLocaleDateString('zh-HK')}：${esc(h.note)}</li>`).join('')}</ul>` : ''}</details>
-          </div>`; }).join('')}</div>` : '<div class="empty">未有 Playbook。由範本開始最快：A／B／C 係 Level 3 嘅三套 Setup，TSLA-BR-LONG v1.0 係 Level 4–5 嘅量化版本。之後可以改成你自己（例如 AAPL）嘅版本。</div>'}
+          </div>`; }).join('')}</div>` : '<div class="empty">未有 Playbook。由範本開始最快：A／B／C 係 Level 6「Setup 基本功」嘅三套 Setup，TSLA-BR-LONG v1.0 係 Level 7–8 嘅量化版本。之後可以改成你自己（例如 AAPL）嘅版本。</div>'}
         <p class="tool-fine">每次改規則都用「新版本」：舊版本嘅內容同改動原因會記入歷史；交易紀錄揀返對應 Playbook，就可以比較唔同版本嘅表現。</p>`;
       body.querySelector('[data-add]').addEventListener('click', () => pbForm({}, (o) => { o.updated = Date.now(); o.history = []; save('playbooks', o); }));
       body.querySelectorAll('[data-tpl]').forEach((b) => b.addEventListener('click', () => { const t = JSON.parse(JSON.stringify(TEMPLATES[+b.dataset.tpl])); t.version = t.version || '1.0'; t.status = '🧪 測試中'; t.updated = Date.now(); t.history = []; save('playbooks', t); App.toast('已加入 Playbook'); }));
