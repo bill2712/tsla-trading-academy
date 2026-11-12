@@ -1080,5 +1080,97 @@
   }
  ],
  "lesson": "大型股壞消息跳空低開，開市後反彈嘅情況好多（11/04、11/09 都係）。沽空 NVDA 一定要等跌穿盤前低先入；只做多嘅話，今日唔好撈 NVDA、NBIS、CRWV 嘅底。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-12T13:58:24.983Z",
+  "atET": "08:58",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 681.94,
+    "chgPct": -1.22,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 755.21,
+    "chgPct": -0.61,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 281.54,
+    "chgPct": -0.55,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "LUNR",
+    "side": "Long",
+    "entry": 14.1,
+    "stop": 13.58,
+    "target1": 15.14,
+    "last": 13.88,
+    "bid": 13.8,
+    "ask": 13.92,
+    "spreadPct": 0.866,
+    "gapNow": 13.96,
+    "gapReport": 9.85,
+    "rvol": null,
+    "pmh": 14.07,
+    "pml": 11.93,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.21,
+    "status": "waiting",
+    "reason": "未到入場價 14.1（差 0.21 ATR）：按計劃等觸發；買賣差價 0.866% 偏闊",
+    "note": "盤前新高 13.99，貼近盤前高 14.07；記住 QQQ 要喺 VWAP 上面先入。"
+   },
+   {
+    "sym": "NVDA",
+    "side": "Short",
+    "entry": 158.85,
+    "stop": 162.4,
+    "target1": 151.75,
+    "last": 155.98,
+    "bid": 155.97,
+    "ask": 156.06,
+    "spreadPct": 0.058,
+    "gapNow": -10.22,
+    "gapReport": -7.74,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": -0.31,
+    "status": "chase",
+    "reason": "已經低過入場價 158.85（0.31 ATR）：開市唔追；等回調有新 Setup 先算",
+    "note": "跌幅擴大到 −10%；開市後如果反彈到 158.9 附近受阻，可能有新沽空位，但唔係原本計劃。"
+   },
+   {
+    "sym": "NBIS",
+    "side": "Short",
+    "entry": 130.5,
+    "stop": 136.4,
+    "target1": 118.7,
+    "last": 126.51,
+    "bid": 126.16,
+    "ask": 126.72,
+    "spreadPct": 0.443,
+    "gapNow": -18.22,
+    "gapReport": -11.46,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": -0.24,
+    "status": "near",
+    "reason": "已經喺入場價 130.5 附近：09:35 後見到確認先入，唔好一開市即追；買賣差價 0.443% 偏闊",
+    "note": ""
+   }
+  ],
+  "summary": "3 隻入面 1 隻仲等觸發：Long 專區 LUNR 盤前再升到 13.88，離入場價 14.10 只差 0.21 ATR，但買賣差價暫時約 0.9%，開市後收窄先做。NVDA 盤前再跌到 155.98，已經過咗沽空入場價 0.31 ATR，唔追；NBIS 跌到 126.51，喺入場價附近，09:35 後見確認先考慮。QQQ 即時 −1.2%，大市仍然偏弱。",
+  "newMovers": []
+ }
 }
