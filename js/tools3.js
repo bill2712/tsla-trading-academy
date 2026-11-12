@@ -162,6 +162,13 @@
   };
 
   /* ---------------- 🛫 開市前計劃表：今日所有 pick 一版睇晒 ---------------- */
+  TOOLS['multichart'] = {
+    title: '多圖同步看盤', icon: '📺', cat: '落盤效率', level: 'l10',
+    desc: '免費版 Multi-Chart：個股 5 分鐘 + 日線 + QQQ 一齊睇，換股、十字線、時間軸同步；可以開第二個視窗放第二個螢幕。用你嘅 Alpaca 免費金鑰。',
+    render(el) {
+      el.innerHTML = `<div class="l11-w"><p>喺一個畫面（或者兩個螢幕）同步睇幾個圖，唔使付費。</p><p><a class="btn primary" href="#/charts">📺 打開多圖同步看盤</a></p><ul class="muted"><li>版面：1 圖、2 圖（5m + 日線）、3 圖（5m + 日線 + QQQ）、4 圖（再加 1m）</li><li>同步：換股、十字線、時間軸；第二個視窗都會同步</li><li>VWAP、EMA 9／20、SMA 20／50、PDH／PDL、PMH／PML、開市 5 分鐘區間</li><li>A+ 過濾即時檢查同 11:30 收工倒數</li></ul></div>`;
+    },
+  };
   TOOLS['open-cockpit'] = {
     title: '開市前計劃表', icon: '🛫', cat: '落盤效率', level: 'l13',
     desc: '自動讀今日選股報告，用你嘅本金同風險，一次過計好每隻嘅股數、Stop、Target、唔追價同警報價位。開市時淨係需要核對。',

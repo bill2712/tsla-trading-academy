@@ -289,6 +289,7 @@
       ${last ? `<a class="toc-continue" href="#/c/${last.id}${u.last.section ? '/' + u.last.section : ''}"><small>📍 繼續上次</small><b>${esc(last.level.code)} · ${esc(last.title)}</b></a>` : ''}
       ${link('#/', '🏠', '主頁', activeRoute === 'home')}
       ${link('#/picks', '📋', '每日選股', activeRoute === 'picks')}
+      ${link('#/charts', '📺', '多圖同步看盤', activeRoute === 'charts')}
       ${link('#/toc', '📚', '完整課程目錄', activeRoute === 'toc')}
       ${link('#/map', '🗺️', '學習地圖・證書', activeRoute === 'map' || activeRoute === 'cert')}
       <div class="toc-sep">課程</div>
@@ -1318,7 +1319,8 @@
   function route() {
     const h = location.hash.replace(/^#\/?/, '');
     const parts = h.split('/');
-    const r = parts[0] || 'home';
+    const r = (parts[0] || 'home').split('?')[0] || 'home';
+    const rq = parts[0] && parts[0].includes('?') ? parts[0].slice(parts[0].indexOf('?') + 1) : '';
     pop.hidden = true;
     if (scrollHandler && r !== 'c') { window.removeEventListener('scroll', scrollHandler); scrollHandler = null; }
     $('#readbar-fill').style.width = '0';
@@ -1337,7 +1339,7 @@
       view.dataset.ch = '';
       renderRail(null);
       window.scrollTo(0, 0);
-      const titles = { home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南', sim: '模擬交易練習場', map: '學習地圖', cert: '證書', lab: '回測實驗室', edge: '我有冇 Edge？', research: '研究板' };
+      const titles = { charts: '多圖看盤', home: '主頁', toc: '完整目錄', tools: '工具箱', replay: 'K 線重播', quiz: '測驗中心', cards: '字卡', glossary: '詞彙表', me: '我的', board: '討論區', family: '家庭進度', settings: '設定', journal: '交易日誌', gym: '訓練場', review: '錯題本', level: 'Level 概覽', guide: '使用指南', sim: '模擬交易練習場', map: '學習地圖', cert: '證書', lab: '回測實驗室', edge: '我有冇 Edge？', research: '研究板' };
       document.title = (titles[r] ? titles[r] + '｜' : '') + 'TSLA Day Trading 學院';
       if (r === 'toc') renderFullTOC();
       else if (r === 'tools') renderTools(parts[1] && parts[1].split('?')[0]);
@@ -1356,6 +1358,7 @@
       else if (r === 'guide') Learn.renderGuide(view);
       else if (r === 'sim') Sim.play(view, parts[1] === 'real' && parts[3] ? { sym: decodeURIComponent(parts[2] || ''), date: parts[3] } : null);
       else if (r === 'picks') Picks.render(view, parts[1]);
+      else if (r === 'charts') MultiChart.render(view, rq);
       else if (r === 'lab') Lab.render(view, parts[1] === 'r' ? parts[2] : null);
       else if (r === 'edge') Edge.renderEdge(view);
       else if (r === 'research') Edge.renderResearch(view, parts[1]);
@@ -1429,7 +1432,7 @@
   document.body.appendChild(toTop);
   window.addEventListener('scroll', () => { toTop.hidden = scrollY < 900; }, { passive: true });
   const bnav = document.createElement('nav'); bnav.className = 'bottom-nav'; bnav.setAttribute('aria-label', '主要導航');
-  bnav.innerHTML = [['#/', '🏠', '主頁', ['home', 'picks']], ['#/map', '🗺️', '課程', ['map', 'toc', 'level', 'c', 'cert']], ['#/gym', '🏋️', '練習', ['gym', 'review', 'replay', 'quiz', 'cards', 'sim', 'glossary']], ['#/tools', '🧰', '工具', ['tools', 'journal', 'lab', 'edge', 'research']], ['#/me', '⭐', '我的', ['me', 'board', 'family', 'settings', 'guide']]].map(([h, i, t, rs]) => `<a href="${h}" data-r="${rs.join(' ')}"><span>${i}</span>${t}</a>`).join('');
+  bnav.innerHTML = [['#/', '🏠', '主頁', ['home', 'picks', 'charts']], ['#/map', '🗺️', '課程', ['map', 'toc', 'level', 'c', 'cert']], ['#/gym', '🏋️', '練習', ['gym', 'review', 'replay', 'quiz', 'cards', 'sim', 'glossary']], ['#/tools', '🧰', '工具', ['tools', 'journal', 'lab', 'edge', 'research']], ['#/me', '⭐', '我的', ['me', 'board', 'family', 'settings', 'guide']]].map(([h, i, t, rs]) => `<a href="${h}" data-r="${rs.join(' ')}"><span>${i}</span>${t}</a>`).join('');
   document.body.appendChild(bnav);
   function markBottomNav(r) { $$('.bottom-nav a').forEach((a) => a.classList.toggle('on', a.dataset.r.split(' ').includes(r))); }
 

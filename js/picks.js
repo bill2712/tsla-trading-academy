@@ -162,7 +162,7 @@
       ${items.length ? `<div class="tbl-scroll"><table class="mini-tbl wide pk-long-t"><thead><tr><th>股票</th><th>Daily Trend</th><th>Gap %</th><th>RVOL</th><th>入場（觸發）</th><th>Stop</th><th>Target 1</th><th>頭 2 小時 Setup</th><th></th></tr></thead><tbody>
       ${items.map((x) => { const p = (d.picks || []).find((y) => y.sym === x.sym) || {}; const t = p.trade || {};
         const tk = num(t.entry) != null && num(t.stop) != null && num(t.target1) != null ? `#/tools/bracket-ticket?sym=${encodeURIComponent(x.sym)}&side=long&entry=${t.entry}&stop=${t.stop}&t1=${t.target1}${num(t.target2) != null ? '&t2=' + t.target2 : ''}${num(p.atr) != null ? '&atr=' + p.atr : ''}` : '';
-        return `<tr><th>${esc(x.sym)}</th><td>${trendTag(x.trend)}</td><td class="${cls(p.gapPct)}">${P(p.gapPct)}</td><td>${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</td><td>${num(t.entry) == null ? '—' : '$' + F(t.entry)}</td><td class="neg">${num(t.stop) == null ? '—' : '$' + F(t.stop)}</td><td class="pos">${num(t.target1) == null ? '—' : '$' + F(t.target1)}</td><td class="pk-long-s">${esc(x.setups || '')}${x.note ? `<small>${esc(x.note)}</small>` : ''}</td><td>${tk ? `<a class="btn sm" href="${tk}">⚡ 落單卡</a>` : ''}</td></tr>`; }).join('')}
+        return `<tr><th>${esc(x.sym)}</th><td>${trendTag(x.trend)}</td><td class="${cls(p.gapPct)}">${P(p.gapPct)}</td><td>${num(p.rvol) == null ? '—' : F(p.rvol, 1) + '×'}</td><td>${num(t.entry) == null ? '—' : '$' + F(t.entry)}</td><td class="neg">${num(t.stop) == null ? '—' : '$' + F(t.stop)}</td><td class="pos">${num(t.target1) == null ? '—' : '$' + F(t.target1)}</td><td class="pk-long-s">${esc(x.setups || '')}${x.note ? `<small>${esc(x.note)}</small>` : ''}</td><td>${tk ? `<a class="btn sm" href="${tk}">⚡ 落單卡</a>` : ''} <a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(x.sym)}" title="多圖同步看盤">📺</a></td></tr>`; }).join('')}
       </tbody></table></div>` : '<p class="pk-risk">今日 Long 專區冇合格股：冇好機會就唔做。</p>'}
       <p class="tool-fine"><b>A+ 過濾（開市後自己核對）：</b>首 5 分鐘成交 ≥ 平時 2 倍；入場前 QQQ 喺自己 VWAP 上面。兩樣唔齊就唔做。09:30–09:35 唔落單；唔好一開市追昨日高位（PDH）突破；11:30 收工。<a href="#/level/l15">Level 15：頭 2 小時做多</a></p></section>`;
   }
@@ -178,7 +178,7 @@
       <p>${esc(C.summary || '')}</p>
       ${items.length ? `<div class="pk-carry-list">${items.map((x) => { const v = CARRY[x.verdict] || CARRY.skip; const pos = num(x.yClosePos) == null ? '' : `收喺全日波幅 ${Math.round(x.yClosePos * 100)}% 位`;
         return `<div class="pk-carry-i v-${esc(x.verdict || 'skip')}">
-          <div class="pk-carry-h"><b>${esc(x.sym)}</b><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span>${x.verdict === 'again' ? `<span class="pk-dir">${x.side === 'Short' ? '📉 今日 Short' : '📈 今日 Long'}</span><a class="btn sm" href="#/picks/${esc(d.date)}" data-goto="${esc(x.sym)}">睇今日計劃 ↓</a>` : ''}</div>
+          <div class="pk-carry-h"><b>${esc(x.sym)}</b><span class="pk-beg ${v[2]}">${v[0]} ${v[1]}</span>${x.verdict === 'again' ? `<span class="pk-dir">${x.side === 'Short' ? '📉 今日 Short' : '📈 今日 Long'}</span><a class="btn sm" href="#/picks/${esc(d.date)}" data-goto="${esc(x.sym)}">睇今日計劃 ↓</a>` : ''}<a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(x.sym)}" title="多圖同步看盤">📺 睇圖</a></div>
           <div class="pk-carry-g">
             <div><span>昨日計劃同結果</span><b>${x.prevSide ? (x.prevSide === 'Short' ? '📉 Short' : '📈 Long') : '—'}</b>${x.prevResult ? `<small>${esc(x.prevResult)}</small>` : ''}</div>
             <div><span>昨日收市</span><b>${num(x.yClose) == null ? '—' : '$' + F(x.yClose)}${num(x.yChgPct) != null ? ` <em class="${cls(x.yChgPct)}">${P(x.yChgPct, 1)}</em>` : ''}</b>${pos || num(x.yVolRatio) != null ? `<small>${[pos, num(x.yVolRatio) != null ? `成交係平時 ${F(x.yVolRatio, 1)} 倍` : ''].filter(Boolean).join('・')}</small>` : ''}</div>
@@ -197,7 +197,7 @@
       <div class="pk-trade-h"><b>${L ? '📈 Long' : '📉 Short'} 交易計劃</b>${num(t.rr) != null ? `<span class="pk-rr">R:R ${F(t.rr, 2)}</span>` : ''}</div>
       ${t.trigger ? `<p class="pk-trig"><b>入場條件：</b>${esc(t.trigger)}</p>` : ''}
       <div class="pk-trade-g"><div><span>Entry</span><b>$${F(t.entry)}</b></div><div class="neg"><span>Stop</span><b>$${F(t.stop)}</b>${pct(t.stop)}</div><div class="pos"><span>Target 1</span><b>$${F(t.target1)}</b>${pct(t.target1)}</div>${num(t.target2) != null ? `<div class="pos"><span>Target 2</span><b>$${F(t.target2)}</b>${pct(t.target2)}</div>` : ''}<div><span>每股風險</span><b>$${F(Math.abs(t.entry - t.stop))}</b></div>${(() => { const r = Math.abs(t.entry - t.stop); const n = r > 0 ? Math.floor(100 / r) : 0; return `<div><span>每 $100 風險</span><b>${n ? n + ' 股' : '—'}</b>${n ? `<small>≈ $${Math.round(n * t.entry).toLocaleString()} 本金</small>` : ''}</div>`; })()}</div>
-      ${tk ? `<p class="pk-tk"><a class="btn sm" href="${tk}">⚡ 落單卡：計股數 + IBKR Bracket</a></p>` : ''}
+      ${tk ? `<p class="pk-tk"><a class="btn sm" href="${tk}">⚡ 落單卡：計股數 + IBKR Bracket</a> <a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(p.sym)}">📺 多圖看盤</a></p>` : ''}
     </div>`;
   }
   const PILLARS = [['bigPicture', '🌍', '大環境'], ['fundamentals', '📰', '日內基本面'], ['technical', '📈', '技術分析'], ['tape', '📜', '睇盤（Tape）'], ['intuition', '🧭', '直覺／經驗判斷']];
