@@ -1,6 +1,32 @@
 {
- "updated": "2026-11-12T23:47:20.831Z",
+ "updated": "2026-11-13T14:22:26.656Z",
  "days": [
+  {
+   "date": "2026-11-13",
+   "version": 3,
+   "status": "premarket",
+   "bias": "中性偏好",
+   "headline": "⚠️ 今日報告遲咗（09:17 先開始、IBKR 連唔到）：PPI 低過預期，大市平穩；MOD 收購傳聞做多、VIR 增發沽空，兩隻都只做開市後突破。",
+   "n": 2,
+   "top": [
+    {
+     "sym": "MOD",
+     "gapPct": 33.08,
+     "rvol": 10.15,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "VIR",
+     "gapPct": -15.51,
+     "rvol": 11.82,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-12",
    "version": 3,
@@ -31,7 +57,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:58",
    "again": [
     "NVDA",

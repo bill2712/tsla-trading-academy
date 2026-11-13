@@ -1,0 +1,711 @@
+{
+ "version": 3,
+ "date": "2026-11-13",
+ "generatedAt": "2026-11-13T14:22:26Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "09:15",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "⚠️ 今日報告遲咗",
+   "ok": false,
+   "note": "排程 09:17 ET 先開始（平時 07:30 左右），開市前得十幾分鐘：冇做 Market Profile、冇網上搜尋"
+  },
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH／PML、日線趨勢）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca SIP 報價",
+   "ok": true,
+   "note": "延遲 16 分鐘"
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "IBKR 掃描器同即時報價",
+   "ok": false,
+   "note": "連接失敗（502 Service Unavailable），今日冇用到；指數用 Alpaca 09:00 數據"
+  },
+  {
+   "name": "Finviz",
+   "ok": true
+  },
+  {
+   "name": "新聞：Alpaca／Benzinga、Google News",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 業績日曆",
+   "ok": true,
+   "note": "日期錯開一日，用咗 11/14 嘅結果"
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "時間唔夠，今日冇做"
+  },
+  {
+   "name": "Yahoo（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流，冇用到"
+  }
+ ],
+ "headline": "⚠️ 今日報告遲咗（09:17 先開始、IBKR 連唔到）：PPI 低過預期，大市平穩；MOD 收購傳聞做多、VIR 增發沽空，兩隻都只做開市後突破。",
+ "market": {
+  "bias": "中性偏好",
+  "summary": "08:30 PPI 按月 0.3%，低過預期 0.4%；核心 PPI 0.3%，符合預期，通脹壓力冇加劇。盤前 SPY +0.43%、QQQ +0.23%、IWM +0.18%（Alpaca 09:00，延遲 16 分鐘），但三大指數日線仲係跌勢。NVDA 由昨日大跌後反彈，盤前再升 2.2%。IBKR 今日連唔到，冇即時指數報價。",
+  "base": {
+   "spy": 0.43,
+   "qqq": 0.23
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 689.75,
+    "chgPct": 0.23,
+    "note": "Alpaca 09:00（延遲 16 分鐘）"
+   },
+   {
+    "sym": "SPY",
+    "last": 760.38,
+    "chgPct": 0.43,
+    "note": "Alpaca 09:00（延遲 16 分鐘）"
+   },
+   {
+    "sym": "IWM",
+    "last": 278.93,
+    "chgPct": 0.18,
+    "note": "Alpaca 09:00（延遲 16 分鐘）"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "PPI／核心 PPI",
+    "impact": "高",
+    "note": "已公布：PPI 0.3%（預期 0.4%）、核心 0.3%（預期 0.3%）"
+   },
+   {
+    "time": "09:40 ET",
+    "name": "Fed Logan 講話",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "10:50 ET",
+    "name": "Fed Bowman 講話",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "12:00 ET",
+    "name": "Fed Daly 講話",
+    "impact": "低",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "SMFG",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "MFG",
+    "when": "盤前",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "VIR",
+   "price": 10.24,
+   "gapPct": -15.51,
+   "rvol": 11.82,
+   "pmVolume": 612377,
+   "avgVolume": 1918145,
+   "floatM": 135.7,
+   "atrPct": 7.1,
+   "spreadPct": 0.29,
+   "rsQqq": -15.74,
+   "ema9Pct": -0.18,
+   "trend": "up",
+   "catalyst": "Why Is Vir Biotechnology Stock Falling Friday?",
+   "verdict": "pick",
+   "note": "增發價 10 元，跳空 −15.5%"
+  },
+  {
+   "sym": "MOD",
+   "price": 141.2,
+   "gapPct": 33.08,
+   "rvol": 10.15,
+   "pmVolume": 433926,
+   "avgVolume": 2247216,
+   "floatM": 51.98,
+   "atrPct": 9.8,
+   "spreadPct": 0.59,
+   "rsQqq": 32.85,
+   "ema9Pct": -0.81,
+   "trend": "down",
+   "catalyst": "Modine Manufacturing in Acquisition Talks with Samsung Electronics",
+   "verdict": "pick",
+   "note": "收購傳聞跳空 33%；差價 0.59% 偏闊"
+  },
+  {
+   "sym": "LFTO",
+   "price": 23.18,
+   "gapPct": 23.89,
+   "rvol": 32.27,
+   "pmVolume": 151700,
+   "avgVolume": 739263,
+   "floatM": 31.12,
+   "atrPct": 6.41,
+   "spreadPct": 0.56,
+   "rsQqq": 23.66,
+   "ema9Pct": 0.32,
+   "trend": "mixed",
+   "catalyst": "Liftoff Mobile (NASDAQ:LFTO) Stock Price Target Raised at BTIG Research",
+   "verdict": "watch",
+   "note": "券商升級、RVOL 32；但盤前成交得 15 萬股（未夠 20 萬）、差價 0.56%"
+  },
+  {
+   "sym": "NVDA",
+   "price": 169.89,
+   "gapPct": 2.23,
+   "rvol": 1.28,
+   "pmVolume": 21002447,
+   "avgVolume": 197378158,
+   "floatM": 23190,
+   "atrPct": 6.41,
+   "spreadPct": 0.02,
+   "rsQqq": 2,
+   "ema9Pct": 0.27,
+   "trend": "down",
+   "catalyst": "Stock Market Today: Dow Jones, S&P 500, Nasdaq 100  Futures Rise as Nvidia CEO E",
+   "verdict": "watch",
+   "note": "昨日沽空候選；今日 RVOL 1.28，未夠 2，已高過昨日高位"
+  },
+  {
+   "sym": "SNAL",
+   "price": 2.71,
+   "gapPct": 18.86,
+   "rvol": 1633.05,
+   "pmVolume": 2309136,
+   "avgVolume": 112791,
+   "floatM": 3.13,
+   "atrPct": 9.65,
+   "spreadPct": 0.36,
+   "rsQqq": 18.63,
+   "ema9Pct": -0.75,
+   "trend": "mixed",
+   "catalyst": "Snail Games to Showcase Titles at Noiz.gg Gaming Event",
+   "verdict": "avoid",
+   "note": "股價 2.71、Float 313 萬"
+  },
+  {
+   "sym": "GP",
+   "price": 0.97,
+   "gapPct": -21.14,
+   "rvol": 479.67,
+   "pmVolume": 976123,
+   "avgVolume": 6568535,
+   "floatM": 1.22,
+   "atrPct": 17.07,
+   "spreadPct": 1.02,
+   "rsQqq": -21.37,
+   "ema9Pct": -0.59,
+   "trend": "mixed",
+   "catalyst": "GreenPower Motor Company (GP) Experiences Multiple Volatility Trading Halts",
+   "verdict": "avoid",
+   "note": "股價 0.97、多次停牌"
+  },
+  {
+   "sym": "MRLN",
+   "price": 1.29,
+   "gapPct": 34.38,
+   "rvol": 366.44,
+   "pmVolume": 11357352,
+   "avgVolume": 2407969,
+   "floatM": 27.64,
+   "atrPct": 13.48,
+   "spreadPct": 0.78,
+   "rsQqq": 34.15,
+   "ema9Pct": -0.79,
+   "trend": "down",
+   "catalyst": "Merlin, Inc. Reports Third Quarter 2026 Financial Results",
+   "verdict": "avoid",
+   "note": "股價 1.29（細價股）"
+  },
+  {
+   "sym": "CADL",
+   "price": 5.2,
+   "gapPct": -38.02,
+   "rvol": 139.31,
+   "pmVolume": 365555,
+   "avgVolume": 1165104,
+   "floatM": 61.34,
+   "atrPct": 8.22,
+   "spreadPct": 1.73,
+   "rsQqq": -38.25,
+   "ema9Pct": -3.46,
+   "trend": "down",
+   "catalyst": "Stifel Adjusts Price Target on Candel Therapeutics",
+   "verdict": "avoid",
+   "note": "股價 5.2、差價 1.73%"
+  },
+  {
+   "sym": "ARAI",
+   "price": 2.45,
+   "gapPct": 18.93,
+   "rvol": 13.26,
+   "pmVolume": 1183871,
+   "avgVolume": 147655,
+   "floatM": 0.44,
+   "atrPct": 34.47,
+   "spreadPct": 0.41,
+   "rsQqq": 18.7,
+   "ema9Pct": 5.89,
+   "trend": "down",
+   "catalyst": "業績（盤前）",
+   "verdict": "avoid",
+   "note": "Float 只有 44 萬股、股價 2.45"
+  },
+  {
+   "sym": "POAS",
+   "price": 3.43,
+   "gapPct": 13.95,
+   "rvol": 2.27,
+   "pmVolume": 11462040,
+   "avgVolume": 5592731,
+   "floatM": 0.77,
+   "atrPct": 19.27,
+   "spreadPct": 1.99,
+   "rsQqq": 13.72,
+   "ema9Pct": 0.61,
+   "trend": "mixed",
+   "catalyst": "Phaos Technology Holdings (NYSE American:POAS) Surges 234% as Microscopy Stock S",
+   "verdict": "avoid",
+   "note": "差價 1.99%、Float 77 萬"
+  },
+  {
+   "sym": "MSFT",
+   "price": 519,
+   "gapPct": -0.76,
+   "rvol": 2.78,
+   "pmVolume": 1359624,
+   "avgVolume": 26397274,
+   "floatM": 7310,
+   "atrPct": 3.34,
+   "spreadPct": 0.03,
+   "rsQqq": -0.99,
+   "ema9Pct": 0.19,
+   "trend": "mixed",
+   "catalyst": "Dividend Roundup: Southwest Airlines, Cisco, Microsoft, Chevron, and more",
+   "verdict": "skip",
+   "note": "RVOL 2.8 但 Gap 只 −0.8%"
+  },
+  {
+   "sym": "NVDL",
+   "price": 19.4,
+   "gapPct": 4.47,
+   "rvol": 2.16,
+   "pmVolume": 8330733,
+   "avgVolume": 23132272,
+   "floatM": null,
+   "atrPct": 15.08,
+   "spreadPct": 0.1,
+   "rsQqq": 4.24,
+   "ema9Pct": 0.52,
+   "trend": "down",
+   "catalyst": "NVDL Nov 2026 18.500 put (NVDL261113P00018500) Interactive Stock Chart - Yahoo F",
+   "verdict": "skip",
+   "note": "兩倍槓桿 ETF，唔做"
+  }
+ ],
+ "fewPicksReason": "今日 RVOL ≥ 2、股價唔係細價、Float 同差價合格嘅股得 MOD、VIR；LFTO 盤前成交得 15 萬股（未夠 20 萬），放觀察。報告遲咗，冇時間做 Market Profile。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇日線升勢而又 RVOL ≥ 2 嘅做多股。MOD 係日線跌勢入面嘅消息跳空（收購傳聞），唔算升勢股；LFTO 日線橫行、盤前成交未夠，放觀察名單。只做多嘅用戶：MOD 等升穿盤前高 147.63 先入，記住 A+ 過濾（首 5 分鐘成交 ≥ 平時 2 倍、QQQ 喺 VWAP 上面）；唔夠就今日唔做都得。",
+  "items": [
+   {
+    "sym": "MOD",
+    "trend": "down",
+    "setups": "Flat Top（盤前高 147.63 下面整固再破）",
+    "note": "日線跌勢、消息未確認、差價 0.59%：只用細注"
+   }
+  ]
+ },
+ "carryover": {
+  "fromDate": "2026-11-12",
+  "summary": "昨日三隻主計劃（LUNR 做多、NVDA 同 NBIS 沽空）今日盤前 RVOL 都低過 2，冇一隻再入選。NVDA 昨日由 148.8 反彈到 166 收市（收喺全日高位附近），今日盤前再升穿昨日高位，只觀察。",
+  "items": [
+   {
+    "sym": "LUNR",
+    "prevSide": "Long",
+    "prevResult": "09:35 觸發 → 09:40 中 Stop（−1R）；成交價 14.18（跳過入場價）",
+    "yClose": 13.03,
+    "yChgPct": 6.98,
+    "yClosePos": 0.04,
+    "yVolRatio": 3.49,
+    "price": 13.11,
+    "gapPct": 0.61,
+    "rvol": 0.61,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.61，未夠 2；昨日升 7% 但收喺全日低位（收市位置 4%），買盤唔夠。",
+    "levels": "昨日低 12.97、昨日高 14.62"
+   },
+   {
+    "sym": "NVDA",
+    "prevSide": "Short",
+    "prevResult": "09:35 觸發 → 09:50 中 Stop（−1R）；成交價 156.21（跳過入場價）",
+    "yClose": 166.19,
+    "yChgPct": -4.34,
+    "yClosePos": 0.95,
+    "yVolRatio": 4.5,
+    "price": 169.89,
+    "gapPct": 2.23,
+    "rvol": 1.28,
+    "verdict": "watch",
+    "side": null,
+    "reason": "今日盤前 RVOL 1.28，未夠 2；昨日由低位 148.8 反彈到 166.19 收市，今日盤前 169.9 已經高過昨日高位 167.14。唔沽空；做多要等開市後企穩 VWAP、首 5 分鐘成交 ≥ 平時 2 倍先考慮。",
+    "levels": "昨日高 167.14、昨日收 166.19"
+   },
+   {
+    "sym": "NBIS",
+    "prevSide": "Short",
+    "prevResult": "09:35 觸發 → 收市前未到 Stop／Target（收市計 -0.28R）；成交價 125.75（跳過入場價）",
+    "yClose": 128.64,
+    "yChgPct": -16.84,
+    "yClosePos": 0.71,
+    "yVolRatio": 2.67,
+    "price": 126.46,
+    "gapPct": -1.69,
+    "rvol": 0.58,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.58，未夠 2；喺昨日收市之下、昨日低位之上，冇方向。",
+    "levels": "昨日低 118.81、昨日高 132.69"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "MOD",
+   "name": "Modine Manufacturing",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 68,
+   "price": 141.2,
+   "prevClose": 106.1,
+   "gapPct": 33.08,
+   "pmVolume": 433926,
+   "pmVolPct": 19.31,
+   "avgVolume": 2247216,
+   "rvol": 10.15,
+   "spread": 0.84,
+   "spreadPct": 0.59,
+   "atr": 10.4,
+   "atrPct": 9.8,
+   "mktCapB": 7.53,
+   "floatM": 51.98,
+   "rsQqq": 32.85,
+   "rsSpy": 32.65,
+   "ema9": 142.36,
+   "ema9Pct": -0.81,
+   "ema9Step": "5m",
+   "ema9Daily": 109.63,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 147.63,
+    "pml": 128.06,
+    "pdh": 110.28,
+    "pdl": 101.37,
+    "pdc": 106.1,
+    "other": [
+     {
+      "label": "20 日線",
+      "price": 124.98
+     },
+     {
+      "label": "50 日線",
+      "price": 160.43
+     }
+    ]
+   },
+   "why": "報道指同 Samsung Electronics 傾收購，盤前升 33%、RVOL 10.2、盤前成交 43 萬股；Float 5,200 萬。數據中心散熱（AI 概念），相對 QQQ 強 32.9%。",
+   "catalyst": "多間媒體（Benzinga 等）報道 Modine 同 Samsung Electronics 進行收購洽談；公司未正式確認。屬新而重大嘅消息，但係傳聞階段。",
+   "technical": "日線跌勢（20 日線 125 低過 50 日線 160），但今日一下跳到 20 日線之上好遠；上面 50 日線 160.4 係大阻力。盤前高 147.63、盤前低 128.06，而家 141 喺中間，5 分鐘 EMA 9（142.4）之下少少。",
+   "setup": "開市推動／Flat Top：09:35 後喺盤前高 147.63 下面整固再升穿先入",
+   "pillars": {
+    "bigPicture": "大市平穩偏好：PPI 0.3% 低過預期 0.4%，核心 PPI 0.3% 符合預期；SPY +0.43%、QQQ +0.23%（Alpaca SIP 09:00，延遲 16 分鐘）。三大指數日線仍然係跌勢。",
+    "fundamentals": "收購傳聞：如果屬實，價格會向收購價靠；但未確認，隨時有否認或者「冇洽談」嘅消息令股價急跌。",
+    "technical": "跳空 33%，遠離昨日高 110.28；盤前區間 128–148 好闊（約 1.9 ATR）。升穿 147.63 上面到 50 日線 160 之前冇明顯阻力。",
+    "tape": "盤前成交 43 萬股（約平時 19%）；買賣差價 0.59%，偏闊，一定要用限價單。開市第一支 5 分鐘 K 要見 ≥ 平時 2 倍先算有人跟。",
+    "intuition": "信心中低。傳聞股開市好多時先回吐；差價闊、ATR 9.8%。只做升穿盤前高嘅延續，唔追開市第一下。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 147.63，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 同 5 分鐘 EMA 9 之上，入場前 QQQ 喺 VWAP 上面，差價收窄到 0.3% 以下",
+    "entry": 147.7,
+    "stop": 142.5,
+    "target1": 158.1,
+    "target2": 160.3,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "升穿 147.63 用 Buy Stop 147.70（加限價 148.20）入，Stop 142.50（0.5 ATR），T1 158.10、T2 160.30（50 日線下面）；+1R（152.90）將 Stop 移返入場價。11:30 前未觸發就放棄。",
+    "short": "唔做沽空：消息正面，傳聞股可以再急升。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。有公司否認或者「冇洽談」消息就唔做；開市跌穿 VWAP 企唔返就唔做；差價 > 0.3% 唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 14 次、贏 2 次、約 −9.1R。"
+   },
+   "risks": [
+    "收購消息未確認，否認就會急跌",
+    "買賣差價 0.59%，偏闊：滑價會食咗部分 R",
+    "ATR 9.8%，波幅大：Stop 5.2 元，要按每股風險計股數",
+    "日線跌勢，50 日線 160 係大阻力",
+    "盤前價 141.2 喺 5 分鐘 EMA 9（142.4）之下少少：所以只做升穿盤前高，唔喺而家價入"
+   ],
+   "news": [
+    {
+     "title": "Modine Manufacturing in Acquisition Talks with Samsung Electronics",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://news.futunn.com/post/1004440648/modine-manufacturing-shares-jump-on-samsung-electronics-buyout-talks",
+     "time": "2026-11-13T12:32"
+    },
+    {
+     "title": "12 Industrials Stocks Moving In Friday's Pre-Market Session",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/trading-ideas/movers/26/11/63233503/12-industrials-stocks-moving-friday-s-pre-market-session",
+     "time": "2026-11-13T12:05"
+    },
+    {
+     "title": "Why Did Modine Manufacturing (NYSE:MOD) Gain 22.62% Pre-Market Without a Fresh Announcement?",
+     "source": "Kalkine（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNbXdsbXhuWjFaTXNadzhEZjRmdEtvMjFQWjl2cGpBdVcwa3lva2FNYzJPMWlILWROU0gzM0FuMWhfYnNYSEdjRjgyVE9XeWRyQmdCN0JGQmU4WFhudE5fVHNIZDhzOTlKN3lpOGNxcEltV3N2R044TDV3UThvSXlITWVXMFlhY19RUWxqM1E0NEhzUi1GNlV3Zk4ybFViUVVjSllEdE9jY3dud2kzcWRrM1F1ZHZhYzI1cnkycU9SMjlTamt1?oc=5",
+     "time": "2026-11-13T12:05"
+    },
+    {
+     "title": "This AI Cooling Company Just Caught Samsung's Eye",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/m-a/26/11/63231462/this-ai-cooling-company-just-caught-samsungs-eye",
+     "time": "2026-11-13T10:18"
+    }
+   ],
+   "lists": [
+    "盤前升幅榜（StockAnalysis）",
+    "Alpaca 盤前掃描"
+   ]
+  },
+  {
+   "sym": "VIR",
+   "name": "Vir Biotechnology",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 64,
+   "price": 10.24,
+   "prevClose": 12.12,
+   "gapPct": -15.51,
+   "pmVolume": 612377,
+   "pmVolPct": 31.93,
+   "avgVolume": 1918145,
+   "rvol": 11.82,
+   "spread": 0.03,
+   "spreadPct": 0.29,
+   "atr": 0.86,
+   "atrPct": 7.1,
+   "mktCapB": 1.75,
+   "floatM": 135.7,
+   "rsQqq": -15.74,
+   "rsSpy": -15.94,
+   "ema9": 10.26,
+   "ema9Pct": -0.18,
+   "ema9Step": "5m",
+   "ema9Daily": 12.29,
+   "dailyTrend": "up",
+   "levels": {
+    "pmh": 10.73,
+    "pml": 10.06,
+    "pdh": 12.96,
+    "pdl": 12.02,
+    "pdc": 12.12,
+    "other": [
+     {
+      "label": "增發價",
+      "price": 10.0
+     },
+     {
+      "label": "50 日線",
+      "price": 11.18
+     },
+     {
+      "label": "20 日線",
+      "price": 11.47
+     }
+    ]
+   },
+   "why": "以每股 10 美元增發 1,500 萬股（集資 1.5 億），盤前跌 15.5%、RVOL 11.8、盤前成交 61 萬股；Float 1.36 億、差價 0.29%。",
+   "catalyst": "昨晚公布以每股 10.00 美元公開發售 1,500 萬股新股，集資總額 1.5 億美元。增發會攤薄現有股東，股價通常會向增發價靠。",
+   "technical": "日線升勢（昨收高過 20、50 日線），但今日跳空跌穿 20 日線 11.47 同 50 日線 11.18。盤前喺 10.06–10.73，已經貼近增發價 10.00。",
+   "setup": "開市推動（沽空）：09:35 後跌穿增發價 10.00 同盤前低 10.06",
+   "pillars": {
+    "bigPicture": "大市平穩偏好（PPI 低過預期）；生物科技個股消息主導，同大市關係細。相對 QQQ 弱 15.7%。",
+    "fundamentals": "增發係實質負面（攤薄）；但承銷商好多時會喺增發價 10.00 附近護盤，所以 10.00 係重要支持。",
+    "technical": "日線本來升勢，今日跌穿兩條均線；跌穿 10.00 之後下面冇明顯支持，到 ATR 目標先有。",
+    "tape": "盤前成交 61 萬股（約平時 32%），差價 0.29%；開市第一支 5 分鐘 K 要見 ≥ 平時 2 倍先算跟進。",
+    "intuition": "信心中低。增發價經常變成「地板」，跌穿唔到就會反彈；只做真正跌穿 10.00 嘅延續，唔喺 10.00 上面沽。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿 10.00（增發價）同盤前低 10.06，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 下面，QQQ 喺 VWAP 下面",
+    "entry": 9.98,
+    "stop": 10.4,
+    "target1": 9.14,
+    "target2": 8.9,
+    "rr": 2.0
+   },
+   "plan": {
+    "long": "唔做多：增發攤薄兼跳空跌穿均線。只做多嘅用戶唔好喺 10.00 撈底。",
+    "short": "跌穿 10.00 用 Sell Stop 9.98 沽，Stop 10.40（0.49 ATR），T1 9.14、T2 8.90；−1R（9.56）將 Stop 移返入場價。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。守住 10.00 反彈企穩盤前高 10.73 之上就唔沽；差價 > 0.3% 唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 14 次、贏 2 次、約 −9.1R。"
+   },
+   "risks": [
+    "增發價 10.00 好多時有承銷商護盤，假跌穿後急彈",
+    "Short Float 12.4%，可能逼淡倉",
+    "日線本來係升勢，屬逆勢沽空",
+    "買賣差價 0.29%（高過 0.1% 標準）：增發消息股成交夠，所以仍然揀，但要用限價單"
+   ],
+   "news": [
+    {
+     "title": "Why Is Vir Biotechnology Stock Falling Friday?",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/markets/offerings/26/11/63236510/why-is-vir-biotechnology-stock-falling-friday",
+     "time": "2026-11-13T13:39"
+    },
+    {
+     "title": "Vir Biotechnology Announces Pricing of Public Offering of Common Stock",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.businesswire.com/newsroom/industry/health/biotechnology",
+     "time": "2026-11-13T12:32"
+    },
+    {
+     "title": "Vir Biotechnology dips 15%, prices $150M equity raise $10 per share",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/VIR/news?source=feed_symbol_VIR",
+     "time": "2026-11-13T09:40"
+    },
+    {
+     "title": "Reported Earlier, Vir Biotechnology Prices Public Offering Of 15M Common Shares At $10.00 Per Share For $150M Gross Proceeds",
+     "source": "benzinga（Alpaca）",
+     "url": "https://www.benzinga.com/quote/VIR",
+     "time": "2026-11-13T06:04"
+    }
+   ],
+   "lists": [
+    "盤前跌幅榜（StockAnalysis）",
+    "Alpaca 盤前掃描"
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "sym": "LFTO",
+   "why": "BTIG 目標價升到 31、Freedom 升級買入，盤前升 23.9%、RVOL 32；但盤前成交得 15 萬股、差價 0.56%。開市首 5 分鐘成交夠、升穿盤前高 23.87 先考慮（Stop 約 23.30）。"
+  },
+  {
+   "sym": "NVDA",
+   "why": "昨日大跌後反彈收全日高位，今日盤前高過昨日高位 167.14；RVOL 1.28 未夠 2。開市企穩 VWAP、10:00 後先考慮做多。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "CADL",
+   "why": "差價 1.73%"
+  },
+  {
+   "sym": "ARAI",
+   "why": "Float 44 萬股、細價股"
+  },
+  {
+   "sym": "MRLN",
+   "why": "股價 1.29"
+  },
+  {
+   "sym": "GP",
+   "why": "股價 0.97、多次停牌"
+  }
+ ],
+ "news": [
+  {
+   "title": "Opening trading-card packs has become a $2 billion market",
+   "source": "MarketWatch",
+   "url": "https://www.marketwatch.com/story/opening-trading-card-packs-has-become-a-2-billion-market-new-apps-are-trying-to-cash-in-b7ba11f5?mod=mw_rss_topstories",
+   "time": "2026-11-13T14:16"
+  },
+  {
+   "title": "Cisco's 'networking super-cycle' drives growth; efficiencies push up operating margin: analysts",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4672333-ciscos-networking-super-cycle-drives-growth-efficiencies-push-up-operating-margin-analysts?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-13T14:15"
+  },
+  {
+   "title": "I&#x2019;m 63 and spending $95,000 on a roof deck for my $500,000 home. Am I being extravagant?",
+   "source": "MarketWatch",
+   "url": "https://www.marketwatch.com/story/im-63-and-want-to-spend-95-000-on-a-roof-deck-for-my-500-000-home-is-that-a-good-investment-f1a59c27?mod=mw_rss_topstories",
+   "time": "2026-11-13T14:15"
+  },
+  {
+   "title": "Zhibao Technology reports FY results",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4672398-zhibao-technology-reports-fy-results?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-13T14:14"
+  },
+  {
+   "title": "Baird upgrades Domino's Pizza, sees better sales and franchisee profitability",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4672363-baird-upgrades-dominos-pizza-sees-better-sales-and-franchisee-profitability?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-13T14:14"
+  },
+  {
+   "title": "Commvault appoints Danielle Abrahamsen as interim CFO",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4672391-commvault-appoints-danielle-abrahamsen-as-interim-cfo?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-13T14:13"
+  },
+  {
+   "title": "SelectQuote launches 1-for-20 reverse stock split",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4672384-selectquote-launches-1-for-20-reverse-stock-split?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-13T14:11"
+  },
+  {
+   "title": "Gunnison Copper Corp. GAAP EPS of $0.03, revenue of $36.1M",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4672395-gunnison-copper-corp-gaap-eps-of-0_03-revenue-of-36_1m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-13T14:11"
+  }
+ ],
+ "lesson": "昨日三隻主計劃都喺 09:35 一開市就跳過入場價成交，結果 −2.3R。今日兩隻都係開市突破型：如果 09:35 已經過咗入場價 0.3 ATR，唔追，寧願冇交易。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；今日報告遲咗、冇 IBKR 即時數據，落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
