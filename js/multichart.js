@@ -625,7 +625,7 @@
     const tk = T && num(T.entry) != null && num(T.stop) != null && num(T.target1) != null ? `#/tools/bracket-ticket?sym=${encodeURIComponent(sym)}&side=${T.side === 'Short' ? 'short' : 'long'}&entry=${T.entry}&stop=${T.stop}&t1=${T.target1}${num(T.target2) != null ? '&t2=' + T.target2 : ''}${num((picks.find((x) => x.sym === sym) || {}).atr) != null ? '&atr=' + picks.find((x) => x.sym === sym).atr : ''}` : '';
     el.innerHTML = `<div class="mc-al-row"><span class="mc-cl">🔔 ${esc(sym)} 價位警報</span>${lv.map(([l, v]) => chip(l, v)).join('')}${myLines(sym).map((v) => chip('線', v, `<button class="mc-x" data-rmline="${v}" title="刪除呢條線">✕</button>`)).join('')}
         <form class="mc-alf" data-alf><input type="number" step="0.01" inputmode="decimal" placeholder="自訂價" data-alp aria-label="自訂警報價"><button class="btn sm">＋ 警報</button></form>
-        ${pop ? '' : `<button class="btn sm ghost" data-draw title="撳完再喺任何一個圖撳一下，就喺嗰個價畫一條水平線">${drawMode ? '✏️ 撳圖畫線…（Esc 取消）' : '✏️ 畫線'}</button>`}${tk && !pop ? `<a class="btn sm" href="${tk}">⚡ 落單卡</a>` : ''}</div>
+        ${pop ? '' : `<button class="btn sm ghost" data-draw title="撳完再喺任何一個圖撳一下，就喺嗰個價畫一條水平線">${drawMode ? '✏️ 撳圖畫線…（Esc 取消）' : '✏️ 畫線'}</button>`}${tk && !pop ? `<a class="btn sm" href="${tk}">⚡ 一頁通</a>` : ''}</div>
       ${act.length || fired.length ? `<div class="mc-al-row mc-al-list">${act.map((a) => `<span class="mc-alr"><b>${esc(a.sym)}</b> ${a.dir === 'up' ? '↑' : '↓'} ${f2(a.price)}${a.label ? ' ' + esc(a.label) : ''}<button class="mc-x" data-rmal="${esc(a.id)}" title="刪除">✕</button></span>`).join('')}${fired.map((a) => `<span class="mc-alr fired">✅ <b>${esc(a.sym)}</b> ${a.dir === 'up' ? '升穿' : '跌穿'} ${f2(a.price)} ${sHM(etSec(a.fired))}<button class="mc-x" data-rmal="${esc(a.id)}" title="刪除">✕</button></span>`).join('')}</div>` : ''}`;
     $$('[data-al]', el).forEach((b) => b.addEventListener('click', () => toggleAlert(sym, +b.dataset.al, b.dataset.lb)));
     $$('[data-rmline]', el).forEach((b) => b.addEventListener('click', () => removeLine(sym, +b.dataset.rmline)));
@@ -785,7 +785,7 @@
       <li><b>逐筆即時：</b>開市時用 Alpaca 免費嘅 IEX 即時串流，每一筆成交即刻更新圖同警報。IEX 只係一間交易所：價格同全市場好接近，但唔係每一筆成交都見到。</li>
       <li><b>警報：</b>撳下面任何一個價位（PDH、PMH、ORH、Entry…）就設定警報，再撳一次取消；亦可以輸入自訂價。到價會響、彈通知。<b>呢頁要開住先會響</b>（可以喺背景）。</li>
       <li><b>畫線：</b>撳「✏️ 畫線」再撳任何一個圖，就喺嗰個價畫一條水平線（兩個視窗都見到），線亦可以設警報。</li>
-      <li><b>今日計劃：</b>今日選股報告有呢隻股，就會畫 Entry／Stop／T1／T2，同出「⚡ 落單卡」。</li>
+      <li><b>今日計劃：</b>今日選股報告有呢隻股，就會畫 Entry／Stop／T1／T2，同出「⚡ 交易一頁通」連結。</li>
       <li><b>TradingView：</b>「📈 TradingView」喺官網開同一隻股（免費帳戶有 Cboe 即時報價，可以配合 <a href="#/tools/tv-allinone">一合一指標</a>）；剔「TradingView 跟住換股」，之後換股嗰個視窗會跟住換。</li>
       <li><b>數據：</b>免費帳戶全市場數據延遲 15 分鐘；「智能」模式最近 15 分鐘用 IEX 即時價。即時落單前喺券商再核對。</li></ul>`));
     themeObs = new MutationObserver(() => build()); themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });

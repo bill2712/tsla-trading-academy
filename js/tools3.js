@@ -84,18 +84,21 @@
     return o;
   }
 
-  /* ---------------- ⚡ Bracket 落單卡 ---------------- */
+  /* ---------------- ⚡ 交易一頁通（原 Bracket 落單卡）：計股數 + 實戰檢查 + IBKR 三張單 + 收市後 Net R ----------------
+   * 整合咗：Position Size（基本／進階）、入場太遲重計 R:R、中途障礙、Stop vs ATR、Spread 成本、滑價、Net R */
   TOOLS['bracket-ticket'] = {
-    title: 'IBKR Bracket 落單卡', icon: '⚡', cat: '落盤效率', level: 'l13',
-    desc: '輸入 Entry、Stop（或者 ATR 倍數），即刻計股數、Target、唔追價、+1R 移 Stop 價，同埋 IBKR Bracket 三張單要填嘅數字；可以由每日選股一撳帶入。',
+    title: '交易一頁通：股數、檢查、IBKR 落單卡', icon: '⚡', cat: '落盤效率', level: 'l13',
+    desc: '實戰一個工具就夠：計股數（風險同資金兩個上限）、Target、唔追價、+1R 移 Stop；自動檢查 Stop 對 ATR、R:R、下一個阻力、成本佔幾多 R、而家價追唔追得；出 IBKR Bracket 三張單；收市後填實際成交計 Net R。可以由每日選股一撳帶入。',
     render(el, ctx) {
-      const DEF = { sym: 'NVDA', side: 'long', entryType: 'breakout', entry: 191, stopMode: 'price', stop: 188.76, atr: 7.46, atrMult: 0.3, tMode: 'r', t1R: 2, t2R: 3, t1: 195.48, t2: 197.72 };
+      const DEF = { sym: 'NVDA', side: 'long', entryType: 'breakout', entry: 191, stopMode: 'price', stop: 188.76, atr: 7.46, atrMult: 0.3, tMode: 'r', t1R: 2, t2R: 3, t1: 195.48, t2: 197.72, px: 0, obs: 0, spr: 0.02, comm: 0.005, commMin: 1, fe: 0, fx: 0 };
       const p = ctx.load(Object.assign({}, DEF));
       const u = urlParams();
       if (u.sym) {
         Object.assign(p, { sym: String(u.sym).toUpperCase().slice(0, 10), side: u.side === 'short' ? 'short' : 'long', entryType: 'breakout', stopMode: 'price', tMode: 'price' });
-        ['entry', 'stop', 't1', 't2', 'atr'].forEach((k) => { if (u[k] != null) p[k] = numOr(u[k], p[k]); });
+        ['entry', 'stop', 't1', 't2', 'atr', 'obs'].forEach((k) => { if (u[k] != null) p[k] = numOr(u[k], p[k]); });
         if (u.t2 == null) p.t2 = 0;
+        if (u.obs == null) p.obs = 0;
+        p.px = 0; p.fe = 0; p.fx = 0;
         ctx.save(p);
         try { history.replaceState(null, '', '#/tools/bracket-ticket'); } catch (e) {}
       }
@@ -115,6 +118,16 @@
             ${sel('tMode', 'Target 點定', [['r', 'R 倍數'], ['price', '自己輸入價']])}
             ${p.tMode === 'price' ? fld('t1', 'Target 1 價', 0.01) + fld('t2', 'Target 2 價（可 0）', 0.01) : fld('t1R', 'Target 1 = 幾多 R', 0.5) + fld('t2R', 'Target 2 = 幾多 R（可 0）', 0.5)}
           </div>
+          <details class="tq-sec" ${p.px || p.obs ? 'open' : ''}><summary><b>🔍 實戰檢查（選填，0 = 唔檢查）</b></summary>
+            <div class="tool-grid">
+              ${fld('px', '而家價（開市後填：判斷追唔追得）', 0.01)}
+              ${fld('obs', `下一個${p.side === 'short' ? '支持' : '阻力'}（例如 PDH、20 日高）`, 0.01)}
+              ${fld('spr', 'Bid-Ask 差價（$）', 0.01)}
+              ${fld('comm', '佣金：每股（$）', 0.001)}
+              ${fld('commMin', '佣金：每張最低（$）', 0.5)}
+            </div></details>
+          <details class="tq-sec" ${p.fe && p.fx ? 'open' : ''}><summary><b>📝 收市後：實際成交 → 真正 R</b></summary>
+            <div class="tool-grid">${fld('fe', '實際入場成交價', 0.01)}${fld('fx', '實際出場成交價', 0.01)}</div></details>
           <div class="tool-out" data-out aria-live="polite"></div>`;
         bindSettings(el, draw);
         el.querySelectorAll('[data-k]').forEach((i) => i.addEventListener(i.tagName === 'SELECT' ? 'change' : 'input', () => {
@@ -132,7 +145,43 @@
         const warns = [];
         if (!L && S.cash === 'yes') warns.push(verdict(false, 'Cash 戶口唔可以沽空（' + (window.CURRICULUM ? CURRICULUM.chRef('l11-c8') : '') + '）。要用 Margin 戶口，仲要借到貨。'));
         if (P.shares <= 0) warns.push(verdict(false, `每股風險 ${F(P.risk)} 大過你每筆風險 ${money(P.budget)}，買唔到 1 股。揀過另一隻，或者 Stop 近啲（要有結構依據）。`));
-        if (P.rr < 1.5) warns.push(verdict(null, `R:R 只有 ${F(P.rr)}，低過 1.5。`));
+        /* 🔍 實戰檢查 */
+        const checks = [];
+        if (p.atr > 0) {
+          const ra = P.risk / p.atr;
+          checks.push(ra < 0.05 ? verdict(null, `Stop 只係 ${F(ra, 2)} ATR：好容易俾正常波動掃走，確認係咪真係結構失效位。`)
+            : ra > 0.6 ? verdict(null, `Stop ${F(ra, 2)} ATR 偏闊：2R 要行 ${F(2 * ra, 2)} ATR，日內好難到；考慮唔做或者等更好入場位。`)
+            : verdict(true, `Stop 距離 ${F(ra, 2)} ATR（0.05–0.6 合理）。`));
+        }
+        checks.push(P.rr >= 1.995 ? verdict(true, `R:R ${F(P.rr)} : 1。`) : P.rr >= 1.5 ? verdict(null, `R:R 只有 ${F(P.rr)}（建議 ≥ 2）。`) : verdict(false, `R:R ${F(P.rr)}，低過 1.5：唔值得做。`));
+        if (p.obs > 0) {
+          const ro = (P.sg * (p.obs - P.entry)) / P.risk;
+          checks.push(ro <= 0 ? verdict(false, `${L ? '阻力' : '支持'} ${F(p.obs)} 喺入場價錯嗰邊，檢查數字。`)
+            : ro < 1 ? verdict(false, `去到${L ? '阻力' : '支持'} ${F(p.obs)} 只有 ${F(ro)} R：空間唔夠，唔做。`)
+            : ro < P.rr ? verdict(null, `Target 之前有${L ? '阻力' : '支持'} ${F(p.obs)}（${F(ro)} R）：可以喺度先走一半，或者將 Target 放喺佢前面。`)
+            : verdict(true, `下一個${L ? '阻力' : '支持'} ${F(p.obs)} 喺 Target 之後（${F(ro)} R），有空間。`));
+        }
+        if (p.px > 0) {
+          const past = P.sg * (p.px - P.entry);
+          if (past > 0) {
+            const rk2 = P.sg * (p.px - P.stop), rr2 = rk2 > 0 ? (P.sg * (P.t1 - p.px)) / rk2 : -1;
+            const atrPast = p.atr > 0 ? past / p.atr : null;
+            checks.push(atrPast != null && atrPast > 0.3 ? verdict(false, `而家價已經過咗入場價 ${F(past)}（${F(atrPast, 2)} ATR > 0.3）：<b>唔追</b>，等回調或者下一個 Setup。`)
+              : rr2 < 1.5 ? verdict(false, `而家價入場：每股風險變 ${F(rk2)}、R:R 跌到 ${F(rr2)}，唔值得追。`)
+              : verdict(null, `而家價入場 R:R 變 ${F(rr2)}（原本 ${F(P.rr)}）。用 Limit 上限 ${F(P.lim || p.px)} 保護。`));
+          } else checks.push(verdict(true, `未到入場價（仲差 ${F(-past)}${p.atr > 0 ? `，${F(-past / p.atr, 2)} ATR` : ''}）：等觸發。`));
+        }
+        const commOne = Math.max(p.commMin || 0, P.shares * (p.comm || 0));
+        const costUsd = P.shares * (p.spr || 0) + 2 * commOne, costR = P.riskUsd > 0 ? costUsd / P.riskUsd : 0;
+        if (P.shares > 0) checks.push(costR <= 0.05 ? verdict(true, `一買一賣成本約 ${money(costUsd)}（${F(costR, 3)} R）。`)
+          : costR <= 0.12 ? verdict(null, `一買一賣成本約 ${money(costUsd)}，佔 ${F(costR, 2)} R：偏高。`)
+          : verdict(false, `一買一賣成本約 ${money(costUsd)}，佔 ${F(costR, 2)} R：太貴（Stop 太近或者股數太少）。`));
+        warns.unshift(`<div class="tq-checks"><b>🔍 實戰檢查</b>${checks.join('')}</div>`);
+        if (p.fe > 0 && p.fx > 0 && P.shares > 0) {
+          const net = P.sg * (p.fx - p.fe) * P.shares - 2 * commOne, netR = P.riskUsd > 0 ? net / P.riskUsd : 0;
+          const slipIn = P.sg * (p.fe - P.entry);
+          warns.push(`<div class="tq-sec"><b>📝 收市後結果</b><div class="stats">${stat('實際盈虧（扣佣金）', money(net), net >= 0 ? 'pos' : 'neg')}${stat('真正 R', (netR >= 0 ? '+' : '') + F(netR) + 'R', netR >= 0 ? 'pos' : 'neg')}${stat('入場滑價', F(slipIn))}</div><p class="tool-fine">用計劃風險 ${money(P.riskUsd)} 做 1R。記入交易日誌：計劃價、實際成交、R、有冇跟規則。</p></div>`);
+        }
         if (P.byCash < P.byRisk) warns.push(verdict(null, `股數受「每隻最多用 ${S.maxPosPct}% 本金」限制（按風險可以買 ${P.byRisk} 股）。實際風險 ${money(P.riskUsd)}，少過預算。`));
         const parent = p.entryType === 'breakout'
           ? `<b>${act} ${P.shares} ${esc(p.sym)}</b>｜類型 <b>STP LMT</b>｜Stop 價 <b>${F(P.entry)}</b>｜Limit 價 <b>${F(P.lim)}</b>｜TIF <b>DAY</b>`
@@ -224,7 +273,7 @@
           <span>${esc(cur.market && cur.market.bias ? '大市：' + cur.market.bias : '')}</span></div>
           ${cur.headline ? `<p class="tq-hl">${esc(cur.headline)}</p>` : ''}
           <div class="tbl-scroll"><table class="mini-tbl wide tq-t"><tr><th>股票</th><th>方向</th><th>入場（觸發）</th><th>Stop</th><th>Target 1</th><th>R:R</th><th>股數</th><th>風險</th><th>現金</th><th>唔追價</th><th>+1R 移 Stop</th><th></th></tr>
-          ${rows.map((r) => { const P = r.P, bad = P.err || P.shares <= 0 || (r.side === 'short' && S.cash === 'yes'); return `<tr class="${bad ? 'tq-off' : ''}"><th>${esc(r.x.sym)} <small>${esc(r.x.grade || '')}</small></th><td>${r.side === 'long' ? '📈 Long' : '📉 Short'}${r.x.dailyTrend ? `<small> ${{ up: '日線升勢', mixed: '日線橫行', down: '日線跌勢' }[r.x.dailyTrend] || ''}</small>` : ''}</td><td>${F(r.t.entry)}</td><td class="neg">${P.err ? '—' : F(P.stop)}</td><td class="pos">${P.err ? '—' : F(P.t1)}</td><td>${P.err ? '—' : F(P.rr)}</td><td><b>${P.err ? '—' : P.shares}</b></td><td>${P.err ? '—' : money(P.riskUsd, 0)}</td><td>${P.err ? '—' : money(P.cash, 0)}</td><td>${P.chase ? F(P.chase) : '—'}</td><td>${P.err ? '—' : F(P.be)}</td><td>${bad ? `<small>${P.err ? esc(P.err) : r.side === 'short' && S.cash === 'yes' ? 'Cash 戶口唔沽空' : '風險太大'}</small>` : `<a class="btn sm" href="${link(r)}">⚡ 落單卡</a>`}</td></tr>`; }).join('')}
+          ${rows.map((r) => { const P = r.P, bad = P.err || P.shares <= 0 || (r.side === 'short' && S.cash === 'yes'); return `<tr class="${bad ? 'tq-off' : ''}"><th>${esc(r.x.sym)} <small>${esc(r.x.grade || '')}</small></th><td>${r.side === 'long' ? '📈 Long' : '📉 Short'}${r.x.dailyTrend ? `<small> ${{ up: '日線升勢', mixed: '日線橫行', down: '日線跌勢' }[r.x.dailyTrend] || ''}</small>` : ''}</td><td>${F(r.t.entry)}</td><td class="neg">${P.err ? '—' : F(P.stop)}</td><td class="pos">${P.err ? '—' : F(P.t1)}</td><td>${P.err ? '—' : F(P.rr)}</td><td><b>${P.err ? '—' : P.shares}</b></td><td>${P.err ? '—' : money(P.riskUsd, 0)}</td><td>${P.err ? '—' : money(P.cash, 0)}</td><td>${P.chase ? F(P.chase) : '—'}</td><td>${P.err ? '—' : F(P.be)}</td><td>${bad ? `<small>${P.err ? esc(P.err) : r.side === 'short' && S.cash === 'yes' ? 'Cash 戶口唔沽空' : '風險太大'}</small>` : `<a class="btn sm" href="${link(r)}">⚡ 一頁通</a>`}</td></tr>`; }).join('')}
           </table></div>
           <div class="stats">${stat('做得嘅', ok.length + ' 隻')}${stat('每筆風險', money(budgetOf(S), 0))}${stat('今日最多蝕', money(budgetOf(S) * S.dayStopR, 0) + `（${S.dayStopR}R）`, 'neg')}${stat('同時揸幾多隻', '最多 1–2 隻')}</div>
           ${verdict(null, `一次最多專心睇 1–2 隻。蝕夠 ${S.dayStopR}R（${money(budgetOf(S) * S.dayStopR, 0)}）就收工。`)}

@@ -975,7 +975,7 @@ AMD 入場 $164.62、Stop $163.76（1R = $0.86）。之後走勢：升到 $165.4
 5. 真錢由最細注開始（Level 11 第一個月計劃）
 :::
 
-[[link:tools/bracket-ticket|⚡ 打開 Bracket 落單卡]]
+[[link:tools/bracket-ticket|⚡ 打開交易一頁通（落單卡）]]
 
 [[check:l14-grad]]
 

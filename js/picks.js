@@ -225,7 +225,7 @@
       <div class="pk-trade-h"><b>${L ? '📈 Long' : '📉 Short'} 交易計劃</b>${num(t.rr) != null ? `<span class="pk-rr">R:R ${F(t.rr, 2)}</span>` : ''}</div>
       ${t.trigger ? `<p class="pk-trig"><b>入場條件：</b>${esc(t.trigger)}</p>` : ''}
       <div class="pk-trade-g"><div><span>Entry</span><b>$${F(t.entry)}</b></div><div class="neg"><span>Stop</span><b>$${F(t.stop)}</b>${pct(t.stop)}</div><div class="pos"><span>Target 1</span><b>$${F(t.target1)}</b>${pct(t.target1)}</div>${num(t.target2) != null ? `<div class="pos"><span>Target 2</span><b>$${F(t.target2)}</b>${pct(t.target2)}</div>` : ''}<div><span>每股風險</span><b>$${F(Math.abs(t.entry - t.stop))}</b></div>${(() => { const r = Math.abs(t.entry - t.stop); const n = r > 0 ? Math.floor(100 / r) : 0; return `<div><span>每 $100 風險</span><b>${n ? n + ' 股' : '—'}</b>${n ? `<small>≈ $${Math.round(n * t.entry).toLocaleString()} 本金</small>` : ''}</div>`; })()}</div>
-      ${tk ? `<p class="pk-tk"><a class="btn sm" href="${tk}">⚡ 落單卡：計股數 + IBKR Bracket</a> <a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(p.sym)}">📺 多圖看盤</a></p>` : ''}
+      ${tk ? `<p class="pk-tk"><a class="btn sm" href="${tk}">⚡ 交易一頁通：股數 + 檢查 + IBKR Bracket</a> <a class="btn sm ghost" href="#/charts?sym=${encodeURIComponent(p.sym)}">📺 多圖看盤</a></p>` : ''}
     </div>`;
   }
   const PILLARS = [['bigPicture', '🌍', '大環境'], ['fundamentals', '📰', '日內基本面'], ['technical', '📈', '技術分析'], ['tape', '📜', '睇盤（Tape）'], ['intuition', '🧭', '直覺／經驗判斷']];

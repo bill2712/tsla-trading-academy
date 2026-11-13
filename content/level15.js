@@ -727,7 +727,7 @@ B 同 C 都要平倉，因為佢哋仍然有全額風險，你瞓著咗冇人管
 
 [[link:tools/open-cockpit|🛫 開市前計劃表]]
 
-[[link:tools/bracket-ticket|⚡ Bracket 落單卡]]
+[[link:tools/bracket-ticket|⚡ 交易一頁通（落單卡）]]
 
 :::coach 最後提醒
 數據入面最好嘅組合（升勢 + A+ 嘅 Flat Top）平均都只係 +0.25R 一次，而且只有 63 個樣本。呢個係一個**值得用 Paper Trading 驗證嘅假設**，唔係保證。真正嘅 Edge 要靠你自己嘅 30 次、100 次紀錄去證明。

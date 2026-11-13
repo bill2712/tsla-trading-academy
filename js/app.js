@@ -841,7 +841,7 @@
     if (id) {
       const t = TOOLS[id];
       const usedIn = CHAPTERS.filter((c) => c.md.includes(`[[tool:${id}]]`));
-      view.innerHTML = `<nav class="crumbs"><a href="#/tools">工具箱</a> › ${esc(t ? t.title : id)}</nav><div data-tool></div>
+      view.innerHTML = `<nav class="crumbs"><a href="#/tools">工具箱</a> › ${esc(t ? t.title : id)}</nav>${window.ToolMap && t ? ToolMap.banner(id) : ''}<div data-tool></div>
         ${usedIn.length ? `<p class="muted">📚 相關章節：${usedIn.map((c) => `<a href="#/c/${c.id}">${esc(c.level.code)} 第 ${c.num} 章 ${esc(c.title)}</a>`).join('、')}</p>` : ''}`;
       mountTool($('[data-tool]', view), id, false);
       return;
@@ -849,18 +849,19 @@
     const cats = {};
     Object.entries(TOOLS).forEach(([k, t]) => (cats[t.cat] = cats[t.cat] || []).push([k, t]));
     const tf = LVOF(Store.ui().toolLv || 'all');
-    view.innerHTML = `<div class="page-head"><h1>🧰 工具箱</h1><p class="muted">${Object.keys(TOOLS).length} 個互動計算器同小工具。你輸入過嘅數字會自動記住（每個使用者分開）。全部係教學用途。</p>
-      <div class="tool-filter"><input type="search" class="filter" placeholder="搵工具…（例如 VWAP、Stop、Kelly）" data-tq><div class="chips">${[['all', '全部']].concat(LEVELS.map((l) => [l.id, l.code.replace('Level ', 'L')])).map(([k, t]) => `<button class="chip-btn ${tf === k ? 'on' : ''}" data-tl="${k}">${esc(t)}</button>`).join('')}</div></div></div>
-      ${Object.entries(cats).map(([cat, list]) => `<section class="tool-cat"><h2 class="sec-h">${esc(cat)}</h2><div class="tool-grid-cards">${list.map(([k, t]) => `<a class="tool-tile" href="#/tools/${k}" data-lv="${LVOF(t.level)}" data-q="${esc((t.title + ' ' + t.desc + ' ' + cat).toLowerCase())}"><span>${t.icon}</span><b>${esc(t.title)}</b><small>${esc(t.desc)}</small><em>${esc((LEVELS.find((l) => l.id === LVOF(t.level)) || {}).code || '')}</em></a>`).join('')}</div></section>`).join('')}
+    view.innerHTML = `<div class="page-head"><h1>🧰 工具箱</h1><p class="muted">${Object.keys(TOOLS).length} 個互動計算器同小工具。交易日真正要開嘅只有標 🔴 嗰幾個；其他係準備、檢討或者學習用。你輸入過嘅數字會自動記住（每個使用者分開）。全部係教學用途。</p>
+      ${window.ToolMap ? ToolMap.workflow() : ''}<h2 class="sec-h">全部工具</h2><div class="tool-filter"><input type="search" class="filter" placeholder="搵工具…（例如 VWAP、Stop、Kelly）" data-tq>${window.ToolMap ? `<div class="chips">${[['all', '全部用途']].concat(Object.entries(ToolMap.USES).map(([k, u]) => [k, u.icon + ' ' + u.t])).map(([k, t]) => `<button class="chip-btn ${(Store.ui().toolUse || 'all') === k ? 'on' : ''}" data-tu="${k}">${esc(t)}</button>`).join('')}</div>` : ''}<div class="chips">${[['all', '全部']].concat(LEVELS.map((l) => [l.id, l.code.replace('Level ', 'L')])).map(([k, t]) => `<button class="chip-btn ${tf === k ? 'on' : ''}" data-tl="${k}">${esc(t)}</button>`).join('')}</div></div></div>
+      ${Object.entries(cats).map(([cat, list]) => `<section class="tool-cat"><h2 class="sec-h">${esc(cat)}</h2><div class="tool-grid-cards">${list.map(([k, t]) => `<a class="tool-tile" href="#/tools/${k}" data-lv="${LVOF(t.level)}" data-use="${window.ToolMap ? ToolMap.info(k).use : ''}" data-q="${esc((t.title + ' ' + t.desc + ' ' + cat).toLowerCase())}"><span>${t.icon}</span><b>${esc(t.title)}</b><small>${esc(t.desc)}</small><em>${esc((LEVELS.find((l) => l.id === LVOF(t.level)) || {}).code || '')}${window.ToolMap ? ' ' + ToolMap.badge(k) : ''}</em></a>`).join('')}</div></section>`).join('')}
       <div class="empty" data-none hidden>搵唔到符合嘅工具。</div>`;
     const applyTF = () => {
-      const q = $('[data-tq]', view).value.trim().toLowerCase(), lv = Store.ui().toolLv || 'all';
+      const q = $('[data-tq]', view).value.trim().toLowerCase(), lv = LVOF(Store.ui().toolLv || 'all'), us = Store.ui().toolUse || 'all';
       let any = 0;
-      $$('.tool-cat', view).forEach((sec) => { let n = 0; $$('.tool-tile', sec).forEach((a) => { const ok = (lv === 'all' || a.dataset.lv === lv) && (!q || a.dataset.q.includes(q)); a.hidden = !ok; if (ok) n++; }); sec.hidden = !n; any += n; });
+      $$('.tool-cat', view).forEach((sec) => { let n = 0; $$('.tool-tile', sec).forEach((a) => { const ok = (lv === 'all' || a.dataset.lv === lv) && (us === 'all' || a.dataset.use === us) && (!q || a.dataset.q.includes(q)); a.hidden = !ok; if (ok) n++; }); sec.hidden = !n; any += n; });
       $('[data-none]', view).hidden = !!any;
     };
     $('[data-tq]', view).addEventListener('input', applyTF);
     $$('[data-tl]', view).forEach((b) => b.addEventListener('click', () => { Store.setUI({ toolLv: b.dataset.tl }); $$('[data-tl]', view).forEach((x) => x.classList.toggle('on', x === b)); applyTF(); }));
+    $$('[data-tu]', view).forEach((b) => b.addEventListener('click', () => { Store.setUI({ toolUse: b.dataset.tu }); $$('[data-tu]', view).forEach((x) => x.classList.toggle('on', x === b)); applyTF(); }));
     applyTF();
   }
 

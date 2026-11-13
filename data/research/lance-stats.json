@@ -1,0 +1,183 @@
+{
+ "generatedAt": "2026-11-13T04:27:31.838Z",
+ "from": "2024-01-01",
+ "to": "2026-11-06",
+ "universe": [
+  "TSLA",
+  "NVDA",
+  "AAPL",
+  "AMD",
+  "META",
+  "AMZN",
+  "MSFT",
+  "GOOGL",
+  "AVGO",
+  "NFLX",
+  "PLTR",
+  "COIN",
+  "MU",
+  "SMCI",
+  "MSTR",
+  "HOOD",
+  "ARM",
+  "INTC",
+  "ORCL",
+  "CRM",
+  "ADBE",
+  "SHOP",
+  "UBER",
+  "ABNB",
+  "SNOW",
+  "CRWD",
+  "PANW",
+  "NET",
+  "DDOG",
+  "MRVL",
+  "QCOM",
+  "LRCX",
+  "AMAT",
+  "ROKU",
+  "PYPL",
+  "RIVN",
+  "SOFI",
+  "AFRM",
+  "UPST",
+  "BABA",
+  "PDD",
+  "DIS",
+  "BA",
+  "NKE",
+  "SBUX",
+  "LLY",
+  "UNH",
+  "CVNA",
+  "DKNG",
+  "RBLX"
+ ],
+ "source": "Alpaca SIP 5 分鐘 K 線（正常交易時段）",
+ "days": 34618,
+ "capitulationDays": 204,
+ "rules": {
+  "note": "以下係我哋將 Lance Breitstein 公開講法寫成固定機械規則嘅簡化版本，唔等於佢本人嘅做法；股票係 50 隻成交大嘅美股",
+  "vwap": "10:00–11:30；上一支 K 係陰燭；升穿上一支 K 高位入場；Stop 放最近 3 支 K 最低位下面；風險 0.03–0.5 ATR；Target 2R；未到就收市平倉；每日只計第一個訊號",
+  "capitulation": "10:00–14:00；創當日新低嘅一支 K：成交 ≥ 當日之前平均 2 倍、波幅 ≥ 0.2 ATR、收市低過 VWAP ≥ 0.6 ATR、低過開市價 ≥ 0.8 ATR；每日只計第一次。deep = 更極端（成交 ≥ 2.5 倍、離 VWAP ≥ 1 ATR、低過開市價 ≥ 1.25 ATR）",
+  "knife": "嗰支 K 收市價即刻買；Stop 放嗰支 K 低位下面 0.05 ATR",
+  "rightSide": "之後 8 支 K 內，第一支低位冇再創新低嘅 K 出現，升穿佢高位先入（3 支 K 內有效）；Stop 放 V 底下面 0.05 ATR；風險 ≤ 0.8 ATR",
+  "exhaust": "前三日每日收市升 ≥ 0.3 ATR；今日高開 ≥ 0.3 ATR（deep = 三日成交逐日增加而且高開 ≥ 0.5 ATR）；10:30 前見頂後第一支冇再創新高嘅 K，跌穿佢低位沽空；Stop 放今日高位上面 0.05 ATR；Target 2R",
+  "exit": "出場：Target／Stop／收市平倉；同一支 K 掂 Stop 同 Target 當 Stop。扣成本後 = 平均 R 減 0.05R"
+ },
+ "setups": {
+  "vwapAbove": {
+   "name": "回調後升穿上一支 K 高位做多：入場前 6 支 K 全部收喺 VWAP 上面",
+   "n": 7923,
+   "win": 32.6,
+   "target": 27.4,
+   "stop": 65,
+   "avgR": -0.07,
+   "avgRCost": -0.12
+  },
+  "vwapBelow": {
+   "name": "同上，但入場前 6 支 K 全部收喺 VWAP 下面（Lance 話唔做）",
+   "n": 10067,
+   "win": 30.8,
+   "target": 27.4,
+   "stop": 68,
+   "avgR": -0.11,
+   "avgRCost": -0.16
+  },
+  "vwapMixed": {
+   "name": "同上，入場前 6 支 K 有上有落（VWAP 附近拉鋸）",
+   "n": 14292,
+   "win": 32.2,
+   "target": 27,
+   "stop": 65.8,
+   "avgR": -0.09,
+   "avgRCost": -0.14
+  },
+  "knife2R": {
+   "name": "投降式急跌：嗰支 K 收市即刻買（接飛刀），Target 2R",
+   "n": 204,
+   "win": 36.8,
+   "target": 34.3,
+   "stop": 62.7,
+   "avgR": 0.08,
+   "avgRCost": 0.03,
+   "deep": {
+    "n": 10,
+    "win": 30,
+    "target": 30,
+    "stop": 70,
+    "avgR": -0.1,
+    "avgRCost": -0.15
+   }
+  },
+  "knifeVwap": {
+   "name": "投降式急跌：即刻買，Target = VWAP",
+   "n": 204,
+   "win": 19.1,
+   "target": 3.9,
+   "stop": 79.4,
+   "avgR": -0.09,
+   "avgRCost": -0.14,
+   "deep": {
+    "n": 10,
+    "win": 10,
+    "target": 0,
+    "stop": 80,
+    "avgR": 0.43,
+    "avgRCost": 0.38
+   }
+  },
+  "rsv2R": {
+   "name": "投降式急跌：等「V 嘅右邊」（唔再創新低、升穿上一支 K 高位）先買，Target 2R",
+   "n": 134,
+   "win": 38.1,
+   "target": 13.4,
+   "stop": 51.5,
+   "avgR": -0.12,
+   "avgRCost": -0.17,
+   "deep": {
+    "n": 4,
+    "win": 25,
+    "target": 0,
+    "stop": 25,
+    "avgR": -0.11,
+    "avgRCost": -0.16
+   }
+  },
+  "rsvVwap": {
+   "name": "投降式急跌：等 V 嘅右邊先買，Target = VWAP",
+   "n": 134,
+   "win": 39.6,
+   "target": 17.2,
+   "stop": 50.7,
+   "avgR": -0.16,
+   "avgRCost": -0.21,
+   "deep": {
+    "n": 4,
+    "win": 25,
+    "target": 0,
+    "stop": 25,
+    "avgR": -0.11,
+    "avgRCost": -0.16
+   }
+  },
+  "exhaustShort": {
+   "name": "四日力竭跳空：連升三日 + 第四日高開，見頂後跌穿上一支 K 低位沽空，Target 2R",
+   "n": 123,
+   "win": 43.1,
+   "target": 10.6,
+   "stop": 45.5,
+   "avgR": -0.09,
+   "avgRCost": -0.14,
+   "deep": {
+    "n": 21,
+    "win": 42.9,
+    "target": 14.3,
+    "stop": 52.4,
+    "avgR": -0.12,
+    "avgRCost": -0.17
+   }
+  }
+ }
+}
