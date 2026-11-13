@@ -115,5 +115,15 @@
   "id": 275920,
   "type": "STK",
   "name": "Tetra Tech"
+ },
+ "MOD": {
+  "id": 271952,
+  "type": "STK",
+  "name": "Modine Manufacturing"
+ },
+ "VIR": {
+  "id": 387014896,
+  "type": "STK",
+  "name": "Vir Biotechnology"
  }
 }
