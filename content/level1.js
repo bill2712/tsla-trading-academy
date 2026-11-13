@@ -1032,13 +1032,13 @@ TSLA 5-minute，用 LuxAlgo 自動畫 S/R，右邊有一段急升、成交量明
 
 最初 20–30 個歷史情境，甚至可以唔落模擬盤，只記錄判斷同之後結果。**特別要記錄判斷失敗嘅情況**，因為你需要知道自己套方法喺咩市場環境下最容易出錯。
 
-| 階段 | 學習內容 |
+| 次序 | 學習內容 |
 |---|---|
-| Level 1 | Candlestick、Volume、PDH、PDL、S/R、VWAP（已了解基本概念） |
-| Level 2 | Price Action + Volume + VWAP 綜合判斷（現在開始） |
-| Level 3 | Breakout、Retest、Reversal、Fake Breakout |
-| Level 4 | Entry、Stop Loss、Take Profit、Risk / Reward |
-| Level 5 | TradingView Replay、交易紀錄、策略驗證 |
+| 而家 | Candlestick、Volume、PDH、PDL、S/R、VWAP（已了解基本概念） |
+| 下一步 | TradingView 圖表設定，令你張圖顯示需要嘅資料 |
+| 之後 | Price Action + Volume + VWAP 綜合判斷、Indicator、市場環境 |
+| 再之後 | Setup（Breakout、Retest、Reversal、Fake Breakout）、Entry、Stop、Target |
+| 最後 | 回測、交易紀錄、策略驗證、真錢之前嘅準備 |
 
 [[quiz:l1-final]]
 `},
