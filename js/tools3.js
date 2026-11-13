@@ -15,6 +15,7 @@
   function getSet() { try { return Object.assign({}, SET_DEF, (Store.user().toolState || {})[SET_KEY] || {}); } catch (e) { return Object.assign({}, SET_DEF); } }
   function putSet(s) { try { const u = Store.user(); u.toolState = u.toolState || {}; u.toolState[SET_KEY] = s; Store.save(); } catch (e) {} }
   const budgetOf = (S) => (S.riskMode === 'usd' ? S.riskUsd : (S.acct * S.riskPct) / 100);
+  window.TradeSettings = { get: getSet, put: putSet, budgetOf };
   function settingsHTML(S) {
     return `<details class="tq-set"><summary>⚙️ 我嘅設定：本金 ${money(S.acct, 0)}・每筆風險 ${money(budgetOf(S), 0)}・每隻最多用 ${S.maxPosPct}% 本金${S.cash === 'yes' ? '・Cash 戶口' : ''}（撳開修改，所有落單工具共用）</summary>
       <div class="tool-grid">
@@ -88,10 +89,11 @@
    * 整合咗：Position Size（基本／進階）、入場太遲重計 R:R、中途障礙、Stop vs ATR、Spread 成本、滑價、Net R */
   TOOLS['bracket-ticket'] = {
     title: '交易一頁通：股數、檢查、IBKR 落單卡', icon: '⚡', cat: '落盤效率', level: 'l13',
-    desc: '實戰一個工具就夠：計股數（風險同資金兩個上限）、Target、唔追價、+1R 移 Stop；自動檢查 Stop 對 ATR、R:R、下一個阻力、成本佔幾多 R、而家價追唔追得；出 IBKR Bracket 三張單；收市後填實際成交計 Net R。可以由每日選股一撳帶入。',
+    desc: '實戰一個工具就夠：落單前紀律閘（GO／NO-GO）＋斷路器；計股數（風險同資金兩個上限）、Target、唔追價、+1R 移 Stop；自動檢查 Stop 對 ATR、R:R、下一個阻力、成本佔幾多 R、而家價追唔追得；出 IBKR Bracket 三張單；收市後填實際成交計 Net R。可以由每日選股一撳帶入。',
     render(el, ctx) {
       const DEF = { sym: 'NVDA', side: 'long', entryType: 'breakout', entry: 191, stopMode: 'price', stop: 188.76, atr: 7.46, atrMult: 0.3, tMode: 'r', t1R: 2, t2R: 3, t1: 195.48, t2: 197.72, px: 0, obs: 0, spr: 0.02, comm: 0.005, commMin: 1, fe: 0, fx: 0 };
       const p = ctx.load(Object.assign({}, DEF));
+      const gate = { ans: {}, sym: null };
       const u = urlParams();
       if (u.sym) {
         Object.assign(p, { sym: String(u.sym).toUpperCase().slice(0, 10), side: u.side === 'short' ? 'short' : 'long', entryType: 'breakout', stopMode: 'price', tMode: 'price' });
@@ -186,7 +188,7 @@
         const parent = p.entryType === 'breakout'
           ? `<b>${act} ${P.shares} ${esc(p.sym)}</b>｜類型 <b>STP LMT</b>｜Stop 價 <b>${F(P.entry)}</b>｜Limit 價 <b>${F(P.lim)}</b>｜TIF <b>DAY</b>`
           : `<b>${act} ${P.shares} ${esc(p.sym)}</b>｜類型 <b>LMT</b>｜Limit 價 <b>${F(P.entry)}</b>｜TIF <b>DAY</b>`;
-        o.innerHTML = `${big('股數', P.shares, '股', P.shares > 0 ? '' : 'neg')}
+        o.innerHTML = `<div data-gate></div>${big('股數', P.shares, '股', P.shares > 0 ? '' : 'neg')}
           <div class="stats">
             ${stat('Stop', F(P.stop), 'neg')}${stat('Target 1', F(P.t1), 'pos')}${P.t2 ? stat('Target 2', F(P.t2), 'pos') : ''}
             ${stat('每股風險', F(P.risk))}${stat('呢筆風險', money(-P.riskUsd), 'neg')}${stat('Target 1 賺', money(P.t1Usd), 'pos')}
@@ -204,6 +206,8 @@
             <p><button class="btn primary sm" data-copy>📋 複製落單資料</button> <a class="btn ghost sm" href="#/c/l13-c5">點樣喺 IBKR 填？</a></p></div>
           <div data-ladder></div>`;
         o.querySelector('[data-copy]').addEventListener('click', (e) => copy(ticketText(p, P), e.target));
+        if (gate.sym !== p.sym) { gate.ans = {}; gate.sym = p.sym; }
+        if (window.Discipline) Discipline.mountGate(o.querySelector('[data-gate]'), { p, P, S, state: gate });
         try { if (window.Charts && Charts.rrLadder) Charts.rrLadder(o.querySelector('[data-ladder]'), { entry: P.entry, stop: P.stop, target: P.t1, side: L ? 'long' : 'short', title: `${p.sym} ${L ? 'Long' : 'Short'}` }); } catch (e) {}
       };
       draw();

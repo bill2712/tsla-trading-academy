@@ -1580,3 +1580,15 @@ body.mc-pop .mc-grid { height: calc(100vh - 120px); }
 .tq-checks { display: grid; gap: 6px; margin: 10px 0; }
 .tq-sec { margin: 12px 0; padding: 10px 12px; border: 1px dashed var(--border); border-radius: 12px; }
 .tq-sec > b { display: block; margin-bottom: 6px; }
+
+/* ---------- 紀律閘、斷路器（js/discipline.js） ---------- */
+.dc-gate { margin: 0 0 12px; padding: 10px 12px; border-radius: 14px; border: 2px solid var(--border); background: var(--card); }
+.dc-gate.dc-ok { border-color: var(--up); } .dc-gate.dc-bad { border-color: var(--down); }
+.dc-gate-h { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; align-items: center; margin-bottom: 6px; }
+.dc-dec { font-weight: 800; } .dc-ok .dc-dec { color: var(--up); } .dc-bad .dc-dec { color: var(--down); }
+.dc-cb { padding: 8px 10px; border-radius: 10px; background: var(--bg-soft); margin: 6px 0; border-left: 4px solid var(--up); }
+.dc-cb.dc-mid { border-left-color: var(--warn, #b45309); } .dc-cb.dc-bad { border-left-color: var(--down); }
+.dc-cb p { margin: 4px 0 0; } .dc-cb small { color: var(--muted); }
+.dc-qs { display: grid; gap: 4px; margin: 8px 0; } .dc-qs .chk { line-height: 1.4; }
+.dc-fails { margin: 6px 0; padding-left: 4px; list-style: none; font-size: .9em; } .dc-fails li { margin: 2px 0; }
+.dc-log { list-style: none; padding: 0; font-size: .86em; } .dc-log small { display: block; color: var(--muted); }

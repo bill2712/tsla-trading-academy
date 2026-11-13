@@ -1070,7 +1070,7 @@ James 嘅一日（太平洋時間，即美東 + 3 小時）：
 | The 123 | ⏸️ 開市頭 10 分鐘太亂，課程規定 09:35 前唔入場；只觀察 |
 | Climactic Buy | ⏸️ 逆勢，只 Paper |
 | 收市後回顧**所有** Gap 股點走 | ✅ 好值得學：唔止睇你做咗嘅交易，連冇做嘅都睇 |
-| 早上連中兩次 Stop 就減少進取 | ✅ 就係斷路器（紀律閘嗰章會講） |
+| 早上連中兩次 Stop 就減少進取 | ✅ 就係斷路器：🧯 斷路器工具會自動提你冷靜 |
 
 **資料來源**：[jamesrichyoung.com（獨立整理網站）](https://jamesrichyoung.com/#patterns)：Patterns、Gaps、Strategy、Routine 各頁；原片「4 Easy Patterns For Day Trading」（James Rich Young YouTube）；Gap 概念出自 T3 Live／Pristine「Advanced Gap Strategies」。數據：data/research/jry-stats.json（由 scripts/research/jry-stats.mjs 計）。
 

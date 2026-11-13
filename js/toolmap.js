@@ -24,9 +24,10 @@
   const M = {
     /* ---- 實戰 ---- */
     'open-cockpit': { stage: 'pre', use: 'live', when: '08:40 報告出咗之後開：一次過計晒今日每隻 pick 嘅股數、Stop、Target、唔追價同警報價。' },
-    [DESK]: { stage: 'entry', use: 'live', when: '開市前準備每隻嘅落單資料；觸發時照住三張單落 Bracket。已經整合咗計股數、Stop 檢查、障礙、成本、追價重計、實際 Net R。' },
+    [DESK]: { stage: 'entry', use: 'live', when: '開市前準備每隻嘅落單資料；觸發時照住三張單落 Bracket。已經整合咗落單前紀律閘、計股數、Stop 檢查、障礙、成本、追價重計、實際 Net R。' },
     multichart: { stage: 'open', use: 'live', when: '開市前開定：個股 5 分鐘 + 日線 + QQQ 一個畫面，頂部 A+ 過濾即時檢查。' },
     'tv-allinone': { stage: 'open', use: 'live', when: '設定一次就得；之後每日喺 TradingView 開住，VWAP、EMA、PDH／PMH、開市區間一個指標睇晒。' },
+    'circuit-breaker': { stage: 'pre', use: 'live', when: '開市前望一眼：今日、本週、本月有冇到虧損上限；交易中連輸兩筆會自動入冷靜期。交易一頁通嘅紀律閘會自動讀佢。' },
     'daily-risk': { stage: 'hold', use: 'live', when: '每平一筆就更新：去到每日虧損上限即刻停。' },
     'tilt-check': { stage: 'hold', use: 'live', when: '連輸兩筆、或者覺得想追返嗰陣做一次（30 秒）。' },
     /* ---- 開市前準備 ---- */
@@ -117,7 +118,7 @@
           ${(PAGES[s.k] || []).map((p) => item(p[0], p[1], p[2], p[3])).join('')}
           ${ids.map((id) => item('#/tools/' + id, T[id].icon, T[id].title, info(id).use)).join('')}</div>`;
       }).join('')}</div>
-      <p class="tm-tip">💡 交易日真正要開嘅只有 🔴：<b>每日選股 → 開市前計劃表 → 多圖看盤 → ⚡ 交易一頁通 → 今日風險追蹤 → 交易日誌</b>。其他留返開市前、週末或者學習時先用。</p>
+      <p class="tm-tip">💡 交易日真正要開嘅只有 🔴：<b>每日選股 → 開市前計劃表 → 🧯 斷路器 → 多圖看盤 → ⚡ 交易一頁通（頂部係落單前紀律閘）→ 交易日誌</b>。其他留返開市前、週末或者學習時先用。</p>
       <details class="tm-learn"><summary>📚 學習研究用（${by.learn.length} 個工具 + Replay、模擬、回測）：交易日唔使開</summary>
         <div class="tm-learn-grid">${(PAGES.learn || []).map((p) => item(p[0], p[1], p[2], p[3])).join('')}${by.learn.map((id) => item('#/tools/' + id, T[id].icon, T[id].title, 'learn')).join('')}</div></details>
       <p class="muted">🧩 已經整合入 ⚡ 交易一頁通嘅 ${Object.keys(M).filter((k) => M[k].merged && T[k]).length} 個計算器（計股數、滑價同費用、追價重計、障礙、Stop 對 ATR、Spread、實際 Net R），喺下面「學習參考」仍然搵到。</p></section>`;

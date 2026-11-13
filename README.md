@@ -31,6 +31,7 @@
 | 👨‍👩‍👧 家庭登入 | Google 登入（只限授權 email），雲端即時同步；全家睇到對方嘅標記同進度，每人只可以改自己嘅；家人動態 |
 | 🧰 工具箱 | 53 個互動工具（可搜尋、按 Level 篩選）。Level 6–8 新增：多時間框架對齊、Gap 分類器、相對強弱、事件日風險、出場方法比較模擬、多倉位相關性、Kelly 與破產風險、交易計劃書產生器、自動週／月檢討、Tilt 自我檢查、升級階梯評估；另外有 🧠 決策教練（逐項輸入 → WAIT / PLAN / SKIP 同理由）、🗒️ Price Action 分析紀錄卡（可存入 Replay 日誌）、升級版 K 線砌圖器（Body Ratio、Close Position）；Level 9 新增：VCP 收縮計算器、VCP 成交量檢查、Minervini Trend Template 檢查、VCP 交易計劃計算器（風險同資金兩個限制、成交後 R:R） |
 | 🗺️ 工具地圖 | 工具箱頂部按 Day Trade 階段（開市前、開市頭 15 分鐘、入場、持倉、收市後、每週）排好工具，標明 🔴 實戰必用／🟡 準備／🔵 檢討／⚪ 學習參考；⚡ 交易一頁通整合咗 8 個計算器（股數、Stop 對 ATR、障礙、成本、追價重計、Net R、IBKR 三張單） |
+| 🧯 紀律 | 落單前紀律閘（交易一頁通頂部，GO／NO-GO＋紀錄）同斷路器（自動讀交易日誌：每日／每週／每月虧損上限、每日筆數、連輸冷靜期）；概念參考 tradermonty/claude-trading-skills |
 | 🎮 K 線重播 | 11 個逐支 K 線情境（Level 2、3、4、6、7、9），選項次序每次打亂 |
 | 📝 測驗・🃏 字卡 | 102 份測驗（全部有解析，選項次序每次打亂）；180+ 詞彙字卡 |
 | 📒 交易日誌・📘 Playbook | 真實／Paper／Replay 交易、過程 × 結果四格、Playbook 版本紀錄、Replay 日誌、檢討 |
@@ -90,6 +91,8 @@ Firebase Console → tsla-academy → **Firestore Database → 規則（Rules）
 index.html              主頁面
 js/curriculum.js        課程結構：將 content/ 嘅舊 Level（l1–l17、qa）重新分組成 9 個 Level + 單元，章節重新編號，內文交叉參考轉新編號（章節 id 不變）
 js/toolmap.js           工具地圖：每個工具嘅階段、用途（實戰／準備／檢討／學習）同整合關係
+js/discipline.js        斷路器、落單前紀律閘、紀律紀錄（toolState.gateLog）
+.claude/skills/         7 個第三方 Claude Skill（tradermonty/claude-trading-skills，MIT），見 .claude/skills/README.md
 css/style.css           樣式（深淺色、手機、列印）
 content/level1.js       Level 1 六樣工具
 content/level2.js       Level 2 Price Action
