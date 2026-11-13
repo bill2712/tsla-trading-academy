@@ -1,0 +1,166 @@
+{
+ "generatedAt": "2026-11-13T05:19:52.007Z",
+ "from": "2024-01-01",
+ "to": "2026-11-06",
+ "universe": [
+  "TSLA",
+  "NVDA",
+  "AAPL",
+  "AMD",
+  "META",
+  "AMZN",
+  "MSFT",
+  "GOOGL",
+  "AVGO",
+  "NFLX",
+  "PLTR",
+  "COIN",
+  "MU",
+  "SMCI",
+  "MSTR",
+  "HOOD",
+  "ARM",
+  "INTC",
+  "ORCL",
+  "CRM",
+  "ADBE",
+  "SHOP",
+  "UBER",
+  "ABNB",
+  "SNOW",
+  "CRWD",
+  "PANW",
+  "NET",
+  "DDOG",
+  "MRVL",
+  "QCOM",
+  "LRCX",
+  "AMAT",
+  "ROKU",
+  "PYPL",
+  "RIVN",
+  "SOFI",
+  "AFRM",
+  "UPST",
+  "BABA",
+  "PDD",
+  "DIS",
+  "BA",
+  "NKE",
+  "SBUX",
+  "LLY",
+  "UNH",
+  "CVNA",
+  "DKNG",
+  "RBLX"
+ ],
+ "source": "Alpaca SIP 5 分鐘 K 線（正常交易時段）",
+ "days": 34618,
+ "rules": {
+  "note": "以下係我哋根據 jamesrichyoung.com（獨立整理 James Rich Young 公開片段嘅網站）同 T3 Live／Pristine 資料寫成嘅機械規則，唔等於 James 本人嘅做法（佢會揀股、睇大市、有經驗判斷，而且好多係細價 Gap 股）；股票係 50 隻成交大嘅美股；全部只做多",
+  "ma": "5 分鐘 20 期簡單移動平均（20MA），跨日連續計；「上升」= 比 3 支 K 前高",
+  "buy": "09:30–15:00；20MA 上升；之前 12 支 K 內有 ≥ 0.4 ATR 嘅推動；之後最少 3 支連續 lower high；回調幅度 35–70%；回調 K 低位掂到 20MA（0.1 ATR 內）而收市冇跌穿太多；升穿嗰支 K 高位入場（2 支 K 內）；Stop 放回調低位下面；風險 ≤ 0.6 ATR",
+  "brk": "最近 4 支 K 範圍 ≤ 0.3 ATR、喺全日高位附近、之前 12 支 K 有 ≥ 0.6 ATR 推動；4 支 K 冇收市跌穿 20MA；「準備好」= 20MA 已經追到整固低位 0.1 ATR 內；升穿整固高位入場（3 支 K 內）；Stop 放整固低位下面",
+  "o123": "09:30 第 1 支 K：陽燭、波幅 ≥ 0.15 ATR、收喺上面 30%；第 2 支波幅 ≤ 第 1 支三分一而且唔高過第 1 支；第 3 或第 4 支升穿兩支最高位入場；Stop 放第 2 支低位下面",
+  "clim": "10:00–14:00；連續 3 支陰燭，波幅同成交量一支大過一支；收市低過下跌緊嘅 20MA ≥ 0.6 ATR；之後 3 支 K 內第一支陽燭做反轉 K；升穿佢高位入場；Stop 放佢低位下面；風險 ≤ 0.6 ATR",
+  "exit": "Target／Stop／收市平倉；同一支 K 掂 Stop 同 Target 當 Stop。扣成本後 = 平均 R 減 0.05R",
+  "gap": "Gap ≥ 2%（向上）或 ≤ −2%（向下）。Pro = 逆住之前兩日方向（向上 Gap 之前兩日都跌）；Novice = 順住之前兩日方向。結果 = 開市到收市，向 Gap 方向計，單位 ATR"
+ },
+ "setups": {
+  "buy": {
+   "name": "Buy Setup：回調到上升 20MA，升穿上一支 K 高位入場，Target = 全日高位（HOD）",
+   "n": 6116,
+   "win": 33.1,
+   "target": 29,
+   "stop": 66.1,
+   "avgR": -0.07,
+   "avgRCost": -0.12
+  },
+  "buy2R": {
+   "name": "Buy Setup：同上，Target 2R",
+   "n": 6116,
+   "win": 31.4,
+   "target": 28.5,
+   "stop": 67.6,
+   "avgR": -0.09,
+   "avgRCost": -0.14
+  },
+  "brk": {
+   "name": "Breakout：靠時間整固、20MA 追到上嚟先突破，Target 2R",
+   "n": 1468,
+   "win": 39.9,
+   "target": 14.6,
+   "stop": 46.9,
+   "avgR": -0.05,
+   "avgRCost": -0.1
+  },
+  "brkEarly": {
+   "name": "Breakout（太早）：20MA 未追到上嚟就突破，Target 2R",
+   "n": 3501,
+   "win": 38.7,
+   "target": 18.7,
+   "stop": 51.4,
+   "avgR": -0.04,
+   "avgRCost": -0.09
+  },
+  "o123": {
+   "name": "The 123（開市）：大陽燭 → 細休息 K → 升穿兩支高位，Target 2R",
+   "n": 175,
+   "win": 30.3,
+   "target": 28,
+   "stop": 68,
+   "avgR": -0.1,
+   "avgRCost": -0.15
+  },
+  "clim": {
+   "name": "Climactic Buy：加速急跌之後反轉 K，Target = 掂返 20MA",
+   "n": 222,
+   "win": 46.4,
+   "target": 46.4,
+   "stop": 53.6,
+   "avgR": -0.06,
+   "avgRCost": -0.11
+  },
+  "clim2R": {
+   "name": "Climactic Buy：同上，Target 2R",
+   "n": 222,
+   "win": 30.2,
+   "target": 25.2,
+   "stop": 66.2,
+   "avgR": -0.14,
+   "avgRCost": -0.19
+  }
+ },
+ "gaps": {
+  "proUp": {
+   "n": 868,
+   "withGap": 43.8,
+   "avgAtr": -0.08
+  },
+  "novUp": {
+   "n": 840,
+   "withGap": 50.6,
+   "avgAtr": 0.01
+  },
+  "midUp": {
+   "n": 1718,
+   "withGap": 48.3,
+   "avgAtr": -0.01
+  },
+  "proDn": {
+   "n": 743,
+   "withGap": 51.3,
+   "avgAtr": 0.04
+  },
+  "novDn": {
+   "n": 699,
+   "withGap": 43.2,
+   "avgAtr": -0.12
+  },
+  "midDn": {
+   "n": 1505,
+   "withGap": 47.1,
+   "avgAtr": -0.02
+  }
+ }
+}

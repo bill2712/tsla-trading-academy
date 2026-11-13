@@ -937,6 +937,147 @@ Lance 最常講嘅唔係某個形態，而係**揀時機同耐性**：大部分�
 `},
 /* ------------------------------------------------------------------ */
 {
+  id: 'l17-c13', num: '8+', title: 'James Rich Young：Gap 先行、Famous Four（Buy Setup、Breakout、123、Climactic）', mins: 12,
+  summary: 'James 先將 Gap 分 Professional（逆住之前走勢）同 Novice（順住、可能力竭），再搵四個 Pattern：Buy Setup、Breakout、The 123、Climactic Buy。用我哋 3 年大型股數據測試：四個機械版本都喺零附近；Pro／Novice Gap 喺向下 Gap 成立，向上 Gap 相反。',
+  keywords: ['James Rich Young', 'Famous Four', 'Buy Setup', 'The 123', 'Climactic', 'Professional gap', 'Novice gap', '20MA', 'Sami Abusaad'],
+  md: `
+:::info 呢章點嚟
+用戶問：「可唔可以加入 James Rich Young 嘅 Setup？」佢係 YouTube 上面公開分享交易過程嘅全職 Day Trader（2019 年開始）。資料主要來自 jamesrichyoung.com —— 留意：呢個係**第三者整理**嘅獨立網站（唔係 James 本人經營），內容根據 James 公開片段（例如「4 Easy Patterns For Day Trading」）同佢師傅 Sami Abusaad（T3 Live／Pristine）嘅教材。
+:::
+
+## 8.1 James 嘅做法：先 Gap，再 Pattern
+
+James 嘅一日（太平洋時間，即美東 + 3 小時）：
+
+| 時間（美東） | 做咩 |
+|---|---|
+| 07:30 | 開電腦，開始準備（開市前兩個鐘） |
+| 07:45 | 整 **Gap Up** 同 **Gap Down** 兩張清單，各大約 60 隻；同另外兩個交易者交換清單 |
+| 08:00 | 睇新聞，剔走增發、除息、收購造成嘅 Gap；按優先次序排好 |
+| 08:05–08:35 | 將剩低嘅股排成縮圖，同一板塊放埋一齊；印好當日交易日誌 |
+| 09:00–09:25 | 揀出今日重點，預先填好落單框，準備 Level 2 |
+| 09:30 | 開市，交易早段 |
+| 12:00 | 休息 |
+| 13:00–13:30 | 下晝重新掃描更大範圍嘅股（唔止早上嗰張清單） |
+| 16:00–16:30 | 記錄當日盈虧同統計；**回顧所有 Gap 股之後點走**，留意邊個 Pattern 最近表現好 |
+
+佢亦講過：唔係每日都要交易，可以坐定定、早收工，或者早上連中兩次 Stop 之後減少進取。
+
+## 8.2 先判斷 Gap：Professional gap vs Novice gap
+
+呢個概念嚟自佢師傅 Sami 嘅 Gap 教材：
+
+| | Professional gap（專業 Gap） | Novice gap（新手 Gap） |
+|---|---|---|
+| 方向 | **逆住**之前一兩日嘅走勢 | **順住**之前一兩日嘅走勢 |
+| 例子（向上） | 跌咗兩日之後高開，越過近期阻力 | 已經連升幾日，再大幅高開 |
+| 意思 | 可能係趨勢轉變嘅開始 | 可能係追高嘅最後一下（力竭） |
+| 做法 | 優先留意 | 唔好追；留意會唔會失敗 |
+
+佢哋亦強調幾個「Gap 迷思」：唔係每個 Gap 都會補；高開唔等於好、低開唔等於差；好消息唔代表一定升；Gap 大唔等於一定力竭。**要睇 Gap 之前發生咩、Gap 去到邊個位置、開市後點反應。**
+
+**我哋嘅數據**（Gap ≥ 2%，計開市到收市、向 Gap 方向，單位 ATR）：
+
+| Gap 類型 | 次數 | 收市仲係 Gap 方向 | 平均（ATR） |
+|---|---|---|---|
+| Pro 向上（之前兩日都跌） | 868 | 43.8% | -0.08 |
+| Novice 向上（之前兩日都升） | 840 | 50.6% | +0.01 |
+| Pro 向下（之前兩日都升） | 743 | 51.3% | +0.04 |
+| Novice 向下（之前兩日都跌） | 699 | 43.2% | -0.12 |
+
+:::warn 點理解
+- **向下 Gap 符合講法**：Pro 向下（升咗兩日先低開）比 Novice 向下好（+0.04 對 -0.12 ATR）。
+- **向上 Gap 喺我哋數據相反**：Novice 向上（連升兩日再高開）反而比 Pro 向上好少少。大型股升勢日高開，好多時只係延續。
+- 我哋只用「之前兩日方向」呢個簡單定義，冇睇阻力位、成交量同大市 —— 原本教材仲要睇 Gap 越過咩價位。所以呢個只係部分驗證。
+:::
+
+## 8.3 Famous Four ①：Buy Setup（靠價格回調）
+
+:::card Buy Setup（做多）
+- **背景**：已經係上升趨勢
+- **回調**：大約回咗之前推動嘅**一半**；最少 **3 支 lower high**（每支高位低過上一支），唔可以亂咁穿返之前高位
+- **位置**：回到**上升緊嘅 20MA**（5 分鐘 20 期簡單平均），開始喺度企穩；唔好離 20MA 太遠先觸發，亦唔好跌穿太多
+- **入場**：轉向 K（Pivot）出現，**升穿佢高位**
+- **Stop**：Pivot 低位下面
+- **第一個 Target**：全日高位（HOD）
+- **變化**：回調太深（回晒成段）就放過第一次訊號，等第二次底部同第二個 Pivot 先入
+:::
+
+## 8.4 Famous Four ②：Breakout（靠時間整固）
+
+:::card Breakout（做多）
+- **背景**：清楚嘅上升趨勢同一段強勢推動
+- **整固**：唔係靠價格回調，而係**靠時間** —— 喺高位橫行「抖吓氣」
+- **時機**：用上升緊嘅 **20MA 追到上嚟**判斷休息夠未；20MA 未追上就突破 = 太早，唔追
+- **唔乾淨**：整固期間有 K 線收穿 20MA
+- **入場**：升穿整固高位；**Stop** 放整固低位下面；**Target** 之前阻力位
+:::
+
+呢個同課程入面嘅 **Flat Top**（高位窄幅整固後突破）幾乎一樣，分別係 James 用 20MA 做時間尺。
+
+## 8.5 Famous Four ③：The 123（佢開市最鍾意）
+
+:::card The 123（做多）
+- **第 1 支**：明顯大過附近 K 線嘅**大陽燭**，開始一段新走勢（常見喺開市，或者整固完之後）
+- **第 2 支**：**細嘅休息 K**，波幅大約係第 1 支三分一或者更細，最好唔高過第 1 支
+- **第 3 支**：第 2 支收市之後，**升穿兩支最高位**入場
+- **Stop**：第 2 支低位下面
+- **唔做**：大陽燭出現喺已經升咗一大段之後（可能係力竭）；第 2 支同第 1 支差唔多大（唔係休息）
+:::
+
+## 8.6 Famous Four ④：Climactic Buy Setup（逆勢）
+
+:::card Climactic Buy Setup（做多，逆勢）
+- **背景**：跌勢，而且**加速**：K 線愈嚟愈大、成交量愈嚟愈多
+- **位置**：價格**遠離**下跌緊嘅 20MA
+- **入場**：出現**陽燭反轉 K**，升穿佢高位
+- **Stop**：反轉 K 低位下面
+- **Target**：反彈**掂返 20MA**（跟住 20MA 嘅最新位置）
+- **注意**：教材講明**唔適合新手**；順勢做比捉力竭容易
+:::
+
+呢個同上一章 Lance Breitstein 嘅「投降式反轉、V 嘅右邊」係同一類概念。
+
+## 8.7 我哋嘅數據：Famous Four
+
+用 50 隻大型股、三年 5 分鐘數據，將四個 Pattern 寫成固定規則（全部做多，冇到 Target 就收市平倉）：
+
+| Pattern | 次數 | 賺錢 % | 中 Stop % | 平均 R | 扣成本後 |
+|---|---|---|---|---|---|
+| Buy Setup（Target = HOD） | 6,116 | 33.1% | 66.1% | -0.07 | -0.12 |
+| Buy Setup（Target 2R） | 6,116 | 31.4% | 67.6% | -0.09 | -0.14 |
+| Breakout：20MA 追到上嚟先突破 | 1,468 | 39.9% | 46.9% | -0.05 | -0.10 |
+| Breakout：20MA 未追到（太早） | 3,501 | 38.7% | 51.4% | -0.04 | -0.09 |
+| The 123（開市） | 175 | 30.3% | 68% | -0.10 | -0.15 |
+| Climactic Buy（Target = 20MA） | 222 | 46.4% | 53.6% | -0.06 | -0.11 |
+| Climactic Buy（Target 2R） | 222 | 30.2% | 66.2% | -0.14 | -0.19 |
+
+:::key 數據話你知
+- **四個 Pattern 嘅機械版本喺大型股都係零附近或者輕微負數**，同其他名家 Setup 一樣：圖形本身唔係 Edge。
+- 「20MA 追到上嚟先突破」同「太早突破」**冇分別**（-0.05 對 -0.04R），呢條時機規則喺我哋數據冇加分。
+- Climactic Buy 用「掂返 20MA」做 Target，賺錢比例接近一半（46.4%），比 2R 好，符合「目標唔好貪」嘅教法；但平均仍然係負數。
+- James 主要做**細價 Gap 股**（大成交、大波幅、有消息），同我哋 50 隻大型股唔同；佢亦會揀股、睇大市（佢開市前先睇 QQQ）、按市況調整進取程度。機械規則測唔到呢啲判斷。
+:::
+
+## 8.8 你可以用乜？
+
+| James 嘅做法 | 你點用（只做多、頭 2 小時、大型股） |
+|---|---|
+| 開市前分 Gap Up／Gap Down 兩張清單、剔走增發同收購 | ✅ 每日報告已經做咗；你自己加股時都要睇 Gap 原因 |
+| 先睇 QQQ 再睇個股 | ✅ 同 A+ 過濾一致 |
+| Buy Setup（回調到上升 20MA） | ⏸️ 同 EMA 9 回調好似；數據冇額外優勢，用 A+ 過濾先考慮 |
+| Breakout（靠時間整固） | ✅ 就係 Flat Top；照用課程版本 |
+| The 123 | ⏸️ 開市頭 10 分鐘太亂，課程規定 09:35 前唔入場；只觀察 |
+| Climactic Buy | ⏸️ 逆勢，只 Paper |
+| 收市後回顧**所有** Gap 股點走 | ✅ 好值得學：唔止睇你做咗嘅交易，連冇做嘅都睇 |
+| 早上連中兩次 Stop 就減少進取 | ✅ 就係斷路器（紀律閘嗰章會講） |
+
+**資料來源**：[jamesrichyoung.com（獨立整理網站）](https://jamesrichyoung.com/#patterns)：Patterns、Gaps、Strategy、Routine 各頁；原片「4 Easy Patterns For Day Trading」（James Rich Young YouTube）；Gap 概念出自 T3 Live／Pristine「Advanced Gap Strategies」。數據：data/research/jry-stats.json（由 scripts/research/jry-stats.mjs 計）。
+
+[[quiz:l17-c13]]
+`},
+/* ------------------------------------------------------------------ */
+{
   id: 'l17-c9', num: '9', title: '總成績表：名家 Setup 喺我哋數據嘅表現', mins: 9,
   summary: '九個名家 Setup 版本一齊比較：大部分喺零附近。有正數嘅係「等升穿 B 嘅 ABCD」同「大消息 Gap 日（EP）」；Gap & Go、Holy Grail、Second Day Play、NR7 冇優勢。結論同之前幾個 Level 一致：選股同背景比圖形重要。',
   keywords: ['總成績', 'A+ 過濾', '樣本', '機械規則'],
@@ -1078,6 +1219,8 @@ EP（Gap ≥ 8% + 成交 ≥ 3 倍）係唯一 11:30 平倉都有明顯正數嘅
 | Holy Grail（Raschke） | ❌ 用 EMA 9 回調代替 | A+ 日 −0.16R |
 | VWAP 方向規則（Breitstein） | ✅ 當過濾即刻用 | VWAP 上面做多明顯好過下面 |
 | 投降式反轉、V 嘅右邊（Breitstein） | ⏸️ 只觀察 | 大型股好少出現；未證明有優勢 |
+| Breakout 靠時間整固（James Rich Young） | ✅ 就係 Flat Top | 20MA 時機規則冇額外加分 |
+| Buy Setup、123、Climactic（James Rich Young） | ⏸️ 只觀察 | 大型股機械版本都喺零附近 |
 | Second Day Play（SMB） | ❌ | −0.06R，冇延續優勢 |
 | NR7／Stretch ORB（Crabel） | ❌ | 冇分別 |
 | 日線突破波段（Kullamägi） | ⏸️ 將來 | 要留倉過夜，係另一個課題 |
@@ -1193,6 +1336,12 @@ Object.assign(window.QUIZZES, {
   { q: '「V 嘅右邊」即係？', options: ['跌緊嗰陣分段撈底', '等跌勢停、出現轉向訊號先入場', '等升到新高先買'], answer: 1, explain: '例如低位唔再創新低、升穿上一支 K 高位、企返 VWAP。' },
   { q: '投降式反轉喺我哋 50 隻大型股嘅數據點講？', options: ['好穩定賺錢', '好少出現，而且未證明有優勢，只宜 Paper', '一定蝕錢'], answer: 1, explain: '三年只有大約 200 次；等右邊冇明顯好過接飛刀，樣本細。' },
   { q: '「期望值隨每支 K 改變」實際點用？', options: ['入咗場就唔使理', '入場後一段時間冇進展、或者反覆返到入場價，就主動離場', '輸咗就加注'], answer: 1, explain: '即係時間止損：好嘅交易通常唔回頭。' },
+] },
+'l17-c13': { title: '小測：James Rich Young', questions: [
+  { q: 'Professional gap 同 Novice gap 最大分別係？', options: ['Gap 大細', 'Gap 係逆住定順住之前一兩日嘅走勢', '有冇新聞'], answer: 1, explain: 'Pro 逆住之前方向，可能係轉勢；Novice 順住，可能係力竭。' },
+  { q: 'Buy Setup 同 Breakout 嘅分別？', options: ['一樣', 'Buy Setup 靠價格回調到 20MA；Breakout 靠時間喺高位橫行', 'Breakout 係沽空'], answer: 1, explain: 'Correct through price vs correct through time。' },
+  { q: 'The 123 嘅第 2 支 K 應該係？', options: ['同第 1 支一樣大', '細嘅休息 K，大約三分一或者更細', '大陰燭'], answer: 1, explain: '第 3 支升穿兩支高位先入，Stop 放第 2 支低位下面。' },
+  { q: '四個 Pattern 喺我哋 50 隻大型股嘅機械測試結果？', options: ['全部大賺', '都喺零附近或者輕微負數：圖形本身唔係 Edge', '全部大蝕'], answer: 1, explain: '值錢嘅係揀股、大市同判斷；James 主要做細價 Gap 股。' },
 ] },
 'l17-c8': { title: '小測：三位講心法嘅', questions: [
   { q: 'Al Brooks 話橫行區間入面嘅突破？', options: ['大部分成功', '大部分失敗', '一半一半'], answer: 1, explain: '所以要等第二次入場或者確認。' },
