@@ -1,6 +1,39 @@
 {
- "updated": "2026-11-13T15:19:27.057Z",
+ "updated": "2026-11-16T13:27:15.986Z",
  "days": [
+  {
+   "date": "2026-11-16",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏淡",
+   "headline": "半導體同加密貨幣股急跌（SMH −3.8%、QQQ −1.5%）：Long 專區得 TU（收購建議，質素一般）；SMMT、COIN 沽空候選。",
+   "n": 3,
+   "top": [
+    {
+     "sym": "TU",
+     "gapPct": 26.73,
+     "rvol": 312.31,
+     "beginner": "高風險",
+     "grade": "C"
+    },
+    {
+     "sym": "SMMT",
+     "gapPct": -13.92,
+     "rvol": 71.13,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "COIN",
+     "gapPct": -7.4,
+     "rvol": 2.65,
+     "beginner": "適合新手",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-13",
    "version": 3,
@@ -24,7 +57,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "10:19",
    "again": []
   },

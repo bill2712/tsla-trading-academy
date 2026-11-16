@@ -125,5 +125,20 @@
   "id": 387014896,
   "type": "STK",
   "name": "Vir Biotechnology"
+ },
+ "TU": {
+  "id": 121811784,
+  "type": "STK",
+  "name": "TELUS"
+ },
+ "SMMT": {
+  "id": 446220213,
+  "type": "STK",
+  "name": "Summit Therapeutics"
+ },
+ "COIN": {
+  "id": 481691285,
+  "type": "STK",
+  "name": "Coinbase"
  }
 }
