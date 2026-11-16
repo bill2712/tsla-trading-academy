@@ -893,5 +893,97 @@
   }
  ],
  "lesson": "上週五 MOD 高開低走，等突破先入嘅規則令佢冇觸發、冇蝕。今日 TU 同樣係消息高開、盤前已回吐：冇重奪 10.78 就唔做。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-16T13:58:22.568Z",
+  "atET": "08:58",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 669.82,
+    "chgPct": -1.48,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 748.99,
+    "chgPct": -0.71,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 276,
+    "chgPct": -0.55,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "TU",
+    "side": "Long",
+    "entry": 10.8,
+    "stop": 10.3,
+    "target1": 11.8,
+    "last": 10.46,
+    "bid": 10.36,
+    "ask": 10.47,
+    "spreadPct": 1.056,
+    "gapNow": 22.63,
+    "gapReport": 26.73,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 1.48,
+    "status": "waiting",
+    "reason": "未到入場價 10.8（差 1.48 ATR）：按計劃等觸發；買賣差價 1.056% 偏闊",
+    "note": "「差 1.48 ATR」係用消息前嘅舊 ATR 0.23 計；以計劃風險 0.50 計，大約差 0.7R。"
+   },
+   {
+    "sym": "SMMT",
+    "side": "Short",
+    "entry": 11.88,
+    "stop": 12.55,
+    "target1": 10.54,
+    "last": 12.165000000000001,
+    "bid": 12.07,
+    "ask": 12.2,
+    "spreadPct": 1.071,
+    "gapNow": -14.03,
+    "gapReport": -13.92,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.21,
+    "status": "waiting",
+    "reason": "未到入場價 11.88（差 0.21 ATR）：按計劃等觸發；買賣差價 1.071% 偏闊",
+    "note": ""
+   },
+   {
+    "sym": "COIN",
+    "side": "Short",
+    "entry": 117.3,
+    "stop": 119.8,
+    "target1": 112.3,
+    "last": 118,
+    "bid": 117.94,
+    "ask": 118.2,
+    "spreadPct": 0.22,
+    "gapNow": -7.56,
+    "gapReport": -7.4,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.07,
+    "status": "waiting",
+    "reason": "未到入場價 117.3（差 0.07 ATR）：按計劃等觸發；買賣差價 0.22% 偏闊",
+    "note": ""
+   }
+  ],
+  "summary": "三隻都仲等觸發，冇一隻已過入場價或者穿 Stop（IBKR 即時，REALTIME）。Long 專區 TU 由 9.98 反彈到 10.46，離入場價 10.80 仲差 0.34（約 0.7R）；COIN 118.00 貼近沽空入場價 117.30、SMMT 12.17 離 11.88 差 0.29。QQQ −1.48%，大市仍然偏淡；三隻差價都偏闊，開市後要收窄先做。",
+  "newMovers": []
+ }
 }
