@@ -806,5 +806,76 @@
   }
  ],
  "lesson": "昨日 SMMT 12:10 先觸發，已經過咗 11:30 時限：時限一到就取消掛單，唔好留住張單。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-17T13:57:48.798Z",
+  "atET": "08:57",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 664.1,
+    "chgPct": 0.36,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 739.04,
+    "chgPct": -0.12,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 271.72,
+    "chgPct": -0.45,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "COHR",
+    "side": "Long",
+    "entry": 228.6,
+    "stop": 220,
+    "target1": 245.8,
+    "last": 217.75,
+    "bid": 217.5,
+    "ask": 218.44,
+    "spreadPct": 0.431,
+    "gapNow": 7.04,
+    "gapReport": 9.19,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.44,
+    "status": "broken",
+    "reason": "盤前已經跌穿 Stop 220：今日計劃作廢；買賣差價 0.431% 偏闊",
+    "note": ""
+   },
+   {
+    "sym": "JD",
+    "side": "Short",
+    "entry": 25.94,
+    "stop": 26.35,
+    "target1": 25.12,
+    "last": 25.330000000000002,
+    "bid": 25.39,
+    "ask": 25.5,
+    "spreadPct": 0.432,
+    "gapNow": -8.02,
+    "gapReport": -5.3,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": -0.84,
+    "status": "chase",
+    "reason": "已經低過入場價 25.94（0.84 ATR）：開市唔追；等回調有新 Setup 先算；買賣差價 0.432% 偏闊",
+    "note": ""
+   }
+  ],
+  "summary": "今日兩隻都唔可以按原計劃做（IBKR 即時，REALTIME）。Long 專區 COHR 由盤前高 228 回落到 217.75，低過 Stop 220，今日做多計劃作廢；JD 跌到 25.33（−8%），已經低過沽空入場價 25.94 約 0.84 ATR，開市唔追。QQQ +0.36%；今日冇合格嘅計劃，唔做都得。",
+  "newMovers": []
+ }
 }
