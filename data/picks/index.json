@@ -1,6 +1,32 @@
 {
- "updated": "2026-11-16T13:58:31.051Z",
+ "updated": "2026-11-17T13:25:09.018Z",
  "days": [
+  {
+   "date": "2026-11-17",
+   "version": 3,
+   "status": "premarket",
+   "bias": "中性",
+   "headline": "尋日大跌後科技股反彈（QQQ +0.4%、SMH +1.6%）：Long 專區得 COHR（光通訊板塊，日線跌勢）；JD 業績差沽空候選。合格股好少。",
+   "n": 2,
+   "top": [
+    {
+     "sym": "COHR",
+     "gapPct": 9.19,
+     "rvol": 2.15,
+     "beginner": "高風險",
+     "grade": "B"
+    },
+    {
+     "sym": "JD",
+     "gapPct": -5.3,
+     "rvol": 2.62,
+     "beginner": "適合新手",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-16",
    "version": 3,
@@ -31,7 +57,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:58",
    "again": []
   },

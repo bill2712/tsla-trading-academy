@@ -140,5 +140,15 @@
   "id": 481691285,
   "type": "STK",
   "name": "Coinbase"
+ },
+ "COHR": {
+  "id": 584127832,
+  "type": "STK",
+  "name": "Coherent"
+ },
+ "JD": {
+  "id": 152486141,
+  "type": "STK",
+  "name": "JD.com ADR"
  }
 }

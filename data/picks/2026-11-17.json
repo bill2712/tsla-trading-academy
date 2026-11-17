@@ -1,0 +1,810 @@
+{
+ "version": 3,
+ "date": "2026-11-17",
+ "generatedAt": "2026-11-17T13:25:02Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:10",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH／PML、日線趨勢）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca SIP 報價",
+   "ok": true,
+   "note": "延遲 16 分鐘"
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅、高成交、成交異常）",
+   "ok": true,
+   "note": "美東 08:13"
+  },
+  {
+   "name": "IBKR 即時報價（指數同候選股）",
+   "ok": true,
+   "note": "美東 08:20–08:30，REALTIME"
+  },
+  {
+   "name": "IBKR 15 分鐘 K 線（COHR 盤前走勢）",
+   "ok": true,
+   "note": "用嚟定價位；冇寫入 bars 檔，所以 merge 冇計 IBKR 即時 RVOL"
+  },
+  {
+   "name": "Finviz",
+   "ok": true
+  },
+  {
+   "name": "新聞：Alpaca／Benzinga、Seeking Alpha、Google News 等",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 業績日曆",
+   "ok": true,
+   "note": "日期錯開一日，用咗 11/18 嘅結果"
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true,
+   "note": "08:30 零售銷售實際數字未攞到"
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "時間唔夠，今日冇做；R:R 人手計，全部 2.0"
+  },
+  {
+   "name": "trader-news／trader-analyst／trader-pelosi",
+   "ok": false,
+   "note": "時間唔夠，今日冇跑"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "時間唔夠，今日冇做"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "2 隻 pick，美東 08:25"
+  }
+ ],
+ "headline": "尋日大跌後科技股反彈（QQQ +0.4%、SMH +1.6%）：Long 專區得 COHR（光通訊板塊，日線跌勢）；JD 業績差沽空候選。合格股好少。",
+ "market": {
+  "bias": "中性",
+  "summary": "IBKR 即時（08:21）：QQQ +0.40%、SPY 0.0%、IWM −0.30%、SMH +1.58%。光通訊股（COHR、FN、AAOI、LITE、CIEN）領升；中概股（JD、BABA、BILI）同醫療保險（UNH、HUM、CVS）偏弱。08:30 零售銷售（高影響）已公布，09:10 Fed Waller 講話。三大指數日線仍然係跌勢。",
+  "base": {
+   "spy": 0,
+   "qqq": 0.4
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 664.37,
+    "chgPct": 0.4,
+    "note": "IBKR 即時 08:21"
+   },
+   {
+    "sym": "SPY",
+    "last": 739.95,
+    "chgPct": 0,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 272.13,
+    "chgPct": -0.3,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 469.2,
+    "chgPct": 1.58,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "零售銷售／核心零售銷售",
+    "impact": "高",
+    "note": "預期 0.1%／0.4%；實際數字未攞到"
+   },
+   {
+    "time": "09:10 ET",
+    "name": "Fed Waller 講話",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "09:15 ET",
+    "name": "工業生產",
+    "impact": "低",
+    "note": ""
+   },
+   {
+    "time": "10:00 ET",
+    "name": "NAHB 樓市指數",
+    "impact": "低",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "HD",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "DIS",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "JD",
+    "when": "盤前",
+    "note": "收入差過預期"
+   },
+   {
+    "sym": "TME",
+    "when": "盤前",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "JD",
+   "price": 26.08,
+   "gapPct": -5.3,
+   "rvol": 2.62,
+   "pmVolume": 356299,
+   "avgVolume": 9217205,
+   "floatM": 1200,
+   "atrPct": 2.65,
+   "spreadPct": 0.61,
+   "rsQqq": -5.71,
+   "ema9Pct": -1.47,
+   "trend": "up",
+   "catalyst": "業績（盤前）",
+   "verdict": "pick",
+   "note": "業績收入差過預期"
+  },
+  {
+   "sym": "COHR",
+   "price": 222.12,
+   "gapPct": 9.19,
+   "rvol": 2.15,
+   "pmVolume": 508038,
+   "avgVolume": 9708235,
+   "floatM": 188.18,
+   "atrPct": 12.07,
+   "spreadPct": 0.25,
+   "rsQqq": 8.78,
+   "ema9Pct": -0.41,
+   "trend": "down",
+   "catalyst": "COHR Dec 2026 215.000 call (COHR261231C00215000) stock price, news, quote and hi",
+   "verdict": "pick",
+   "note": "光通訊板塊向上，RVOL 2.15"
+  },
+  {
+   "sym": "ACM",
+   "price": 78.4,
+   "gapPct": 8.14,
+   "rvol": 12.82,
+   "pmVolume": 5832,
+   "avgVolume": 1314936,
+   "floatM": 127.84,
+   "atrPct": 3.12,
+   "spreadPct": 1.77,
+   "rsQqq": 7.73,
+   "ema9Pct": 0.45,
+   "trend": "up",
+   "catalyst": "ACM 8-K & SEC Filings",
+   "verdict": "watch",
+   "note": "RVOL 12.8 但盤前成交得 5,800 股、差價 1.77%"
+  },
+  {
+   "sym": "FN",
+   "price": 333.61,
+   "gapPct": 7.27,
+   "rvol": 1.87,
+   "pmVolume": 12274,
+   "avgVolume": 1225089,
+   "floatM": 35.57,
+   "atrPct": 11.33,
+   "spreadPct": 2.48,
+   "rsQqq": 6.86,
+   "ema9Pct": 0.66,
+   "trend": "down",
+   "catalyst": "FN Jan 2029 400.000 put (FN290119P00400000) Interactive Stock Chart - Yahoo Fina",
+   "verdict": "watch",
+   "note": "RVOL 1.87、差價 2.48%"
+  },
+  {
+   "sym": "AAOI",
+   "price": 49.2,
+   "gapPct": 8.95,
+   "rvol": 1.68,
+   "pmVolume": 1106253,
+   "avgVolume": 13520647,
+   "floatM": 86.09,
+   "atrPct": 16.36,
+   "spreadPct": 0.22,
+   "rsQqq": 8.54,
+   "ema9Pct": 0.16,
+   "trend": "down",
+   "catalyst": "Applied Optoelectronics: A Massive Earnings Surprise Is Brewing",
+   "verdict": "watch",
+   "note": "RVOL 1.68，未夠 2；光通訊板塊"
+  },
+  {
+   "sym": "SPAI",
+   "price": 3.09,
+   "gapPct": 25.1,
+   "rvol": 2278.67,
+   "pmVolume": 3087595,
+   "avgVolume": 296499,
+   "floatM": 10.54,
+   "atrPct": 12.96,
+   "spreadPct": 0.32,
+   "rsQqq": 24.69,
+   "ema9Pct": 1.28,
+   "trend": "down",
+   "catalyst": "How Will Safe Pro Group's (NASDAQ:SPAI) Army Deal Work With Anduril?",
+   "verdict": "avoid",
+   "note": "股價 3.09、Float 1,054 萬（< 3,000 萬）"
+  },
+  {
+   "sym": "GP",
+   "price": 3.12,
+   "gapPct": 121.28,
+   "rvol": 24.19,
+   "pmVolume": 47560119,
+   "avgVolume": 8719886,
+   "floatM": null,
+   "atrPct": 18.44,
+   "spreadPct": 0.31,
+   "rsQqq": 120.87,
+   "ema9Pct": 2.09,
+   "trend": "mixed",
+   "catalyst": "",
+   "verdict": "avoid",
+   "note": "股價 3.12、細價股"
+  },
+  {
+   "sym": "NTRA",
+   "price": 301,
+   "gapPct": 4.34,
+   "rvol": 5.59,
+   "pmVolume": 14812,
+   "avgVolume": 2178945,
+   "floatM": 135.69,
+   "atrPct": 9.05,
+   "spreadPct": 0.66,
+   "rsQqq": 3.93,
+   "ema9Pct": -0.56,
+   "trend": "down",
+   "catalyst": "NTRA Jan 2029 175.000 call (NTRA290119C00175000) Seasonal Returns Chart - Yahoo ",
+   "verdict": "avoid",
+   "note": "盤前成交得 1.5 萬股、差價 0.66%"
+  },
+  {
+   "sym": "KURA",
+   "price": 7.56,
+   "gapPct": 6.63,
+   "rvol": 5.29,
+   "pmVolume": 19531,
+   "avgVolume": 2391211,
+   "floatM": 89.33,
+   "atrPct": 11.42,
+   "spreadPct": 1.19,
+   "rsQqq": 6.22,
+   "ema9Pct": 0.8,
+   "trend": "down",
+   "catalyst": "Kura Oncology: Refills Drive Komzifti Launch, While Funding Bridge Sets The Pace",
+   "verdict": "avoid",
+   "note": "盤前成交 2 萬股、差價 1.19%"
+  },
+  {
+   "sym": "OMER",
+   "price": 15.33,
+   "gapPct": -8.09,
+   "rvol": 4.28,
+   "pmVolume": 2686,
+   "avgVolume": 985074,
+   "floatM": 69.28,
+   "atrPct": 5.58,
+   "spreadPct": 2.29,
+   "rsQqq": -8.5,
+   "ema9Pct": -0.18,
+   "trend": "down",
+   "catalyst": "OMER 8-K & SEC Filings",
+   "verdict": "avoid",
+   "note": "盤前成交得 2,700 股、差價 2.29%"
+  },
+  {
+   "sym": "KC",
+   "price": 6.6,
+   "gapPct": -3.93,
+   "rvol": 4.26,
+   "pmVolume": 94242,
+   "avgVolume": 1364449,
+   "floatM": 300.12,
+   "atrPct": 7.57,
+   "spreadPct": 1.95,
+   "rsQqq": -4.34,
+   "ema9Pct": -1.13,
+   "trend": "down",
+   "catalyst": "Trading Systems Reacting to (KC) Volatility",
+   "verdict": "avoid",
+   "note": "差價 1.95%"
+  },
+  {
+   "sym": "WB",
+   "price": 5.78,
+   "gapPct": -3.67,
+   "rvol": 6.35,
+   "pmVolume": 63165,
+   "avgVolume": 965756,
+   "floatM": 157.78,
+   "atrPct": 2.83,
+   "spreadPct": 0.87,
+   "rsQqq": -4.08,
+   "ema9Pct": -0.01,
+   "trend": "down",
+   "catalyst": "業績（盤前）",
+   "verdict": "skip",
+   "note": "股價 5.78、差價 0.87%"
+  },
+  {
+   "sym": "BILI",
+   "price": 12.26,
+   "gapPct": -3.16,
+   "rvol": 4.96,
+   "pmVolume": 197131,
+   "avgVolume": 3391427,
+   "floatM": 323.87,
+   "atrPct": 4.19,
+   "spreadPct": 0.41,
+   "rsQqq": -3.57,
+   "ema9Pct": -0.26,
+   "trend": "down",
+   "catalyst": "Options Whale Alert: $104K Bullish Long Call Opened on $BILI",
+   "verdict": "skip",
+   "note": "Gap 只 −3.2%、差價 0.41%"
+  },
+  {
+   "sym": "LITE",
+   "price": 576.39,
+   "gapPct": 5.57,
+   "rvol": 1.51,
+   "pmVolume": 227963,
+   "avgVolume": 6446337,
+   "floatM": 89.2,
+   "atrPct": 14.35,
+   "spreadPct": 0.17,
+   "rsQqq": 5.16,
+   "ema9Pct": -0.97,
+   "trend": "down",
+   "catalyst": "B. Riley Adjusts Lumentum Price Target to $659",
+   "verdict": "skip",
+   "note": "RVOL 1.51"
+  }
+ ],
+ "fewPicksReason": "RVOL ≥ 2 兼 Gap ≥ 3% 嘅股好少；SPAI、GP 係細價股，ACM、NTRA、KURA、OMER 盤前成交太少或者差價太闊。AAOI、FN 光通訊股升幅大但 RVOL 未夠 2。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇日線升勢而又 RVOL ≥ 2 嘅做多股。唯一合格做多係 COHR（光通訊板塊向上，日線跌勢、冇個股消息）：等 09:35 後喺盤前高 228.50 下面整固再升穿先入。A+ 過濾：首 5 分鐘成交 ≥ 平時 2 倍、QQQ 喺 VWAP 上面；唔齊就今日唔做。",
+  "items": [
+   {
+    "sym": "COHR",
+    "trend": "down",
+    "setups": "Flat Top（盤前高 228.50）→ EMA 9 回調 → 30 分鐘 ORB",
+    "note": "日線跌勢、冇個股消息、ATR 12%：細注"
+   }
+  ]
+ },
+ "carryover": {
+  "fromDate": "2026-11-16",
+  "summary": "昨日三隻（TU 做多、SMMT 同 COIN 沽空）今日盤前 RVOL 全部低過 1，冇一隻再入選，全部 skip。",
+  "items": [
+   {
+    "sym": "TU",
+    "prevSide": "Long",
+    "prevResult": "未觸發（入場價冇到）",
+    "yClose": 9.57,
+    "yChgPct": 12.19,
+    "yClosePos": 0.75,
+    "yVolRatio": 7.35,
+    "price": 9.64,
+    "gapPct": 0.73,
+    "rvol": 0.04,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.04；昨日收購消息後高開低走，今日盤前 9.64 喺昨日收市之上少少，冇新消息。",
+    "levels": "昨日低 9.10、昨日高 9.73"
+   },
+   {
+    "sym": "SMMT",
+    "prevSide": "Short",
+    "prevResult": "12:10 觸發 → 收市前未到 Stop／Target（收市計 0.09R）",
+    "yClose": 11.82,
+    "yChgPct": -16.47,
+    "yClosePos": 0.17,
+    "yVolRatio": 5.05,
+    "price": 11.98,
+    "gapPct": 1.35,
+    "rvol": 0.14,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.14；昨日跌到 11.53 後收 11.82，今日盤前 11.98，冇新消息。",
+    "levels": "昨日低 11.53、昨日高 13.28"
+   },
+   {
+    "sym": "COIN",
+    "prevSide": "Short",
+    "prevResult": "未觸發（入場價冇到）",
+    "yClose": 119.84,
+    "yChgPct": -6.11,
+    "yClosePos": 0.44,
+    "yVolRatio": 1.35,
+    "price": 119.62,
+    "gapPct": -0.18,
+    "rvol": 0.71,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.71；昨日收 119.83，今日盤前 119.62，喺昨日區間入面冇方向。",
+    "levels": "昨日低 117.32、昨日高 122.99"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "COHR",
+   "name": "Coherent",
+   "grade": "B",
+   "beginner": "高風險",
+   "direction": "Long",
+   "score": 64,
+   "price": 222.12,
+   "prevClose": 203.43,
+   "gapPct": 9.19,
+   "pmVolume": 508038,
+   "pmVolPct": 5.23,
+   "avgVolume": 9708235,
+   "rvol": 2.15,
+   "spread": 0.55,
+   "spreadPct": 0.25,
+   "atr": 24.56,
+   "atrPct": 12.07,
+   "mktCapB": 43.73,
+   "floatM": 188.18,
+   "rsQqq": 8.78,
+   "rsSpy": 9.18,
+   "ema9": 223.03,
+   "ema9Pct": -0.41,
+   "ema9Step": "5m",
+   "ema9Daily": 215.16,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 228.5,
+    "pml": 198.02,
+    "pdh": 208.15,
+    "pdl": 196.12,
+    "pdc": 203.43,
+    "other": [
+     {
+      "label": "20 日線",
+      "price": 216.2
+     },
+     {
+      "label": "20 日高",
+      "price": 246.9
+     },
+     {
+      "label": "07:45 回調低",
+      "price": 221
+     }
+    ]
+   },
+   "why": "光通訊股集體向上（IBKR 升幅榜頭 3 名 COHR、FN、AAOI，LITE、CIEN、CRDO 都喺榜）；COHR 盤前升 8.9%（IBKR 即時 221.50）、RVOL 2.15、盤前成交 58 萬股，Float 1.88 億。",
+   "catalyst": "冇搵到 COHR 自己嘅新消息；係光通訊板塊一齊升（同日 Corning 都有升）。屬板塊資金流，唔係個股消息，所以評級唔高。",
+   "technical": "日線跌勢（20 日線 216 低過 50 日線 264），但今日盤前已經企返 20 日線之上。盤前由 06:00 嘅 202 一路升到 07:30 嘅 228.27（盤前高 228.50），之後回調到 221 附近整固。",
+   "setup": "Flat Top：盤前高 228.50 下面整固，09:35 後升穿先入",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:21）：QQQ +0.40%、SPY 0.0%、IWM −0.3%、SMH +1.6%；尋日大跌之後科技股反彈。08:30 零售銷售（高影響）已公布，收集器未攞到實際數字。",
+    "fundamentals": "冇個股消息，靠板塊；如果板塊轉弱就冇支持。",
+    "technical": "升穿 228.50 上面到 20 日高 246.9 之前冇明顯阻力；下面 221（07:45 回調低）同 20 日線 216 係支持。ATR 24.6（12%），波幅極大。",
+    "tape": "盤前成交 58 萬股（約平時 6%），IBKR 即時買 221.20／賣 221.75，差價約 0.25%。開市第一支 5 分鐘 K 要見 ≥ 平時 2 倍先算有人跟。",
+    "intuition": "信心中低。RVOL 2.15 啱啱過標準、冇個股消息，日線仲係跌勢；只做真突破，細注。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 228.50，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 同 5 分鐘 EMA 9 之上，入場前 QQQ 喺 VWAP 上面",
+    "entry": 228.6,
+    "stop": 220,
+    "target1": 245.8,
+    "target2": 254.4,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 228.50 用 Buy Stop 228.60（加限價 229.20）入，Stop 220.00（07:45 回調低 221 之下、0.35 ATR），T1 245.80（20 日高 246.9 之下）、T2 254.40；+1R（237.20）將 Stop 移返入場價。11:30 前未觸發就放棄。",
+    "short": "唔做沽空：板塊向上。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 221 就唔做；SMH 轉跌就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 15 次、贏 2 次、約 −9.5R。"
+   },
+   "risks": [
+    "冇個股消息，板塊轉弱就冇支持",
+    "RVOL 2.15 啱啱過標準",
+    "ATR 12%，Stop 8.6 元：股數要按每股風險計",
+    "日線跌勢，50 日線 264 遠高過現價",
+    "買賣差價 0.45%（IBKR 即時約 0.25%），高過 0.1% 標準：大型股開市後會收窄，用限價單",
+    "盤前價喺 5 分鐘 EMA 9 之下少少（回調整固中）：所以只做升穿盤前高"
+   ],
+   "news": [
+    {
+     "title": "COHR Dec 2026 215.000 call (COHR261231C00215000) stock price, news, quote and history",
+     "source": "Yahoo Finance Singapore（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9aVktVbHZZQlh0UjJiMlJtQmxVenpkQXhTNGtJUS1PU3RkYktRdGg3dE53bUFnakJwVGstQkZsenlhLVE0NS1NdFkweHYtS3VybERGYy04bklVZVpxcVZsSzJqR3RUQQ?oc=5",
+     "time": "2026-11-17T11:26"
+    },
+    {
+     "title": "COHR May 2027 160.000 call (COHR270521C00160000) Stock Price, News, Quote & History",
+     "source": "Yahoo! Finance Canada（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9qYU1ZZkw4Q3FuUklySGNaaTlkR09OODMtcEJ1SzVhZkI0MzZQVWhQajdtV1BiQzdJUXdyYUVWc0hieDhyRDE1Nlh1eEt2cldrWm9BbDRaRE1tNlcyVnhkQjlOOXhZUQ?oc=5",
+     "time": "2026-11-17T01:19"
+    },
+    {
+     "title": "COHR Nov 2026 205.000 call (COHR261120C00205000) stock price, news, quote and history",
+     "source": "Yahoo Finance UK（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFA5bnUyTWM2ek9NcE43ZmphUHJxZ1l6S01sUnp6T3B0ZXk1V1JkSTJ5QmdubHN4eHlucTl1bmNWdVVpVVBRc1F3cjVJdWppd2psYzhXeTFEbXh6eG9vOXhzUm5SZ2Z0Zw?oc=5",
+     "time": "2026-11-16T23:22"
+    },
+    {
+     "title": "COHR Sep 2027 120.000 put (COHR270917P00120000) Interactive Stock Chart - Yahoo Finance",
+     "source": "Yahoo! Finance Canada（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9XM0psNU9DMEUxcmdZZlB6WVpua0JUV0FuMGpaR0hLemg0M18yRDl4RU43ZVlGYm1GU1hTREQzSmlLX1VWaDlVSXp4S1g5Qjg3c0FDR2NrUzVBRS1aei1SOVFFY0VhUTktRmVIeFB3?oc=5",
+     "time": "2026-11-16T22:11"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描",
+    "Alpaca 盤前掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-17T13:25:02.503Z",
+    "atET": "08:25",
+    "status": "REALTIME",
+    "last": 221.5,
+    "ts": "2026-11-17T13:23:01.000Z",
+    "halted": false,
+    "bid": 221.2,
+    "ask": 221.75,
+    "bidSize": 100,
+    "askSize": 101,
+    "volume": 581485.747322,
+    "chgPct": 8.88,
+    "spread": 0.55,
+    "spreadPct": 0.248,
+    "gapNow": 8.88
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "JD",
+   "name": "JD.com",
+   "grade": "B",
+   "beginner": "適合新手",
+   "direction": "Short",
+   "score": 62,
+   "price": 26.08,
+   "prevClose": 27.54,
+   "gapPct": -5.3,
+   "pmVolume": 356299,
+   "pmVolPct": 3.87,
+   "avgVolume": 9217205,
+   "rvol": 2.62,
+   "spread": 0.16,
+   "spreadPct": 0.61,
+   "atr": 0.73,
+   "atrPct": 2.65,
+   "mktCapB": 31.71,
+   "floatM": 1200,
+   "rsQqq": -5.71,
+   "rsSpy": -5.31,
+   "ema9": 26.47,
+   "ema9Pct": -1.47,
+   "ema9Step": "5m",
+   "ema9Daily": 27.68,
+   "dailyTrend": "up",
+   "levels": {
+    "pmh": 27.4,
+    "pml": 25.96,
+    "pdh": 27.9,
+    "pdl": 27.51,
+    "pdc": 27.54,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 25.06
+     },
+     {
+      "label": "20 日線",
+      "price": 26.87
+     }
+    ]
+   },
+   "why": "Q3 收入差過預期，盤前跌 5.3%（IBKR 即時 26.43，−4.0%）、RVOL 2.62、盤前成交 40 萬股；Float 12 億、差價 0.23%。",
+   "catalyst": "JD Q3 收入 462 億美元，差過預期 2.9 億；Non-GAAP 每股盈利 0.88 符合預期；新業務收入跌 49.8%。",
+   "technical": "日線升勢（昨收高過 20、50 日線，兩條線差唔多 26.87／26.86），今日跳空跌穿兩條線。盤前低 25.96 之後反彈到 26.4。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低 25.96",
+   "pillars": {
+    "bigPicture": "大市平穩（QQQ +0.4%）；中概股同日多隻跌（BABA、BILI、WB、KC 喺 IBKR 跌幅榜）。",
+    "fundamentals": "收入差過預期、新業務收縮，屬實質負面；盈利符合預期，跌幅有限制。",
+    "technical": "跌穿 25.96 之後下面係 20 日低 25.06。日線本來係升勢，屬逆勢沽空。",
+    "tape": "盤前成交 40 萬股（約平時 4%），IBKR 即時買 26.28／賣 26.44，差價偏闊。開市第一支 5 分鐘 K 要見 ≥ 平時 2 倍。",
+    "intuition": "信心中低。盤前已經由低位反彈，可能開市先試高；只做跌穿盤前低嘅延續。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低 25.96，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 下面，QQQ 喺 VWAP 下面",
+    "entry": 25.94,
+    "stop": 26.35,
+    "target1": 25.12,
+    "target2": 25.06,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：業績差。只做多嘅用戶唔好撈底。",
+    "short": "跌穿 25.96 用 Sell Stop 25.94 沽，Stop 26.35（0.56 ATR），T1 25.12、T2 25.06（20 日低）；−1R（25.53）將 Stop 移返入場價。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。開市企穩 26.87（20 日線）之上就唔沽。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 15 次、贏 2 次、約 −9.5R。"
+   },
+   "risks": [
+    "日線升勢，屬逆勢沽空",
+    "盤前已經由 25.96 反彈到 26.4，可能開市先試高",
+    "QQQ 偏好，大市唔幫手",
+    "買賣差價 0.23%（IBKR 即時 0.61%，高過 0.1% 標準）：成交量大，所以仍然揀，用限價單"
+   ],
+   "news": [
+    {
+     "title": "JD.com in Charts: Q3 JD retail revenue up 3% Y/Y, while new businesses drop 49.8%",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/JD/news?source=feed_symbol_JD",
+     "time": "2026-11-17T10:39"
+    },
+    {
+     "title": "Why is JD.com stock sliding today?",
+     "source": "Investing.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOZzFCTzg2TFZjSmFyYm96VkJRd2RsUGRYMjJfSzVnWEhRZVI0ZlVUVWctS016Umx0cDFDV0ZFbVpFczlNUXNkeUF2Q2tOTXJYWEJTaW5fWk9lNzNiNmFHWU00V3JaREpVNkYyLWJIQlI4a1Y0dlpPSllkOG1pUUVNcGd4WnhRUjQwczhERlhVYWpuTUN4ajFyR1BB?oc=5",
+     "time": "2026-11-17T10:30"
+    },
+    {
+     "title": "Earnings Snapshot: JD.com misses Q3 revenue forecast; Non-GAAP operating margin jumps to 2.4%",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/JD/news?source=feed_symbol_JD",
+     "time": "2026-11-17T10:27"
+    },
+    {
+     "title": "JD.com Non-GAAP EPADS of $0.88 in-line, revenue of $46.2B misses by $290M",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/JD/news?source=feed_symbol_JD",
+     "time": "2026-11-17T10:09"
+    }
+   ],
+   "lists": [
+    "IBKR 跌幅掃描",
+    "Nasdaq 業績日曆（盤前）"
+   ],
+   "ibkr": {
+    "at": "2026-11-17T13:25:02.503Z",
+    "atET": "08:25",
+    "status": "REALTIME",
+    "last": 26.43,
+    "ts": "2026-11-17T13:23:12.000Z",
+    "halted": false,
+    "bid": 26.28,
+    "ask": 26.44,
+    "bidSize": 100,
+    "askSize": 1,
+    "volume": 398367.024566,
+    "chgPct": -4.03,
+    "spread": 0.16,
+    "spreadPct": 0.607,
+    "gapNow": -4.03
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "AAOI",
+   "why": "光通訊板塊，盤前升 9%、成交 110 萬股，但 RVOL 1.68 未夠 2；開市首 5 分鐘成交 ≥ 平時 2 倍、升穿盤前高 49.99 先考慮。"
+  },
+  {
+   "sym": "ACM",
+   "why": "RVOL 12.8、升 8%，但盤前成交得 5,800 股、差價 1.77%；開市成交同差價合格先考慮。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "SPAI",
+   "why": "股價 3.09、Float 細"
+  },
+  {
+   "sym": "GP",
+   "why": "細價股"
+  },
+  {
+   "sym": "OMER",
+   "why": "盤前成交少、差價 2.29%"
+  }
+ ],
+ "news": [
+  {
+   "title": "Dell in focus as GF cuts price target ahead of Q3 earnings",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4673594-dell-in-focus-as-gf-cuts-price-target-ahead-of-q3-earnings?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-17T13:06"
+  },
+  {
+   "title": "Senti Bio announces 1-for-33 reverse stock split",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4673605-senti-bio-announces-1-for-33-reverse-stock-split?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-17T13:05"
+  },
+  {
+   "title": "Citadel’s Rubner says equity volatility hits highest since April 2025",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/citadels-rubner-says-equity-volatility-hits-highest-since-april-2025-93CH-5032831",
+   "time": "2026-11-17T13:05"
+  },
+  {
+   "title": "Dave applies to establish insured national bank",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4673600-dave-applies-to-establish-insured-national-bank?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-17T13:04"
+  },
+  {
+   "title": "Why is Corning stock rallying today?",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/why-is-corning-stock-rallying-today-93CH-5032790",
+   "time": "2026-11-17T13:02"
+  },
+  {
+   "title": "Evercore ISI reshuffles Top Picks After Q3 Results, Swaps No. 3 Large-Cap Long",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/evercore-isi-reshuffles-top-picks-after-q3-results-swaps-no-3-largecap-long-5032777",
+   "time": "2026-11-17T13:00"
+  },
+  {
+   "title": "Purple Biotech GAAP EPS of -$0.51",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4673603-purple-biotech-gaap-eps-of--051?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-17T12:58"
+  },
+  {
+   "title": "Purple Biotech GAAP EPS of -$0.51",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4673601-purple-biotech-gaap-eps-of-0_51?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-17T12:58"
+  }
+ ],
+ "lesson": "昨日 SMMT 12:10 先觸發，已經過咗 11:30 時限：時限一到就取消掛單，唔好留住張單。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
