@@ -927,5 +927,97 @@
   }
  ],
  "lesson": "昨日 JD 開市先反彈再跌穿入場價：開市前「唔追」唔等於作廢，價格返轉頭再跌穿就係新觸發。今日三隻做多都係突破型，09:35 已經高過入場價 0.3 ATR 就唔追。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-18T13:58:03.776Z",
+  "atET": "08:58",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 662.04,
+    "chgPct": 0.77,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 734.8100000000001,
+    "chgPct": 0.32,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 268.46,
+    "chgPct": -0.22,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "TJX",
+    "side": "Long",
+    "entry": 141.05,
+    "stop": 139,
+    "target1": 145.15,
+    "last": 137.69,
+    "bid": 137.7,
+    "ask": 138.29,
+    "spreadPct": 0.428,
+    "gapNow": 6.04,
+    "gapReport": 6.35,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.82,
+    "status": "broken",
+    "reason": "盤前已經跌穿 Stop 139：今日計劃作廢；買賣差價 0.428% 偏闊",
+    "note": "狀態「broken」係程式按「而家價低過 Stop」計；呢個係 Buy Stop 突破計劃，價格要先升穿入場價先會入場，所以計劃仍然有效，跟返自己嘅作廢條件。"
+   },
+   {
+    "sym": "TTWO",
+    "side": "Long",
+    "entry": 220.2,
+    "stop": 214.2,
+    "target1": 232.2,
+    "last": 214,
+    "bid": 213.83,
+    "ask": 214.3,
+    "spreadPct": 0.22,
+    "gapNow": 4.94,
+    "gapReport": 5.67,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.52,
+    "status": "broken",
+    "reason": "盤前已經跌穿 Stop 214.2：今日計劃作廢；買賣差價 0.22% 偏闊",
+    "note": "狀態「broken」係程式按「而家價低過 Stop」計；呢個係 Buy Stop 突破計劃，價格要先升穿入場價先會入場，所以計劃仍然有效，跟返自己嘅作廢條件。"
+   },
+   {
+    "sym": "ZIM",
+    "side": "Long",
+    "entry": 31.48,
+    "stop": 31.03,
+    "target1": 32.38,
+    "last": 30.900000000000002,
+    "bid": 30.7,
+    "ask": 30.91,
+    "spreadPct": 0.682,
+    "gapNow": 4.08,
+    "gapReport": 3.91,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.64,
+    "status": "broken",
+    "reason": "盤前已經跌穿 Stop 31.03：今日計劃作廢；買賣差價 0.682% 偏闊",
+    "note": "狀態「broken」係程式按「而家價低過 Stop」計；呢個係 Buy Stop 突破計劃，價格要先升穿入場價先會入場，所以計劃仍然有效，跟返自己嘅作廢條件。"
+   }
+  ],
+  "summary": "三隻做多都仲未觸發（IBKR 即時，REALTIME）：TJX 137.69（離入場 141.05 差約 0.8 ATR）、TTWO 214.00（離 220.20 差約 0.5 ATR）、ZIM 30.90（離 31.48 差約 0.6 ATR）。程式顯示「作廢」係因為而家價低過 Stop 價位，但呢三個係「升穿先買」嘅突破計劃，未入場就未有 Stop；真正作廢條件係開市跌穿 TJX 136、TTWO 207、ZIM 30.00，三隻都未發生。QQQ +0.77%。",
+  "newMovers": []
+ }
 }
