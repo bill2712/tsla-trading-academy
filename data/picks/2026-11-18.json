@@ -1,0 +1,931 @@
+{
+ "version": 3,
+ "date": "2026-11-18",
+ "generatedAt": "2026-11-18T13:24:22Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:10",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH／PML、日線趨勢）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca SIP 報價",
+   "ok": true,
+   "note": "延遲 16 分鐘"
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅、高成交、成交異常）",
+   "ok": true,
+   "note": "美東 08:13"
+  },
+  {
+   "name": "IBKR 即時報價（指數、候選股、LOW、TGT）",
+   "ok": true,
+   "note": "美東 08:20–08:30，REALTIME"
+  },
+  {
+   "name": "IBKR 15 分鐘 K 線",
+   "ok": false,
+   "note": "今日冇攞；merge 冇計 IBKR 即時 RVOL"
+  },
+  {
+   "name": "Finviz",
+   "ok": true
+  },
+  {
+   "name": "新聞：Alpaca／Benzinga、Seeking Alpha、Investing.com 等",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 業績日曆",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": false,
+   "note": "今日冇攞到數據"
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "時間唔夠，今日冇做；R:R 人手計，全部 2.0"
+  },
+  {
+   "name": "trader-news／trader-analyst／trader-pelosi",
+   "ok": false,
+   "note": "時間唔夠，今日冇跑"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "時間唔夠，今日冇做"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "3 隻 pick，美東 08:24"
+  }
+ ],
+ "headline": "NVDA 業績好帶動科技股（QQQ +0.6%）：Long 專區 3 隻消息股（TJX 業績、TTWO GTA VI、ZIM 業績），全部日線橫行，等突破先入。",
+ "market": {
+  "bias": "偏好",
+  "summary": "IBKR 即時（08:20）：QQQ +0.62%、SPY +0.22%、IWM −0.29%、SMH +1.83%。NVDA 業績好過預期兼上調指引，帶動 AI 同半導體股；但同時有消息指 SEC 調查、10-Q 延遲交。 零售業績：TJX 好（+5.5%）、LOW 跌 4.1%、TGT 跌 0.7%（IBKR 即時）。黃金股（AU、AG、HL）同礦業股跌。三大指數日線仍然係跌勢。",
+  "base": {
+   "spy": 0.22,
+   "qqq": 0.62
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 661,
+    "chgPct": 0.62,
+    "note": "IBKR 即時 08:20"
+   },
+   {
+    "sym": "SPY",
+    "last": 734.03,
+    "chgPct": 0.22,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 268.26,
+    "chgPct": -0.29,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 468.5,
+    "chgPct": 1.83,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [],
+  "earnings": [
+   {
+    "sym": "TJX",
+    "when": "盤前",
+    "note": "好過預期"
+   },
+   {
+    "sym": "LOW",
+    "when": "盤前",
+    "note": "IBKR −4.1%（冇計 RVOL）"
+   },
+   {
+    "sym": "TGT",
+    "when": "盤前",
+    "note": "IBKR −0.7%"
+   },
+   {
+    "sym": "ZIM",
+    "when": "盤前",
+    "note": ""
+   },
+   {
+    "sym": "NVDA",
+    "when": "昨日盤後",
+    "note": "好過預期"
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "TJX",
+   "price": 138.09,
+   "gapPct": 6.35,
+   "rvol": 85.7,
+   "pmVolume": 304764,
+   "avgVolume": 6400785,
+   "floatM": 1100,
+   "atrPct": 3.14,
+   "spreadPct": 0.59,
+   "rsQqq": 5.8,
+   "ema9Pct": 1.16,
+   "trend": "mixed",
+   "catalyst": "業績（盤前）",
+   "verdict": "pick",
+   "note": "業績好兼上調指引"
+  },
+  {
+   "sym": "ZIM",
+   "price": 30.85,
+   "gapPct": 3.91,
+   "rvol": 77.12,
+   "pmVolume": 537896,
+   "avgVolume": 1098289,
+   "floatM": 120.48,
+   "atrPct": 3.03,
+   "spreadPct": 0.33,
+   "rsQqq": 3.36,
+   "ema9Pct": -0.17,
+   "trend": "mixed",
+   "catalyst": "業績（盤前）",
+   "verdict": "pick",
+   "note": "業績同股息"
+  },
+  {
+   "sym": "TTWO",
+   "price": 215.5,
+   "gapPct": 5.67,
+   "rvol": 7.67,
+   "pmVolume": 342969,
+   "avgVolume": 3754429,
+   "floatM": 163.97,
+   "atrPct": 5.9,
+   "spreadPct": 0.23,
+   "rsQqq": 5.12,
+   "ema9Pct": -0.39,
+   "trend": "mixed",
+   "catalyst": "Take-Two's Rockstar Games Promoting 'GTA VI' in China Despite Lack of Approval",
+   "verdict": "pick",
+   "note": "GTA VI 推出日"
+  },
+  {
+   "sym": "PRMB",
+   "price": 22.75,
+   "gapPct": -6.19,
+   "rvol": 173.66,
+   "pmVolume": 80926,
+   "avgVolume": 5352771,
+   "floatM": 253.93,
+   "atrPct": 3.42,
+   "spreadPct": 0.44,
+   "rsQqq": -6.74,
+   "ema9Pct": -1.49,
+   "trend": "up",
+   "catalyst": "PRMB Apr 2027 23.000 call (PRMB270416C00023000) stock price, news, quote and his",
+   "verdict": "watch",
+   "note": "RVOL 174 但盤前成交得 8 萬股"
+  },
+  {
+   "sym": "NVDA",
+   "price": 160.01,
+   "gapPct": 2.93,
+   "rvol": 1.14,
+   "pmVolume": 14590702,
+   "avgVolume": 237758408,
+   "floatM": 23190,
+   "atrPct": 7.39,
+   "spreadPct": 0.05,
+   "rsQqq": 2.38,
+   "ema9Pct": 0.01,
+   "trend": "down",
+   "catalyst": "Nvidia&#x2019;s beat and raise point to strong AI chip demand, analysts say",
+   "verdict": "watch",
+   "note": "業績好但 RVOL 1.14、Gap 2.9%"
+  },
+  {
+   "sym": "GLBE",
+   "price": 34.5,
+   "gapPct": -13.34,
+   "rvol": 80.04,
+   "pmVolume": 107735,
+   "avgVolume": 1306839,
+   "floatM": 116.01,
+   "atrPct": 4.85,
+   "spreadPct": 1.8,
+   "rsQqq": -13.89,
+   "ema9Pct": -1.66,
+   "trend": "mixed",
+   "catalyst": "業績（盤前）",
+   "verdict": "avoid",
+   "note": "差價 1.8%"
+  },
+  {
+   "sym": "ARDT",
+   "price": 14.45,
+   "gapPct": -18.59,
+   "rvol": 45.81,
+   "pmVolume": 60151,
+   "avgVolume": 813573,
+   "floatM": 21.97,
+   "atrPct": 5.75,
+   "spreadPct": 0.14,
+   "rsQqq": -19.14,
+   "ema9Pct": -1.78,
+   "trend": "up",
+   "catalyst": "Ardent Health Announces Pricing of Secondary Offering and Concurrent Share Repur",
+   "verdict": "avoid",
+   "note": "Float 2,200 萬、盤前成交 6 萬"
+  },
+  {
+   "sym": "BRBR",
+   "price": 12.11,
+   "gapPct": 9.99,
+   "rvol": 41.85,
+   "pmVolume": 50888,
+   "avgVolume": 3573078,
+   "floatM": 114.06,
+   "atrPct": 5.45,
+   "spreadPct": 4.26,
+   "rsQqq": 9.44,
+   "ema9Pct": 2.22,
+   "trend": "up",
+   "catalyst": "業績（盤前）",
+   "verdict": "avoid",
+   "note": "差價 4.26%"
+  },
+  {
+   "sym": "TXT",
+   "price": 85,
+   "gapPct": 4.13,
+   "rvol": 16.23,
+   "pmVolume": 6688,
+   "avgVolume": 1846490,
+   "floatM": 168.11,
+   "atrPct": 4.2,
+   "spreadPct": 2.5,
+   "rsQqq": 3.58,
+   "ema9Pct": 2.79,
+   "trend": "mixed",
+   "catalyst": "TXT: Textron Inc. filed SEC Form 8-K: Entry into a Material...",
+   "verdict": "avoid",
+   "note": "盤前成交得 6,700 股"
+  },
+  {
+   "sym": "BLSH",
+   "price": 21,
+   "gapPct": 8.98,
+   "rvol": 4.81,
+   "pmVolume": 52269,
+   "avgVolume": 1514509,
+   "floatM": 38.42,
+   "atrPct": 9.96,
+   "spreadPct": 1.19,
+   "rsQqq": 8.43,
+   "ema9Pct": 0.67,
+   "trend": "down",
+   "catalyst": "業績（盤前）",
+   "verdict": "avoid",
+   "note": "差價 1.19%"
+  },
+  {
+   "sym": "CAPR",
+   "price": 8.9,
+   "gapPct": 5.83,
+   "rvol": 4.15,
+   "pmVolume": 131008,
+   "avgVolume": 4204689,
+   "floatM": 52.66,
+   "atrPct": 13.2,
+   "spreadPct": 1.01,
+   "rsQqq": 5.28,
+   "ema9Pct": -1.3,
+   "trend": "mixed",
+   "catalyst": "Futures Climb As Nvidia Earnings Boost AI Trade — BABA, INTC, ASTS, CAPR In Focu",
+   "verdict": "avoid",
+   "note": "差價 1.01%"
+  },
+  {
+   "sym": "IAG",
+   "price": 16.34,
+   "gapPct": -4.33,
+   "rvol": 3.99,
+   "pmVolume": 50301,
+   "avgVolume": 5383927,
+   "floatM": 569.66,
+   "atrPct": 6.21,
+   "spreadPct": 1.89,
+   "rsQqq": -4.88,
+   "ema9Pct": -0.81,
+   "trend": "down",
+   "catalyst": "iA Financial (TSE:IAG) Stock Price Expected to Rise, Scotia Analyst Says",
+   "verdict": "avoid",
+   "note": "差價 1.89%"
+  },
+  {
+   "sym": "RGNX",
+   "price": 8.1,
+   "gapPct": 11.88,
+   "rvol": 2.11,
+   "pmVolume": 2458,
+   "avgVolume": 1251418,
+   "floatM": 61.16,
+   "atrPct": 8.56,
+   "spreadPct": 11.84,
+   "rsQqq": 11.33,
+   "ema9Pct": 9.13,
+   "trend": "down",
+   "catalyst": "REGENXBIO Inc. (RGNX) Stock Price, News, Quote & History",
+   "verdict": "avoid",
+   "note": "差價 11.8%"
+  },
+  {
+   "sym": "HBM",
+   "price": 18.95,
+   "gapPct": -4,
+   "rvol": 7.34,
+   "pmVolume": 77851,
+   "avgVolume": 5048855,
+   "floatM": 427.32,
+   "atrPct": 6.48,
+   "spreadPct": 0.79,
+   "rsQqq": -4.55,
+   "ema9Pct": -0.95,
+   "trend": "down",
+   "catalyst": "Quarterly Earnings Change The Bull Case For Hudbay Minerals Stock (TSX:HBM)?",
+   "verdict": "skip",
+   "note": "盤前成交 7.8 萬股、差價 0.79%"
+  },
+  {
+   "sym": "HYMC",
+   "price": 14.8,
+   "gapPct": -5.67,
+   "rvol": 2.42,
+   "pmVolume": 68116,
+   "avgVolume": 2310173,
+   "floatM": 48.81,
+   "atrPct": 10.83,
+   "spreadPct": 0.41,
+   "rsQqq": -6.22,
+   "ema9Pct": -0.74,
+   "trend": "down",
+   "catalyst": "Hycroft Mining (HYMC) Stock Looks Fully Priced On Current Assets",
+   "verdict": "skip",
+   "note": "盤前成交 6.8 萬股"
+  }
+ ],
+ "fewPicksReason": "RVOL ≥ 2、Gap ≥ 3%、成交同差價合格嘅得 TJX、TTWO、ZIM 三隻；GLBE、BRBR、RGNX 差價太闊，PRMB、ARDT 盤前成交太少。LOW 跌 4% 但收集器冇計到 RVOL，放觀察。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇日線升勢而又 RVOL ≥ 2 嘅做多股；三隻合格做多都係日線橫行嘅消息股。最清楚係 TJX（業績好兼上調指引，ATR 細）。全部等 09:35 後升穿盤前高先入；A+ 過濾：首 5 分鐘成交 ≥ 平時 2 倍、QQQ 喺 VWAP 上面。",
+  "items": [
+   {
+    "sym": "TJX",
+    "trend": "mixed",
+    "setups": "Flat Top（141）→ EMA 9 回調 → 30 分鐘 ORB",
+    "note": "盤前由 141 回落，等企穩"
+   },
+   {
+    "sym": "TTWO",
+    "trend": "mixed",
+    "setups": "Flat Top（220.13）→ 30 分鐘 ORB",
+    "note": "推出日，提防消息出貨"
+   },
+   {
+    "sym": "ZIM",
+    "trend": "mixed",
+    "setups": "Flat Top（31.45）→ EMA 9 回調",
+    "note": "Gap 啱啱過標準"
+   }
+  ]
+ },
+ "carryover": {
+  "fromDate": "2026-11-17",
+  "summary": "昨日兩隻今日盤前 RVOL 都未夠 2：COHR skip；JD 再跌但 RVOL 1.3，只觀察。",
+  "items": [
+   {
+    "sym": "COHR",
+    "prevSide": "Long",
+    "prevResult": "未觸發（入場價冇到）",
+    "yClose": 210.86,
+    "yChgPct": 3.65,
+    "yClosePos": 0.62,
+    "yVolRatio": 1.12,
+    "price": 218.46,
+    "gapPct": 3.6,
+    "rvol": 0.85,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.85；升 3.6% 到 218.46，高過昨日高 217.2，但成交唔夠。",
+    "levels": "昨日高 217.2、昨日低 200.53"
+   },
+   {
+    "sym": "JD",
+    "prevSide": "Short",
+    "prevResult": "09:40 觸發 → 收市前未到 Stop／Target（收市計 1.3R）",
+    "yClose": 25.43,
+    "yChgPct": -7.66,
+    "yClosePos": 0.06,
+    "yVolRatio": 2.53,
+    "price": 24.86,
+    "gapPct": -2.24,
+    "rvol": 1.3,
+    "verdict": "watch",
+    "side": null,
+    "reason": "今日盤前 RVOL 1.3、再跌 2.2% 到 24.86，低過昨日低 25.37；開市首 5 分鐘成交 ≥ 平時 2 倍兼跌穿盤前低先考慮沽空。只做多嘅用戶唔撈底。",
+    "levels": "昨日低 25.37、20 日低 25.06"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "TJX",
+   "name": "TJX Companies",
+   "grade": "A",
+   "beginner": "適合新手",
+   "direction": "Long",
+   "score": 76,
+   "price": 138.09,
+   "prevClose": 129.85,
+   "gapPct": 6.35,
+   "pmVolume": 304764,
+   "pmVolPct": 4.76,
+   "avgVolume": 6400785,
+   "rvol": 85.7,
+   "spread": 0.81,
+   "spreadPct": 0.59,
+   "atr": 4.08,
+   "atrPct": 3.14,
+   "mktCapB": 150.12,
+   "floatM": 1100,
+   "rsQqq": 5.8,
+   "rsSpy": 6.19,
+   "ema9": 136.5,
+   "ema9Pct": 1.16,
+   "ema9Step": "5m",
+   "ema9Daily": 134.8,
+   "dailyTrend": "mixed",
+   "levels": {
+    "pmh": 141,
+    "pml": 129.86,
+    "pdh": 133.07,
+    "pdl": 129.39,
+    "pdc": 129.85,
+    "other": [
+     {
+      "label": "20 日線",
+      "price": 139.1
+     },
+     {
+      "label": "50 日線",
+      "price": 136.11
+     },
+     {
+      "label": "20 日高",
+      "price": 147.69
+     }
+    ]
+   },
+   "why": "Q3 收入好過預期兼上調指引，盤前升 5.5%（IBKR 即時 137.00）、RVOL 85.7、盤前成交 40 萬股；Float 11 億、差價 0.18%。大型零售股，消息清楚。",
+   "catalyst": "TJX 公布 2027 財年第三季業績：收入好過預期，並上調全年指引（Investing.com、公司新聞稿）。Ross Stores 同日一齊升。",
+   "technical": "日線橫行（20 日線 139.1、50 日線 136.1 接近）。盤前衝上 141 後回落到 137 附近，喺 50 日線之上、20 日線之下。上面阻力 139.1（20 日線）同 141（盤前高）。",
+   "setup": "Flat Top：喺盤前高 141 下面整固，09:35 後升穿先入；未到就睇 EMA 9 回調",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +0.62%、SPY +0.22%、IWM −0.29%、SMH +1.83%。NVDA 業績好過預期兼上調指引，帶動 AI 同半導體股；但同時有消息指 SEC 調查、10-Q 延遲交。 TJX 屬零售防守股，同科技股關係細。",
+    "fundamentals": "收入好過預期 + 上調指引，係最清楚嘅做多消息之一。",
+    "technical": "升穿 141 上面到 20 日高 147.69 之前冇明顯阻力；下面支持 139.1（20 日線）、136.1（50 日線）。",
+    "tape": "盤前成交 40 萬股（約平時 6%），IBKR 即時買 136.27／賣 137.08（盤前差價偏闊，開市會收窄）。開市第一支 5 分鐘 K 要見 ≥ 平時 2 倍。",
+    "intuition": "信心中上。消息清楚、大型股、ATR 細（3.1%）適合新手；但盤前已由 141 回落，要等重新企穩先入。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 141.00，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 同 5 分鐘 EMA 9 之上，入場前 QQQ 喺 VWAP 上面",
+    "entry": 141.05,
+    "stop": 139,
+    "target1": 145.15,
+    "target2": 147.6,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 141.00 用 Buy Stop 141.05 入，Stop 139.00（20 日線 139.1 之下、0.5 ATR），T1 145.15、T2 147.60（20 日高之下）；+1R（143.10）將 Stop 移返入場價。未升穿就等 EMA 9 回調企穩先考慮。11:30 前未觸發就放棄。",
+    "short": "唔做沽空：業績好。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 136 就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "盤前已由 141 回落到 137，好消息可能已經反映",
+    "盤前買賣差價闊（IBKR 0.6%），開市後要收窄",
+    "20 日線 139.1 係阻力"
+   ],
+   "news": [
+    {
+     "title": "TJX stock surges on revenue beat, strong guidance By Investing.com",
+     "source": "Investing.com Nigeria（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPbEg4QUN4MHgwRERTbDlxVlY0Ymg5SjVNWko0NU04TUJyQ3VFTHZwWF81QjFEQmZuLXdXY1hJb3R6d3NmX213alB0MUktcTNqeVZhbncxWUI4VE02VE1xZXNhQ0dHOENCdXZaVmkxcEM3QnJwY1laQ09uQjZ4YkZaZzhQOEhoaTBRcG9YaTEzYjVfeHk1NTN3SV9uWUlNNzljUWR0MEVySGhmUlZUTVE?oc=5",
+     "time": "2026-11-18T13:04"
+    },
+    {
+     "title": "The TJX Companies, Inc. Reports Third Quarter Fiscal 2027 Financial Results",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.businesswire.com/newsroom/industry/retail/cosmetics",
+     "time": "2026-11-18T13:01"
+    },
+    {
+     "title": "TJXS (THE ($TJX) Releases Q3 2027 Earnings",
+     "source": "Quiver Quantitative（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOUzBaUWRKMHd2bDNuOUdzQ2lwTlkzdURxbVlnN1EyN2NNNjBRSjFhVjlqYkZpZ3BmMERfVkxvZ243bFl0XzFQV3ltYzU1dzRzQjVXazJGU2xkUDhYQzVJMmtLNDJWYmFmRUtia01jWGdxLTljUEM5bDdoclVjSlBqMHRoNHU0UzhzZHlv?oc=5",
+     "time": "2026-11-18T13:00"
+    },
+    {
+     "title": "TJX Companies rallies after solid earnings; Ross Stores also higher",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/TJX/news?source=feed_symbol_TJX",
+     "time": "2026-11-18T12:51"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描",
+    "Nasdaq 業績日曆（盤前）"
+   ],
+   "ibkr": {
+    "at": "2026-11-18T13:24:22.287Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 137,
+    "ts": "2026-11-18T13:21:27.000Z",
+    "halted": false,
+    "bid": 136.27,
+    "ask": 137.08,
+    "bidSize": 4,
+    "askSize": 50,
+    "volume": 399461.248524,
+    "chgPct": 5.51,
+    "spread": 0.81,
+    "spreadPct": 0.593,
+    "gapNow": 5.51
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "TTWO",
+   "name": "Take-Two Interactive",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 68,
+   "price": 215.5,
+   "prevClose": 203.93,
+   "gapPct": 5.67,
+   "pmVolume": 342969,
+   "pmVolPct": 9.14,
+   "avgVolume": 3754429,
+   "rvol": 7.67,
+   "spread": 0.5,
+   "spreadPct": 0.23,
+   "atr": 12.03,
+   "atrPct": 5.9,
+   "mktCapB": 40.04,
+   "floatM": 163.97,
+   "rsQqq": 5.12,
+   "rsSpy": 5.51,
+   "ema9": 216.35,
+   "ema9Pct": -0.39,
+   "ema9Step": "5m",
+   "ema9Daily": 214.81,
+   "dailyTrend": "mixed",
+   "levels": {
+    "pmh": 219.9,
+    "pml": 207.22,
+    "pdh": 220.13,
+    "pdl": 201.66,
+    "pdc": 203.93,
+    "other": [
+     {
+      "label": "20 日高",
+      "price": 237.41
+     },
+     {
+      "label": "20 日線",
+      "price": 208.04
+     }
+    ]
+   },
+   "why": "GTA VI 推出日：預購同評價好，盤前升 5.1%（IBKR 即時 214.25）、RVOL 7.7、盤前成交 41 萬股；Float 1.64 億。",
+   "catalyst": "GTA VI 今日推出，報道指預購強勁、評價好；另有 Rockstar 喺中國宣傳 GTA VI 嘅消息（未獲批）。",
+   "technical": "日線橫行（20、50 日線約 208）。盤前高 219.9 同昨日高 220.13 幾乎一樣，係雙重阻力；升穿就到 20 日高 237.4 先有阻力。",
+   "setup": "Flat Top：盤前高 219.90／昨日高 220.13 下面整固，09:35 後升穿先入",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +0.62%、SPY +0.22%、IWM −0.29%、SMH +1.83%。NVDA 業績好過預期兼上調指引，帶動 AI 同半導體股；但同時有消息指 SEC 調查、10-Q 延遲交。",
+    "fundamentals": "產品推出日（Sell the news 風險）；消息正面但市場早有預期。",
+    "technical": "220 係盤前高同昨日高，升穿係明確突破位；下面 214、208 係支持。",
+    "tape": "盤前成交 41 萬股（約平時 11%），IBKR 即時買 214.00／賣 214.50。",
+    "intuition": "信心中等。推出日常見「消息出貨」，要見真突破同成交先入。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿 220.13（昨日高／盤前高），首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 之上，QQQ 喺 VWAP 上面",
+    "entry": 220.2,
+    "stop": 214.2,
+    "target1": 232.2,
+    "target2": 237.3,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 220.13 用 Buy Stop 220.20 入，Stop 214.20（0.5 ATR），T1 232.20、T2 237.30（20 日高之下）；+1R（226.20）將 Stop 移返入場價。11:30 前未觸發就放棄。",
+    "short": "唔做沽空。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 207 就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "產品推出日可能「消息出貨」",
+    "220 係雙重阻力，假突破機會唔細",
+    "ATR 5.9%，Stop 6 元：股數要按每股風險計",
+    "買賣差價 0.41%（高過 0.1% 標準）：大型股開市後收窄，用限價單",
+    "盤前價喺 5 分鐘 EMA 9 之下少少：所以只做升穿 220"
+   ],
+   "news": [
+    {
+     "title": "Take-Two's Rockstar Games Promoting 'GTA VI' in China Despite Lack of Approval",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.marketscreener.com/news/take-two-s-rockstar-games-promoting-gta-vi-in-china-despite-lack-of-approval-ce785eddd98bf123",
+     "time": "2026-11-18T12:32"
+    },
+    {
+     "title": "TTWO Nov 2026 222.500 call (TTWO261120C00222500) Stock Price, News, Quote & History",
+     "source": "Yahoo! Finance Canada（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE4yN0I2RGZqejdLSjJYcGdvd3QyMGpieS1BT0o5ZlRrYlc4RkNqbmI5NmtrN2FBbUNEQ2FCWjZxYjJMdS1pRWhTOGlVZDFNZXU3Nzg1R2FzVkdRU2l5RjRwX0VsYTRjZw?oc=5",
+     "time": "2026-11-18T11:55"
+    },
+    {
+     "title": "GTA 6 day: Take-Two Interactive rallies as preorders soar and reviews rave",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/TTWO/news?source=feed_symbol_TTWO",
+     "time": "2026-11-18T11:54"
+    },
+    {
+     "title": "TTWO Nov 2026 222.500 call (TTWO261120C00222500) interactive stock chart",
+     "source": "Yahoo Finance UK（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBQRDBsaG5nX0tvZGNxRFVlODhOT0NlNU5YTlNnRnpJbk9LS1dmcUFocndTaVFIdkxqbzFHSXpZQXI5N2o5RHY1ZWtLY2x5UTR6QnhFUkV3dVhZZmxxb0lrUjJ5a1piQXlfendpX0dB?oc=5",
+     "time": "2026-11-18T07:06"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-18T13:24:22.287Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 214.25,
+    "ts": "2026-11-18T13:22:07.000Z",
+    "halted": false,
+    "bid": 214,
+    "ask": 214.5,
+    "bidSize": 20,
+    "askSize": 10,
+    "volume": 409420.587191,
+    "chgPct": 5.06,
+    "spread": 0.5,
+    "spreadPct": 0.233,
+    "gapNow": 5.06
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "ZIM",
+   "name": "ZIM Integrated Shipping",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 64,
+   "price": 30.85,
+   "prevClose": 29.69,
+   "gapPct": 3.91,
+   "pmVolume": 537896,
+   "pmVolPct": 48.98,
+   "avgVolume": 1098289,
+   "rvol": 77.12,
+   "spread": 0.1,
+   "spreadPct": 0.33,
+   "atr": 0.9,
+   "atrPct": 3.03,
+   "mktCapB": 3.71,
+   "floatM": 120.48,
+   "rsQqq": 3.36,
+   "rsSpy": 3.75,
+   "ema9": 30.9,
+   "ema9Pct": -0.17,
+   "ema9Step": "5m",
+   "ema9Daily": 29.04,
+   "dailyTrend": "mixed",
+   "levels": {
+    "pmh": 31.45,
+    "pml": 29.88,
+    "pdh": 29.99,
+    "pdl": 29.35,
+    "pdc": 29.69,
+    "other": [
+     {
+      "label": "20 日高",
+      "price": 29.99
+     },
+     {
+      "label": "50 日線",
+      "price": 29.36
+     }
+    ]
+   },
+   "why": "Q3 業績：運費按年升約 55%、宣布每股 2.01 美元股息；盤前升 3.4%（IBKR 即時 30.69）、RVOL 77、盤前成交 57 萬股（約平時一半）。",
+   "catalyst": "ZIM 公布 Q3 業績，運費按年升約 55%、貨量回復增長，宣布季度股息每股 2.01 美元（12 月 8 日派）。",
+   "technical": "日線橫行；盤前已企喺 20 日高 29.99 之上。盤前高 31.45，而家 30.7。",
+   "setup": "Flat Top：盤前高 31.45 下面整固，09:35 後升穿先入",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +0.62%、SPY +0.22%、IWM −0.29%、SMH +1.83%。NVDA 業績好過預期兼上調指引，帶動 AI 同半導體股；但同時有消息指 SEC 調查、10-Q 延遲交。 航運股同科技股關係細。",
+    "fundamentals": "業績同股息都正面；但高股息股除息日價格會跌，要留意除息日。",
+    "technical": "升穿 31.45 之後上面冇近期阻力；下面 30、29.99 係支持。",
+    "tape": "盤前成交 57 萬股，IBKR 即時買 30.60／賣 30.70，差價約 0.3%。",
+    "intuition": "信心中等。Gap 只 3.4%，啱啱過標準；突破唔到就唔做。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 31.45，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 之上，QQQ 喺 VWAP 上面",
+    "entry": 31.48,
+    "stop": 31.03,
+    "target1": 32.38,
+    "target2": 32.8,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 31.45 用 Buy Stop 31.48 入，Stop 31.03（0.5 ATR），T1 32.38、T2 32.80；+1R（31.93）將 Stop 移返入場價。11:30 前未觸發就放棄。",
+    "short": "唔做沽空。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 30.00 就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "Gap 只 3.4%（IBKR），啱啱過 3% 標準",
+    "高股息股：除息日未核實",
+    "買賣差價 0.42%（IBKR 約 0.3%），高過 0.1% 標準：用限價單",
+    "盤前價喺 5 分鐘 EMA 9 之下少少：所以只做升穿 31.45"
+   ],
+   "news": [
+    {
+     "title": "ZIM Integrated Shipping Services Ltd. Declares Third Quarter 2026 Regular Cash Dividend, Payable on December 8, 2026",
+     "source": "www.marketscreener.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNOVplV1RqU2ItR29kaVltdXAxcXVDcmpKLXJQMFJoWTlrdENLWThCWHV0c0V4MFFXcDZzTi1BcTB0V0VrazNvV21Kc19LaU9tWnBiZlJWWGlaZVpMaHFFZUJsMVZFNmQ4RWpvUGxpMjFpdDczcnk0cDJWcGtydHJPWnhER25kNmNkdUpuMmhNTHZ1anE3SkJqRlhnS2xwbU5GdExVcVNpSkJxbks2SGVsLTRpWi1QejFFdk4xRWwyY2JFTzhXSzFVM0RDRVJlMzJuRU5TX3RzRVpIWUs1SWhZdzlBZ3Q?oc=5",
+     "time": "2026-11-18T12:50"
+    },
+    {
+     "title": "ZIM in charts: Freight rates surged ~55% Y/Y in Q3 as carried volumes return to growth",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/ZIM/news?source=feed_symbol_ZIM",
+     "time": "2026-11-18T12:39"
+    },
+    {
+     "title": "$ZIM ($ZIM) Releases Q3 2026 Earnings",
+     "source": "Quiver Quantitative（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPb2NDRzhmYkxQQ25Mal9jNTVlbGI1S1FMVjVVTW5MQzBmZDRUb19VRGpWTlFPSm5oWEFlRXNURTU3Mkl4OVlkRXFZbUUyUmhtRVA4bXlsU2oyS25MOUJEMU5aOGNtWldhT1BEWVVrdkNTWVZPMWVQSmQxeTB2ZDRXVEI4RlY?oc=5",
+     "time": "2026-11-18T12:35"
+    },
+    {
+     "title": "ZIM Integrated declares $2.01 dividend",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/ZIM/news?source=feed_symbol_ZIM",
+     "time": "2026-11-18T12:26"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描",
+    "Nasdaq 業績日曆（盤前）"
+   ],
+   "ibkr": {
+    "at": "2026-11-18T13:24:22.287Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 30.69,
+    "ts": "2026-11-18T13:21:10.000Z",
+    "halted": false,
+    "bid": 30.6,
+    "ask": 30.7,
+    "bidSize": 600,
+    "askSize": 100,
+    "volume": 565616.15169,
+    "chgPct": 3.37,
+    "spread": 0.1,
+    "spreadPct": 0.326,
+    "gapNow": 3.37
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "NVDA",
+   "why": "業績好兼上調指引，但盤前 RVOL 1.14、Gap 2.9%；另有 SEC 調查消息。開市首 5 分鐘成交 ≥ 平時 2 倍先考慮。"
+  },
+  {
+   "sym": "LOW",
+   "why": "業績後跌 4.1%（IBKR 即時 211.50），收集器冇計到 RVOL；只做多嘅用戶唔撈底。"
+  },
+  {
+   "sym": "PRMB",
+   "why": "RVOL 174、跌 6.2%，但盤前成交得 8 萬股。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "GLBE",
+   "why": "差價 1.8%"
+  },
+  {
+   "sym": "BRBR",
+   "why": "差價 4.26%"
+  },
+  {
+   "sym": "RGNX",
+   "why": "差價 11.8%"
+  },
+  {
+   "sym": "ARDT",
+   "why": "增發、Float 細"
+  }
+ ],
+ "news": [
+  {
+   "title": "Prenetics Global reports Q3 results",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674125-prenetics-global-reports-q3-results?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-18T13:09"
+  },
+  {
+   "title": "GeneDx names new CEO",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674123-genedx-names-new-ceo?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-18T13:09"
+  },
+  {
+   "title": "Nixxy announces 1-for-20 reverse stock split to regain Nasdaq compliance; shares down",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674124-nixxy-announces-1-for-20-reverse-stock-split-to-regain-nasdaq-compliance-shares-down?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-18T13:08"
+  },
+  {
+   "title": "Nvidia&#x2019;s beat and raise point to strong AI chip demand, analysts say",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674077-nvidias-beat-and-raise-point-to-strong-ai-chip-demand-analysts-say?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-18T13:04"
+  },
+  {
+   "title": "BellRing shares climb as revenue beats estimates, FY27 outlook issued",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674083-bellring-shares-climb-as-revenue-beats-estimates-fy27-outlook-issued?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-18T13:04"
+  },
+  {
+   "title": "CVR Energy announces $1.25B senior secured notes offering to fund refinery acquisition",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674122-cvr-energy-announces-1_25b-senior-secured-notes-offering-to-fund-refinery-acquisition?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-18T13:03"
+  },
+  {
+   "title": "Yesway launches secondary public offering of 5M shares",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674121-yesway-launches-secondary-public-offering-of-5m-shares?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-18T13:02"
+  },
+  {
+   "title": "TSX futures slip amid lower gold, oil prices; Nvidia earnings in focus",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/tsx-futures-slip-amid-lower-gold-oil-prices-nvidia-earnings-in-focus-5035920",
+   "time": "2026-11-18T13:02"
+  }
+ ],
+ "lesson": "昨日 JD 開市先反彈再跌穿入場價：開市前「唔追」唔等於作廢，價格返轉頭再跌穿就係新觸發。今日三隻做多都係突破型，09:35 已經高過入場價 0.3 ATR 就唔追。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

@@ -150,5 +150,30 @@
   "id": 152486141,
   "type": "STK",
   "name": "JD.com ADR"
+ },
+ "TJX": {
+  "id": 12814,
+  "type": "STK",
+  "name": "TJX Companies"
+ },
+ "ZIM": {
+  "id": 468091282,
+  "type": "STK",
+  "name": "ZIM Shipping"
+ },
+ "TTWO": {
+  "id": 6478131,
+  "type": "STK",
+  "name": "Take-Two"
+ },
+ "LOW": {
+  "id": 9199,
+  "type": "STK",
+  "name": "Lowe's"
+ },
+ "TGT": {
+  "id": 6437,
+  "type": "STK",
+  "name": "Target"
  }
 }

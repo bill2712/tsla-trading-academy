@@ -1,6 +1,39 @@
 {
- "updated": "2026-11-17T13:57:58.336Z",
+ "updated": "2026-11-18T13:24:22.560Z",
  "days": [
+  {
+   "date": "2026-11-18",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏好",
+   "headline": "NVDA 業績好帶動科技股（QQQ +0.6%）：Long 專區 3 隻消息股（TJX 業績、TTWO GTA VI、ZIM 業績），全部日線橫行，等突破先入。",
+   "n": 3,
+   "top": [
+    {
+     "sym": "TJX",
+     "gapPct": 6.35,
+     "rvol": 85.7,
+     "beginner": "適合新手",
+     "grade": "A"
+    },
+    {
+     "sym": "TTWO",
+     "gapPct": 5.67,
+     "rvol": 7.67,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "ZIM",
+     "gapPct": 3.91,
+     "rvol": 77.12,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-17",
    "version": 3,
@@ -24,7 +57,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:57",
    "again": []
   },
