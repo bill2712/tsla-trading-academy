@@ -175,5 +175,30 @@
   "id": 6437,
   "type": "STK",
   "name": "Target"
+ },
+ "PANW": {
+  "id": 110619459,
+  "type": "STK",
+  "name": "Palo Alto Networks"
+ },
+ "PDD": {
+  "id": 326398585,
+  "type": "STK",
+  "name": "PDD Holdings"
+ },
+ "CRWD": {
+  "id": 370757467,
+  "type": "STK",
+  "name": "CrowdStrike"
+ },
+ "RIOT": {
+  "id": 292830677,
+  "type": "STK",
+  "name": "Riot Platforms"
+ },
+ "SLS": {
+  "id": 390872440,
+  "type": "STK",
+  "name": "SELLAS"
  }
 }

@@ -1,0 +1,1147 @@
+{
+ "version": 3,
+ "date": "2026-11-19",
+ "generatedAt": "2026-11-19T13:24:10Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:10",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH／PML、日線趨勢）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca SIP 報價",
+   "ok": true,
+   "note": "延遲 16 分鐘"
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅、高成交、成交異常）",
+   "ok": true,
+   "note": "美東 08:13"
+  },
+  {
+   "name": "IBKR 即時報價（指數同候選股）",
+   "ok": true,
+   "note": "美東 08:20–08:30，REALTIME"
+  },
+  {
+   "name": "IBKR 15 分鐘 K 線",
+   "ok": false,
+   "note": "今日冇攞；merge 冇計 IBKR 即時 RVOL"
+  },
+  {
+   "name": "Finviz",
+   "ok": true
+  },
+  {
+   "name": "新聞：Alpaca／Benzinga、Seeking Alpha 等",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 業績日曆",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "時間唔夠，今日冇做；R:R 人手計，全部 2.0"
+  },
+  {
+   "name": "trader-news／trader-analyst／trader-pelosi",
+   "ok": false,
+   "note": "時間唔夠，今日冇跑"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "時間唔夠，今日冇做"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "5 隻 pick，美東 08:24"
+  }
+ ],
+ "headline": "科技股大升（QQQ +2.2%、SMH +3%）：Long 專區 4 隻消息股（PANW 業績最清楚、PDD、CRWD、RIOT），全部未係日線升勢；SLS 增發沽空。",
+ "market": {
+  "bias": "偏好",
+  "summary": "IBKR 即時（08:20）：QQQ +2.22%、SPY +1.26%、IWM +0.76%、SMH +3.04%；市場等緊 Anthropic 上市，科技股做好。08:30 公布 Philly Fed 同初領失業救濟金（中影響）。 網絡安全（PANW、CRWD）、中概（PDD、阿里巴巴）同 AI 數據中心／礦股（RIOT、HUT、CIFR）領升；黃金股偏弱。三大指數日線仍然係跌勢。",
+  "base": {
+   "spy": 1.26,
+   "qqq": 2.22
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 674.15,
+    "chgPct": 2.22,
+    "note": "IBKR 即時 08:20"
+   },
+   {
+    "sym": "SPY",
+    "last": 739.38,
+    "chgPct": 1.26,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 272.18,
+    "chgPct": 0.76,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 473.5,
+    "chgPct": 3.04,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "Philly Fed 製造業指數",
+    "impact": "中",
+    "note": "預期 20.6"
+   },
+   {
+    "time": "08:30 ET",
+    "name": "初領失業救濟金",
+    "impact": "中",
+    "note": "預期 19.8 萬"
+   },
+   {
+    "time": "09:25 ET",
+    "name": "Fed Jefferson 講話",
+    "impact": "低",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "PANW",
+    "when": "昨日盤後",
+    "note": "好過預期"
+   },
+   {
+    "sym": "PDD",
+    "when": "盤前",
+    "note": "盈利好、收入略差"
+   },
+   {
+    "sym": "WSM",
+    "when": "盤前",
+    "note": "收入略差"
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "SLS",
+   "price": 14.2,
+   "gapPct": -20.89,
+   "rvol": 28.31,
+   "pmVolume": 3851878,
+   "avgVolume": 14653850,
+   "floatM": 201.59,
+   "atrPct": 13.04,
+   "spreadPct": 0.28,
+   "rsQqq": -22.95,
+   "ema9Pct": -0.35,
+   "trend": "mixed",
+   "catalyst": "Stock Market Today: Dow, S&P 500 Futures Rise as Wall Street Awaits Anthropic's ",
+   "verdict": "pick",
+   "note": "增發（沽空）"
+  },
+  {
+   "sym": "PDD",
+   "price": 82.07,
+   "gapPct": 5.97,
+   "rvol": 20.01,
+   "pmVolume": 1501265,
+   "avgVolume": 5750274,
+   "floatM": 1390,
+   "atrPct": 3.32,
+   "spreadPct": 0.29,
+   "rsQqq": 3.91,
+   "ema9Pct": -0.77,
+   "trend": "mixed",
+   "catalyst": "業績（盤前）",
+   "verdict": "pick",
+   "note": "業績"
+  },
+  {
+   "sym": "PANW",
+   "price": 372.99,
+   "gapPct": 9.73,
+   "rvol": 6.26,
+   "pmVolume": 232097,
+   "avgVolume": 6886933,
+   "floatM": 810.98,
+   "atrPct": 5.94,
+   "spreadPct": 0.09,
+   "rsQqq": 7.67,
+   "ema9Pct": -0.02,
+   "trend": "down",
+   "catalyst": "Palo Alto&#x2019;s strong results, AI push wins over Wall Street",
+   "verdict": "pick",
+   "note": "業績好"
+  },
+  {
+   "sym": "RIOT",
+   "price": 19.29,
+   "gapPct": 5.76,
+   "rvol": 2.68,
+   "pmVolume": 675798,
+   "avgVolume": 28621173,
+   "floatM": 347.35,
+   "atrPct": 8.88,
+   "spreadPct": 0.52,
+   "rsQqq": 3.7,
+   "ema9Pct": -0.1,
+   "trend": "mixed",
+   "catalyst": "Starboard Pitches Riot, Flowserve as AI Power Buildout Winners; RIOT Jumps 7%",
+   "verdict": "pick",
+   "note": "Starboard 推介"
+  },
+  {
+   "sym": "CRWD",
+   "price": 252.1,
+   "gapPct": 6.36,
+   "rvol": 2.38,
+   "pmVolume": 146979,
+   "avgVolume": 9174711,
+   "floatM": 991.64,
+   "atrPct": 6.39,
+   "spreadPct": 0.62,
+   "rsQqq": 4.3,
+   "ema9Pct": 0.07,
+   "trend": "down",
+   "catalyst": "CrowdStrike (CRWD) is Getting Investor Attention — Here’s Why",
+   "verdict": "pick",
+   "note": "網絡安全板塊跟 PANW"
+  },
+  {
+   "sym": "RBRK",
+   "price": 116,
+   "gapPct": 5.45,
+   "rvol": 6.16,
+   "pmVolume": 34493,
+   "avgVolume": 2934190,
+   "floatM": 158.1,
+   "atrPct": 7.7,
+   "spreadPct": 0.43,
+   "rsQqq": 3.39,
+   "ema9Pct": 0.11,
+   "trend": "mixed",
+   "catalyst": "RBRK Nov 2026 137.000 put (RBRK261127P00137000) Interactive Stock Chart",
+   "verdict": "watch",
+   "note": "RVOL 6.2 但盤前成交 3.4 萬股"
+  },
+  {
+   "sym": "TTWO",
+   "price": 210.61,
+   "gapPct": -2.77,
+   "rvol": 5.09,
+   "pmVolume": 392092,
+   "avgVolume": 4253835,
+   "floatM": 163.97,
+   "atrPct": 6.01,
+   "spreadPct": 0.21,
+   "rsQqq": -4.83,
+   "ema9Pct": -0.07,
+   "trend": "up",
+   "catalyst": "Rockstar Games Releases Grand Theft Auto VI",
+   "verdict": "watch",
+   "note": "RVOL 5.1 但 Gap 只 −2.8%"
+  },
+  {
+   "sym": "CAKE",
+   "price": 116.01,
+   "gapPct": -3.37,
+   "rvol": 23.17,
+   "pmVolume": 5237,
+   "avgVolume": 1697177,
+   "floatM": 45.97,
+   "atrPct": 4.41,
+   "spreadPct": 2.45,
+   "rsQqq": -5.43,
+   "ema9Pct": -1.44,
+   "trend": "up",
+   "catalyst": "PancakeSwap Rebrands as Pancake, Leaving CAKE Token and Contracts Unchanged",
+   "verdict": "avoid",
+   "note": "盤前成交 5,200 股、差價 2.45%"
+  },
+  {
+   "sym": "UTI",
+   "price": 20.81,
+   "gapPct": -5.58,
+   "rvol": 12.73,
+   "pmVolume": 5526,
+   "avgVolume": 1410219,
+   "floatM": 53.48,
+   "atrPct": 6.67,
+   "spreadPct": 3.62,
+   "rsQqq": -7.64,
+   "ema9Pct": 2.22,
+   "trend": "up",
+   "catalyst": "Universal Technical Institute, Inc. 2026 Q4 - Results - Earnings Call Presentati",
+   "verdict": "avoid",
+   "note": "差價 3.62%"
+  },
+  {
+   "sym": "MPU",
+   "price": 3.18,
+   "gapPct": 11.97,
+   "rvol": 4.63,
+   "pmVolume": 107392,
+   "avgVolume": 509878,
+   "floatM": null,
+   "atrPct": 9.15,
+   "spreadPct": 1.57,
+   "rsQqq": 9.91,
+   "ema9Pct": 0.61,
+   "trend": "mixed",
+   "catalyst": "",
+   "verdict": "avoid",
+   "note": "股價 3.18、差價 1.57%"
+  },
+  {
+   "sym": "NCPL",
+   "price": 3.22,
+   "gapPct": 11.42,
+   "rvol": 3.71,
+   "pmVolume": 496124,
+   "avgVolume": 8644618,
+   "floatM": null,
+   "atrPct": 13.84,
+   "spreadPct": 1.24,
+   "rsQqq": 9.36,
+   "ema9Pct": -0.67,
+   "trend": "up",
+   "catalyst": "",
+   "verdict": "avoid",
+   "note": "股價 3.22、差價 1.24%"
+  },
+  {
+   "sym": "UMAC",
+   "price": 10.26,
+   "gapPct": 6.76,
+   "rvol": 2.2,
+   "pmVolume": 66424,
+   "avgVolume": 3043342,
+   "floatM": 47.85,
+   "atrPct": 15.61,
+   "spreadPct": 0.97,
+   "rsQqq": 4.7,
+   "ema9Pct": 0.85,
+   "trend": "down",
+   "catalyst": "UMAC Nov 2026 16.000 put (UMAC261127P00016000) interactive stock chart",
+   "verdict": "avoid",
+   "note": "差價 0.97%、盤前成交 6.6 萬股"
+  }
+ ],
+ "fewPicksReason": "RVOL ≥ 2、Gap ≥ 3%、成交同差價合格嘅得 5 隻；RBRK 盤前成交太少，TTWO Gap 未夠 3%，CAKE、UTI 差價太闊。",
+ "longFocus": {
+  "summary": "今日冇日線升勢而又 RVOL ≥ 2 嘅做多股；4 隻合格做多都係消息股（日線跌勢或橫行）。最清楚係 PANW（業績好、盤前窄幅整固）。全部等 09:35 後升穿盤前高先入；A+ 過濾：首 5 分鐘成交 ≥ 平時 2 倍、QQQ 喺 VWAP 上面。",
+  "items": [
+   {
+    "sym": "PANW",
+    "trend": "down",
+    "setups": "Flat Top（376.75）→ EMA 9 回調 → 30 分鐘 ORB",
+    "note": "最清楚"
+   },
+   {
+    "sym": "PDD",
+    "trend": "mixed",
+    "setups": "Flat Top（85.80）→ EMA 9 回調",
+    "note": "盤前已回吐"
+   },
+   {
+    "sym": "CRWD",
+    "trend": "down",
+    "setups": "Flat Top（253.79）",
+    "note": "跟風股，睇 PANW"
+   },
+   {
+    "sym": "RIOT",
+    "trend": "mixed",
+    "setups": "Flat Top（19.50）→ Bull Flag",
+    "note": "ATR 大"
+   }
+  ]
+ },
+ "carryover": {
+  "fromDate": "2026-11-18",
+  "summary": "昨日三隻冇一隻今日再入選。TTWO 盤前 RVOL 5.1（GTA VI 正式推出），但 Gap 只 −2.8%，未夠 3%，只觀察；TJX、ZIM RVOL 低過 1，skip。",
+  "items": [
+   {
+    "sym": "TJX",
+    "prevSide": "Long",
+    "prevResult": "09:45 觸發 → 收市前未到 Stop／Target（收市計 -0.37R）",
+    "yClose": 140.3,
+    "yChgPct": 8.05,
+    "yClosePos": 0.61,
+    "yVolRatio": 2.82,
+    "price": 139.85,
+    "gapPct": -0.32,
+    "rvol": 0.49,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.49；昨日 09:45 觸發後最高 144.36、收 140.29，今日盤前 139.85，冇新消息。",
+    "levels": "昨日高 144.36、昨日收 140.29"
+   },
+   {
+    "sym": "TTWO",
+    "prevSide": "Long",
+    "prevResult": "10:00 觸發 → 10:05 中 Stop（−1R）",
+    "yClose": 216.61,
+    "yChgPct": 6.22,
+    "yClosePos": 0.5,
+    "yVolRatio": 3.24,
+    "price": 210.61,
+    "gapPct": -2.77,
+    "rvol": 5.09,
+    "verdict": "watch",
+    "side": null,
+    "reason": "今日盤前 RVOL 5.1、跌 2.8% 到 210.61（GTA VI 今日正式推出，消息出貨）；Gap 未夠 3%。開市首 5 分鐘成交 ≥ 平時 2 倍、企穩昨日低 210.5 之上先考慮。",
+    "levels": "昨日低 210.50、昨日高 222.65、盤前低 205.73"
+   },
+   {
+    "sym": "ZIM",
+    "prevSide": "Long",
+    "prevResult": "未觸發（入場價冇到）",
+    "yClose": 29.92,
+    "yChgPct": 0.77,
+    "yClosePos": 0.12,
+    "yVolRatio": 3.1,
+    "price": 29.85,
+    "gapPct": -0.23,
+    "rvol": 0.16,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.16；昨日冇觸發、收 29.92。",
+    "levels": "昨日低 29.80、盤前高 31.45（昨日）"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "PANW",
+   "name": "Palo Alto Networks",
+   "grade": "A",
+   "beginner": "適合新手",
+   "direction": "Long",
+   "score": 78,
+   "price": 372.99,
+   "prevClose": 339.92,
+   "gapPct": 9.73,
+   "pmVolume": 232097,
+   "pmVolPct": 3.37,
+   "avgVolume": 6886933,
+   "rvol": 6.26,
+   "spread": 0.35,
+   "spreadPct": 0.09,
+   "atr": 20.2,
+   "atrPct": 5.94,
+   "mktCapB": 304.98,
+   "floatM": 810.98,
+   "rsQqq": 7.67,
+   "rsSpy": 8.5,
+   "ema9": 373.05,
+   "ema9Pct": -0.02,
+   "ema9Step": "5m",
+   "ema9Daily": 328.32,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 376.75,
+    "pml": 368.5,
+    "pdh": 342.36,
+    "pdl": 311.63,
+    "pdc": 339.92,
+    "other": [
+     {
+      "label": "50 日線",
+      "price": 366.7
+     },
+     {
+      "label": "20 日高",
+      "price": 406.88
+     }
+    ]
+   },
+   "why": "業績好過預期、AI 業務獲好評，盤前升 9.5%（IBKR 即時 372.30）、RVOL 6.3、盤前成交 27 萬股；Float 8.1 億、差價 0.13%（IBKR 約 0.09%）。",
+   "catalyst": "昨晚公布業績，收入同盈利好過預期，AI 平台推廣進度獲分析師好評（Seeking Alpha、Benzinga）。網絡安全股（CRWD、OKTA）一齊升。",
+   "technical": "日線跌勢（20 日線 347 低過 50 日線 367），但今日跳空到兩條線之上。盤前喺 368.5–376.75 窄幅整固，貼住 5 分鐘 EMA 9。",
+   "setup": "Flat Top：盤前高 376.75 下面整固，09:35 後升穿先入",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +2.22%、SPY +1.26%、IWM +0.76%、SMH +3.04%；市場等緊 Anthropic 上市，科技股做好。08:30 公布 Philly Fed 同初領失業救濟金（中影響）。",
+    "fundamentals": "業績好 + AI 敘事，係今日最清楚嘅做多消息之一。",
+    "technical": "升穿 376.75 之後到 20 日高 406.9 先有明顯阻力；下面 368.5（盤前低）同 366.7（50 日線）係支持。",
+    "tape": "盤前成交 27 萬股（約平時 4%），差價窄。開市第一支 5 分鐘 K 要見 ≥ 平時 2 倍。",
+    "intuition": "信心中上。大型股、消息清楚、盤前整固窄，適合 Flat Top。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 376.75，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 同 5 分鐘 EMA 9 之上，入場前 QQQ 喺 VWAP 上面",
+    "entry": 376.9,
+    "stop": 366.8,
+    "target1": 397.1,
+    "target2": 406.5,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 376.75 用 Buy Stop 376.90 入，Stop 366.80（50 日線同盤前低之下、0.5 ATR），T1 397.10、T2 406.50（20 日高之下）；+1R（387.00）將 Stop 移返入場價。11:30 前未觸發就放棄。呢個係 Buy Stop 突破計劃：價格要先升穿入場價先會入場，Stop 只係入場之後先生效。",
+    "short": "唔做沽空：消息正面，大市向好。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 366.7（50 日線）就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "日線跌勢，屬消息反彈",
+    "ATR 5.9%，Stop 10 元：股數要按每股風險計",
+    "盤前價貼住 5 分鐘 EMA 9：所以只做升穿盤前高",
+    "差價 0.13%（略高過 0.1% 標準）：大型股開市會收窄"
+   ],
+   "news": [
+    {
+     "title": "Palo Alto&#x2019;s strong results, AI push wins over Wall Street",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/PANW/news?source=feed_symbol_PANW",
+     "time": "2026-11-19T12:43"
+    },
+    {
+     "title": "Palo Alto’s strong results, AI push wins over Wall Street (PANW:NASDAQ)",
+     "source": "Seeking Alpha（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxONE40SmJHc3p0TzZUeFJqeENpTEpJU2RkeGZscmktaXd4ekdveDFiU2NOVnZfQ2ZjYlFRY2E2ZE5xbzlpM3RzQ0s1S2h2dTdMOG5Bem9aRXdmcTNxRzREZjJnSjF6VlBDMXpPWnV1bkI4SS00NnRqQlFyQmJabHBQMk01VWdiWXlwaU1Na0ZnX3EzMjlMQkV1RQ?oc=5",
+     "time": "2026-11-19T12:43"
+    },
+    {
+     "title": "Why Is Palo Alto Networks Stock Soaring Today? - Palo Alto Networks (NASDAQ:PANW)",
+     "source": "Benzinga（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPSG90MGZzZmNzaWRFVzM1SEZsdkVXTnpzel9la2RZR2dvYzN4OGJPVFU1U3ZEODY4NXpCNTBSLTJleUVBY1hMdmxoSWNiT1A1azNmcmJIRHhKcUFEQlBNOWNoY2N3MF9vMWY0MFktQ250RjMzd3k5TG1qWW92Uzcyb1QxNHVUSmRrNWNvd0U0QU5CUFFlbnV1ckdwVnBqdDhsajV3THpVemhNdEUyNnRjcUMtc2lHbmN2UWplS29rTVJqZ05GX095YVZmRDFyeVpBTnVSZk1RMlVnVUdMRUxMRg?oc=5",
+     "time": "2026-11-19T12:35"
+    },
+    {
+     "title": "Stock Market Today: Dow, S&P 500 Futures Rise as Wall Street Awaits Anthropic's Listing— PANW, NTES, SLS in Focus",
+     "source": "TradingView（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxQMk5KdE1ua0hoRUdTeFlkeV9yZHRVcU1aU2Jkckp3NFBoT01CQno1VmllNjh4MlZWVVJHWXFtaVFpMHVFaGVuZjBpVVVKcWhJY0t0dnV5UTAyZHZjaVlNYmgwLW1oSGwtVi1Zc1ZlaGdOM1QybGFKakx1Ulo4cndWMzB3RFBtOTdIamZuOS1iZlppWllndXAwcHhjRm0wVXRyN3dHVlZUWWlRZjQ4cXNUM29pOXJwcXIyNnZoVlp6aFF3ZU9lcm9KLWF3Ni16RGlFSG1NbThoaW83cVA5aEVvMmVSUUlzWjJhdXdpRjlQR0Mzb05UNFp3Si1CYw?oc=5",
+     "time": "2026-11-19T10:08"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描",
+    "Alpaca 盤前掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-19T13:24:10.836Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 372.3,
+    "ts": "2026-11-19T13:22:29.000Z",
+    "halted": false,
+    "bid": 372.1,
+    "ask": 372.45,
+    "bidSize": 49,
+    "askSize": 80,
+    "volume": 274843.003079,
+    "chgPct": 9.53,
+    "spread": 0.35,
+    "spreadPct": 0.094,
+    "gapNow": 9.53
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "PDD",
+   "name": "PDD Holdings",
+   "grade": "B",
+   "beginner": "適合新手",
+   "direction": "Long",
+   "score": 68,
+   "price": 82.07,
+   "prevClose": 77.45,
+   "gapPct": 5.97,
+   "pmVolume": 1501265,
+   "pmVolPct": 26.11,
+   "avgVolume": 5750274,
+   "rvol": 20.01,
+   "spread": 0.24,
+   "spreadPct": 0.29,
+   "atr": 2.57,
+   "atrPct": 3.32,
+   "mktCapB": 117.23,
+   "floatM": 1390,
+   "rsQqq": 3.91,
+   "rsSpy": 4.74,
+   "ema9": 82.71,
+   "ema9Pct": -0.77,
+   "ema9Step": "5m",
+   "ema9Daily": 78.67,
+   "dailyTrend": "mixed",
+   "levels": {
+    "pmh": 85.8,
+    "pml": 75.05,
+    "pdh": 77.84,
+    "pdl": 76.88,
+    "pdc": 77.45,
+    "other": [
+     {
+      "label": "20 日高",
+      "price": 85.42
+     },
+     {
+      "label": "20 日線",
+      "price": 79.47
+     }
+    ]
+   },
+   "why": "業績：盈利增長抵銷收入差過預期，盤前升 5.9%（IBKR 即時 82.00）、RVOL 20、盤前成交 157 萬股；Float 13.9 億、差價 0.16%（IBKR 約 0.3%）。",
+   "catalyst": "PDD 公布季度業績：盈利增長強，收入略差過預期（Seeking Alpha）。阿里巴巴業績後亦升。",
+   "technical": "日線橫行（20、50 日線約 79）。盤前衝上 85.80 後回落到 82 附近，喺 5 分鐘 EMA 9 之下少少。上面 85.42（20 日高）同 85.80（盤前高）係阻力。",
+   "setup": "Flat Top：盤前高 85.80 下面整固，09:35 後升穿先入；未到就睇 EMA 9 回調",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +2.22%、SPY +1.26%、IWM +0.76%、SMH +3.04%；市場等緊 Anthropic 上市，科技股做好。08:30 公布 Philly Fed 同初領失業救濟金（中影響）。 中概股同日因阿里巴巴、PDD 業績造好。",
+    "fundamentals": "盈利好、收入略差，消息正負參半。",
+    "technical": "盤前已由 85.8 回吐約 4%；升穿 85.80 要先過 85.42、85.80 兩重阻力。",
+    "tape": "盤前成交 157 萬股（約平時 27%），成交好活躍。",
+    "intuition": "信心中等。盤前已經回吐，要重新企穩先追。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 85.80，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 之上，QQQ 喺 VWAP 上面",
+    "entry": 85.85,
+    "stop": 84.55,
+    "target1": 88.45,
+    "target2": 89.7,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 85.80 用 Buy Stop 85.85 入，Stop 84.55（0.5 ATR），T1 88.45、T2 89.70；+1R（87.15）將 Stop 移返入場價。11:30 前未觸發就放棄。呢個係 Buy Stop 突破計劃：價格要先升穿入場價先會入場，Stop 只係入場之後先生效。",
+    "short": "唔做沽空：消息正面，大市向好。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 80 就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "收入差過預期，升幅可能回吐",
+    "盤前已由 85.8 回落到 82，入場價離而家約 1.5 ATR",
+    "差價 0.16%（IBKR 約 0.3%）：用限價單",
+    "盤前價喺 5 分鐘 EMA 9 之下：所以只做升穿盤前高"
+   ],
+   "news": [
+    {
+     "title": "PDD shares climb as profit growth offsets revenue miss",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/PDD/news?source=feed_symbol_PDD",
+     "time": "2026-11-19T13:10"
+    },
+    {
+     "title": "PDD shares climb as profit growth offsets revenue miss (PDD:NASDAQ)",
+     "source": "Seeking Alpha（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNYXMwRUV5NXFSaXpjSTIxNm4tTDdfTnAxQURfdnhoVkdHT1huXzFaVTNYUEFtV19rbERZWWNHOFJyd2FvZG52cEcyV25VNVV1dXpwOVhyYmpUZzZHX0E2bjk0WU90TEpKMVZVNC0wX3lXNVd2Ni1yMnUwdkp2YnI2MHdHQ1ZsNUhJbWhIOGZJOWQtQ0RGakE4?oc=5",
+     "time": "2026-11-19T13:10"
+    },
+    {
+     "title": "【US Pre-Market】Anthropic Set to Go Public, US Futures Rise; Alibaba, PDD Gain Post-Earnings as Gold and Silver Hit 52-Week Lows",
+     "source": "TradingKey（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQUG5HV2JGbXFXN1lpME9BQzNQMHlqb0Y3ZWJJM2RreEt2aXVxNFNhRDBxQkJkcG9CcURLRngwaHdiaFhnUE5HQ2VJQ2h3dlhldnBONjdCTGxDZFE2M3I2WW1zZ1JHSkVlWGJ2Yl8xUGRoN2JIQU43djhsZGRkVktaa3VlTDJjRk1NbFJOaXVqRVZac3VlMmY3eFg2emlGdw?oc=5",
+     "time": "2026-11-19T12:42"
+    },
+    {
+     "title": "Why is PDD Holdings stock surging today?",
+     "source": "Investing.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQUVpBYUYtRkNMdHJ0cEFBNG02QWl5c2dnRHM2VnhJSGs4WmtSZ1JmbjY4bEtUajZNSWtZX1FnOHNoS1NaT016WUZhV0czcEd4MzkzUVFsTzZYZmFFY1kzOWVKenlNQmstaVUta1R1UC1mUXJIUjNqMTVPek04TkhXRVpfVWgwbUhZQXFLVHFHWkY2MWhvT1gwNzV0ODVrOWJWSHhB?oc=5",
+     "time": "2026-11-19T12:16"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描",
+    "Nasdaq 業績日曆（盤前）"
+   ],
+   "ibkr": {
+    "at": "2026-11-19T13:24:10.836Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 82,
+    "ts": "2026-11-19T13:17:40.000Z",
+    "halted": false,
+    "bid": 81.76,
+    "ask": 82,
+    "bidSize": 10,
+    "askSize": 208,
+    "volume": 1569341.883624,
+    "chgPct": 5.87,
+    "spread": 0.24,
+    "spreadPct": 0.293,
+    "gapNow": 5.87
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "CRWD",
+   "name": "CrowdStrike",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 66,
+   "price": 252.1,
+   "prevClose": 237.03,
+   "gapPct": 6.36,
+   "pmVolume": 146979,
+   "pmVolPct": 1.6,
+   "avgVolume": 9174711,
+   "rvol": 2.38,
+   "spread": 1.57,
+   "spreadPct": 0.62,
+   "atr": 15.15,
+   "atrPct": 6.39,
+   "mktCapB": 257.21,
+   "floatM": 991.64,
+   "rsQqq": 4.3,
+   "rsSpy": 5.13,
+   "ema9": 251.91,
+   "ema9Pct": 0.07,
+   "ema9Step": "5m",
+   "ema9Daily": 229.42,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 253.79,
+    "pml": 248.4,
+    "pdh": 240.18,
+    "pdl": 218.51,
+    "pdc": 237.03,
+    "other": [
+     {
+      "label": "50 日線",
+      "price": 245.9
+     },
+     {
+      "label": "20 日高",
+      "price": 272.29
+     }
+    ]
+   },
+   "why": "跟 PANW 業績一齊升（網絡安全板塊），盤前升 6.3%（IBKR 即時 251.85）、RVOL 2.4、盤前成交 18 萬股；Float 9.9 億、差價 0.05%。",
+   "catalyst": "冇自己嘅新消息；PANW 業績好帶動網絡安全股（昨日盤後 PANW、CRWD、OKTA 都升）。",
+   "technical": "日線跌勢（20 日線 239 低過 50 日線 246），今日跳到兩條線之上。盤前喺 248.4–253.79 窄幅。",
+   "setup": "Flat Top：盤前高 253.79 下面整固，09:35 後升穿先入",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +2.22%、SPY +1.26%、IWM +0.76%、SMH +3.04%；市場等緊 Anthropic 上市，科技股做好。08:30 公布 Philly Fed 同初領失業救濟金（中影響）。",
+    "fundamentals": "靠板塊同 PANW 業績，冇個股消息。",
+    "technical": "升穿 253.79 之後到 20 日高 272.3 先有阻力；下面 248.4、245.9 係支持。",
+    "tape": "盤前成交 18 萬股（約平時 2%），RVOL 2.4 啱啱過標準。",
+    "intuition": "信心中等。跟風股，PANW 轉弱就唔做。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 253.79，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 之上，PANW 同 QQQ 都喺 VWAP 上面",
+    "entry": 253.9,
+    "stop": 246.3,
+    "target1": 269.1,
+    "target2": 272,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 253.79 用 Buy Stop 253.90 入，Stop 246.30（0.5 ATR），T1 269.10、T2 272.00（20 日高之下）；+1R（261.50）將 Stop 移返入場價。11:30 前未觸發就放棄。呢個係 Buy Stop 突破計劃：價格要先升穿入場價先會入場，Stop 只係入場之後先生效。",
+    "short": "唔做沽空：消息正面，大市向好。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 245.9（50 日線）或者 PANW 轉弱就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "冇個股消息，跟風股",
+    "RVOL 2.4、盤前成交 18 萬股（未夠 20 萬）",
+    "日線跌勢",
+    "IBKR 盤前差價闊（約 0.6%），開市後要收窄"
+   ],
+   "news": [
+    {
+     "title": "CrowdStrike (CRWD) is Getting Investor Attention — Here’s Why",
+     "source": "Yahoo Finance（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOVTVCNEc0TTRzbzN0UEdRLWI4Q0ZwVjJJekNqV1ZmemtJSS03c041MGR1d2djdTJNdmVxNGZwdVpibGFxTFk0bkt6Y0oyem9YNUdxNXRTS0V6ZldLR21IQVVBaE9BN0FUd2Y3N2djMnZWaUFfTDNSY29DWHJsY3ptZXU2T1pnbkk4NWlmaF9IdzVfbHlKNzJ6WEE2Z3JBZXZjbjFJZ29uWFNFbG1k?oc=5",
+     "time": "2026-11-19T03:33"
+    },
+    {
+     "title": "After-Hours Movers: PANW, CRWD, P, RRGB",
+     "source": "Investing.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOSFJCaEItbFAxLWpKWXI3WGpzSURzRjRrYVcyUGd1eEltSWNTdG1rSFFvNkVSWFNlLWtWREE3UDNGNlRLTTUyLWp6OFBIWWtVMVFJYVY3RjlaNDJycUdXeWxERDVTWlc0R1VPMFFkbE9kc203MlJYTktDcXZxaURtR2J3ZjVmcWU3SExLbGtlLWFqTjFISndGcUdCRFVGZw?oc=5",
+     "time": "2026-11-18T22:10"
+    },
+    {
+     "title": "S&P 500 Postmarket Gainers: PANW, CRWD and OKTA Extend After-Hours Gains",
+     "source": "ChartMill（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNX3l0eFlSd1VlYVVPYm1JLVRKLVRMQVNBZDBuWTVQdHJKN3ZOc2liQkZaVzdxMXRwNG00YVRZU3NhWlFOWkZvU252ZlhtN194R0ZzMnZIb24tT1lkQzdfejhFRGJjZkMxd3FZNDlBZjNWZHZCMVFJNmFKMkpkVjNNN2hIZWIyX1gxdUtVZ1Vqa2RRMklHUVh3NHVjZlY2djZOaU9HWVhHS3lTNG9NbTAwb2JuLWFrWC1RS1lvWg?oc=5",
+     "time": "2026-11-18T22:06"
+    },
+    {
+     "title": "CrowdStrike advances 7% amid cybersecurity rally",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/CRWD/news?source=feed_symbol_CRWD",
+     "time": "2026-11-18T18:05"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-19T13:24:10.836Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 251.85,
+    "ts": "2026-11-19T13:21:38.000Z",
+    "halted": false,
+    "bid": 251.2,
+    "ask": 252.77,
+    "bidSize": 60,
+    "askSize": 2,
+    "volume": 182536.442866,
+    "chgPct": 6.25,
+    "spread": 1.57,
+    "spreadPct": 0.623,
+    "gapNow": 6.25
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "RIOT",
+   "name": "Riot Platforms",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 62,
+   "price": 19.29,
+   "prevClose": 18.24,
+   "gapPct": 5.76,
+   "pmVolume": 675798,
+   "pmVolPct": 2.36,
+   "avgVolume": 28621173,
+   "rvol": 2.68,
+   "spread": 0.1,
+   "spreadPct": 0.52,
+   "atr": 1.62,
+   "atrPct": 8.88,
+   "mktCapB": 7.21,
+   "floatM": 347.35,
+   "rsQqq": 3.7,
+   "rsSpy": 4.53,
+   "ema9": 19.31,
+   "ema9Pct": -0.1,
+   "ema9Step": "5m",
+   "ema9Daily": 17.15,
+   "dailyTrend": "mixed",
+   "levels": {
+    "pmh": 19.5,
+    "pml": 18.55,
+    "pdh": 18.7,
+    "pdl": 17.23,
+    "pdc": 18.24,
+    "other": [
+     {
+      "label": "20 日高",
+      "price": 19.13
+     },
+     {
+      "label": "50 日線",
+      "price": 17.77
+     }
+    ]
+   },
+   "why": "維權投資者 Starboard 點名 Riot 係 AI 電力建設受惠股，盤前升 5.8%（IBKR 即時 19.30）、RVOL 2.7、盤前成交 81 萬股；Float 3.47 億。",
+   "catalyst": "Starboard Value 公開推介 Riot（同 Flowserve）係 AI 電力建設贏家，昨日盤後升 7%。",
+   "technical": "日線橫行（20 日線 15.35 低過 50 日線 17.77，但價格遠高過兩條）；盤前已企喺 20 日高 19.13 之上。",
+   "setup": "Flat Top：盤前高 19.50 下面整固，09:35 後升穿先入",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +2.22%、SPY +1.26%、IWM +0.76%、SMH +3.04%；市場等緊 Anthropic 上市，科技股做好。08:30 公布 Philly Fed 同初領失業救濟金（中影響）。 比特幣礦股同 AI 數據中心股一齊升（HUT、CIFR、APLD）。",
+    "fundamentals": "維權投資者推介，屬新消息，但冇業績支持。",
+    "technical": "升穿 19.50 係新 20 日高之上；下面 19.13、18.55 係支持。",
+    "tape": "盤前成交 81 萬股，IBKR 即時差價約 0.5%。",
+    "intuition": "信心中等。Short Float 15.3%，突破可能逼淡倉；ATR 8.9%，波幅大。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 19.50，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 之上，QQQ 喺 VWAP 上面",
+    "entry": 19.52,
+    "stop": 18.71,
+    "target1": 21.14,
+    "target2": 21.8,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 19.50 用 Buy Stop 19.52 入，Stop 18.71（0.5 ATR），T1 21.14、T2 21.80；+1R（20.33）將 Stop 移返入場價。11:30 前未觸發就放棄。呢個係 Buy Stop 突破計劃：價格要先升穿入場價先會入場，Stop 只係入場之後先生效。",
+    "short": "唔做沽空：消息正面，大市向好。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 18.55 就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "消息係維權投資者觀點，唔係業績",
+    "ATR 8.9%，波幅大",
+    "差價 0.31%（高過 0.1% 標準）：用限價單",
+    "盤前價貼住 5 分鐘 EMA 9：所以只做升穿盤前高"
+   ],
+   "news": [
+    {
+     "title": "Starboard Pitches Riot, Flowserve as AI Power Buildout Winners; RIOT Jumps 7%",
+     "source": "BigGo Finance（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE92X1UwWlhSUktna09qS01uTG5LTEVGU1hnWTFsWThHWnJHc0c1QXhTcjIxRG10SkNFb0o2MnJaZ2g0VmphTXpSZGRJUzNLeTM4dkg4VUg2MW5ha3hVcG1fZC1TOXpsaXhPdEdCMDFJSUt6YUV0dFE?oc=5",
+     "time": "2026-11-18T23:05"
+    },
+    {
+     "title": "Starboard Value LP Highlights Value Creation Opportunities at Riot Platforms",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://newsfilter.io/articles/starboard-value-to-present-at-the-2026-capitalize-for-kids-investors-conference-0b95262b31bd50de8de88fef217fd400",
+     "time": "2026-11-18T23:01"
+    },
+    {
+     "title": "RIOT Jun 2027 17.000 call (RIOT270617C00017000) stock price, news, quote and history",
+     "source": "Yahoo Finance UK（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1Gdl9yUVJwdjZuZF90V2o5UTJlbG9XTmNEZHp0UUU2TVFVWVVqdUtXZFIyamIwTElaNWIydXVzc05xOHo4emdvVEloc2FCOVBsU0pTbjhXdENjTkptWGY4M1o1SGpkdw?oc=5",
+     "time": "2026-11-18T21:05"
+    },
+    {
+     "title": "RIOT Dec 2026 21.000 put (RIOT261211P00021000) stock price, news, quote and history",
+     "source": "Yahoo Finance UK（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1WalB0RC1nQ0NQQWxYbmVIdHFPV3luTVcyOUVua1lXM0EtS2wtTE5XUUJkaFNlM3M3UmJnVlRoN0xlbGtsei1zMS1Mb1dtcnNRMG9oV2ZkRDBEMDNpS0poanFENkl1UQ?oc=5",
+     "time": "2026-11-18T20:38"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-19T13:24:10.836Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 19.3,
+    "ts": "2026-11-19T13:16:50.000Z",
+    "halted": false,
+    "bid": 19.22,
+    "ask": 19.32,
+    "bidSize": 750,
+    "askSize": 52,
+    "volume": 810818.703087,
+    "chgPct": 5.81,
+    "spread": 0.1,
+    "spreadPct": 0.519,
+    "gapNow": 5.81
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "SLS",
+   "name": "SELLAS Life Sciences",
+   "grade": "C",
+   "beginner": "高風險",
+   "direction": "Short",
+   "score": 58,
+   "price": 14.2,
+   "prevClose": 17.95,
+   "gapPct": -20.89,
+   "pmVolume": 3851878,
+   "pmVolPct": 26.29,
+   "avgVolume": 14653850,
+   "rvol": 28.31,
+   "spread": 0.04,
+   "spreadPct": 0.28,
+   "atr": 2.34,
+   "atrPct": 13.04,
+   "mktCapB": 2.85,
+   "floatM": 201.59,
+   "rsQqq": -22.95,
+   "rsSpy": -22.12,
+   "ema9": 14.25,
+   "ema9Pct": -0.35,
+   "ema9Step": "5m",
+   "ema9Daily": 11.98,
+   "dailyTrend": "mixed",
+   "levels": {
+    "pmh": 15.77,
+    "pml": 13.35,
+    "pdh": 21.4,
+    "pdl": 17.22,
+    "pdc": 17.95,
+    "other": [
+     {
+      "label": "20 日線",
+      "price": 10.27
+     },
+     {
+      "label": "50 日線",
+      "price": 11.09
+     }
+    ]
+   },
+   "why": "宣布 1.5 億美元增發，盤前跌 21.5%（IBKR 即時 14.09）、RVOL 28、盤前成交 540 萬股；Float 2 億、差價約 0.3%。",
+   "catalyst": "SELLAS 公布 1.5 億美元公開發售新股定價（Seeking Alpha）。之前股價一個月內由 7 升到 25，今日增發攤薄。",
+   "technical": "日線橫行（20 日線 10.27、50 日線 11.09，價格遠高過）。盤前喺 13.35–15.77，而家 14.1。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低 13.35",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ +2.22%、SPY +1.26%、IWM +0.76%、SMH +3.04%；市場等緊 Anthropic 上市，科技股做好。08:30 公布 Philly Fed 同初領失業救濟金（中影響）。 大市向好唔利沽空。",
+    "fundamentals": "增發攤薄係實質負面，但要確認增發價（新聞未寫）。",
+    "technical": "跌穿 13.35 之後下面到 11（50 日線）先有支持。",
+    "tape": "盤前成交 540 萬股，好活躍。",
+    "intuition": "信心低。Short Float 28%、大市向好，逼淡倉風險高；只做跌穿盤前低嘅延續。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低 13.35，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 下面，QQQ 喺 VWAP 下面",
+    "entry": 13.3,
+    "stop": 14.47,
+    "target1": 10.96,
+    "target2": 10.3,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：增發。只做多嘅用戶唔好撈底。",
+    "short": "跌穿 13.35 用 Sell Stop 13.30 沽，Stop 14.47（0.5 ATR），T1 10.96、T2 10.30；−1R（12.13）將 Stop 移返入場價。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。大市向好（QQQ 喺 VWAP 上面）就唔沽。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 16 次、贏 2 次、約 −10.5R。"
+   },
+   "risks": [
+    "Short Float 28.3%，逼淡倉風險高",
+    "大市向好，唔利沽空",
+    "增發價未核實",
+    "ATR 13%，波幅極大",
+    "差價 0.35%：用限價單",
+    "盤前價喺 5 分鐘 EMA 9 之下少少：所以只做跌穿盤前低"
+   ],
+   "news": [
+    {
+     "title": "Stock Market Today: Dow, S&P 500 Futures Rise as Wall Street Awaits Anthropic's Listing— PANW, NTES, SLS",
+     "source": "Benzinga（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPMHl1UG5odS1iUllYWUlvM0NvMGM4c0dsZUhJdTNuN2dUdUE0Q01KLURSOE1Sd1N2akNuZ19VX3lqdWZvZjRsM183SW13aTBoYlhGZWZmV1RjcEhiQ09CdEhTS0EteVpLVThzVnlKRHVDSzM5Sl8tazl5Nmd6bHVqZkIzSjFBdFliMGFIY0pYS0ZVNlV6aDlqZVJqck5jRHJPZDk4Nm5xQXZnNTJOajJhaXhVcTdGdUdibk8tUEZCcWZZTnNXb2gzZF9yQWtJMVdWckhsa2poLWlydEFvV2V0WmFSLVNhRldqbzdOZHpIX1gwQ0tLTnc?oc=5",
+     "time": "2026-11-19T10:08"
+    },
+    {
+     "title": "SELLAS Life Sciences prices $150M public offering of common stock",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/SLS/news?source=feed_symbol_SLS",
+     "time": "2026-11-19T06:39"
+    },
+    {
+     "title": "Solaris Resources Inc. (SLS.TO) Stock Price, News, Quote & History",
+     "source": "Yahoo! Finance Canada（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE42WmR2R25vQ1pVNW5vaDd5Ti1IM1k2N2NnaXkzU1YxOUdUR0g1bkFfbWFiRmIxZkpsRmpPX1lyY3hmdTZTeEMtV0t3amllXzRGY25Sdg?oc=5",
+     "time": "2026-11-18T22:19"
+    },
+    {
+     "title": "Solaris Resources Appoints Mark Flaherty to Board of Directors",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.globenewswire.com/news-release/2026/11/18/3405530/0/en/solaris-announces-appointment-of-mark-flaherty-to-the-board-of-directors.html",
+     "time": "2026-11-18T16:31"
+    }
+   ],
+   "lists": [
+    "IBKR 跌幅掃描",
+    "IBKR 高成交掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-19T13:24:10.836Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 14.09,
+    "ts": "2026-11-19T13:22:38.000Z",
+    "halted": false,
+    "bid": 14.08,
+    "ask": 14.12,
+    "bidSize": 100,
+    "askSize": 190,
+    "volume": 5418541.299385,
+    "chgPct": -21.5,
+    "spread": 0.04,
+    "spreadPct": 0.284,
+    "gapNow": -21.5
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "TTWO",
+   "why": "GTA VI 推出日，RVOL 5.1 但 Gap −2.8%；企穩 210.5 之上先考慮。"
+  },
+  {
+   "sym": "RBRK",
+   "why": "RVOL 6.2、升 5.5%，但盤前成交 3.4 萬股。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "CAKE",
+   "why": "差價 2.45%"
+  },
+  {
+   "sym": "UTI",
+   "why": "差價 3.62%"
+  },
+  {
+   "sym": "UMAC",
+   "why": "差價 0.97%"
+  }
+ ],
+ "news": [
+  {
+   "title": "Psyence Biomedical Ltd. GAAP EPS of -$0.24",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674676-psyence-biomedical-ltd-gaap-eps-of-0_24?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-19T13:11"
+  },
+  {
+   "title": "PDD shares climb as profit growth offsets revenue miss",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674622-pdd-shares-climb-as-profit-growth-offsets-revenue-miss?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-19T13:10"
+  },
+  {
+   "title": "GDEV reports Q3 results",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674675-gdev-reports-q3-results?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-19T13:09"
+  },
+  {
+   "title": "Chemomab Therapeutics Q3 results",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674674-chemomab-therapeutics-q3-results?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-19T13:07"
+  },
+  {
+   "title": "Northern Technologies Non-GAAP EPS of -$0.06 misses by $0.12, revenue of $26.46M beats by $1.26M",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674671-northern-technologies-non-gaap-eps-of-0_06-misses-by-0_12-revenue-of-26_46m-beats-by-1_26m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-19T13:04"
+  },
+  {
+   "title": "Williams-Sonoma Non-GAAP EPS of $2.19 in-line, revenue of $1.99B misses by $10M",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674670-williams-sonoma-non-gaap-eps-of-2_19-in-line-revenue-of-1_99b-misses-by-10m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-19T13:04"
+  },
+  {
+   "title": "Texas Capital calls Las Vegas Sands a casino stock sleeper",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4674666-texas-capital-calls-las-vegas-sands-a-casino-stock-sleeper?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-19T12:57"
+  },
+  {
+   "title": "Why is Bloom Energy stock surging today?",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/why-is-bloom-energy-stock-surging-today-93CH-5038815",
+   "time": "2026-11-19T12:50"
+  }
+ ],
+ "lesson": "昨日 TJX 觸發後到過 +1R：記住 +1R 就將 Stop 移返入場價，唔好俾贏錢單變輸錢。TTWO 假突破 −1R：推出日嘅「消息出貨」要小心。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

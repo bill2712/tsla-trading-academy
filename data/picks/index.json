@@ -1,6 +1,53 @@
 {
- "updated": "2026-11-18T13:58:19.221Z",
+ "updated": "2026-11-19T13:24:11.177Z",
  "days": [
+  {
+   "date": "2026-11-19",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏好",
+   "headline": "科技股大升（QQQ +2.2%、SMH +3%）：Long 專區 4 隻消息股（PANW 業績最清楚、PDD、CRWD、RIOT），全部未係日線升勢；SLS 增發沽空。",
+   "n": 5,
+   "top": [
+    {
+     "sym": "PANW",
+     "gapPct": 9.73,
+     "rvol": 6.26,
+     "beginner": "適合新手",
+     "grade": "A"
+    },
+    {
+     "sym": "PDD",
+     "gapPct": 5.97,
+     "rvol": 20.01,
+     "beginner": "適合新手",
+     "grade": "B"
+    },
+    {
+     "sym": "CRWD",
+     "gapPct": 6.36,
+     "rvol": 2.38,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "RIOT",
+     "gapPct": 5.76,
+     "rvol": 2.68,
+     "beginner": "中等",
+     "grade": "B"
+    },
+    {
+     "sym": "SLS",
+     "gapPct": -20.89,
+     "rvol": 28.31,
+     "beginner": "高風險",
+     "grade": "C"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-18",
    "version": 3,
@@ -31,7 +78,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:58",
    "again": []
   },
