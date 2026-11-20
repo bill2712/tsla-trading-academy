@@ -752,5 +752,76 @@
   }
  ],
  "lesson": "昨日 QQQ 高開 2% 之後轉跌，跟風做多股（CRWD、RIOT）突破即失敗。大市方向逆轉時，A+ 過濾（QQQ 喺 VWAP 上面先做多）係最重要嘅保護。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-20T13:58:28.270Z",
+  "atET": "08:58",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 635.47,
+    "chgPct": -1.48,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 710.41,
+    "chgPct": -0.76,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 263.26,
+    "chgPct": -0.36,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "META",
+    "side": "Short",
+    "entry": 573.9,
+    "stop": 584.9,
+    "target1": 551.9,
+    "last": 574.6,
+    "bid": 574.43,
+    "ask": 574.75,
+    "spreadPct": 0.056,
+    "gapNow": -3.63,
+    "gapReport": -3.42,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.03,
+    "status": "waiting",
+    "reason": "未到入場價 573.9（差 0.03 ATR）：按計劃等觸發",
+    "note": ""
+   },
+   {
+    "sym": "PLTR",
+    "side": "Short",
+    "entry": 146.9,
+    "stop": 151.75,
+    "target1": 137.2,
+    "last": 147.58,
+    "bid": 147.66,
+    "ask": 147.78,
+    "spreadPct": 0.081,
+    "gapNow": -3.97,
+    "gapReport": -3.95,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.07,
+    "status": "waiting",
+    "reason": "未到入場價 146.9（差 0.07 ATR）：按計劃等觸發",
+    "note": ""
+   }
+  ],
+  "summary": "Long 專區今日冇做多股。兩隻沽空都仲等觸發、貼近入場價（IBKR 即時，REALTIME）：META 574.60（入場 573.90，差 0.03 ATR）、PLTR 147.58（入場 146.90，差 0.07 ATR）；開市後要先見跌穿兼 QQQ 喺 VWAP 下面先做，一開市就過咗 0.3 ATR 唔追。QQQ −1.48%。",
+  "newMovers": []
+ }
 }
