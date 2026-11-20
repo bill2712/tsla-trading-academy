@@ -200,5 +200,20 @@
   "id": 390872440,
   "type": "STK",
   "name": "SELLAS"
+ },
+ "PLTR": {
+  "id": 444857009,
+  "type": "STK",
+  "name": "Palantir"
+ },
+ "CAPR": {
+  "id": 369897882,
+  "type": "STK",
+  "name": "Capricor"
+ },
+ "ANT": {
+  "id": 943990769,
+  "type": "STK",
+  "name": "Anthropic"
  }
 }

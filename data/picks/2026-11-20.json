@@ -1,0 +1,756 @@
+{
+ "version": 3,
+ "date": "2026-11-20",
+ "generatedAt": "2026-11-20T13:24:30Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:10",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "Alpaca SIP K 線（RVOL、ATR、PMH／PML、日線趨勢）",
+   "ok": true
+  },
+  {
+   "name": "Alpaca SIP 報價",
+   "ok": true,
+   "note": "延遲 16 分鐘"
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅、高成交、成交異常）",
+   "ok": true,
+   "note": "美東 08:13"
+  },
+  {
+   "name": "IBKR 即時報價（指數、候選股、ANT、CAPR）",
+   "ok": true,
+   "note": "美東 08:20–08:30，REALTIME"
+  },
+  {
+   "name": "IBKR 15 分鐘 K 線",
+   "ok": false,
+   "note": "今日冇攞；merge 冇計 IBKR 即時 RVOL"
+  },
+  {
+   "name": "Finviz",
+   "ok": true
+  },
+  {
+   "name": "新聞：Alpaca／Benzinga、Seeking Alpha 等",
+   "ok": true
+  },
+  {
+   "name": "SEC EDGAR",
+   "ok": true
+  },
+  {
+   "name": "Nasdaq 業績日曆",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "時間唔夠，今日冇做；R:R 人手計，全部 2.0"
+  },
+  {
+   "name": "trader-news／trader-analyst／trader-pelosi",
+   "ok": false,
+   "note": "時間唔夠，今日冇跑"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "時間唔夠，今日冇做"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "2 隻 pick，美東 08:24"
+  }
+ ],
+ "headline": "科技股再急跌（QQQ −1.8%、SMH −3.4%）：Long 專區冇合格做多股；META、PLTR 沽空候選。只做多嘅用戶今日唔做都得。",
+ "market": {
+  "bias": "偏淡",
+  "summary": "IBKR 即時（08:20）：QQQ −1.78%、SPY −0.92%、IWM −0.40%、SMH −3.38%。科技股連續兩日急跌（昨日高開後轉跌），Anthropic（ANT）上市第二日盤前跌約 9%。10:00 公布密歇根大學消費者信心修訂（中影響）。 半導體同 AI 股（AAOI、AXTI、COHR、LITE、AMD、SNDK）領跌；醫療股（HUM、HCA、CAH）偏強。三大指數日線仍然係跌勢。",
+  "base": {
+   "spy": -0.92,
+   "qqq": -1.78
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 633.53,
+    "chgPct": -1.78,
+    "note": "IBKR 即時 08:20"
+   },
+   {
+    "sym": "SPY",
+    "last": 709.27,
+    "chgPct": -0.92,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 263.16,
+    "chgPct": -0.4,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 432.35,
+    "chgPct": -3.38,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [
+   {
+    "time": "10:00 ET",
+    "name": "密歇根大學消費者信心（修訂）",
+    "impact": "中",
+    "note": "預期 51.7"
+   },
+   {
+    "time": "12:15 ET",
+    "name": "Fed Cook 講話",
+    "impact": "低",
+    "note": ""
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "INTU",
+    "when": "昨日盤後",
+    "note": "盤前跌 8%"
+   },
+   {
+    "sym": "GAP",
+    "when": "昨日盤後",
+    "note": "下調全年指引"
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "META",
+   "price": 575.81,
+   "gapPct": -3.42,
+   "rvol": 2.39,
+   "pmVolume": 407416,
+   "avgVolume": 21172699,
+   "floatM": 2210,
+   "atrPct": 3.7,
+   "spreadPct": 0.13,
+   "rsQqq": -1.68,
+   "ema9Pct": -0.3,
+   "trend": "down",
+   "catalyst": "Meta Warns of China-Linked Accounts Targeting Taiwan Elections on Threads",
+   "verdict": "pick",
+   "note": "科技股拋售、跌穿 20 日低"
+  },
+  {
+   "sym": "PLTR",
+   "price": 147.61,
+   "gapPct": -3.95,
+   "rvol": 2.29,
+   "pmVolume": 495008,
+   "avgVolume": 24060679,
+   "floatM": 2220,
+   "atrPct": 6.31,
+   "spreadPct": 0.31,
+   "rsQqq": -2.21,
+   "ema9Pct": -0.31,
+   "trend": "down",
+   "catalyst": "DZ Bank Adjusts Price Target on Palantir Technologies to $220 From $210",
+   "verdict": "pick",
+   "note": "科技股拋售、跌穿 20 日低"
+  },
+  {
+   "sym": "CAPR",
+   "price": 8.68,
+   "gapPct": 15.27,
+   "rvol": 12.95,
+   "pmVolume": 706609,
+   "avgVolume": 4718125,
+   "floatM": 52.66,
+   "atrPct": 16.73,
+   "spreadPct": 0.93,
+   "rsQqq": 17.01,
+   "ema9Pct": 1.7,
+   "trend": "mixed",
+   "catalyst": "CAPR Nov 2026 3.500 put (CAPR261127P00003500) stock price, news, quote and histo",
+   "verdict": "watch",
+   "note": "RVOL 13 但搵唔到消息；IBKR 即時已回吐到 +8%、差價約 1.7%"
+  },
+  {
+   "sym": "INTU",
+   "price": 285,
+   "gapPct": -8.07,
+   "rvol": 12.78,
+   "pmVolume": 56254,
+   "avgVolume": 2822099,
+   "floatM": 261.29,
+   "atrPct": 4.45,
+   "spreadPct": 0.28,
+   "rsQqq": -6.33,
+   "ema9Pct": 0.78,
+   "trend": "mixed",
+   "catalyst": "Intuit declares $1.38 dividend",
+   "verdict": "watch",
+   "note": "業績後跌 8%、RVOL 12.8，但盤前成交得 5.6 萬股"
+  },
+  {
+   "sym": "RVMD",
+   "price": 167.5,
+   "gapPct": 5.06,
+   "rvol": 10.45,
+   "pmVolume": 19509,
+   "avgVolume": 2512326,
+   "floatM": 194.8,
+   "atrPct": 6.67,
+   "spreadPct": 1.5,
+   "rsQqq": 6.8,
+   "ema9Pct": 2.88,
+   "trend": "down",
+   "catalyst": "Revolution Medicines (Nasdaq: RVMD): Updated early-stage pancreatic cancer study",
+   "verdict": "avoid",
+   "note": "盤前成交 2 萬股、差價 1.5%"
+  },
+  {
+   "sym": "GAP",
+   "price": 19.45,
+   "gapPct": 3.51,
+   "rvol": 7.5,
+   "pmVolume": 31871,
+   "avgVolume": 6904675,
+   "floatM": 229.98,
+   "atrPct": 5.22,
+   "spreadPct": 1.03,
+   "rsQqq": 5.25,
+   "ema9Pct": 0.28,
+   "trend": "down",
+   "catalyst": "Gap outlines adjusted EPS of $2.29 to $2.34 as it lowers FY2026 outlook after wa",
+   "verdict": "avoid",
+   "note": "盤前成交 3.2 萬股、差價 1.03%"
+  },
+  {
+   "sym": "SKM",
+   "price": 28.93,
+   "gapPct": -8.71,
+   "rvol": 4.14,
+   "pmVolume": 69174,
+   "avgVolume": 2112601,
+   "floatM": 380.25,
+   "atrPct": 4.89,
+   "spreadPct": 1.72,
+   "rsQqq": -6.97,
+   "ema9Pct": -0.17,
+   "trend": "down",
+   "catalyst": "SK Telecom (NYSE:SKM) Shares Break Below 50 Day Moving Average - Here's Why",
+   "verdict": "avoid",
+   "note": "差價 1.72%"
+  },
+  {
+   "sym": "FCEL",
+   "price": 7.22,
+   "gapPct": -4.87,
+   "rvol": 2.61,
+   "pmVolume": 118140,
+   "avgVolume": 4972713,
+   "floatM": 73.75,
+   "atrPct": 14.36,
+   "spreadPct": 1.11,
+   "rsQqq": -3.13,
+   "ema9Pct": 0.46,
+   "trend": "down",
+   "catalyst": "FuelCell Energy, Inc. (NASDAQ:FCEL) Stock Has Consensus Target Price of $21.80 A",
+   "verdict": "avoid",
+   "note": "差價 1.11%"
+  },
+  {
+   "sym": "UMC",
+   "price": 12.18,
+   "gapPct": -9.1,
+   "rvol": 2.5,
+   "pmVolume": 326558,
+   "avgVolume": 14092326,
+   "floatM": 2510,
+   "atrPct": 7.31,
+   "spreadPct": 1.22,
+   "rsQqq": -7.36,
+   "ema9Pct": -0.68,
+   "trend": "down",
+   "catalyst": "UMC Misses EPS Consensus, But A 2027 Pricing Reset And AI-Driven Capex Shift The",
+   "verdict": "avoid",
+   "note": "差價 1.22%"
+  },
+  {
+   "sym": "BILL",
+   "price": 61.7,
+   "gapPct": -3.71,
+   "rvol": 229.21,
+   "pmVolume": 697706,
+   "avgVolume": 2157323,
+   "floatM": 73.76,
+   "atrPct": 4.6,
+   "spreadPct": 0.08,
+   "rsQqq": -1.97,
+   "ema9Pct": 0.06,
+   "trend": "up",
+   "catalyst": "BILL Holdings, Inc. Enters Definitive Agreement to be Acquired by TPG and Corpay",
+   "verdict": "skip",
+   "note": "被 TPG／Corpay 現金收購，價格會貼收購價"
+  },
+  {
+   "sym": "HDB",
+   "price": 27.31,
+   "gapPct": 4.08,
+   "rvol": 4.15,
+   "pmVolume": 40062,
+   "avgVolume": 8681153,
+   "floatM": 5140,
+   "atrPct": 2.48,
+   "spreadPct": 0.59,
+   "rsQqq": 5.82,
+   "ema9Pct": 0.26,
+   "trend": "up",
+   "catalyst": "Firefighting hero nominated for community award charged with allegedly starting ",
+   "verdict": "skip",
+   "note": "盤前成交 4 萬股"
+  }
+ ],
+ "fewPicksReason": "大市急跌，RVOL ≥ 2、Gap ≥ 3%、成交同差價合格嘅得 META、PLTR（都係沽空）。CAPR 升 8% 但搵唔到消息、差價約 1.7%；INTU 盤前成交得 5.6 萬股；BILL 被收購；ANT 上市未夠日數計唔到 RVOL。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇合格做多股：冇日線升勢而又 RVOL ≥ 2 嘅股，做多候選 CAPR 冇消息兼差價太闊。大市急跌（QQQ −1.8%），只做多嘅用戶今日唔做係合理選擇；開市後如果 QQQ 企返 VWAP 之上，先睇觀察名單（PANW、PDD）。",
+  "items": []
+ },
+ "carryover": {
+  "fromDate": "2026-11-19",
+  "summary": "昨日五隻今日盤前 RVOL 全部未夠 2，冇一隻再入選。PANW、PDD、CRWD 只觀察；RIOT、SLS skip。大市急跌，只做多嘅用戶唔好撈昨日做多股嘅底。",
+  "items": [
+   {
+    "sym": "PANW",
+    "prevSide": "Long",
+    "prevResult": "未觸發（入場價冇到）",
+    "yClose": 361.73,
+    "yChgPct": 6.42,
+    "yClosePos": 0.58,
+    "yVolRatio": 2.79,
+    "price": 354,
+    "gapPct": -2.14,
+    "rvol": 1.35,
+    "verdict": "watch",
+    "side": null,
+    "reason": "今日盤前 RVOL 1.35、跌 2.1% 到 354；昨日最高 370 冇觸發。開市企穩 VWAP、首 5 分鐘成交 ≥ 平時 2 倍先考慮。",
+    "levels": "昨日低 350.52、昨日收 361.73"
+   },
+   {
+    "sym": "PDD",
+    "prevSide": "Long",
+    "prevResult": "09:40 觸發 → 收市前未到 Stop／Target（收市計 0.12R）",
+    "yClose": 86,
+    "yChgPct": 11.04,
+    "yClosePos": 0.74,
+    "yVolRatio": 4.07,
+    "price": 85.05,
+    "gapPct": -1.1,
+    "rvol": 1.57,
+    "verdict": "watch",
+    "side": null,
+    "reason": "今日盤前 RVOL 1.57、跌 1.1% 到 85.05；昨日升穿 85.85 後收 86.01。企穩 85.85 之上、成交夠先考慮。",
+    "levels": "昨日高 87.39、85.85"
+   },
+   {
+    "sym": "CRWD",
+    "prevSide": "Long",
+    "prevResult": "09:35 觸發 → 12:00 中 Stop（−1R）",
+    "yClose": 243.46,
+    "yChgPct": 2.71,
+    "yClosePos": 0.22,
+    "yVolRatio": 1.26,
+    "price": 235,
+    "gapPct": -3.47,
+    "rvol": 1.49,
+    "verdict": "watch",
+    "side": null,
+    "reason": "今日盤前 RVOL 1.49、跌 3.5% 到 235，低過昨日低 239.7；只觀察，只做多嘅用戶唔撈底。",
+    "levels": "昨日低 239.70、50 日線 245.9"
+   },
+   {
+    "sym": "RIOT",
+    "prevSide": "Long",
+    "prevResult": "09:40 觸發 → 09:55 中 Stop（−1R）",
+    "yClose": 17.73,
+    "yChgPct": -2.8,
+    "yClosePos": 0.12,
+    "yVolRatio": 1.13,
+    "price": 17.09,
+    "gapPct": -3.61,
+    "rvol": 0.48,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.48、再跌 3.6% 到 17.09。",
+    "levels": "昨日低 17.46"
+   },
+   {
+    "sym": "SLS",
+    "prevSide": "Short",
+    "prevResult": "未觸發（入場價冇到）",
+    "yClose": 14.86,
+    "yChgPct": -17.21,
+    "yClosePos": 0.27,
+    "yVolRatio": 2.47,
+    "price": 14.7,
+    "gapPct": -1.08,
+    "rvol": 0.2,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 RVOL 0.20；增發後喺 14–16 上落。",
+    "levels": "昨日低 14.23、昨日高 16.54"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "META",
+   "name": "Meta Platforms",
+   "grade": "B",
+   "beginner": "適合新手",
+   "direction": "Short",
+   "score": 62,
+   "price": 575.81,
+   "prevClose": 596.22,
+   "gapPct": -3.42,
+   "pmVolume": 407416,
+   "pmVolPct": 1.92,
+   "avgVolume": 21172699,
+   "rvol": 2.39,
+   "spread": 0.74,
+   "spreadPct": 0.13,
+   "atr": 22.04,
+   "atrPct": 3.7,
+   "mktCapB": 1467.01,
+   "floatM": 2210,
+   "rsQqq": -1.68,
+   "rsSpy": -2.56,
+   "ema9": 577.53,
+   "ema9Pct": -0.3,
+   "ema9Step": "5m",
+   "ema9Daily": 619.71,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 589.84,
+    "pml": 574,
+    "pdh": 630.06,
+    "pdl": 595.78,
+    "pdc": 596.22,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 583.8
+     },
+     {
+      "label": "20 日線",
+      "price": 622.65
+     }
+    ]
+   },
+   "why": "科技股拋售，META 盤前跌 3.5%（IBKR 即時 575.33）、RVOL 2.4、盤前成交 52 萬股；已跌穿 20 日低 583.8。Float 22 億、差價 0.06%。",
+   "catalyst": "冇重大個股消息（CFO 例行減持、Threads 帳戶報告）；主要係科技股板塊拋售。",
+   "technical": "日線跌勢（20 日線 623、50 日線 678，價格遠低過）。盤前已跌穿 20 日低 583.8，貼住盤前低 574。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低 574.00",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ −1.78%、SPY −0.92%、IWM −0.40%、SMH −3.38%。科技股連續兩日急跌（昨日高開後轉跌），Anthropic（ANT）上市第二日盤前跌約 9%。10:00 公布密歇根大學消費者信心修訂（中影響）。",
+    "fundamentals": "冇個股消息，跌幅來自板塊；大市反彈會一齊彈。",
+    "technical": "跌穿 574 之後下面冇近期支持；上面 583.8（20 日低）同 589.84（盤前高）係阻力。",
+    "tape": "盤前成交 52 萬股（約平時 2.5%），RVOL 2.4 啱啱過標準；差價窄。",
+    "intuition": "信心中等。連跌兩日後可能有技術反彈，只做跌穿盤前低嘅延續。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低 574.00，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 下面，QQQ 喺 VWAP 下面",
+    "entry": 573.9,
+    "stop": 584.9,
+    "target1": 551.9,
+    "target2": 540.9,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：日線跌勢、板塊拋售。只做多嘅用戶今日唔好撈底。",
+    "short": "跌穿 574.00 用 Sell Stop 573.90 沽，Stop 584.90（20 日低 583.8 之上、0.5 ATR），T1 551.90、T2 540.90；−1R（562.90）將 Stop 移返入場價。呢個係突破計劃：價格要先跌穿入場價先入場。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。開市企穩 583.8 之上就唔沽。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 17 次、贏 2 次、約 −10.7R。"
+   },
+   "risks": [
+    "連跌兩日，技術反彈風險",
+    "冇個股消息",
+    "RVOL 2.4 啱啱過標準",
+    "盤前價喺 5 分鐘 EMA 9 之下：符合沽空方向"
+   ],
+   "news": [
+    {
+     "title": "Meta Warns of China-Linked Accounts Targeting Taiwan Elections on Threads",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.marketscreener.com/news/meta-platforms-warned-threads-being-used-by-china-to-influence-taiwan-local-elections-ce785ed2d081f627",
+     "time": "2026-11-20T11:32"
+    },
+    {
+     "title": "Meta Platforms CFO Executes Insider Share Sale",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.moomoo.com/stock/META-US?chain_id=Name1K9-3FXPhg.1lfvvg0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A57%2C%22f%22%3A%22www.moomoo.com%2Fstock%2FSTLD-US%22%7D",
+     "time": "2026-11-20T11:32"
+    },
+    {
+     "title": "Meta Platforms(META) Stock Price Today | Quotes & News",
+     "source": "Moomoo（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxQSzBVMGcta0tLakg5RXlhaWgwbkNiSUVaMzA0Umx3QXlsSndncTI5OWpfMk9aSlFlR29JOXBGbEtRaExOMmQ1MG1nNmp2aENLVGplczdGV2dvNXZnYWEtVXFwRVNkRDMzMEtCYkJXeUYwTjJSa0V5cnEwSTJlMy0zR01MZGkwYzJQa2VmdkxxVk9KWWx4TUtWa05aZFoyekpKZGFZTG9STEpELXFNTm1tX0lOaXhSeTkwSmg3aUZ5YXg0ZFdXUUk1aGhkRndiWlFvTTEwenJMVkx5cHQ3NzFuYnRqT0FjQ3dObGxoY2lpNG43a1lqc2FBTGtFZWtXNzRreHMtcWxaVmwtb1Z4WF9VQkZpWU1lRHg2RkhfNA?oc=5",
+     "time": "2026-11-20T11:20"
+    },
+    {
+     "title": "Meta Reevaluating 2030 Net Zero Emissions Goal",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.manilatimes.net/2026/11/20/world/americas-emea/meta-says-reevaluating-2030-net-zero-target-amid-ai-buildout/2474624",
+     "time": "2026-11-20T01:01"
+    }
+   ],
+   "lists": [
+    "Alpaca 盤前掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-20T13:24:30.821Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 575.33,
+    "ts": "2026-11-20T13:21:28.000Z",
+    "halted": false,
+    "bid": 573.76,
+    "ask": 574.5,
+    "bidSize": 40,
+    "askSize": 1,
+    "volume": 517870.325538,
+    "chgPct": -3.5,
+    "spread": 0.74,
+    "spreadPct": 0.129,
+    "gapNow": -3.5
+   },
+   "spreadFrom": "IBKR"
+  },
+  {
+   "sym": "PLTR",
+   "name": "Palantir",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Short",
+   "score": 60,
+   "price": 147.61,
+   "prevClose": 153.68,
+   "gapPct": -3.95,
+   "pmVolume": 495008,
+   "pmVolPct": 2.06,
+   "avgVolume": 24060679,
+   "rvol": 2.29,
+   "spread": 0.45,
+   "spreadPct": 0.31,
+   "atr": 9.69,
+   "atrPct": 6.31,
+   "mktCapB": 354.5,
+   "floatM": 2220,
+   "rsQqq": -2.21,
+   "rsSpy": -3.09,
+   "ema9": 148.07,
+   "ema9Pct": -0.31,
+   "ema9Step": "5m",
+   "ema9Daily": 162.58,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 151.21,
+    "pml": 147,
+    "pdh": 167.13,
+    "pdl": 153.2,
+    "pdc": 153.68,
+    "other": [
+     {
+      "label": "20 日低",
+      "price": 152.6
+     },
+     {
+      "label": "20 日線",
+      "price": 174.49
+     }
+    ]
+   },
+   "why": "科技股拋售，PLTR 盤前跌 4.4%（IBKR 即時 147.00，盤前新低）、RVOL 2.3、盤前成交 67 萬股；已跌穿 20 日低 152.6。",
+   "catalyst": "冇重大新消息（DZ Bank 升目標價、員工涉俄羅斯間諜案）；主要係科技股拋售。",
+   "technical": "日線跌勢（20 日線 174、50 日線 184，價格遠低過）。盤前一路走低，IBKR 08:22 創盤前新低 147.0。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低（約 147.00）",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:20）：QQQ −1.78%、SPY −0.92%、IWM −0.40%、SMH −3.38%。科技股連續兩日急跌（昨日高開後轉跌），Anthropic（ANT）上市第二日盤前跌約 9%。10:00 公布密歇根大學消費者信心修訂（中影響）。",
+    "fundamentals": "冇個股負面消息；分析師仲係升目標價，下跌係板塊帶動。",
+    "technical": "跌穿 147 之後下面冇近期支持；上面 151.21（盤前高）、152.6（20 日低）係阻力。",
+    "tape": "盤前成交 67 萬股；IBKR 即時差價約 0.3%。",
+    "intuition": "信心中等偏低。冇消息嘅板塊跌，反彈都可以好急。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低（約 147.00），首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 下面，QQQ 喺 VWAP 下面",
+    "entry": 146.9,
+    "stop": 151.75,
+    "target1": 137.2,
+    "target2": 132.4,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：日線跌勢。只做多嘅用戶今日唔好撈底。",
+    "short": "跌穿 147.00 用 Sell Stop 146.90 沽，Stop 151.75（盤前高 151.21 之上、0.5 ATR），T1 137.20、T2 132.40；−1R（142.05）將 Stop 移返入場價。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。開市企穩 151.21 之上就唔沽；09:35 已經低過入場價 0.3 ATR 以上就唔追。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 17 次、贏 2 次、約 −10.7R。"
+   },
+   "risks": [
+    "冇個股消息，板塊反彈會急升",
+    "盤前已經喺盤前低附近，開市可能即刻過入場價（唔追）",
+    "差價 0.28%（高過 0.1% 標準）：用限價單",
+    "盤前價喺 5 分鐘 EMA 9 之下：符合沽空方向"
+   ],
+   "news": [
+    {
+     "title": "DZ Bank Adjusts Price Target on Palantir Technologies to $220 From $210",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://www.marketscreener.com/news/dz-bank-adjusts-price-target-on-palantir-technologies-to-220-from-210-ce785ed3d98ef42d",
+     "time": "2026-11-20T11:31"
+    },
+    {
+     "title": "Palantir workers target of Russian spy; DOJ indicts suspect",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/PLTR/news?source=feed_symbol_PLTR",
+     "time": "2026-11-19T17:00"
+    },
+    {
+     "title": "Palantir: I'm Still Bullish, But Not Adding More Yet",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4970076-palantir-im-still-bullish-but-not-adding-more-yet?source=feed_symbol_PLTR",
+     "time": "2026-11-19T12:59"
+    },
+    {
+     "title": "Russian Espionage Case Involves Palantir Employees",
+     "source": "fiscal.ai（Alpaca）",
+     "url": "https://htsyndication.com/hindustan-times/article/russian-man-accused-of-spying-targeted-workers-of-palantir%2C-which-is-aiding-ukraine-s-war-effort%3A-report/106206927",
+     "time": "2026-11-19T12:31"
+    }
+   ],
+   "lists": [
+    "Alpaca 盤前掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-20T13:24:30.821Z",
+    "atET": "08:24",
+    "status": "REALTIME",
+    "last": 147,
+    "ts": "2026-11-20T13:22:44.000Z",
+    "halted": false,
+    "bid": 146.85,
+    "ask": 147.3,
+    "bidSize": 50,
+    "askSize": 1,
+    "volume": 674486.575877,
+    "chgPct": -4.35,
+    "spread": 0.45,
+    "spreadPct": 0.306,
+    "gapNow": -4.35
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "CAPR",
+   "why": "RVOL 13、盤前升 15% 後回吐到 +8%，搵唔到消息、差價約 1.7%、Short Float 35.6%。"
+  },
+  {
+   "sym": "INTU",
+   "why": "業績後跌 8%，RVOL 12.8 但盤前成交得 5.6 萬股。"
+  },
+  {
+   "sym": "ANT",
+   "why": "Anthropic 上市第二日，盤前跌約 9%（IBKR 88.00）、成交極大；上市未夠日數，計唔到 RVOL／ATR，唔入選。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "UMC",
+   "why": "差價 1.22%"
+  },
+  {
+   "sym": "SKM",
+   "why": "差價 1.72%"
+  },
+  {
+   "sym": "BILL",
+   "why": "被收購，價格貼收購價"
+  }
+ ],
+ "news": [
+  {
+   "title": "Intel landing Microsoft for EMIB is a 'positive,' but level of importance is unclear: Wedbush",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4675111-intel-landing-microsoft-for-emib-is-a-positive-but-level-of-importance-unclear-wedbush?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-20T13:10"
+  },
+  {
+   "title": "KB Financial appoints new CEO",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4675122-kb-financial-appoints-new-ceo?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-20T13:09"
+  },
+  {
+   "title": "PayPal makes key leadership changes, including a new CFO; former Goldman exec joins board",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4675113-paypal-makes-key-leadership-changes-including-a-new-cfo-former-goldman-exec-joins-board?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-20T13:06"
+  },
+  {
+   "title": "Tuttle Capital Space Industry Income Blast ETF declares $0.07 dividend",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4675129-tuttle-capital-space-industry-income-blast-etf-declares-0_07-dividend?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-20T13:05"
+  },
+  {
+   "title": "Tuttle Capital Innovation 100 Income & Hedge ETF declares $0.08 dividend",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4675128-tuttle-capital-innovation-100-income-and-hedge-etf-declares-0_08-dividend?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-20T13:03"
+  },
+  {
+   "title": "Tuttle Capital Photonics Income Blast ETF declares $0.07 dividend",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4675127-tuttle-capital-photonics-income-blast-etf-declares-0_07-dividend?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-20T13:03"
+  },
+  {
+   "title": "Why is Invesco QQQ Trust sliding today?",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/why-is-invesco-qqq-trust-sliding-today-93CH-5041637",
+   "time": "2026-11-20T13:03"
+  },
+  {
+   "title": "Tuttle Capital Memory Stack Income Blast ETF declares $0.07 dividend",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4675126-tuttle-capital-memory-stack-income-blast-etf-declares-0_07-dividend?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-20T13:03"
+  }
+ ],
+ "lesson": "昨日 QQQ 高開 2% 之後轉跌，跟風做多股（CRWD、RIOT）突破即失敗。大市方向逆轉時，A+ 過濾（QQQ 喺 VWAP 上面先做多）係最重要嘅保護。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，可能有延遲或錯誤；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

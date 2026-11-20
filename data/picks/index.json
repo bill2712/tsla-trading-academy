@@ -1,6 +1,32 @@
 {
- "updated": "2026-11-19T13:58:55.658Z",
+ "updated": "2026-11-20T13:24:31.146Z",
  "days": [
+  {
+   "date": "2026-11-20",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏淡",
+   "headline": "科技股再急跌（QQQ −1.8%、SMH −3.4%）：Long 專區冇合格做多股；META、PLTR 沽空候選。只做多嘅用戶今日唔做都得。",
+   "n": 2,
+   "top": [
+    {
+     "sym": "META",
+     "gapPct": -3.42,
+     "rvol": 2.39,
+     "beginner": "適合新手",
+     "grade": "B"
+    },
+    {
+     "sym": "PLTR",
+     "gapPct": -3.95,
+     "rvol": 2.29,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-19",
    "version": 3,
@@ -45,7 +71,7 @@
      "grade": "C"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:58",
    "again": []
   },

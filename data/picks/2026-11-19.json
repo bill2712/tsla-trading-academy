@@ -1277,5 +1277,66 @@
   ],
   "summary": "五隻都未觸發（IBKR 即時，REALTIME）。Long 專區最接近：RIOT 19.37（差入場 19.52 約 0.1 ATR）、CRWD 250.25（差 0.24 ATR）、PANW 367.30（差 0.48 ATR，貼住 50 日線 366.7，跌穿就唔做）。PDD 81.01 離入場 85.85 差約 1.9 ATR，今朝機會細；SLS 反彈到 14.84，離沽空入場 13.30 仲遠。PDD、SLS 嘅「作廢」係程式按 Stop 位計，見 note。QQQ +1.8%。",
   "newMovers": []
+ },
+ "review": {
+  "writtenAt": "2026-11-20T13:12:26.107Z",
+  "summary": "主計劃：約 −1.9R（三筆觸發）。PDD 09:40 升穿 85.85 觸發，最高 87.39（到過 +1R），收市 86.01 計 +0.12R；CRWD 09:35 觸發，最高 256.73，12:00 中 Stop（−1R）；RIOT 09:40 觸發，最高 19.79，09:55 中 Stop（−1R），之後跌到 17.46。PANW 最高 370，冇升到 376.90；SLS 冇跌穿 13.30，都冇觸發。後備 ORB（只作記錄）：SLS 10:30 觸發，收市計 −0.23R；PANW 冇觸發。由 10/29 起累計 17 次、贏 2 次、約 −10.7R。學到：大市高開（QQQ +2%）之後開市回吐，跟風股（CRWD、RIOT）突破後即刻失敗；主題消息最清楚嘅 PDD 先守得住。",
+  "items": [
+   {
+    "sym": "PANW",
+    "open": 355.81,
+    "high": 370,
+    "low": 350.52,
+    "close": 361.73,
+    "chgFromOpenPct": 1.66,
+    "hitPmh": false,
+    "verdict": "未觸發（入場價冇到）｜後備 5 分鐘 ORB：入 370.01／Stop 359.91／目標 390.21 → 冇觸發",
+    "note": ""
+   },
+   {
+    "sym": "PDD",
+    "open": 82.44,
+    "high": 87.39,
+    "low": 82.02,
+    "close": 86.01,
+    "chgFromOpenPct": 4.33,
+    "hitPmh": true,
+    "verdict": "09:40 觸發 → 收市前未到 Stop／Target（收市計 0.12R）",
+    "note": ""
+   },
+   {
+    "sym": "CRWD",
+    "open": 246.89,
+    "high": 256.73,
+    "low": 239.7,
+    "close": 243.4,
+    "chgFromOpenPct": -1.41,
+    "hitPmh": true,
+    "verdict": "09:35 觸發 → 12:00 中 Stop（−1R）",
+    "note": ""
+   },
+   {
+    "sym": "RIOT",
+    "open": 19.39,
+    "high": 19.79,
+    "low": 17.46,
+    "close": 17.74,
+    "chgFromOpenPct": -8.51,
+    "hitPmh": true,
+    "verdict": "09:40 觸發 → 09:55 中 Stop（−1R）",
+    "note": ""
+   },
+   {
+    "sym": "SLS",
+    "open": 15.42,
+    "high": 16.54,
+    "low": 14.23,
+    "close": 14.86,
+    "chgFromOpenPct": -3.63,
+    "hitPmh": true,
+    "verdict": "未觸發（入場價冇到）｜後備 5 分鐘 ORB：入 14.59／Stop 15.76／目標 12.25 → 10:30 觸發，收市計 -0.23R",
+    "note": ""
+   }
+  ]
  }
 }
