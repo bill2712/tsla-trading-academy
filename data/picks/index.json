@@ -1,6 +1,25 @@
 {
- "updated": "2026-11-20T13:58:34.430Z",
+ "updated": "2026-11-23T13:11:40.346Z",
  "days": [
+  {
+   "date": "2026-11-23",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏好",
+   "headline": "⚠️ 數據唔齊（Alpaca key 冇咗）：大市大反彈（QQQ +3.6%、SMH +5.9%），Long 專區冇合格做多股；CRWD 宣布收購 Zscaler，C 級沽空候選。",
+   "n": 1,
+   "top": [
+    {
+     "sym": "CRWD",
+     "gapPct": -7.12,
+     "rvol": 3.9,
+     "beginner": "高風險",
+     "grade": "C"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-20",
    "version": 3,
@@ -24,7 +43,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:58",
    "again": []
   },

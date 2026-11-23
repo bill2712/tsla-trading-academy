@@ -1,0 +1,360 @@
+{
+ "version": 3,
+ "date": "2026-11-23",
+ "generatedAt": "2026-11-23T13:11:40Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:15",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "⚠️ Alpaca key 冇咗",
+   "ok": false,
+   "note": "雲端機器重設，私人檔 ~/.config/tsla-picks/alpaca.env 唔見咗；收集器冇 RVOL／ATR／趨勢，回顧程式都跑唔到。要用戶重新放 key。"
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅）",
+   "ok": true,
+   "note": "美東 08:12"
+  },
+  {
+   "name": "IBKR 即時報價（指數同候選股）",
+   "ok": true,
+   "note": "REALTIME"
+  },
+  {
+   "name": "IBKR 1 小時／日線 K 線（ZS、CRWD、APLD 嘅 RVOL、盤前高低）",
+   "ok": true,
+   "note": "RVOL 人手計，基準係過去兩日同時段（唔係 10 日）"
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true
+  },
+  {
+   "name": "新聞：Seeking Alpha、Google News",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "今日冇做；R:R 人手計"
+  },
+  {
+   "name": "trader-news／trader-analyst／trader-pelosi",
+   "ok": false,
+   "note": "機器重設後 skill 未裝，今日冇跑"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "今日冇做"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "1 隻 pick，美東 08:11"
+  }
+ ],
+ "headline": "⚠️ 數據唔齊（Alpaca key 冇咗）：大市大反彈（QQQ +3.6%、SMH +5.9%），Long 專區冇合格做多股；CRWD 宣布收購 Zscaler，C 級沽空候選。",
+ "market": {
+  "bias": "偏好",
+  "summary": "IBKR 即時（08:15）：QQQ +3.61%、SPY +2.64%、IWM +2.39%、SMH +5.88%；上週五 AI 股急跌後今朝大反彈。CrowdStrike 宣布以全股票約 439 億美元收購 Zscaler。 上週五 QQQ 跌約 4%（收 608），今朝反彈。醫療保險股（UNH、HUM、CVS、ELV）跌。",
+  "base": {
+   "spy": 2.64,
+   "qqq": 3.61
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 630.41,
+    "chgPct": 3.61,
+    "note": "IBKR 即時 08:15"
+   },
+   {
+    "sym": "SPY",
+    "last": 708,
+    "chgPct": 2.64,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 262.75,
+    "chgPct": 2.39,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 423.6,
+    "chgPct": 5.88,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [],
+  "earnings": [
+   {
+    "sym": "ZS",
+    "when": "盤前",
+    "note": "業績好過預期，同日宣布被 CRWD 收購"
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "CRWD",
+   "price": 213.1,
+   "gapPct": -7.12,
+   "rvol": 3.9,
+   "pmVolume": 465964,
+   "avgVolume": 9174711,
+   "floatM": 991.64,
+   "atrPct": 7.11,
+   "spreadPct": 0.27,
+   "rsQqq": -10.73,
+   "ema9Pct": -1.37,
+   "trend": "down",
+   "catalyst": "宣布全股票收購 Zscaler",
+   "verdict": "pick",
+   "note": "收購方；逆大市沽空，C 級"
+  },
+  {
+   "sym": "APLD",
+   "price": 13.05,
+   "gapPct": 13.58,
+   "rvol": 1.2,
+   "pmVolume": 743437,
+   "avgVolume": 20000000,
+   "floatM": null,
+   "atrPct": 9,
+   "spreadPct": 0.61,
+   "rsQqq": 9.97,
+   "ema9Pct": null,
+   "trend": "down",
+   "catalyst": "AI 股反彈",
+   "verdict": "watch",
+   "note": "RVOL 約 1.2（IBKR 1 小時 K 線，過去兩日同時段做基準），未夠 2"
+  },
+  {
+   "sym": "ZS",
+   "price": 234.95,
+   "gapPct": 20.6,
+   "rvol": null,
+   "pmVolume": 327216,
+   "avgVolume": 2950000,
+   "floatM": 106.16,
+   "atrPct": 7.63,
+   "spreadPct": 0.64,
+   "rsQqq": 17,
+   "ema9Pct": null,
+   "trend": "down",
+   "catalyst": "被 CrowdStrike 全股票收購",
+   "verdict": "skip",
+   "note": "被收購股，價格會跟 CRWD 換股比例走，唔適合 Day Trade"
+  }
+ ],
+ "fewPicksReason": "今日冇 Alpaca 數據，只可以用 IBKR K 線逐隻計 RVOL：ZS 係被收購股（唔適合 Day Trade），APLD RVOL 約 1.2 未夠 2，其他升幅股冇時間逐隻核實。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇合格做多股。大市大反彈（QQQ +3.6%），但能夠核實 RVOL ≥ 2 嘅升幅股得 ZS，而 ZS 係被收購股，價格貼住換股比例，唔適合 Day Trade；APLD RVOL 約 1.2 未夠標準。只做多嘅用戶今日唔做係合理選擇；開市後 QQQ 企穩 VWAP 先睇觀察名單。",
+  "items": []
+ },
+ "carryover": {
+  "fromDate": "2026-11-20",
+  "summary": "上一份報告係 11/20（星期五，上一個交易日）。META、PLTR 今日跟大市大反彈（+3.8%、+4.5%），盤前 RVOL 今次冇計（冇 Alpaca 數據），方向同昨日沽空計劃相反，兩隻都 skip。",
+  "items": [
+   {
+    "sym": "META",
+    "prevSide": "Short",
+    "prevResult": "首次觸發同 Stop 先後分唔到；11:00–11:30 再觸發，收市約 +1.1R",
+    "yClose": 561.53,
+    "yChgPct": -5.82,
+    "yClosePos": null,
+    "yVolRatio": null,
+    "price": 582.26,
+    "gapPct": 3.82,
+    "rvol": null,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前反彈 3.8% 到 582.26（IBKR），同沽空方向相反；冇 Alpaca 數據計唔到 RVOL。",
+    "levels": "上週五低 558.68、上週五開 582.9"
+   },
+   {
+    "sym": "PLTR",
+    "prevSide": "Short",
+    "prevResult": "10:30–11:00 觸發，收市約 +0.66R",
+    "yClose": 143.68,
+    "yChgPct": -6.51,
+    "yClosePos": null,
+    "yVolRatio": null,
+    "price": 150,
+    "gapPct": 4.54,
+    "rvol": null,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前反彈 4.5% 到 150（IBKR），同沽空方向相反；冇 Alpaca 數據計唔到 RVOL。",
+    "levels": "上週五低 142.28、上週五高 152.51"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "CRWD",
+   "name": "CrowdStrike",
+   "grade": "C",
+   "beginner": "高風險",
+   "direction": "Short",
+   "score": 55,
+   "price": 213.1,
+   "prevClose": 229.44,
+   "gapPct": -7.12,
+   "pmVolume": 465964,
+   "pmVolPct": 5.08,
+   "avgVolume": 9174711,
+   "rvol": 3.9,
+   "spread": 0.58,
+   "spreadPct": 0.27,
+   "atr": 15.15,
+   "atrPct": 7.11,
+   "mktCapB": null,
+   "floatM": 991.64,
+   "rsQqq": -10.73,
+   "rsSpy": -9.76,
+   "ema9": 216.06,
+   "ema9Pct": -1.37,
+   "ema9Step": "1h",
+   "ema9Daily": null,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 225,
+    "pml": 206,
+    "pdh": 235.96,
+    "pdl": 227.3,
+    "pdc": 229.44,
+    "other": [
+     {
+      "label": "上週五盤後低",
+      "price": 201.11
+     }
+    ]
+   },
+   "why": "宣布以全股票（約 439 億美元）收購 Zscaler，收購方股價盤前跌 7.1%（IBKR 即時 213.10），大市反而大升，相對 QQQ 弱 10.7%。盤前 04:00–08:00 成交約 47 萬股。",
+   "catalyst": "CrowdStrike 同日宣布以全股票交易收購 Zscaler（約 439 億美元，Seeking Alpha）。全股票收購會攤薄現有股東，收購方通常先跌。",
+   "technical": "日線跌勢（上週已由 256 跌到 229）。盤前 04:00 開 223 高見 225，之後跌到 206 再反彈到 213，喺 1 小時 EMA 9（216）之下。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低 206.00",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:15）：QQQ +3.61%、SPY +2.64%、IWM +2.39%、SMH +5.88%；上週五 AI 股急跌後今朝大反彈。CrowdStrike 宣布以全股票約 439 億美元收購 Zscaler。 大市大升唔利沽空，所以要 QQQ 喺 VWAP 下面先做。",
+    "fundamentals": "大型全股票收購：攤薄 + 整合風險，係實質負面；但市場可能慢慢消化，開市後有機會反彈。",
+    "technical": "跌穿 206 之後下面係上週五盤後低 201.11；上面 216（1 小時 EMA 9）、225（盤前高）係阻力。",
+    "tape": "盤前 04:00–08:00 成交約 47 萬股（IBKR 1 小時 K 線），係過去兩日同時段平均約 12 萬股嘅 3.9 倍；IBKR 即時差價約 0.27%。",
+    "intuition": "信心低。大市大升 + 逆勢沽空，只做跌穿盤前低嘅延續，QQQ 一喺 VWAP 上面就唔做。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低 206.00，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 下面，QQQ 喺 VWAP 下面",
+    "entry": 205.9,
+    "stop": 213.4,
+    "target1": 190.9,
+    "target2": 183.4,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：收購方攤薄、日線跌勢。只做多嘅用戶唔好撈底。",
+    "short": "跌穿 206.00 用 Sell Stop 205.90 沽，Stop 213.40（0.5 ATR），T1 190.90、T2 183.40；−1R（198.40）將 Stop 移返入場價。呢個係突破計劃：價格要先跌穿入場價先入場。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。大市大升日，QQQ 喺 VWAP 上面就完全唔沽。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起累計 17 次、贏 2 次、約 −10.7R（11/20 未計）。"
+   },
+   "risks": [
+    "大市大升（QQQ +3.6%），逆勢沽空",
+    "RVOL 3.9 係用 IBKR 1 小時 K 線、過去兩日同時段做基準人手計（Alpaca 冇數據），未用 10 日平均",
+    "ATR 15.15、平均成交、Float 係 11/19 收集器數字（今日冇 Alpaca）",
+    "EMA 9 用 1 小時 K 線計（唔係 5 分鐘）",
+    "差價 0.27%（高過 0.1% 標準）：用限價單"
+   ],
+   "news": [
+    {
+     "title": "CrowdStrike to buy Zscaler in ~$43.9B all-stock deal",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/ZS/news?source=feed_symbol_ZS",
+     "time": "2026-11-23T10:35"
+    },
+    {
+     "title": "CrowdStrike to buy Zscaler in ~$43.9B all-stock deal (ZS:NASDAQ)",
+     "source": "Seeking Alpha（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNMTZYMnpPaWNDeDZhSS1nRjhacndaTmFaMEk0V0paMllEdUxILWJBU0gyOU1vaGk1Z1N3eWhLMEw0X1pzazk2ZEVRcnJUeXJyQ3Vvb2stV01ZUG43MDlKeF9jcF9iN3RrUGdaWWJkNlgzeDF6WXFIM005dUNqdXd2Vl81eUFwREdmMGhtYkRpb2E?oc=5",
+     "time": "2026-11-23T10:35"
+    },
+    {
+     "title": "Stock Market Today: Dow Jones, S&P 500, Nasdaq 100 Futures Rise After Friday’s AI Rout — ORCL, ZS, ZM in Focus",
+     "source": "Benzinga（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOQkdKYWdvMkZIcGM5V3dMbjEwem4yRmhpVVZ6S2dPRnBLUzh3SFdUMmNEdW84NDZVZDJfV0NJU0Z3WmFLNWh5eC1Ba0dxb0tBcXhxN0ZkdTZwU19hNjdGX0t5Q3h6LVFIOTdEQnZHaGVnM19HMDRpQ3p6TDl1LXR0QWxpRHBxMmZJZjl0OHRwM09FNEJMS1J5aGhYdTZ1M2pXNzF4WE1ZZjZfZjZhbmd6ZWppdUQ2ZGtVYXlLNnVIdGNZZURIYWxwdUUwT1ltTHZPT21CZ1l2ZGtRcFlTeHJSc2tqOHhaUjAwMkhvMGRmOA?oc=5",
+     "time": "2026-11-23T10:26"
+    }
+   ],
+   "lists": [
+    "IBKR 跌幅掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-23T13:11:40.288Z",
+    "atET": "08:11",
+    "status": "REALTIME",
+    "last": 213.1,
+    "ts": "2026-11-23T13:10:08.000Z",
+    "halted": false,
+    "bid": 212.92,
+    "ask": 213.5,
+    "bidSize": 84,
+    "askSize": 30,
+    "volume": 1136457.085399,
+    "chgPct": -7.12,
+    "spread": 0.58,
+    "spreadPct": 0.272,
+    "gapNow": -7.12
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "APLD",
+   "why": "升 13.6%（IBKR 13.05），但 RVOL 約 1.2 未夠 2。"
+  },
+  {
+   "sym": "UMC",
+   "why": "升 10.9%（IBKR 13.36），冇計 RVOL；之前差價超過 1%。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "ZS",
+   "why": "被全股票收購，價格跟 CRWD 走"
+  }
+ ],
+ "news": [
+  {
+   "title": "Tech stocks rebound as dip-buyers step into battered AI and chip shares",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/ZS/news?source=feed_symbol_ZS",
+   "time": "2026-11-23T11:39"
+  },
+  {
+   "title": "CrowdStrike to buy Zscaler in ~$43.9B all-stock deal",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/ZS/news?source=feed_symbol_ZS",
+   "time": "2026-11-23T10:35"
+  },
+  {
+   "title": "Stock Market Today: Dow Jones, S&P 500, Nasdaq 100 Futures Rise After Friday’s AI Rout — ORCL, ZS, ZM in Focus",
+   "source": "Benzinga（Google News）",
+   "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOQkdKYWdvMkZIcGM5V3dMbjEwem4yRmhpVVZ6S2dPRnBLUzh3SFdUMmNEdW84NDZVZDJfV0NJU0Z3WmFLNWh5eC1Ba0dxb0tBcXhxN0ZkdTZwU19hNjdGX0t5Q3h6LVFIOTdEQnZHaGVnM19HMDRpQ3p6TDl1LXR0QWxpRHBxMmZJZjl0OHRwM09FNEJMS1J5aGhYdTZ1M2pXNzF4WE1ZZjZfZjZhbmd6ZWppdUQ2ZGtVYXlLNnVIdGNZZURIYWxwdUUwT1ltTHZPT21CZ1l2ZGtRcFlTeHJSc2tqOHhaUjAwMkhvMGRmOA?oc=5",
+   "time": "2026-11-23T10:26"
+  }
+ ],
+ "lesson": "機器重設會令私人 key 檔消失：數據唔齊嗰日寧願少揀，唔好估 RVOL。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

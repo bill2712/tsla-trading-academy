@@ -215,5 +215,15 @@
   "id": 943990769,
   "type": "STK",
   "name": "Anthropic"
+ },
+ "ZS": {
+  "id": 310621426,
+  "type": "STK",
+  "name": "Zscaler"
+ },
+ "APLD": {
+  "id": 556067819,
+  "type": "STK",
+  "name": "Applied Digital"
  }
 }
