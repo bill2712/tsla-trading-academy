@@ -356,5 +356,55 @@
   }
  ],
  "lesson": "機器重設會令私人 key 檔消失：數據唔齊嗰日寧願少揀，唔好估 RVOL。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-23T13:58:18.235Z",
+  "atET": "08:58",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 643.42,
+    "chgPct": 5.75,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 714.6800000000001,
+    "chgPct": 3.61,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 263.88,
+    "chgPct": 2.83,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "CRWD",
+    "side": "Short",
+    "entry": 205.9,
+    "stop": 213.4,
+    "target1": 190.9,
+    "last": 213.22,
+    "bid": 212.52,
+    "ask": 213.04,
+    "spreadPct": 0.244,
+    "gapNow": -7.07,
+    "gapReport": -7.12,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.48,
+    "status": "waiting",
+    "reason": "未到入場價 205.9（差 0.48 ATR）：按計劃等觸發；買賣差價 0.244% 偏闊",
+    "note": ""
+   }
+  ],
+  "summary": "Long 專區今日冇做多股。CRWD 沽空仲等觸發：IBKR 即時 213.22，離入場 205.90 差約 0.48 ATR。但 QQQ 而家 +5.75%（大市極強），按計劃 QQQ 喺 VWAP 上面就唔沽，今日 CRWD 觸發機會同質素都低。數據仍然唔齊（冇 Alpaca key）。",
+  "newMovers": []
+ }
 }
