@@ -383,5 +383,55 @@
   }
  ],
  "lesson": "冇 Alpaca 數據嘅日子，寧願少揀；每隻入選股都要用 IBKR K 線核實 RVOL。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-24T13:58:23.362Z",
+  "atET": "08:58",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 637.23,
+    "chgPct": -2.12,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 713.23,
+    "chgPct": -1.25,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 263.53000000000003,
+    "chgPct": -0.83,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "DKS",
+    "side": "Long",
+    "entry": 158.1,
+    "stop": 154.8,
+    "target1": 164.7,
+    "last": 150.57,
+    "bid": 149.2,
+    "ask": 151.3,
+    "spreadPct": 1.398,
+    "gapNow": 12.64,
+    "gapReport": 16.35,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 1.14,
+    "status": "broken",
+    "reason": "盤前已經跌穿 Stop 154.8：今日計劃作廢；買賣差價 1.398% 偏闊",
+    "note": "程式按「而家價低過 Stop」計；呢個係 Buy Stop 突破計劃，未升穿 158.10 未入場。真正作廢條件係開市跌穿 150.35。"
+   }
+  ],
+  "summary": "Long 專區 DKS 盤前回吐：由 158 跌到 150.57（IBKR 即時，+12.6%），離入場價 158.10 差約 1.1 ATR，而且貼近計劃嘅作廢位 150.35（20 日高）；開市跌穿 150.35 就唔做。程式顯示「作廢」係因為價格低過 Stop 價位（突破計劃未入場未有 Stop），見 note。QQQ −2.12%，大市偏淡，A+ 過濾未齊，今日唔做都得。",
+  "newMovers": []
+ }
 }
