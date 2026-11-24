@@ -225,5 +225,25 @@
   "id": 556067819,
   "type": "STK",
   "name": "Applied Digital"
+ },
+ "DKS": {
+  "id": 16310970,
+  "type": "STK",
+  "name": "Dick's Sporting Goods"
+ },
+ "ANF": {
+  "id": 2585399,
+  "type": "STK",
+  "name": "Abercrombie & Fitch"
+ },
+ "HPE": {
+  "id": 209411798,
+  "type": "STK",
+  "name": "Hewlett Packard Enterprise"
+ },
+ "DELL": {
+  "id": 346218218,
+  "type": "STK",
+  "name": "Dell"
  }
 }

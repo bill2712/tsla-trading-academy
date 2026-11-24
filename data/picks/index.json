@@ -1,6 +1,25 @@
 {
- "updated": "2026-11-23T13:58:18.357Z",
+ "updated": "2026-11-24T13:14:11.216Z",
  "days": [
+  {
+   "date": "2026-11-24",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏淡",
+   "headline": "⚠️ 數據唔齊（仍冇 Alpaca key）：半導體再跌（QQQ −2.2%、SMH −4.9%），零售業績造好；Long 專區得 DKS（業績大勝，日線橫行）。",
+   "n": 1,
+   "top": [
+    {
+     "sym": "DKS",
+     "gapPct": 16.35,
+     "rvol": 76,
+     "beginner": "中等",
+     "grade": "B"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-23",
    "version": 3,
@@ -17,7 +36,7 @@
      "grade": "C"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:58",
    "again": []
   },

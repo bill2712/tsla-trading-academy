@@ -1,0 +1,387 @@
+{
+ "version": 3,
+ "date": "2026-11-24",
+ "generatedAt": "2026-11-24T13:14:10Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:12",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "⚠️ Alpaca key 仍然冇",
+   "ok": false,
+   "note": "私人檔 ~/.config/tsla-picks/alpaca.env 未恢復；收集器冇 RVOL／ATR／趨勢，回顧程式跑唔到"
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅）",
+   "ok": true,
+   "note": "美東 08:10"
+  },
+  {
+   "name": "IBKR 即時報價（指數同候選股）",
+   "ok": true,
+   "note": "REALTIME"
+  },
+  {
+   "name": "IBKR 1 小時／日線 K 線（DKS、ANF、HPE 嘅 RVOL、ATR、趨勢）",
+   "ok": true,
+   "note": "RVOL 人手計，基準係過去兩日同時段"
+  },
+  {
+   "name": "新聞：Seeking Alpha、Google News",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "今日冇做；R:R 人手計"
+  },
+  {
+   "name": "trader-news／trader-analyst／trader-pelosi",
+   "ok": false,
+   "note": "skill 未裝，今日冇跑"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "今日冇做"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "1 隻 pick，美東 08:14"
+  }
+ ],
+ "headline": "⚠️ 數據唔齊（仍冇 Alpaca key）：半導體再跌（QQQ −2.2%、SMH −4.9%），零售業績造好；Long 專區得 DKS（業績大勝，日線橫行）。",
+ "market": {
+  "bias": "偏淡",
+  "summary": "IBKR 即時（08:12）：QQQ −2.15%、SPY −1.16%、IWM −0.90%、SMH −4.86%；昨日大反彈後半導體再急跌（HPE 業績後警告 AI 伺服器毛利受壓，ADI、DELL、MU 跌）。零售股業績好（DKS、ANF、BURL、DLTR、BBY 升）。10:00 公布消費者信心（中影響）。",
+  "base": {
+   "spy": -1.16,
+   "qqq": -2.15
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 637.03,
+    "chgPct": -2.15,
+    "note": "IBKR 即時 08:12"
+   },
+   {
+    "sym": "SPY",
+    "last": 713.89,
+    "chgPct": -1.16,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 263.34,
+    "chgPct": -0.9,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 437.83,
+    "chgPct": -4.86,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [
+   {
+    "time": "10:00 ET",
+    "name": "諮商會消費者信心",
+    "impact": "中",
+    "note": "預期 92.4"
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "DKS",
+    "when": "盤前",
+    "note": "好過預期"
+   },
+   {
+    "sym": "ANF",
+    "when": "盤前",
+    "note": "好過預期"
+   },
+   {
+    "sym": "HPE",
+    "when": "昨日盤後",
+    "note": "警告毛利"
+   },
+   {
+    "sym": "BBY",
+    "when": "盤前",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "DKS",
+   "price": 155.53,
+   "gapPct": 16.35,
+   "rvol": 76,
+   "pmVolume": 129571,
+   "avgVolume": 1880000,
+   "floatM": 62.4,
+   "atrPct": 4.26,
+   "spreadPct": 0.24,
+   "rsQqq": 18.5,
+   "ema9Pct": 9.7,
+   "trend": "mixed",
+   "catalyst": "業績大幅好過預期、上調指引",
+   "verdict": "pick",
+   "note": "RVOL 用 IBKR 1 小時 K 線人手計"
+  },
+  {
+   "sym": "ANF",
+   "price": 154.7,
+   "gapPct": 10.15,
+   "rvol": 55,
+   "pmVolume": 94172,
+   "avgVolume": 560000,
+   "floatM": 41.48,
+   "atrPct": 3.8,
+   "spreadPct": 0.65,
+   "rsQqq": 12.3,
+   "ema9Pct": null,
+   "trend": "mixed",
+   "catalyst": "業績好、上調全年指引",
+   "verdict": "watch",
+   "note": "盤前成交約 9.4 萬股，未夠 10 萬；差價 0.65%"
+  },
+  {
+   "sym": "HPE",
+   "price": 42.22,
+   "gapPct": -12.08,
+   "rvol": 1.6,
+   "pmVolume": 422543,
+   "avgVolume": 10000000,
+   "floatM": 1320,
+   "atrPct": 7,
+   "spreadPct": 0.6,
+   "rsQqq": -9.9,
+   "ema9Pct": null,
+   "trend": "mixed",
+   "catalyst": "業績後警告 AI 伺服器毛利受壓",
+   "verdict": "watch",
+   "note": "RVOL 約 1.6（基準日昨日本身有大事），未夠 2"
+  }
+ ],
+ "fewPicksReason": "冇 Alpaca 數據，只可以用 IBKR K 線逐隻計 RVOL。DKS 合格；ANF 盤前成交未夠 10 萬股、差價闊；HPE RVOL 約 1.6；BURL、DLTR、BBY 冇時間逐隻核實。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇日線升勢而又 RVOL ≥ 2 嘅做多股；唯一合格做多係 DKS（業績大勝、上調指引，日線橫行）。等 09:35 後升穿盤前高 158.00 先入。大市偏淡（QQQ −2.2%），A+ 過濾要 QQQ 喺 VWAP 上面先做，唔齊就今日唔做。",
+  "items": [
+   {
+    "sym": "DKS",
+    "trend": "mixed",
+    "setups": "Flat Top（158.00）→ EMA 9 回調 → 30 分鐘 ORB",
+    "note": "大市偏淡，A+ 過濾要齊"
+   }
+  ]
+ },
+ "carryover": {
+  "fromDate": "2026-11-23",
+  "summary": "上一份報告（11/23）得 CRWD 一隻沽空。今日 CRWD 盤前 206.90（−1.0%），冇新消息，skip。",
+  "items": [
+   {
+    "sym": "CRWD",
+    "prevSide": "Short",
+    "prevResult": "10:00–10:30 觸發，收市約 −0.41R",
+    "yClose": 208.96,
+    "yChgPct": -8.93,
+    "yClosePos": null,
+    "yVolRatio": null,
+    "price": 206.9,
+    "gapPct": -0.99,
+    "rvol": null,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 206.90（−1.0%），冇新消息；收購消息已經消化咗一日。冇 Alpaca 數據，冇計 RVOL。",
+    "levels": "昨日低 200.53、昨日收 208.96"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "DKS",
+   "name": "Dick's Sporting Goods",
+   "grade": "B",
+   "beginner": "中等",
+   "direction": "Long",
+   "score": 70,
+   "price": 155.53,
+   "prevClose": 133.67,
+   "gapPct": 16.35,
+   "pmVolume": 129571,
+   "pmVolPct": 6.9,
+   "avgVolume": 1880000,
+   "rvol": 76,
+   "spread": 0.37,
+   "spreadPct": 0.24,
+   "atr": 6.63,
+   "atrPct": 4.26,
+   "mktCapB": null,
+   "floatM": 62.4,
+   "rsQqq": 18.5,
+   "rsSpy": 17.51,
+   "ema9": 141.78,
+   "ema9Pct": 9.7,
+   "ema9Step": "1h",
+   "ema9Daily": null,
+   "dailyTrend": "mixed",
+   "levels": {
+    "pmh": 158,
+    "pml": 136,
+    "pdh": 136.53,
+    "pdl": 132.2,
+    "pdc": 133.67,
+    "other": [
+     {
+      "label": "20 日高",
+      "price": 150.35
+     },
+     {
+      "label": "20 日線",
+      "price": 142.48
+     },
+     {
+      "label": "50 日線",
+      "price": 138.24
+     }
+    ]
+   },
+   "why": "Q3 業績大幅好過預期兼上調全年指引，盤前升 16.4%（IBKR 即時 155.53）；盤前 04:00–08:10 成交約 13 萬股，係過去兩日同時段（約 1,700 股）嘅幾十倍。Float 6,240 萬、差價 0.24%。",
+   "catalyst": "Q3 經調整每股盈利 1.94 美元，遠高過預期 1.41；銷售升 23.2%，上調 FY26 指引，Foot Locker 整合有進展（Seeking Alpha、FactSet）。",
+   "technical": "日線橫行（收市 133.67 低過 20 日線 142.5，20 日線高過 50 日線 138.2）。今日跳空到 20 日高 150.35 之上；盤前 07:00 衝到 158.00 後喺 155–157 整固。",
+   "setup": "Flat Top：盤前高 158.00 下面整固，09:35 後升穿先入；未到就睇 EMA 9 回調",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:12）：QQQ −2.15%、SPY −1.16%、IWM −0.90%、SMH −4.86%；昨日大反彈後半導體再急跌（HPE 業績後警告 AI 伺服器毛利受壓，ADI、DELL、MU 跌）。零售股業績好（DKS、ANF、BURL、DLTR、BBY 升）。10:00 公布消費者信心（中影響）。 DKS 屬零售股，同半導體關係細，但大市偏淡要小心。",
+    "fundamentals": "盈利、銷售、指引全部好過預期，係今日最清楚嘅做多消息之一。",
+    "technical": "升穿 158 上面冇近期阻力；下面 155.5（盤前整固低）、150.35（20 日高）係支持。",
+    "tape": "盤前成交約 13 萬股（約平時 7%），IBKR 即時買 155.40／賣 155.77。開市第一支 5 分鐘 K 要見 ≥ 平時 2 倍。",
+    "intuition": "信心中等。消息好但大市偏淡（QQQ −2%），A+ 過濾要求 QQQ 喺 VWAP 上面先做，今日未必齊。"
+   },
+   "trade": {
+    "side": "Long",
+    "trigger": "09:35 後升穿盤前高 158.00，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 同 5 分鐘 EMA 9 之上，入場前 QQQ 喺 VWAP 上面",
+    "entry": 158.1,
+    "stop": 154.8,
+    "target1": 164.7,
+    "target2": 168,
+    "rr": 2
+   },
+   "plan": {
+    "long": "升穿 158.00 用 Buy Stop 158.10 入，Stop 154.80（0.5 ATR），T1 164.70、T2 168.00；+1R（161.40）將 Stop 移返入場價。11:30 前未觸發就放棄。呢個係突破計劃：價格要先升穿入場價先入場。",
+    "short": "唔做沽空：業績好。",
+    "noTrade": "09:30–09:35 唔入場；唔好一開市追昨日高位（PDH）突破；首 5 分鐘成交未夠平時 2 倍、或者入場前 QQQ 喺自己 VWAP 下面（A+ 過濾唔齊）就唔做；11:30 前未觸發就放棄。開市跌穿 150.35（20 日高）就唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起已計 17 次、贏 2 次、約 −10.7R（11/20、11/23 未計）。"
+   },
+   "risks": [
+    "大市偏淡（QQQ −2.2%、SMH −4.9%），A+ 過濾可能唔齊",
+    "RVOL 用 IBKR 1 小時 K 線、過去兩日同時段做基準人手計（冇 Alpaca）",
+    "平均成交用 IBKR 日線估（約 188 萬股）；EMA 9 用 1 小時 K 線",
+    "Short Float 18%，升勢可能急但波動大",
+    "差價 0.24%（高過 0.1% 標準）：用限價單"
+   ],
+   "news": [
+    {
+     "title": "Dick's Sporting Goods rallies on signs of Foot Locker turnaround, improved outlook",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/DKS/news?source=feed_symbol_DKS",
+     "time": "2026-11-24T12:55"
+    },
+    {
+     "title": "Earnings Flash (DKS) DICK'S Sporting Goods, Inc. Posts Q3 Adjusted EPS $1.94 per Share, vs. FactSet Est of $1.41",
+     "source": "marketscreener.com（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOal9UdnBDYktoUmtXcEdIdGNIQ3FOYW9lU05pLXpWVFBkS2VhbWlLTjVTNVFwbUZ6clFxSlNBZVFkOEd5VjdNZVF6SVRfWU5wdVZRLWNXcFdtYWY5azYtdlk5dWQySWJzdEY5MHdtQTdMTTE4Q1NtQ0VmZzlnUXFpZGYweE4tSWRzeGlXYjBmaVpTTjVGNWxkbXpQWFFQS1F6RW5JYUpjZXBlOVRSOHFIRW11SWR4TjA0cU9aZnluTVlELTVCWmo2aHFhRENhTUcxOGRVWThyOU16Z3RNLXc?oc=5",
+     "time": "2026-11-24T12:11"
+    },
+    {
+     "title": "DKS: Q3 sales rose 23.2%; FY26 outlook was raised as Foot Locker progress continued",
+     "source": "TradingView（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNc09KQVFRSXdYaDRVZG16cTFncVhkR2RiNndUcnVjRVQwRzNKTWtTdGI4c3A4cFhXM0lnWnRKSGpXeUFiZWxqc3gzaDJOQzBrU01jNFZtNUVQT2NKWm50Ymt2cXpWaG83U01PSHlNRUtaMVUtcFBaV3hDTFRnS3d5NHlBaUZWOXV0SVJadGpuZ0kxNnVxS2ZiZk94XzRoVGZXRE1XMThUS1V3UnlMakdoRTBQbmNsczdmZFJKenU4XzFmS25ZTVhaY2tOZzNyZ1RuUERZaGhfckhfbXRyNzB4WS00VTlSdE1YYnFQUTFrZTZ1TFlSbVE?oc=5",
+     "time": "2026-11-24T12:09"
+    },
+    {
+     "title": "DKS: Dick's Sporting Goods Inc filed SEC Form 8-K: Results of...",
+     "source": "Quantisnow（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOMkFtSlhqZU5kVlBxOHlTYlFpSWk3WGt0NzNUekp5Vlo0TnNWZ2gxbXFwVW0wUTJTZF83MFYyaldfRXJfeHNpN1NaNjFHUFNmT3AxSVB6UVNwU1RLZDJkeV8xRGxuc1U1ZEU1c3R2YlEtb1g3aXdHaEtCeXZSc2pTM0VEaWU5d1dWRXNpX2dCeFQ1NElHQWRjU0ZWWlVZdw?oc=5",
+     "time": "2026-11-24T12:05"
+    }
+   ],
+   "lists": [
+    "IBKR 升幅掃描",
+    "Nasdaq 業績日曆（盤前）"
+   ],
+   "ibkr": {
+    "at": "2026-11-24T13:14:11.075Z",
+    "atET": "08:14",
+    "status": "REALTIME",
+    "last": 155.53,
+    "ts": "2026-11-24T13:07:22.000Z",
+    "halted": false,
+    "bid": 155.4,
+    "ask": 155.77,
+    "bidSize": 11,
+    "askSize": 5,
+    "volume": 216824.283004,
+    "chgPct": 16.35,
+    "spread": 0.37,
+    "spreadPct": 0.238,
+    "gapNow": 16.35
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "ANF",
+   "why": "業績好、上調指引，升 10%（IBKR 154.70），但盤前成交約 9.4 萬股、差價約 0.65%；開市成交夠、升穿盤前高 154.80 先考慮。"
+  },
+  {
+   "sym": "HPE",
+   "why": "業績後警告 AI 伺服器毛利，跌 12%（IBKR 42.22），RVOL 約 1.6 未夠 2。"
+  },
+  {
+   "sym": "DELL",
+   "why": "跟 HPE 跌 7%（IBKR 311.00），本週出業績；冇計 RVOL。"
+  }
+ ],
+ "avoid": [],
+ "news": [
+  {
+   "title": "HPE shares fall as margin worries overshadow raised outlook",
+   "source": "Reuters（Google News）",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPamhxOU8weWdPQlYzdmRWR0hKdVBPdGhpcXVzUVBOcWpmNmdlTXUxSXFiSUE0SUF2Q0NWVlNUOE43TG0tYXFZYm50TnlrNDRJdGxGTUlpeUhKT0lRVjFHb3NPVS1CLS0tWmZoc1lNcEtKTDBWVDhmSVRmVlpxbWRSUmNsWkFva1czcWxXdUJBLW9mVFNLZmk3LU9ZOHZaWFZoNmlV?oc=5",
+   "time": "2026-11-24T12:51"
+  },
+  {
+   "title": "HPE Expects Thinner AI Margins. Is Dell Next?",
+   "source": "Trefis（Google News）",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOcEJvdWdPdlU0ZWdleUZRcGpDSWg1OU00NktYN0NKRi1BVWlyOTN0UnllNGVuM3ZNUEF4emdnTFBrUWxCUC1sNW4ya29PNHJIRlBTTzdzdnhIMzZIcHFUZTJFQUs1bWVla3NQRUdMYldabUFfVmFpVDlLMkZtVkNsaHY1b2RmekNyekRYV29xWjV3VVhvQVBsWkh0VUZKQzJtNFpRSDVR?oc=5",
+   "time": "2026-11-24T11:22"
+  },
+  {
+   "title": "Dick's Sporting Goods rallies on signs of Foot Locker turnaround, improved outlook",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/DKS/news?source=feed_symbol_DKS",
+   "time": "2026-11-24T12:55"
+  }
+ ],
+ "lesson": "冇 Alpaca 數據嘅日子，寧願少揀；每隻入選股都要用 IBKR K 線核實 RVOL。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}
