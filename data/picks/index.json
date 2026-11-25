@@ -1,6 +1,25 @@
 {
- "updated": "2026-11-24T13:58:23.461Z",
+ "updated": "2026-11-25T13:13:23.310Z",
  "days": [
+  {
+   "date": "2026-11-25",
+   "version": 3,
+   "status": "premarket",
+   "bias": "偏淡",
+   "headline": "⚠️ 數據唔齊（仍冇 Alpaca key）：半導體再跌（QQQ −2.9%、SMH −4.6%），08:30 PCE／GDP；Long 專區冇合格做多股；AMBA 業績崩 34%",
+   "n": 1,
+   "top": [
+    {
+     "sym": "AMBA",
+     "gapPct": -34.23,
+     "rvol": 11.6,
+     "beginner": "高風險",
+     "grade": "C"
+    }
+   ],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-24",
    "version": 3,
@@ -17,7 +36,7 @@
      "grade": "B"
     }
    ],
-   "reviewed": false,
+   "reviewed": true,
    "preopen": "08:58",
    "again": []
   },

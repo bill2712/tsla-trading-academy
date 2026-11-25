@@ -1,0 +1,390 @@
+{
+ "version": 3,
+ "date": "2026-11-25",
+ "generatedAt": "2026-11-25T13:13:23Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:10",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "⚠️ Alpaca key 仍然冇",
+   "ok": false,
+   "note": "私人檔 ~/.config/tsla-picks/alpaca.env 未恢復；收集器冇 RVOL／ATR／趨勢，回顧程式跑唔到"
+  },
+  {
+   "name": "IBKR 掃描器（升跌幅）",
+   "ok": true,
+   "note": "美東 08:08"
+  },
+  {
+   "name": "IBKR 即時報價（指數同候選股）",
+   "ok": true,
+   "note": "REALTIME"
+  },
+  {
+   "name": "IBKR 1 小時／日線 K 線（AMBA、LI 嘅 RVOL、ATR、趨勢）",
+   "ok": true,
+   "note": "RVOL 人手計，基準係過去兩日同時段"
+  },
+  {
+   "name": "新聞：Seeking Alpha、Google News",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc（Market Profile + R:R 核對）",
+   "ok": false,
+   "note": "今日冇做；R:R 人手計"
+  },
+  {
+   "name": "trader-news／trader-analyst／trader-pelosi",
+   "ok": false,
+   "note": "skill 未裝，今日冇跑"
+  },
+  {
+   "name": "CNBC／TradeThatSwing 網上搜尋",
+   "ok": false,
+   "note": "今日冇做"
+  },
+  {
+   "name": "IBKR 即時報價同盤前 K 線",
+   "ok": true,
+   "note": "1 隻 pick，美東 08:13"
+  }
+ ],
+ "headline": "⚠️ 數據唔齊（仍冇 Alpaca key）：半導體再跌（QQQ −2.9%、SMH −4.6%），08:30 PCE／GDP；Long 專區冇合格做多股；AMBA 業績崩 34%，C 級沽空。",
+ "market": {
+  "bias": "偏淡",
+  "summary": "IBKR 即時（08:10）：QQQ −2.87%、SPY −1.90%、IWM −1.21%、SMH −4.63%；半導體連跌。08:30 有核心 PCE、GDP 初值（高影響），明日感恩節休市。 業績後大跌：AMBA、NTNX、URBN；中概股（LI、BZ、MNSO）偏強。",
+  "base": {
+   "spy": -1.9,
+   "qqq": -2.87
+  },
+  "indices": [
+   {
+    "sym": "QQQ",
+    "last": 619.78,
+    "chgPct": -2.87,
+    "note": "IBKR 即時 08:10"
+   },
+   {
+    "sym": "SPY",
+    "last": 705.1,
+    "chgPct": -1.9,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "IWM",
+    "last": 263.92,
+    "chgPct": -1.21,
+    "note": "IBKR 即時"
+   },
+   {
+    "sym": "SMH",
+    "last": 407,
+    "chgPct": -4.63,
+    "note": "IBKR 即時"
+   }
+  ],
+  "events": [
+   {
+    "time": "08:30 ET",
+    "name": "核心 PCE 物價指數",
+    "impact": "高",
+    "note": "預期 0.3%"
+   },
+   {
+    "time": "08:30 ET",
+    "name": "GDP 初值",
+    "impact": "高",
+    "note": "預期 3.5%"
+   },
+   {
+    "time": "14:00 ET",
+    "name": "Fed 褐皮書",
+    "impact": "低",
+    "note": "明日感恩節休市"
+   }
+  ],
+  "earnings": [
+   {
+    "sym": "AMBA",
+    "when": "昨日盤後",
+    "note": "指引差"
+   },
+   {
+    "sym": "NTNX",
+    "when": "昨日盤後",
+    "note": ""
+   },
+   {
+    "sym": "URBN",
+    "when": "昨日盤後",
+    "note": ""
+   }
+  ]
+ },
+ "scan": [
+  {
+   "sym": "AMBA",
+   "price": 29.25,
+   "gapPct": -34.23,
+   "rvol": 11.6,
+   "pmVolume": 260089,
+   "avgVolume": 1002714,
+   "floatM": 42.12,
+   "atrPct": 16.6,
+   "spreadPct": 1.16,
+   "rsQqq": -31.36,
+   "ema9Pct": -6.67,
+   "trend": "down",
+   "catalyst": "業績指引大幅下調",
+   "verdict": "pick",
+   "note": "C 級沽空；差價闊"
+  },
+  {
+   "sym": "LI",
+   "price": 11.4,
+   "gapPct": 6.54,
+   "rvol": 2.4,
+   "pmVolume": 187342,
+   "avgVolume": 2269518,
+   "floatM": null,
+   "atrPct": 3.77,
+   "spreadPct": 1.75,
+   "rsQqq": 9.41,
+   "ema9Pct": null,
+   "trend": "mixed",
+   "catalyst": "搵唔到消息（中概股同日升）",
+   "verdict": "watch",
+   "note": "RVOL 約 2.4 過關，但差價約 1.8%、搵唔到消息"
+  },
+  {
+   "sym": "NTNX",
+   "price": 47.26,
+   "gapPct": -13.43,
+   "rvol": null,
+   "pmVolume": 14366,
+   "avgVolume": null,
+   "floatM": null,
+   "atrPct": null,
+   "spreadPct": 2.16,
+   "rsQqq": -10.56,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "業績",
+   "verdict": "avoid",
+   "note": "盤前成交得 1.4 萬股、差價 2%"
+  },
+  {
+   "sym": "URBN",
+   "price": 74.75,
+   "gapPct": -12.65,
+   "rvol": null,
+   "pmVolume": 33583,
+   "avgVolume": null,
+   "floatM": null,
+   "atrPct": null,
+   "spreadPct": 0.59,
+   "rsQqq": -9.78,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "業績",
+   "verdict": "avoid",
+   "note": "盤前成交得 3.4 萬股"
+  }
+ ],
+ "fewPicksReason": "冇 Alpaca 數據，只可以用 IBKR K 線逐隻計 RVOL。AMBA 合格（C 級）；LI RVOL 約 2.4 但差價約 1.8%、搵唔到消息；NTNX、URBN 盤前成交太少。唔會為咗湊數降低標準。",
+ "longFocus": {
+  "summary": "今日冇合格做多股。大市偏淡（QQQ −2.9%、SMH −4.6%），升幅股入面只有 LI RVOL 過關，但差價約 1.8%、搵唔到消息，放觀察。08:30 有 PCE／GDP，明日休市，只做多嘅用戶今日唔做係合理選擇。",
+  "items": []
+ },
+ "carryover": {
+  "fromDate": "2026-11-24",
+  "summary": "上一份報告（11/24）得 DKS 一隻做多，昨日冇觸發。今日 DKS 盤前 153.34（+0.1%），冇新消息，skip。",
+  "items": [
+   {
+    "sym": "DKS",
+    "prevSide": "Long",
+    "prevResult": "開市低過作廢位，全日未升穿入場價，冇觸發",
+    "yClose": 153.09,
+    "yChgPct": 14.53,
+    "yClosePos": null,
+    "yVolRatio": null,
+    "price": 153.34,
+    "gapPct": 0.11,
+    "rvol": null,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日盤前 153.34（+0.1%），業績消息已消化；冇 Alpaca 數據，冇計 RVOL。",
+    "levels": "昨日高 157.89、昨日低 148.75"
+   }
+  ]
+ },
+ "picks": [
+  {
+   "sym": "AMBA",
+   "name": "Ambarella",
+   "grade": "C",
+   "beginner": "高風險",
+   "direction": "Short",
+   "score": 55,
+   "price": 29.25,
+   "prevClose": 44.47,
+   "gapPct": -34.23,
+   "pmVolume": 260089,
+   "pmVolPct": 25.9,
+   "avgVolume": 1002714,
+   "rvol": 11.6,
+   "spread": 0.34,
+   "spreadPct": 1.16,
+   "atr": 4.86,
+   "atrPct": 16.6,
+   "mktCapB": null,
+   "floatM": 42.12,
+   "rsQqq": -31.36,
+   "rsSpy": -32.33,
+   "ema9": 31.34,
+   "ema9Pct": -6.67,
+   "ema9Step": "1h",
+   "ema9Daily": null,
+   "dailyTrend": "down",
+   "levels": {
+    "pmh": 30.17,
+    "pml": 27,
+    "pdh": 53.79,
+    "pdl": 44.28,
+    "pdc": 44.47,
+    "other": [
+     {
+      "label": "昨晚盤後低",
+      "price": 24.33
+     }
+    ]
+   },
+   "why": "業績指引差（Q4 收入預期 7,000–7,500 萬美元，記憶體影響訂單延後），盤後同盤前跌 34%（IBKR 即時 29.25）；盤前 04:00–08:10 成交約 26 萬股，係過去兩日同時段（約 2.3 萬股）嘅 11.6 倍。",
+   "catalyst": "Ambarella 公布 Q3 業績，Q4 收入指引 7,000–7,500 萬美元，因記憶體問題訂單延後，遠差過預期（Seeking Alpha）。",
+   "technical": "日線跌勢（昨收 44.47，20 日線 58.7、50 日線 63.3）。昨晚盤後最低 24.33，今日盤前喺 27.00–30.17 之間反彈，喺 1 小時 EMA 9（31.3）之下。",
+   "setup": "開市推動（沽空）：09:35 後跌穿盤前低 27.00",
+   "pillars": {
+    "bigPicture": "IBKR 即時（08:10）：QQQ −2.87%、SPY −1.90%、IWM −1.21%、SMH −4.63%；半導體連跌。08:30 有核心 PCE、GDP 初值（高影響），明日感恩節休市。",
+    "fundamentals": "指引大幅下調係實質負面；但跌 34% 之後已反映好多壞消息，可能有技術反彈。",
+    "technical": "跌穿 27.00 下面係盤後低 24.33；上面 30.17（盤前高）、31.3（1 小時 EMA 9）係阻力。",
+    "tape": "盤前成交約 26 萬股；IBKR 即時買 29.06／賣 29.40，差價約 1.2%，偏闊。",
+    "intuition": "信心低。跌 34% 嘅股開市好多時先反彈；只做跌穿盤前低嘅延續，差價要收窄先做。"
+   },
+   "trade": {
+    "side": "Short",
+    "trigger": "09:35 後跌穿盤前低 27.00，首 5 分鐘成交 ≥ 平時 2 倍，價格喺 VWAP 下面，QQQ 喺 VWAP 下面，差價 ≤ 0.3%",
+    "entry": 26.9,
+    "stop": 28.6,
+    "target1": 23.5,
+    "target2": 21.8,
+    "rr": 2
+   },
+   "plan": {
+    "long": "唔做多：指引大幅下調、日線跌勢。只做多嘅用戶唔好撈底。",
+    "short": "跌穿 27.00 用 Sell Stop 26.90 沽，Stop 28.60，T1 23.50、T2 21.80；−1R（25.20）將 Stop 移返入場價。呢個係突破計劃：價格要先跌穿入場價先入場。",
+    "noTrade": "09:30–09:35 唔入場；如果開市後升返 VWAP 之上企穩，或者 QQQ 喺 VWAP 上面，就唔沽空；11:30 前未觸發就放棄。開市企穩 30.17（盤前高）之上就唔沽；差價 > 0.3% 唔做。後備 5 分鐘 ORB（⚠️ 只作記錄，唔好用真錢做）：09:35 時如果價格已經過咗入場價 0.3 ATR 以上，唔追；記錄用嘅後備係首 5 分鐘區間突破、Stop 放區間另一邊（最多 0.5 ATR）、Target 2R。由 10/29 起已計 17 次、贏 2 次、約 −10.7R（11/20 之後未計）。"
+   },
+   "risks": [
+    "跌 34% 後技術反彈風險大",
+    "差價約 1.2%（IBKR），遠高過 0.1% 標準：一定要用限價單，收窄先做",
+    "ATR 4.86 係業績前數字，今日波幅會更大",
+    "RVOL 用 IBKR 1 小時 K 線、過去兩日同時段做基準人手計（冇 Alpaca）",
+    "Short Float 10.4%"
+   ],
+   "news": [
+    {
+     "title": "Biggest stock movers Wednesday: AMBA, PHAR, URBN, NTNX, and more",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/AMBA/news?source=feed_symbol_AMBA",
+     "time": "2026-11-25T10:11"
+    },
+    {
+     "title": "Ambarella (AMBA) Stock May Trade At A 48% Discount Following Weak Guidance",
+     "source": "Yahoo Finance（Google News）",
+     "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPbVZPcXdSWXdfR0FyUnhQXzFYSElybTZLSlhfdlhyQW5Rd0YtdE5POGN5VV81cHhqUE5zN1pWdlNsdGQ0bnU0ekdOTjhuU1FaVUprZ0RCR1RPYVhrSXlWYVNJa2NNNzZzS1NFMVlEQnk5bFVqSnl0X1lQQlNLSU1tbWp3QV9FWW56ek9reTloMzdBRlFJZzIwNUkxbw?oc=5",
+     "time": "2026-11-25T10:09"
+    },
+    {
+     "title": "Ambarella anticipates $70M-$75M Q4 revenue amid memory-driven order pushouts",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/symbol/AMBA/news?source=feed_symbol_AMBA",
+     "time": "2026-11-25T02:02"
+    },
+    {
+     "title": "Ambarella, Inc. (AMBA) Q3 2027 Earnings Call Transcript",
+     "source": "Seeking Alpha",
+     "url": "https://seekingalpha.com/article/4971630-ambarella-inc-amba-q3-2027-earnings-call-transcript?source=feed_symbol_AMBA",
+     "time": "2026-11-25T02:01"
+    }
+   ],
+   "lists": [
+    "IBKR 跌幅掃描"
+   ],
+   "ibkr": {
+    "at": "2026-11-25T13:13:23.070Z",
+    "atET": "08:13",
+    "status": "REALTIME",
+    "last": 29.25,
+    "ts": "2026-11-25T13:08:17.000Z",
+    "halted": false,
+    "bid": 29.06,
+    "ask": 29.4,
+    "bidSize": 10,
+    "askSize": 625,
+    "volume": 648174.449104,
+    "chgPct": -34.23,
+    "spread": 0.34,
+    "spreadPct": 1.163,
+    "gapNow": -34.23
+   },
+   "spreadFrom": "IBKR"
+  }
+ ],
+ "watch": [
+  {
+   "sym": "LI",
+   "why": "升 6.5%（IBKR 11.40），RVOL 約 2.4，但差價約 1.8%、搵唔到消息；開市差價收窄、首 5 分鐘成交 ≥ 平時 2 倍先考慮。"
+  }
+ ],
+ "avoid": [
+  {
+   "sym": "NTNX",
+   "why": "盤前成交 1.4 萬股、差價 2%"
+  },
+  {
+   "sym": "URBN",
+   "why": "盤前成交 3.4 萬股"
+  }
+ ],
+ "news": [
+  {
+   "title": "Biggest stock movers Wednesday: AMBA, PHAR, URBN, NTNX, and more",
+   "source": "Seeking Alpha",
+   "url": "https://seekingalpha.com/symbol/AMBA/news?source=feed_symbol_AMBA",
+   "time": "2026-11-25T10:11"
+  },
+  {
+   "title": "Ambarella (AMBA) Stock May Trade At A 48% Discount Following Weak Guidance",
+   "source": "Yahoo Finance（Google News）",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPbVZPcXdSWXdfR0FyUnhQXzFYSElybTZLSlhfdlhyQW5Rd0YtdE5POGN5VV81cHhqUE5zN1pWdlNsdGQ0bnU0ekdOTjhuU1FaVUprZ0RCR1RPYVhrSXlWYVNJa2NNNzZzS1NFMVlEQnk5bFVqSnl0X1lQQlNLSU1tbWp3QV9FWW56ek9reTloMzdBRlFJZzIwNUkxbw?oc=5",
+   "time": "2026-11-25T10:09"
+  }
+ ],
+ "lesson": "連續幾日冇 Alpaca 數據：每日入選股好少，係因為逐隻核實 RVOL，唔係市場冇機會。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+}

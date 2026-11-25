@@ -245,5 +245,15 @@
   "id": 346218218,
   "type": "STK",
   "name": "Dell"
+ },
+ "AMBA": {
+  "id": 115324103,
+  "type": "STK",
+  "name": "Ambarella"
+ },
+ "LI": {
+  "id": 436980133,
+  "type": "STK",
+  "name": "Li Auto ADR"
  }
 }
