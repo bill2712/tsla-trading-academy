@@ -386,5 +386,55 @@
   }
  ],
  "lesson": "連續幾日冇 Alpaca 數據：每日入選股好少，係因為逐隻核實 RVOL，唔係市場冇機會。",
- "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。"
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理，今日數據唔齊；落單前請自行核對價位，並按自己嘅風險上限計股數。",
+ "preopen": {
+  "at": "2026-11-25T13:57:46.954Z",
+  "atET": "08:57",
+  "source": "IBKR",
+  "market": [
+   {
+    "sym": "QQQ",
+    "last": 617.3000000000001,
+    "chgPct": -3.26,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "SPY",
+    "last": 703.6800000000001,
+    "chgPct": -2.1,
+    "status": "REALTIME"
+   },
+   {
+    "sym": "IWM",
+    "last": 263.28000000000003,
+    "chgPct": -1.44,
+    "status": "REALTIME"
+   }
+  ],
+  "items": [
+   {
+    "sym": "AMBA",
+    "side": "Short",
+    "entry": 26.9,
+    "stop": 28.6,
+    "target1": 23.5,
+    "last": 30.62,
+    "bid": 30.55,
+    "ask": 30.8,
+    "spreadPct": 0.815,
+    "gapNow": -31.14,
+    "gapReport": -34.23,
+    "rvol": null,
+    "pmh": null,
+    "pml": null,
+    "dataStatus": "REALTIME",
+    "distAtr": 0.77,
+    "status": "broken",
+    "reason": "盤前已經升穿 Stop 28.6：今日計劃作廢；買賣差價 0.815% 偏闊",
+    "note": "程式按「而家價高過 Stop」計；呢個係 Sell Stop 突破計劃，未跌穿 26.90 未入場。但而家價已經高過盤前高 30.17，按計劃開市企穩之上就唔沽。"
+   }
+  ],
+  "summary": "Long 專區今日冇做多股。AMBA 沽空仲未觸發：盤前反彈到 30.62（IBKR 即時，−31.1%），離入場價 26.90 差約 0.77 ATR，貼近盤前高 30.17 之上；計劃寫明企穩 30.17 之上就唔沽，所以而家唔應該沽。程式顯示「作廢」係因為價格高過 Stop 價位（突破計劃未入場未有 Stop）。QQQ −3.26%，大市急跌。",
+  "newMovers": []
+ }
 }
