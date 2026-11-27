@@ -1,0 +1,324 @@
+{
+ "version": 3,
+ "date": "2026-11-27",
+ "generatedAt": "2026-11-27T13:08:50Z",
+ "status": "premarket",
+ "dataQuality": "partial",
+ "scanTime": "08:15",
+ "rules": {
+  "gapAbs": 3,
+  "rvol": 2,
+  "pmVolume": 200000,
+  "pmVolumeEarly": 100000,
+  "floatM": 30,
+  "atrPct": 2,
+  "spreadPct": 0.1
+ },
+ "sources": [
+  {
+   "name": "⚠️ Alpaca key 仍然冇",
+   "ok": false,
+   "note": "私人檔 ~/.config/tsla-picks/alpaca.env 未恢復"
+  },
+  {
+   "name": "⚠️ IBKR 連接器",
+   "ok": false,
+   "note": "要重新登入（連接被拒），今日冇即時報價同 K 線"
+  },
+  {
+   "name": "Yahoo（後備）",
+   "ok": false,
+   "note": "HTTP 429 限流"
+  },
+  {
+   "name": "StockAnalysis 盤前榜",
+   "ok": true,
+   "note": "只有升跌幅，冇 RVOL"
+  },
+  {
+   "name": "新聞：Seeking Alpha、Google News、Finviz",
+   "ok": true
+  },
+  {
+   "name": "ForexFactory 經濟日曆",
+   "ok": true
+  },
+  {
+   "name": "TradingCalc",
+   "ok": false,
+   "note": "冇價格數據，冇做"
+  }
+ ],
+ "headline": "⚠️ 今日冇選股：所有價格數據源都斷咗（冇 Alpaca key、Yahoo 限流、IBKR 要重新登入），計唔到 RVOL。感恩節翌日 13:00 收市，今日唔做。",
+ "market": {
+  "bias": "中性",
+  "summary": "今日冇即時指數數據（IBKR 要重新登入、Yahoo 限流）。感恩節翌日半日市，13:00 收市，成交通常偏少。08:30 有貿易差額、批發庫存（低影響）。",
+  "base": {
+   "spy": null,
+   "qqq": null
+  },
+  "indices": [],
+  "events": [
+   {
+    "time": "13:00 ET",
+    "name": "半日市提早收市",
+    "impact": "中",
+    "note": "感恩節翌日"
+   }
+  ],
+  "earnings": []
+ },
+ "scan": [
+  {
+   "sym": "AMBA",
+   "price": 33.63,
+   "gapPct": -24.38,
+   "rvol": null,
+   "pmVolume": 1411463,
+   "avgVolume": 1880000,
+   "floatM": 42.12,
+   "atrPct": 14.32,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Ambarella (AMBA) Stock Fair Value Falls After Analysts Cut Targets On Weaker Gui",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "BBD",
+   "price": 2.8,
+   "gapPct": 15.23,
+   "rvol": null,
+   "pmVolume": 279704,
+   "avgVolume": 47020000,
+   "floatM": 5580,
+   "atrPct": 6.58,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "The chair of Banco Bradesco (BBD) accepted President Lula’s invitation to serve ",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "MNDR",
+   "price": 1.01,
+   "gapPct": 100.08,
+   "rvol": null,
+   "pmVolume": 11087746,
+   "avgVolume": 3500000,
+   "floatM": 0.43,
+   "atrPct": 42,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Mobile-health Network Solutions Launches MaNaDr Health Operating Ecosystem Conne",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "POM",
+   "price": 3,
+   "gapPct": 86.34,
+   "rvol": null,
+   "pmVolume": 4755742,
+   "avgVolume": 2089999.9999999998,
+   "floatM": 0,
+   "atrPct": 177.64,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "POMDOCTOR LIMITED Highlights Real-World Data as a Strategic Foundation for AI-En",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "NCPL",
+   "price": 2.33,
+   "gapPct": 24.33,
+   "rvol": null,
+   "pmVolume": 249616,
+   "avgVolume": 18000000,
+   "floatM": 2.09,
+   "atrPct": 29.41,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Shareholders who lost money in shares of Netcapital Inc. (NASDAQ: NCPL) should c",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "NTNX",
+   "price": 45.97,
+   "gapPct": -15.79,
+   "rvol": null,
+   "pmVolume": 54263,
+   "avgVolume": 2750000,
+   "floatM": 262.32,
+   "atrPct": 7.26,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Nutanix (NTNX) Stock May Be 48% Undervalued Following CEO Succession Plan",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "XP",
+   "price": 16.65,
+   "gapPct": 15.71,
+   "rvol": null,
+   "pmVolume": 179234,
+   "avgVolume": 13080000,
+   "floatM": 386.43,
+   "atrPct": 8.69,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "S&P 500 Futures Rise in Premarket Trading; Credicorp, XP Lead",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "INTR",
+   "price": 4.62,
+   "gapPct": 15.09,
+   "rvol": null,
+   "pmVolume": 93021,
+   "avgVolume": 9330000,
+   "floatM": 240.42,
+   "atrPct": 8.23,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Oil States International: A Growing Backlog And A Cheaper Stock (Buy)",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "EVRL",
+   "price": 1.04,
+   "gapPct": -16.8,
+   "rvol": null,
+   "pmVolume": 122758,
+   "avgVolume": 77920,
+   "floatM": 3.92,
+   "atrPct": 240.63,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Everli Global Holdings Inc (EVRL) Stock PDF (Updated: 2026/11/25)",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "CMND",
+   "price": 3.09,
+   "gapPct": 16.15,
+   "rvol": null,
+   "pmVolume": null,
+   "avgVolume": 55970,
+   "floatM": 0.06,
+   "atrPct": 18.05,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Clearmind Medicine Expands PTSD Patent Portfolio with Hong Kong Patent Applicati",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  },
+  {
+   "sym": "JAGX",
+   "price": 10.79,
+   "gapPct": -15.7,
+   "rvol": null,
+   "pmVolume": 103284,
+   "avgVolume": 325430,
+   "floatM": 0.5,
+   "atrPct": 65.6,
+   "spreadPct": null,
+   "rsQqq": null,
+   "ema9Pct": null,
+   "trend": null,
+   "catalyst": "Jaguar Health, Inc. (JAGX) Stock Price, News, Quote & History",
+   "verdict": "skip",
+   "note": "冇價格數據源，計唔到 RVOL／差價，唔可以入選"
+  }
+ ],
+ "fewPicksReason": "今日所有價格數據源都用唔到（冇 Alpaca key、Yahoo HTTP 429、IBKR 要重新登入），計唔到盤前 RVOL，按規則唔可以揀任何股。唔會估數。",
+ "longFocus": {
+  "summary": "今日冇做多股：冇價格數據，計唔到 RVOL。加上係感恩節翌日半日市，成交偏少，建議今日唔做。",
+  "items": []
+ },
+ "carryover": {
+  "fromDate": "2026-11-25",
+  "summary": "上一份報告係 11/25（11/26 感恩節休市）。AMBA 今日冇價格數據，未能跟進，skip。",
+  "items": [
+   {
+    "sym": "AMBA",
+    "prevSide": "Short",
+    "prevResult": "未能回顧（冇數據）",
+    "yClose": null,
+    "yChgPct": null,
+    "yClosePos": null,
+    "yVolRatio": null,
+    "price": null,
+    "gapPct": null,
+    "rvol": null,
+    "verdict": "skip",
+    "side": null,
+    "reason": "今日冇價格數據源，計唔到 RVOL，唔做。",
+    "levels": "11/25 盤前低 27.00、盤前高 30.17"
+   }
+  ]
+ },
+ "picks": [],
+ "watch": [],
+ "avoid": [],
+ "news": [
+  {
+   "title": "UBS Flags Two UK housebuilders to Own, One to Avoid, as 2027 Stays Stagnant",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/ubs-flags-two-uk-housebuilders-to-own-one-to-avoid-as-2027-stays-stagnant-5053474",
+   "time": "2026-11-27T13:01"
+  },
+  {
+   "title": "Railtown AI targets lower AI costs with new model testing tools",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4677008-railtown-ai-targets-lower-ai-costs-with-new-model-testing-tools?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-27T12:55"
+  },
+  {
+   "title": "Coca-Cola continues its refranchising strategy with a deal in Africa",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4677010-coca-cola-continues-its-refranchising-strategy-with-deal-in-africa?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-27T12:53"
+  },
+  {
+   "title": "Why history suggests a sharp rally could be near",
+   "source": "Investing.com",
+   "url": "https://www.investing.com/news/stock-market-news/why-history-suggests-a-sharp-rally-could-be-near-5053462",
+   "time": "2026-11-27T12:53"
+  },
+  {
+   "title": "OceanaGold secures Ausgold shareholder approval for acquisition",
+   "source": "Seeking Alpha 快訊",
+   "url": "https://seekingalpha.com/news/4677009-oceanagold-secures-ausgold-shareholder-approval-for-acquisition?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+   "time": "2026-11-27T12:51"
+  }
+ ],
+ "lesson": "冇可靠數據嗰日，最好嘅交易就係唔交易。",
+ "disclaimer": "Day Trade 風險極高，可能損失全部本金。報告由 AI 整理；今日冇價格數據，冇任何選股。"
+}

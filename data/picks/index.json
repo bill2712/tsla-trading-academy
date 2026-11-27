@@ -1,6 +1,17 @@
 {
- "updated": "2026-11-25T13:57:47.058Z",
+ "updated": "2026-11-27T13:08:50.176Z",
  "days": [
+  {
+   "date": "2026-11-27",
+   "version": 3,
+   "status": "premarket",
+   "bias": "中性",
+   "headline": "⚠️ 今日冇選股：所有價格數據源都斷咗（冇 Alpaca key、Yahoo 限流、IBKR 要重新登入），計唔到 RVOL。感恩節翌日 13:00 收市，今日唔做。",
+   "n": 0,
+   "top": [],
+   "reviewed": false,
+   "again": []
+  },
   {
    "date": "2026-11-25",
    "version": 3,
